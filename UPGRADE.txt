@@ -1,0 +1,67 @@
+
+Update
+
+19/10/2022
+- Update QRCode on <i class="fas fa-money-bill    ">Bill</i>
+- Update Sales models
+- Update Verify controller 
+- Update receipt_default on view/sales
+- Update doctor and kxv 
+
+20/10/2022
+- Cho phép thanh toán bằng điểm
+- Điểm số lưu trữ trong session của đơn hàng; khi thông tin của khách hàng được thay đổi thì cũng load lại thông tin của khách hàng vào session. 
+Khi thanh toán = point thì point sẽ trừ điểm (points) trong session; khi xóa thanh toán sẽ + điểm vào (points); -->OK
+
+- Tối ưu hóa lại, tất cả thông tin về đơn hàng được cho vào session (sales_lib);
+    + Thông tin khách hàng: Chọn lại load lại;
+    + Thông tin thanh toán ( các loại thanh toánh): Thêm vào thì bổ sung, xóa thì remove;
+    + Thông tin về các sản phẩm
+    + Tổng tiền
+- Sau khi kết thúc đơn hàng thì clear All;    
+
+22/10/2022
+theUser - information of the logined user. It is deleting after logout. (cập nhậ thông in về tổng tiền và tổng điểm mỗi lần thay đổi)
+person_id store in session
+type store in session
+
+23/10/2022
+update user manager.
+
+Tạo được một số hàm thêm mới vào csdl của modules và permissions
+Tạo được các hàm lấy tự động modules trong hệ thống.
+Tạo được hàm lấy được permissions trong mỗi module;
+
+Tự động kiểm tra phân quyền theo các task của module. (các task thêm vào trong bảng permissions được quản lý. Mặc định sẽ không dược quản lý phân quyền nếu không đưa vào bảng permission)
+
+
+
+Kế hoạch (hết 29/10)
+- Xây dựng form nhập modules
+_ xây dựng form nhập permissions
+- Xây dựng form quản lý nhóm quyền (roles)
+- Cập nhật form tạo user
+- Cập nhật form thêm mới sản phẩm (lỗi do phân quyền)
+Roles/index
+Roles/create
+Roles/view
+Roles/edit
+Roels/per_index
+Roles/per_add
+Roles/per_view
+Roles/per_edit
+Roles/mod_index
+Roles/mod_add
+Roles/mod_view
+Roles/mod_edit
+
+---------------------------------------------
+Cuối tuần Update lên các phần mềm. tongkho, 157, kmviethan, (nhi 3 cửa hàng)
+
+- Update các loại báo cáo.
+- Xây dựng thêm module quản lý công nợ;
+- Xây dựng module KPI;
+- Xây dựng module HR;
+- Xây dựng module quản lý survey;
+- Xây dựng module quản lý điểm;
+--------------------------

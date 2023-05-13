@@ -1,0 +1,43 @@
+<?php
+//Test_no_Test_to_display
+$lang["test_new"] = "Thêm mới";
+$lang['test_test_time'] = "Ngày tháng";
+$lang['test_customer_name'] = "Tên khách hàng";
+$lang['test_note'] = "Ghi chú/Đơn thuốc";
+$lang['test_right_e'] = "Mắt phải (R)";
+$lang['test_left_e'] = "Mắt trái (L)";
+$lang['test_toltal'] = "Tầm nhìn";
+$lang['test_takings'] = "Danh sách đơn kính";
+$lang['test_new_customer'] = "Tạo mới khách hàng";
+$lang['test_customer'] = "Tên KH: ";
+$lang['test_customer_phone'] = "Điện thoại";
+$lang['test_customer_address'] = "Đ/c: ";
+$lang['test_customer_age'] = "Tuổi: ";
+$lang['test_customer_old_data'] = "Kết quả đo cũ";
+$lang['test_start_typing_customer_name'] = "Nhập tên hoặc số điện thoại để tìm kiếm";
+$lang['test_select_customer'] = "Nhập thông tin khách hàng";
+$lang['test_eyes'] = "Mắt";
+$lang['test_sph'] = "SPH";
+$lang['test_cyl'] = "CYL";
+$lang['test_ax'] = "AX";
+$lang['test_add'] = "ADD";
+$lang['test_va'] = "VA";
+$lang['test_pd'] = "PD/2";
+$lang['test_toltal'] = 'Tầm nhìn';
+$lang['test_distance'] = 'Nhìn xa';
+$lang['test_reading'] = "Nhìn gần";
+$lang['test_left_eye'] = 'L';
+$lang['test_right_eye'] = 'R';
+$lang['test_plano'] = 'PLANO';
+$lang['test_lens'] = 'Mắt kính';
+$lang['test_single'] = 'Đơn tròng';
+$lang['test_bifocal'] = 'Hai tròng';
+$lang['test_progressive'] = 'Đa tròng';
+$lang['test_rx'] = 'Mắt đặt';
+$lang['test_complete_test'] = "Cập nhật";
+$lang['test_clear_test'] = "Tạo mới đơn";
+$lang['test_duration'] = "Thời gian khám lại sau";
+$lang['test_type'] = "Đơn yêu cầu";
+$lang['test_print_test'] = "In đơn kính";
+$lang["test_no_test_to_display"] = "Chưa có đơn khám mắt nào";
+
