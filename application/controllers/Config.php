@@ -322,7 +322,8 @@ class Config extends Secure_Controller
 
 		$data['glasses_product'] = $this->config->item('filter_sun_glasses');
 
-		$data['other_product'] = $this->config->item('other_filter');
+		$data['other_product'] = $this->config->item('filter_other');
+		//var_dump($data['other_product']);
 		
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();

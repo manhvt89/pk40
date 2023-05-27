@@ -1,4 +1,4 @@
-FROM php:7.4-apache AS ospos_v1
+FROM php:7.4-apache AS ospos_v2
 LABEL maintainer="jekkos"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -32,7 +32,7 @@ RUN chmod -R 750 /app/public/uploads /app/application/logs && chown -R www-data:
 
 ##CMD ["/app/vendor/phpunit/phpunit/phpunit"]
 
-FROM ospos_v1 AS ospos_v1_dev
+FROM ospos_v2 AS ospos_v2_dev
 
 RUN mkdir -p /app/bower_components && ln -s /app/bower_components /var/www/html/bower_components
 #RUN yes | pecl install xdebug \

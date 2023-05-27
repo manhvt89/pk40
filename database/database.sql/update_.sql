@@ -16,7 +16,35 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
+DROP TABLE IF EXISTS `ospos_test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ospos_test` (
+  `test_id` int(11) NOT NULL AUTO_INCREMENT,
+  `employeer_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `code` varchar(12) DEFAULT NULL,
+  `right_e` varchar(255) DEFAULT NULL,
+  `left_e` varchar(255) DEFAULT NULL,
+  `toltal` varchar(255) DEFAULT '''''',
+  `lens_type` varchar(255) DEFAULT NULL,
+  `contact_lens_type` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT '''''',
+  `test_time` int(11) DEFAULT NULL,
+  `type` tinyint(1) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
+  `duration` int(1) DEFAULT 6,
+  `reminder` tinyint(1) DEFAULT 1 COMMENT 'nhắc tái khám 1; không nhắc 0',
+  `expired_date` int(11) DEFAULT 0,
+  `prescription` text NOT NULL,
+  `r_va_o` varchar(50) NOT NULL,
+  `l_va_o` varchar(50) NOT NULL,
+  `right_e_old` varchar(250) NOT NULL,
+  `left_e_old` varchar(250) NOT NULL,
+  `old_toltal` varchar(50) NOT NULL,
+  `test_uuid` varchar(250) NOT NULL DEFAULT uuid(),
+  PRIMARY KEY (`test_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3615 DEFAULT CHARSET=utf8;
 --
 -- Database: `namh_sys`
 --
@@ -25,10 +53,19 @@ SET time_zone = "+00:00";
 
 -- ADD fields to ospos_customers
 ALTER TABLE `ospos_customers` ADD `points` DECIMAL(10,2) NOT NULL DEFAULT '0' AFTER `password`; 
-ALTER TABLE `ospos_customers` ADD `customer_uuid` VARCHAR(250) NOT NULL DEFAULT UUID() AFTER `points`; 
+
+ALTER TABLE `ospos_customers` ADD `customer_uuid` VARCHAR(250) NOT NULL DEFAULT UUID() AFTER `points`;
+ALTER TABLE `ospos_items` ADD `category_code` VARCHAR(250) NOT NULL DEFAULT '' AFTER `code`;  
+ALTER TABLE `ospos_items` ADD `ref_item_id` VARCHAR(50) NOT NULL DEFAULT '' AFTER `category_code`;  
+
+ALTER TABLE `ospos_sales` ADD `current` int(4) NOT NULL DEFAULT 1 COMMENT '0 là cha, đã bị thay thế; 1: hiện tại đang dùng' AFTER `sale_uuid`; 
+ALTER TABLE `ospos_sales` ADD `parent_id` int(10) NOT NULL DEFAULT 0 AFTER `sale_uuid`; 
+
 
 -- ADD fields to ospos_daily_total
 ALTER TABLE `ospos_daily_total` ADD `daily_total_uuid` VARCHAR(250) NOT NULL DEFAULT UUID() AFTER `decrease_amount`; 
+
+ALTER TABLE `ospos_app_config` MODIFY `value` TEXT;
 
 -- ADD table ospos_fields
 DROP TABLE IF EXISTS `ospos_fields`;

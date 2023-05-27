@@ -1,3 +1,17 @@
+.prescription_title {
+    font-size: 20px;
+    font-family: arial;
+}
+
+#prescription th{
+  background-color:  #EEEEEE;
+  padding: 5px 0px 5px 0px;
+}
+
+#prescription{
+    margin: 0px 0px 25px 0px;
+}
+
 .hidden {
     display: none;
 }
@@ -27,7 +41,7 @@
     height: 1.3em;
     float: left;
     margin-right: .5em;
-    margin-top: .2em;
+    margin-top: 0;
 }
 
 .radio .cr {
@@ -81,6 +95,8 @@
     margin-bottom: 2px;
     margin-top: 2px;
     position: relative;
+    padding-top: 0px;
+    padding-left: 15px;
 }
 
 #register .radio label,
@@ -386,7 +402,6 @@ td .input-test {
     margin: 25px 0 10px 0;
 }
 
-
 .heder_table_contact_len {
     font-weight: bold;
     line-height: 2;
@@ -671,7 +686,7 @@ td .input-test {
         padding-right: 10px;
     }
     #footer_precription tr th {
-      text-align: center;
+        text-align: center;
     }
 }
 
@@ -767,32 +782,31 @@ td .input-test {
 .step tr:hover {
     background-color: coral;
 }
+
 @media (min-width:992px) {
-  #show_po_list, #show_sales_button {
-    margin: 0 5px 0 1px;
-  }
-
-  #view_report_lens_category table tr td:first-child {
-    font-weight: bold;
-    background-color: lavender;
-  }
-
-  #view_report_lens_category table tr th {
-    text-align: center;
-    border: 1px solid black;
-  }
-  #report_item_count{
-    margin: 0 0 20px 0;
-  }
-  #generate_report{
-    margin: 10px 0 20px 0;
-  }
-  #target{
-    text-align: right;
-  }
-
-  #target label {
-    font-size: 14px;
-    font-family: arial;
-  }
+    #show_po_list,
+    #show_sales_button {
+        margin: 0 5px 0 1px;
+    }
+    #view_report_lens_category table tr td:first-child {
+        font-weight: bold;
+        background-color: lavender;
+    }
+    #view_report_lens_category table tr th {
+        text-align: center;
+        border: 1px solid black;
+    }
+    #report_item_count {
+        margin: 0 0 20px 0;
+    }
+    #generate_report {
+        margin: 10px 0 20px 0;
+    }
+    #target {
+        text-align: right;
+    }
+    #target label {
+        font-size: 14px;
+        font-family: arial;
+    }
 }

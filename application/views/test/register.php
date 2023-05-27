@@ -278,6 +278,93 @@ $(document).ready(function()
 			}
 		}
 	}
+
+	// Danh sách thuốc đã lưu trữ dưới dạng JSON
+	var medicationList = <?=$json_pres_a?>; 
+
+  // Tìm kiếm thuốc
+  $('#search-input').on('input', function() {
+    var searchQuery = $(this).val().toLowerCase();
+    var searchResults = [];
+
+    if (searchQuery.length > 0) {
+      searchResults = medicationList.filter(function(medication) {
+        return medication.name.toLowerCase().includes(searchQuery);
+      });
+    }
+
+    displaySearchResults(searchResults);
+  });
+
+  // Thêm thuốc vào đơn thuốc
+  $('#search-results').on('click', 'li', function() {
+    var medicationName = $(this).text();
+    var medication = medicationList.find(function(medication) {
+      return medication.name === medicationName;
+    });
+
+    if (!isMedicationAlreadyAdded(medicationName)) {
+      addToPrescription(medication);
+    }
+
+    clearSearch();
+  });
+
+  // Kiểm tra nếu thuốc đã được thêm vào đơn thuốc
+  function isMedicationAlreadyAdded(medicationName) {
+    var isAlreadyAdded = false;
+
+    $('#prescription-list li').each(function() {
+      if ($(this).text() === medicationName) {
+        isAlreadyAdded = true;
+        return false;
+      }
+    });
+
+    return isAlreadyAdded;
+  }
+
+  // Thêm thuốc vào đơn thuốc và hiển thị danh sách đơn thuốc
+  function addToPrescription(medication) {
+    var $newPrescriptionItem = $('<tr></tr>');
+	var $col_stt = $('<td></td>');
+	var $col_name = $('<td><input name="pres_name[]" type="hidden" value="'+medication.name+'"/>'+medication.name+'</td>');
+	var $col_dvt = $('<td><input name="pres_dvt[]" type="hidden" value="'+medication.dvt+'"/>'+medication.dvt+'</td>');
+	var $col_sl = $('<td><input name="pres_amount[]" type="number" maxlength="4" size="4" value=""/></td>');
+	var $col_hdsd = $('<td><input name="pres_hdsd[]" type="text" maxlength="250" size="45" value="'+medication.hdsd+'"/></td>');
+	$newPrescriptionItem.append($col_stt);
+	$newPrescriptionItem.append($col_name);
+	$newPrescriptionItem.append($col_dvt);
+	$newPrescriptionItem.append($col_sl);
+	$newPrescriptionItem.append($col_hdsd);
+    //$newPrescriptionItem.text(medication.name);
+
+    var $deleteButton = $('<button class="delete-button">Xóa</button>');
+    $deleteButton.on('click', function() {
+      $newPrescriptionItem.remove();
+    });
+
+    $newPrescriptionItem.append($deleteButton);
+    $('#cart_contents2').append($newPrescriptionItem);
+  }
+
+  // Hiển thị kết quả tìm kiếm
+  function displaySearchResults(searchResults) {
+    var $searchResults = $('#search-results');
+    $searchResults.empty();
+
+    searchResults.forEach(function(result) {
+      var $resultItem = $('<li></li>');
+      $resultItem.text(result.name);
+      $searchResults.append($resultItem);
+    });
+  }
+
+  // Xóa nội dung ô tìm kiếm
+  function clearSearch() {
+    $('#search-input').val('');
+    $('#search-results').empty();
+  }
 });
 
 </script>

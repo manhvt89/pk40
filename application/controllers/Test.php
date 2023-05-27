@@ -15,7 +15,6 @@ class Test extends Secure_Controller
 		$this->logedUser_type = $this->session->userdata('type');
 		$this->logedUser_id = $this->session->userdata('person_id');
 
-
 	}
 
 	public function detail_test($sAccount_Number=0){
@@ -239,6 +238,46 @@ class Test extends Secure_Controller
             $reArray['VA'] = $this->input->post('r_va') ? $this->input->post('r_va') : '';
 
 
+			$leOldArray['ADD'] = $this->input->post('l_add_old') ? $this->input->post('l_add_old') : '';
+            $leOldArray['AX'] = $this->input->post('l_ax_old') ? $this->input->post('l_ax_old') : '';
+            $leOldArray['CYL'] = $this->input->post('l_cyl_old') ? $this->input->post('l_cyl_old') : '';
+            $leOldArray['PD'] = $this->input->post('l_pd_old') ? $this->input->post('l_pd_old') : '';
+            //$leArray['ADD'] = $this->input->post('l_add') ? $this->input->post('l_add');
+            $leOldArray['SPH'] = $this->input->post('l_sph_old') ? $this->input->post('l_sph_old') : '';
+            $leOldArray['VA'] = $this->input->post('l_va_old') ? $this->input->post('l_va_old') : '';
+
+            $reOldArray['ADD'] = $this->input->post('r_add_old') ? $this->input->post('r_add_old') : '';
+            $reOldArray['AX'] = $this->input->post('r_ax_old') ? $this->input->post('r_ax_old') : '';
+            $reOldArray['CYL'] = $this->input->post('r_cyl_old') ? $this->input->post('r_cyl_old') : '';
+            $reOldArray['PD'] = $this->input->post('r_pd_old') ? $this->input->post('r_pd_old') : '';
+            //$reArray['ADD'] = $this->input->post('r_add');
+            $reOldArray['SPH'] = $this->input->post('r_sph_old') ? $this->input->post('r_sph_old') : '';
+            $reOldArray['VA'] = $this->input->post('r_va_old') ? $this->input->post('r_va_old') : '';
+
+			
+			
+			$presArray = array();
+			if(!empty($this->input->post('pres_name')))
+			{
+				$pres_count = count($this->input->post('pres_name'));
+				for($i =0; $i < $pres_count; $i++)
+				{
+					$pres_item['stt'] = $i;
+					$pres_item['name'] = $this->input->post('pres_name')[$i];
+					$pres_item['dvt'] = $this->input->post('pres_dvt')[$i];
+					$pres_item['sl'] = $this->input->post('pres_amount')[$i];
+					$pres_item['hdsd'] = $this->input->post('pres_hdsd')[$i];
+					$presArray[$i] = $pres_item;
+				}
+			}
+
+			$obj['old_toltal'] = $this->input->post('old_distance') . ';' . $this->input->post('old_reading');
+			$obj['r_va_o'] = $this->input->post('r_va_o') ? $this->input->post('r_va_o') : '';
+			$obj['l_va_o'] = $this->input->post('l_va_o') ? $this->input->post('l_va_o') : '';
+			$obj['right_e_old'] = json_encode($reOldArray);
+            $obj['left_e_old'] = json_encode($leOldArray);
+			$obj['prescription'] = json_encode($presArray);
+
             $obj['note'] = $this->input->post('note') ? $this->input->post('note') : '';
             $obj['right_e'] = json_encode($reArray);
             $obj['left_e'] = json_encode($leArray);
@@ -335,7 +374,21 @@ class Test extends Secure_Controller
 		//$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 
 		//$data['payments_cover_total'] = $this->sale_lib->get_amount_due() <= 0;
-        if(isset($data['test_id']))
+        $pres_names_q = $this->Prescription->get_all();
+		
+		$pres_names[""] = array();
+		$pres_a = array();
+		foreach($pres_names_q as $pres)
+		{
+			$pres_names[$pres['name']] = $pres['name'];
+			$pres_a[$pres['name']] = $pres;
+		}
+
+		$data['pres_names'] = $pres_names;
+		$data['pres_a'] = $pres_a;
+		$data['json_pres_a'] = json_encode($pres_names_q);
+
+		if(isset($data['test_id']))
         {
             $test = $this->Testex->get_info($data['test_id']);
             if(isset($test)) {
@@ -353,6 +406,15 @@ class Test extends Secure_Controller
                 $data['left_e'] = json_decode($test['left_e'],true);
                 $data['test_time'] = $test['test_time'];
                 $data['reminder'] = $test['reminder'];
+
+				//Added by ManhVT support BS
+				$data['prescription_list'] = $test['prescription'] != "" ? json_decode($test['prescription'],true) : array();
+
+				$data['r_va_o'] = $test['r_va_o'] != "" ? $test['r_va_o'] : $data['right_e']['VA'];
+				$data['l_va_o'] = $test['l_va_o'] != "" ? $test['l_va_o'] : $data['left_e']['VA'];
+				$data['right_e_old'] = $test['right_e_old'] != "" ? json_decode($test['right_e_old'],true) : $data['right_e'];
+            	$data['left_e_old'] = $test['left_e_old'] != "" ? json_decode($test['left_e_old'],true) : $data['left_e'];
+				$data['old_toltal'] = $test['old_toltal'] != "" ? explode(';', $test['old_toltal']) : $data['toltal'];
             }
 
         }else{

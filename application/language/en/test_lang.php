@@ -40,4 +40,5 @@ $lang['test_duration'] = "Thời gian khám lại sau";
 $lang['test_type'] = "Đơn yêu cầu";
 $lang['test_print_test'] = "In đơn kính";
 $lang["test_no_test_to_display"] = "Chưa có đơn khám mắt nào";
+$lang["test_orthk"] = "Ortho-K";
 

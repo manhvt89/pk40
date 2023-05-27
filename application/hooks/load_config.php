@@ -39,6 +39,19 @@ function load_config()
         elseif('filter_other' == $app_config->key)
         {
             $value = explode("\n",$app_config->value);
+            $_arrTmp = array();
+            foreach($value as $v)
+            {
+                $_items = array();
+                $_value = explode(";",$v);
+                if(count($_value) > 4)
+                {
+                    $_items = ['id'=>$_value[0],'name'=>$_value[1],'price'=>$_value[2],'dvt'=>$_value[3],'hdsd'=>$_value[4],'price_display'=>number_format($_value[2],0,',','.').'đ'];
+            
+                    $_arrTmp[] = $_items;
+                }
+            }
+            $CI->config->set_item('tenthuoc', $CI->security->xss_clean($_arrTmp));
             $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
         }
         else {
