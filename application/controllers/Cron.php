@@ -875,7 +875,7 @@ class Cron extends CI_Controller{
         $message = ' Bắt đầu Synch SP '. date('d/m/Y h:m:s',time());
         echo 	$message .PHP_EOL;
         
-        $_aCategory = array(
+        /* $_aCategory = array(
             "1.56 CHEMI",//0
             "1.56 CHEMI Crystal U2", //1
             "1.56 CHEMI Crystal U6", //2
@@ -914,11 +914,11 @@ class Cron extends CI_Controller{
             "1.56 TRÀ 1 MÀU CR",//35
             "1.56 TRÀ 2 MÀU CR",
             "1.56 XANH 1 MÀU CR"
-        );
+        ); */
 
         $_aCategory = $this->get_categories(); 
 
-        //var_dump($_aCategory);
+        var_dump($_aCategory); die();
 
         $lfile =  str_replace('/public/','/',FCPATH).'log-lens.txt';
         //echo $lfile;exit();
