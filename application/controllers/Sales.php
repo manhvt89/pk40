@@ -1145,11 +1145,24 @@ class Sales extends Secure_Controller
 				'location_id' => 'all',
 				'start_date' => date('Y-m-d'),
 				'end_date' => date('Y-m-d'));
-			// Disable display exams list by manhvt04.02.2023
-			//$tests = $this->Testex->search($search, $filters, $limit, $offset, $sort, $order)->result_array();
-			//$data['tests'] = $tests;
+			// Display danh sách bệnh nhân trong ngày;
+			$tests = $this->Testex->search($search, $filters, $limit, $offset, $sort, $order)->result_array();
+
+			$_tests = array();
+			$seenIds = array();
+			foreach ($tests as $_test) {
+				$_iCustomerId = $_test['customer_id'];
+				
+				// Kiểm tra xem customer_id đã xuất hiện trước đó hay chưa
+				if (!in_array($_iCustomerId, $seenIds)) {
+					// Nếu chưa xuất hiện, thêm khách hàng vào mảng kết quả và đánh dấu là đã xuất hiện
+					$_tests[] = $_test;
+					$seenIds[] = $_iCustomerId;
+				}
+			}
+			$data['tests'] = $_tests;
 		}
-		//svar_dump($data['tests']); //die();
+		//var_dump($data['tests']); //die();
 		//var_dump($data['detail_tests']);
 		
 		$data = $this->xss_clean($data);
@@ -1536,5 +1549,6 @@ class Sales extends Secure_Controller
 		}
 		$this->_reload($data);
 	}
+	
 }
 ?>

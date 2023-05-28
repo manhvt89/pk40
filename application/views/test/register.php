@@ -48,6 +48,7 @@ if (isset($success))
 	<?php $tabindex = 0; ?>
 <!-- Sale Items List -->
 	<?php if(isset($customer)): ?>
+		
 	<?php $this->load->view("test/form"); ?>
 	<?php else: ?>
 		<ul id="error_message_box" class="error_message_box">Chưa nhập thông tin khách hàng</ul>
@@ -114,13 +115,40 @@ if (isset($success))
 				</tr>
 			</table>
 
-			<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
-								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
+			<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . 'Đối thông tin',
+								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>'Đối thông tin')); ?>
 		<?php
 		}
 		else
 		{
 		?>
+			<?php if(count($tests)): //Hiển thị danh sách khách hàng khám trong ngày; ?>
+			<table id="list_tested_today" class="table table-hover table-striped" style="background-color: #fff;">
+
+				<tr style="text-align: left; background-color: #e4e4d7">
+					<td>Họ và tên</td>
+					<td>
+						Số điện thoại
+					</td>
+					<td>
+
+					</td>
+				</tr>
+				<?php foreach ($tests as $test): ?>
+					<tr style="text-align: left" id="list_<?=$test['test_id']?>">
+						<td>
+							<?php echo $test['last_name']. ' ' . $test['first_name']; ?>
+						</td>
+						<td>
+							<?php echo $test['phone_number']; ?>
+						</td>
+						<td>
+							<span class="glyphicon glyphicon-ok"></span>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php endif; ?>
 			<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="select_customer">
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('test_select_customer'); ?></label>
@@ -180,6 +208,17 @@ if (isset($success))
 
 $(document).ready(function()
 {
+	<?php if(!$this->Employee->has_grant('test_step_one')): ?>
+		
+	$("#list_tested_today tr").click(function(){
+		//alert($(this).attr('id'));
+		var strId = $(this).attr('id');
+		var Ids = strId.split('_');
+		var test_id = Ids[1];
+		//alert(strId);
+		$('#hdd_test_id').val(test_id);
+		$('#view_test_form').submit();
+	});
 	$("#old_data_view tr").click(function(){
 		//alert($(this).attr('id'));
 		var strId = $(this).attr('id');
@@ -189,6 +228,7 @@ $(document).ready(function()
 		$('#hdd_test_id').val(test_id);
 		$('#view_test_form').submit();
 	});
+	<?php endif; ?>
 
 	$("#clear_test_button").click(function(){
 		$('#hdd_test_id').val(0);

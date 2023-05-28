@@ -538,7 +538,7 @@ if (isset($success))
 		?>
 			<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
 
-		<?php if(count($tests)): //Hiển thị danh sách khách hàng khám trong ngày; hiện tại không cho hiển thị?>
+		<?php if(count($tests)): //Hiển thị danh sách khách hàng khám trong ngày; ?>
 			<table id="list_tested_today" class="table table-hover table-striped" style="background-color: #fff;">
 
 				<tr style="text-align: left; background-color: #e4e4d7">
@@ -565,7 +565,7 @@ if (isset($success))
 					</tr>
 				<?php endforeach; ?>
 			</table>
-			<?php endif; ?>
+		<?php endif; ?>
 			<div class="form-group" id="select_customer">
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>

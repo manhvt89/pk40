@@ -5,7 +5,7 @@
 <?php echo form_open($controller_name."/complete", array('id'=>'done_test_form', 'class'=>'form-horizontal panel panel-default')); ?>
 <?php if($this->test_lib->get_test_id()):?>
 	
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="2" style="text-align:left">Thị lực không kính</th>
@@ -40,7 +40,7 @@
 		</tr>
 		</tbody>
 	</table>
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="8" style="text-align:left">Kính cũ</th>
@@ -182,7 +182,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="8" style="text-align:left">Kính đề nghị</th>
@@ -336,7 +336,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="4"><?php echo $this->lang->line('test_lens'); ?></th>
@@ -405,7 +405,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="3"><?php echo $this->lang->line('test_note'); ?></th>
@@ -470,7 +470,7 @@
 	</table>
 
 	<!-- Đơn Thuốc -->
-	<table class="sales_table_100" id="prescription">
+	<table class="sales_table_100 s-100" id="prescription">
 		<thead>
 		<tr style="text-align:center">
 			<th colspan="5" style="text-align:center"><span class="prescription_title">Đơn Thuốc</span></th>
@@ -512,7 +512,7 @@
 		<?php endfor; endif;?>
 		</tbody>
 	</table>
-	<div id="search-container">
+	<div id="search-container" class="s-100">
 			<input type="text" id="search-input" placeholder="Tìm kiếm thuốc">
 			<ul id="search-results"></ul>
 	</div>
@@ -530,7 +530,7 @@
 
 <?php else: ?>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="2" style="width: 15%;">Thị lực không kính</th>
@@ -565,7 +565,7 @@
 		</tr>
 		</tbody>
 	</table>
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="8" style="width: 15%;">Kính cũ</th>
@@ -707,7 +707,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="8" style="width: 15%;">Kính đề nghị</th>
@@ -861,7 +861,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="4"><?php echo $this->lang->line('test_lens'); ?></th>
@@ -929,7 +929,7 @@
 		</tbody>
 	</table>
 
-	<table class="sales_table_100" id="register">
+	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
 			<th colspan="3"><?php echo $this->lang->line('test_note'); ?></th>
@@ -994,7 +994,7 @@
 	<div class='btn btn-sm btn-success pull-right' id='update_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_complete_test'); ?></div>
 
 	<!-- Đơn Thuốc -->
-	<table class="sales_table_100" id="prescription">		
+	<table class="sales_table_100 s-100" id="prescription">		
 		<thead>
 		<tr style="text-align:center">
 			<th colspan="6" style="text-align:center"><span class="prescription_title">Đơn Thuốc</span></th>
@@ -1011,7 +1011,7 @@
 		<tbody id="cart_contents2">
 		</tbody>
 	</table>
-	<div id="search-container">
+	<div id="search-container" class="s-100">
 			<input type="text" id="search-input" placeholder="Tìm kiếm thuốc">
 			<ul id="search-results"></ul>
 	</div>

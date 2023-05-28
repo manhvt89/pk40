@@ -96,6 +96,13 @@
 			overflow: auto;
 		}
 	</style>
+	<?php if($this->Employee->has_grant('test_step_one')):?>
+		<style type="text/css">
+		.s-100 {
+			display: none;
+		}
+	</style>
+	<?php endif; ?>
 </head>
 
 <body>

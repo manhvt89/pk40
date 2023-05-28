@@ -14,7 +14,10 @@ class Test extends Secure_Controller
 		$this->load->library('barcode_lib');
 		$this->logedUser_type = $this->session->userdata('type');
 		$this->logedUser_id = $this->session->userdata('person_id');
-
+		if($this->Employee->has_grant('test_step_one'))
+		{
+			//echo 'Tư vấn'; die();
+		}
 	}
 
 	public function detail_test($sAccount_Number=0){
@@ -383,7 +386,7 @@ class Test extends Secure_Controller
 			$pres_names[$pres['name']] = $pres['name'];
 			$pres_a[$pres['name']] = $pres;
 		}
-
+		$data['tests'] = array(); //edit by manhvt27.05.2023
 		$data['pres_names'] = $pres_names;
 		$data['pres_a'] = $pres_a;
 		$data['json_pres_a'] = json_encode($pres_names_q);
@@ -418,7 +421,35 @@ class Test extends Secure_Controller
             }
 
         }else{
+			if($this->Employee->has_grant('test_step_one'))
+			{
 
+			} else { // Nếu không phải là tư vấn
+				$search = '';
+				$sort = 'test_time';
+				$order = 'desc';
+				$offset = 0;
+				$limit = '500';
+				$filters = array('type' => 'all',
+					'location_id' => 'all',
+					'start_date' => date('Y-m-d'),
+					'end_date' => date('Y-m-d'));
+				$tests = $this->Testex->search($search, $filters, $limit, $offset, $sort, $order)->result_array();
+
+				$_tests = array();
+				$seenIds = array();
+				foreach ($tests as $_test) {
+					$_iCustomerId = $_test['customer_id'];
+					
+					// Kiểm tra xem customer_id đã xuất hiện trước đó hay chưa
+					if (!in_array($_iCustomerId, $seenIds)) {
+						// Nếu chưa xuất hiện, thêm khách hàng vào mảng kết quả và đánh dấu là đã xuất hiện
+						$_tests[] = $_test;
+						$seenIds[] = $_iCustomerId;
+					}
+				}
+				$data['tests'] = $_tests;
+			}
         }
         $data = $this->xss_clean($data);
 		$this->load->view("test/register", $data);
@@ -504,6 +535,14 @@ class Test extends Secure_Controller
 	public function save($sale_id = -1)
 	{
 		exit();
+	}
+
+	/*
+	** Hàm này dùng để kiểm tra xem nếu được câp quyền này, tài khoản có chức năng tạo phiếu khám; Bước đầu tiên của quy trình khám bệnh;
+	*/
+	public function step_one()
+	{
+		return 0;
 	}
 }
 ?>
