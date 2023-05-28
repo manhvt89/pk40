@@ -470,10 +470,17 @@ class Test extends Secure_Controller
             $this->config->item('account_number')
         ));
 		*/
-        $customer_id = $this->test_lib->get_customer();
+		$test = $this->Testex->get_info($test_id);
+		$customer_id = 0;
+		//var_dump($test['customer_id']);
+		if(!empty($test))
+		{
+        	$customer_id = $test['customer_id'];
+		} 
+		$this->test_lib->set_customer($customer_id);
         $data['test_id'] = $this->test_lib->get_test_id();
 
-        $customer_info = $this->_load_customer_data($customer_id, $data);
+       // $customer_info = $this->_load_customer_data($customer_id, $data);
 
         $data = $this->xss_clean($data);
 
