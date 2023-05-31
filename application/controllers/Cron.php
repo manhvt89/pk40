@@ -977,6 +977,7 @@ class Cron extends CI_Controller{
                         'is_serialized'			=> $_oProduct->is_serialized,
                         'item_number'           => $_oProduct->item_number,
                         'ref_item_id'   =>$_oProduct->item_id,
+                        'item_number_new'=>$_oProduct->item_number_new,
                         'custom1'				=> '',
                         'custom2'				=> '',
                         'custom3'				=> '',
