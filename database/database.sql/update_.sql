@@ -61,6 +61,9 @@ ALTER TABLE `ospos_items` ADD `ref_item_id` VARCHAR(50) NOT NULL DEFAULT '' AFTE
 ALTER TABLE `ospos_sales` ADD `current` int(4) NOT NULL DEFAULT 1 COMMENT '0 là cha, đã bị thay thế; 1: hiện tại đang dùng' AFTER `sale_uuid`; 
 ALTER TABLE `ospos_sales` ADD `parent_id` int(10) NOT NULL DEFAULT 0 AFTER `sale_uuid`; 
 
+ALTER TABLE `ospos_test` ADD `reason` text CHARACTER SET utf8 NOT NULL AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `step` tinyint(1) DEFAULT 2 COMMENT '1: Tiếp; 2: đang khám; 3: khám xong;' AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `updated_at` int(11) DEFAULT 0 AFTER `test_uuid`; 
 
 -- ADD fields to ospos_daily_total
 ALTER TABLE `ospos_daily_total` ADD `daily_total_uuid` VARCHAR(250) NOT NULL DEFAULT UUID() AFTER `decrease_amount`; 

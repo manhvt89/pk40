@@ -11,7 +11,12 @@ class Login extends CI_Controller
 	{
 		if($this->Employee->is_logged_in())
 		{
-			redirect('home');
+			if($this->Employee->has_grant('test_step_one'))
+			{
+				redirect('test');
+			} else {
+				redirect('home');
+			}
 		}
 		else
 		{
@@ -43,7 +48,12 @@ class Login extends CI_Controller
 					$this->tracking_lib->track_event('Stats', 'Invoice Enable', $this->config->item('invoice_enable'));
 				}
 				*/
-				redirect('home');
+				if($this->Employee->has_grant('test_step_one'))
+				{
+					redirect('test');
+				} else {
+					redirect('home');
+				}
 			}
 		}
 	}

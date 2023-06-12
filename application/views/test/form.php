@@ -529,7 +529,7 @@
 	<div class='btn btn-sm btn-success pull-right' id='clear_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_clear_test'); ?></div>
 
 <?php else: ?>
-
+	<!-- TL Không kính -->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -565,6 +565,7 @@
 		</tr>
 		</tbody>
 	</table>
+	<!-- Kính cũ -->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -706,7 +707,7 @@
 		</tr>
 		</tbody>
 	</table>
-
+	<!-- Kính đề  nghị-->					
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -860,7 +861,7 @@
 		</tr>
 		</tbody>
 	</table>
-
+	<!-- Phân Loại -->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -928,7 +929,7 @@
 		</tr>
 		</tbody>
 	</table>
-
+	<!-- Thông tin khác-->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -991,8 +992,32 @@
 		</tr>
 		</tbody>
 	</table>
-	<div class='btn btn-sm btn-success pull-right' id='update_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_complete_test'); ?></div>
-
+	<!-- Button -->
+	<?php if($this->Employee->has_grant('test_step_one')): ?>
+		<!-- Phiếu khám -->
+		<table class="sales_table_100 s-200" id="register">
+			<thead>
+			<tr>
+				<th colspan="3"><?php echo $this->lang->line('test_reason'); ?></th>
+			</tr>
+			</thead>
+			<tbody id="cart_contents">
+			<tr>
+				<td colspan="3">
+					<?php echo form_textarea(array(
+						'name' => 'reason',
+						'rows' => '3',
+						'cols' => '25',
+						'value'=> '',
+						'class'=>'textarea_test'));?>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<div class='btn btn-sm btn-success pull-right' id='update_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span>Tạo phiếu khám</div>
+	<?php else: ?>
+		<div class='btn btn-sm btn-success pull-right' id='update_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_complete_test'); ?></div>
+	<?php endif; ?>
 	<!-- Đơn Thuốc -->
 	<table class="sales_table_100 s-100" id="prescription">		
 		<thead>

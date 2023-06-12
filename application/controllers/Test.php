@@ -295,12 +295,17 @@ class Test extends Secure_Controller
             $obj['employeer_id'] = $employee_id;
             $obj['customer_id'] = $customer_id;
             $obj['contact_lens_type'] = '';
+			$obj['reason'] = $this->input->post('reason');
+			if($this->Employee->has_grant('test_step_one'))
+			{
+				$obj['step'] = 3;
+			}
             $new = 0;
             if ($this->input->post('hidden_test_id') == 0) {
                 $new = 1;
             }
 
-            if ($new == 0) {
+            if ($new == 0) { //update
 
                 $data['test_id_num'] = $this->Testex->update($test_id, $obj);
             } else {
@@ -391,7 +396,7 @@ class Test extends Secure_Controller
 		$data['pres_a'] = $pres_a;
 		$data['json_pres_a'] = json_encode($pres_names_q);
 
-		if(isset($data['test_id']))
+		if(isset($data['test_id'])) // view detail test
         {
             $test = $this->Testex->get_info($data['test_id']);
             if(isset($test)) {
@@ -418,6 +423,7 @@ class Test extends Secure_Controller
 				$data['right_e_old'] = $test['right_e_old'] != "" ? json_decode($test['right_e_old'],true) : $data['right_e'];
             	$data['left_e_old'] = $test['left_e_old'] != "" ? json_decode($test['left_e_old'],true) : $data['left_e'];
 				$data['old_toltal'] = $test['old_toltal'] != "" ? explode(';', $test['old_toltal']) : $data['toltal'];
+				$data['reason'] = $test['reason'];
             }
 
         }else{
