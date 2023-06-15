@@ -79,13 +79,13 @@
 	<?php endif; ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
 	<!-- Added By ManhVT support data grid like excel-->
-	<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+	<script src="dist/jspreadsheet/jexcel.js"></script>
 
-<script src="https://jsuites.net/v4/jsuites.js"></script>
+<script src="dist/jspreadsheet/jsuites.js"></script>
 
-<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
 
-<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
 <link rel="stylesheet" href="dist/pres.css" type="text/css" />
 
 	<?php $this->load->view('partial/header_js'); ?>

@@ -700,8 +700,10 @@ UNLOCK TABLES;
 
 
 
-
- 
+-- 10/06/2023
+ALTER TABLE `ospos_test` ADD `reason` text CHARACTER SET utf8 NOT NULL AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `step` tinyint(1) DEFAULT 2 COMMENT '1: Tiếp; 2: đang khám; 3: khám xong;' AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `updated_at` int(11) DEFAULT 0 AFTER `test_uuid`; 
 
 
 

@@ -411,31 +411,11 @@ class Receivings extends Secure_Controller
 		$data['mysphs'] = $mysphs;
 		$data['hysphs'] = $hysphs;
 		
-		$columns = array();
-		$i = 0;
-		foreach($cyls as $v)
-		{
-			if($i == 0)
-			{
-				$_col = array(
-					'type'=>'text',
-					'readOnly'=>true
-				);
-			} else {
-				$_col = array(
-					'type'=>'number'
-					
-				);
-			}
-			$columns[] = $_col;
-			$i++;
-		}
-
-		$data['columns'] = json_encode($columns);
-		$this->form_validation->set_rules('myo101', 'myo101', 'callback_number_empty');
+		$this->form_validation->set_rules('hhmyo', 'hhmyo', 'callback_number_empty');
 		
 		if($this->form_validation->run() == FALSE)
 		{
+			//echo '123'; die();
 			$this->load->view("receivings/lens", $data);
 		} else {
 			// Nhập sản phẩm //Mắt
@@ -446,52 +426,51 @@ class Receivings extends Secure_Controller
 			//echo $category;
 			// For Myo
 			$_aTmp = array();
-			foreach($mysphs  as $key=>$sph)
+			$_strMyo =  $this->input->post('hhmyo');
+			$_aaMyo = json_decode($_strMyo,true);
+			//var_dump($_aaMyo);
+			foreach($_aaMyo  as $key=>$_aSPH)
 			{
-				if($key > 0)
+				$key = $key + 1;
+				$sph = $mysphs[$key];
+				foreach($_aSPH as $k=>$value)
 				{
-					foreach($cyls as $k=>$cyl)
+					if($k > 0)
 					{
-						if($k > 0)
+						if($value != "")
 						{
-							if($k < 10)
-							{
-								$k = '0'.$k;
-							}
-							if($this->input->post('myo'.$key.$k) != "" && is_numeric($this->input->post('myo'.$key.$k)))
-							{
-								$_aTmp['S-'.$sph.' C-'.$cyl] = $this->input->post('myo'.$key.$k);
-							}
-						}	
+							$cyl = $cyls[$k];
+							$_aTmp['S-'.$sph.' C-'.$cyl] = $value;
+						}
 					}
 				}
 			}
 
+
 			// For Hyo
-			foreach($hysphs  as $key=>$sph)
+			$_strHyo =  $this->input->post('hhhyo');
+			$_aaHyo = json_decode($_strHyo,true);
+			foreach($_aaHyo  as $key=>$_aSPH)
 			{
-				if($key > 0)
+				$key = $key + 1;
+				$sph = $hysphs[$key];
+				foreach($_aSPH as $k=>$value)
 				{
-					foreach($cyls as $k=>$cyl)
+					if($k > 0)
 					{
-						if($k > 0)
+						if($value != "")
 						{
-							if($k < 10)
-							{
-								$k = '0'.$k;
-							}
-							if($this->input->post('hyo'.$key.$k) != "" && is_numeric($this->input->post('hyo'.$key.$k)))
-							{
-								$_aTmp['S+'.$sph.' C-'.$cyl] = $this->input->post('hyo'.$key.$k);
-							}
-						}	
+							$cyl = $cyls[$k];
+							$_aTmp['S+'.$sph.' C-'.$cyl] = $value;
+						}
 					}
 				}
 			}
+
 			//var_dump($_aTmp);die();
 			if(!empty($_aTmp))
 			{
-				$this->purchase_lib->clear_all();
+				$this->receiving_lib->clear_all();
 				foreach($_aTmp as $key=>$value)
 				{
 					foreach($_aALens as $k=>$v)
@@ -510,6 +489,7 @@ class Receivings extends Secure_Controller
 				//$_aCart = $this->receiving_lib->get_cart();
 				redirect('purchases/');
 			} else{
+				//echo '1234';die();
 				$this->load->view("receivings/lens", $data);
 			}
 			
