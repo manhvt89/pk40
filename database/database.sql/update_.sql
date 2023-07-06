@@ -12,6 +12,75 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
+-- 03/07/2023
+DROP TABLE IF EXISTS `ospos_purchases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ospos_purchases` (
+  `purchase_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `supplier_id` int(10) DEFAULT 0,
+  `parent_id` int(10) DEFAULT 0,
+  `curent` int(4) DEFAULT 1,
+  `employee_id` int(10) NOT NULL DEFAULT 0,
+  `edited_employee_id` int(10) NOT NULL DEFAULT 0,
+  `approved_employee_id` int(10) NOT NULL DEFAULT 0,
+  `comment` text NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) DEFAULT 0 COMMENT '{1: dat coc;0: thanh toan đủ - hoàn thành}',
+  `code` varchar(14) DEFAULT '0',
+  `completed` tinyint(1) DEFAULT 0 COMMENT '0 draf; 1 Yêu cầu sửa lại; 2 đang chờ duyệt ;3: đã phê duyệt;4 nhập hàng;',
+  `name` varchar(250) DEFAULT NULL,
+  `total_quantity` varchar(250) DEFAULT '0',
+  `total_amount` varchar(250) DEFAULT '0',
+  `purchase_uuid` varchar(250) NOT NULL DEFAULT uuid(),
+  `edited_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ospos_purchases`
+--
+
+LOCK TABLES `ospos_purchases` WRITE;
+/*!40000 ALTER TABLE `ospos_purchases` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ospos_purchases` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ospos_purchases_items`
+--
+
+DROP TABLE IF EXISTS `ospos_purchases_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ospos_purchases_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) DEFAULT 0,
+  `purchase_id` int(11) DEFAULT 0,
+  `item_number` varchar(250) DEFAULT NULL,
+  `item_name` varchar(250) DEFAULT NULL,
+  `item_quantity` varchar(250) DEFAULT NULL,
+  `item_price` varchar(250) DEFAULT NULL,
+  `item_u_price` varchar(250) DEFAULT NULL,
+  `item_category` varchar(250) DEFAULT NULL,
+  `line` int(3) NOT NULL,
+  `type` tinyint(1) DEFAULT 0 COMMENT '0 cũ; 2: sp mới; 3: sp mới đã tồn tại barcode Đã tồn tại',
+  `created_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+-- 01/07/2023 (chưa update lên dr-cuong_dat)
+ALTER TABLE `ospos_sales` ADD `created_at` int(11) NOT NULL DEFAULT 0;
+ALTER TABLE `ospos_sales` ADD `updated_at` int(11) NOT NULL DEFAULT 0;
+ALTER TABLE `ospos_total` ADD `payment_method` tinyint(1) NOT NULL DEFAULT 0; -- 0: 0 tien mat; 1: Ngan hang; 2: point, 3 ;
+
+
+ALTER TABLE `ospos_sales_payments` ADD `payment_time` timestamp NOT NULL DEFAULT current_timestamp();
+UPDATE `ospos_sales_payments` as `p` SET `payment_time` = (SELECT `sale_time` FROM `ospos_sales` as `s` where `s`.`sale_id` = `p`.`sale_id`);
+
+UPDATE `ospos_sales_payments` as `p` SET `payment_time` = (SELECT FROM_UNIXTIME(`created_time`) FROM (select * from ospos_total as t1 where t1.type =0 AND t1.payment_id >0  group by t1.payment_id,t1.sale_id, t1.creator_personal_id) as t WHERE `t`.`payment_id` = `p`.`payment_id`);
+
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;

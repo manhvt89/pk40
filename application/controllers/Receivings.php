@@ -398,6 +398,7 @@ class Receivings extends Secure_Controller
 	public function lens()
 	{
 		$data = array();
+		//echo '123';die();
 		
         $data['item_count'] = $this->config->item('KindOfLens');
 		//var_dump($data['item_count']);

@@ -623,7 +623,10 @@ function get_accounting_manage_table_headers()
 		array('created_time' => $CI->lang->line('accounting_created_time')),
 		array('employee' => $CI->lang->line('accounting_employee')),
 		array('person' => $CI->lang->line('accounting_person')),
-		array('amount' => $CI->lang->line('accounting_amount')),
+		//array('amount' => $CI->lang->line('accounting_amount')),
+		array('amount' => 'Thu'),
+		array('chi' => 'Chi'),
+		array('payment_method' => 'Loại TT'),
 		array('type' => $CI->lang->line('accounting_type')),
 		array('note' => $CI->lang->line('accounting_note'))
 
@@ -644,9 +647,38 @@ function get_account_data_row($accounting, $controller)
 		'employee' => $accounting->employee,
 		'note' => $accounting->note,
 		'person'=>$accounting->person,
-		'amount'=>to_currency($accounting->amount - 0)
+		//'amount'=>to_currency($accounting->amount - 0)
 	);
 
+	if($accounting->payment_method == 0)
+	{
+		$row['payment_method'] = 'Tiền mặt';
+	} else {
+		if($accounting->payment_method == 1)
+		{
+			$row['payment_method'] = 'Ngân hàng';
+		} else {
+			$row['payment_method'] = 'Khác';
+		}
+	}
+	if($accounting->type==0)
+	{
+		$row['type'] = "Thu";
+		$row['amount']=to_currency($accounting->amount - 0);
+		$row['chi'] = '';
+	}else{
+		$row['chi']=to_currency($accounting->amount - 0);
+		$row['amount'] = '';
+		if($accounting->kind == 1){
+			$row['type'] = "Chi - Nội bộ";
+		}	elseif($accounting->kind == 3){
+			$row['type'] = "Chi - Trả lại khách";
+		} else{
+			$row['type'] = "Chi - Khác";
+		}
+		
+	}
+	/*
 	if($accounting->type==0)
 	{
 		$row['type'] = "Thu";
@@ -660,7 +692,7 @@ function get_account_data_row($accounting, $controller)
 		}
 		
 	}
-
+	*/
 	return $row;
 }
 

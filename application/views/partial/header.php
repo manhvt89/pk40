@@ -81,12 +81,12 @@
 	<!-- Added By ManhVT support data grid like excel-->
 	<script src="dist/jspreadsheet/jexcel.js"></script>
 
-<script src="dist/jspreadsheet/jsuites.js"></script>
+	<script src="dist/jspreadsheet/jsuites.js"></script>
 
-<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
+	<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
 
-<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
-<link rel="stylesheet" href="dist/pres.css" type="text/css" />
+	<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
+	<link rel="stylesheet" href="dist/pres.css" type="text/css" />
 
 	<?php $this->load->view('partial/header_js'); ?>
 	<?php $this->load->view('partial/lang_lines'); ?>

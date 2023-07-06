@@ -461,7 +461,7 @@ class Sales extends Secure_Controller
 			$data['cart'] = $this->sale_lib->get_cart();
 			//var_dump($this->sale_lib->get_sale_id());
 			$_iSaleID = $this->sale_lib->get_sale_id();
-			$status = 1;
+			$status = 1; //Trạng thái Đơn hàng: xuất hàng
 			$data['status'] = $status; 
 			$data['subtotal'] = $this->sale_lib->get_subtotal();
 			$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(true);
@@ -581,7 +581,8 @@ class Sales extends Secure_Controller
 						);
 						$data['sale_id_num'] = $_iSaleID;
 					}
-					$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+					//$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+					$data['sale_id'] = 'Bán ' . $data['sale_id_num'];
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
 					$data['code'] = $sale_info['code'];
 					$data = $this->xss_clean($data);
@@ -708,18 +709,17 @@ class Sales extends Secure_Controller
 				if ($sale_id > 0) {
 					//update - payment, and sale status from 1 to 0
 					$data['sale_id_num'] = $sale_id;
-					$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+					$data['sale_id'] = 'Bán ' . $data['sale_id_num'];
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
 					$sale_data = array(
-						'customer_id' => $sale_info['customer_id'],
-						'employee_id' => $sale_info['employee_id'],
+						'customer_id' => $sale_info['customer_id'], //update lại,
+						'employee_id' => $sale_info['employee_id'], //update lại,
 						'status' => 0,
 						'ctv_id' =>$ctv_id,
-						'sale_time'	=> date('Y-m-d H:i:s'),
+						//'sale_time'	=> date('Y-m-d H:i:s'), //don't update time
 					);
 					if($data['payments'][$this->lang->line('sales_paid_money')]) {
 						$success = $this->Sale->update($sale_id, $sale_data, $data['payments'][$this->lang->line('sales_paid_money')], $employee_id, $customer_id, $amount_change);
-
 					}else{
 						$success = $this->Sale->update($sale_id, $sale_data, $data['payments'][$this->lang->line('sales_reserve_money')], $employee_id, $customer_id, $amount_change);
 					}
@@ -742,7 +742,7 @@ class Sales extends Secure_Controller
 																0,
 																0,
 																$this->sale_lib->get_paid_points());
-					$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+					$data['sale_id'] = 'Bán ' . $data['sale_id_num'];
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
 				}
 				$data['code'] = $sale_info['code'];
@@ -779,8 +779,6 @@ class Sales extends Secure_Controller
 					} else {
 						
 					}
-
-
 					if($_bIsQRcode == TRUE)
 					{
 						$qr_url_data = base_url('/verify/confirm/').$sale_info['sale_uuid'];
@@ -824,7 +822,7 @@ class Sales extends Secure_Controller
 					$this->load->view('sales/receipt', $data);
 				}
 
-				$this->sale_lib->clear_all();
+				$this->sale_lib->clear_all(); //CLEAR ALL DATA CART in SESSION
 			}
 		}else{
 			$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F5';
