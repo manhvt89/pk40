@@ -203,7 +203,7 @@ class Account extends Secure_Controller
             {
                 $message = $this->xss_clean($this->lang->line('accounting_successful_add'));
 
-                echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => $rs));
+                echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $rs));
             }else{
                 $message = $this->xss_clean($this->lang->line('accounting_error_not_exist_customer'));
 
