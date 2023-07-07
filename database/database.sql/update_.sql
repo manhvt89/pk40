@@ -70,6 +70,10 @@ CREATE TABLE `ospos_purchases_items` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 -- 01/07/2023 (chưa update lên dr-cuong_dat)
+ALTER TABLE `ospos_employees` ADD `log` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '0' AFTER `type`; 
+ALTER TABLE `ospos_test` ADD `reason` text CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `step` tinyint(1) DEFAULT 2 COMMENT '1: Tiếp; 2: đang khám; 3: khám xong;' AFTER `test_uuid`; 
+ALTER TABLE `ospos_test` ADD `updated_at` int(11) DEFAULT 0 AFTER `test_uuid`; 
 ALTER TABLE `ospos_sales` ADD `created_at` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `ospos_sales` ADD `updated_at` int(11) NOT NULL DEFAULT 0;
 ALTER TABLE `ospos_total` ADD `payment_method` tinyint(1) NOT NULL DEFAULT 0; -- 0: 0 tien mat; 1: Ngan hang; 2: point, 3 ;

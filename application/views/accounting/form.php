@@ -95,7 +95,7 @@
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		$('#accounting_amount').number(true,0,',','.');
+		$('#accounting_amount').number(true,0);
 		$("#new").click(function() {
 			stay_open = true;
 			$("#item_form").submit();
