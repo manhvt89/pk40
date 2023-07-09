@@ -30,7 +30,7 @@ if (isset($error_message))
 		<?php elseif($completed == 3): ?>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_button'><span class="glyphicon glyphicon-import">&nbsp</span>In Barcode</div>
 			<div class='btn btn-sm btn-info pull-right' id='import_button'><span class="glyphicon glyphicon-import">&nbsp</span>Nhập kho</div>		
-		<?php elseif($completed == 4): ?>
+		<?php elseif($completed == 6): ?>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_button'><span class="glyphicon glyphicon-import">&nbsp</span>In Barcode</div>
 			<?php echo anchor("purchases", '<span class="glyphicon glyphicon-file">&nbsp</span>' .'Đơn đặt hàng mới', array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 		<?php endif; ?>
