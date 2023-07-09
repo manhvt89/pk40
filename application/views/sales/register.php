@@ -642,6 +642,8 @@ if (isset($success))
 										<?php endif;?>
 									</td>
 								</tr>
+								<?php if($this->sale_lib->get_edit() == 2):?>
+								<?php else : ?>
 								<tr>
 									<td><?php echo $this->lang->line('sales_payment');?></td>
 									<td>
@@ -654,10 +656,17 @@ if (isset($success))
 										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>'0', 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
 									</td>
 								</tr>
+								<?php endif;?>
 							</table>
 						<?php echo form_close(); ?>
-
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php if($this->sale_lib->get_edit() == 2):?>
+							<?php if(empty($payments['Thanh toán'])): ?>
+							<div class='btn btn-sm btn-success pull-left' id='add_before_complete_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span>Cập nhật</div>
+							<?php endif; ?>
+						<?php else : ?>
+							<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php endif; ?>	
+						
 					<?php
 					}
 					else

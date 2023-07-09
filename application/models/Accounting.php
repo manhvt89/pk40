@@ -166,7 +166,7 @@ class Accounting extends CI_Model
 				$income_data['created_time'] = time();
 			}
 			$income_data['type'] = 0; //income
-			$income_data['code'] = 'IC'.time();
+			$income_data['code'] = 'IC'.$income_data['created_time'];
 			//$payout_data['payment_type'] = 'Tiền mặt'; used {cash, banking}
 			//$payout_data['payment_id'] = 0;//used
 			//$payout_data['sale_id'] = 0;// used
@@ -238,11 +238,11 @@ class Accounting extends CI_Model
 			$payout_data['daily_total_id']=$daily_total_id;
 			$payout_data['created_time'] = time();
 			$payout_data['type'] = 1; //payout
-			$payout_data['code'] = 'PO'.time();
+			$payout_data['code'] = 'PO'.$payout_data['created_time'];
 			$payout_data['payment_type'] = 'Tiền mặt';
 			if($payout_data['kind']==1) // Các khoản chi cho hoạt động cửa hàng
 			{
-				$payout_data['code'] = 'NB-'.time();
+				$payout_data['code'] = 'NB-'.$payout_data['created_time'];
 				$payout_data['payment_id'] = 0;//don't user
 				$payout_data['sale_id'] = 0;//don't user
 			}elseif($payout_data['kind'] == 2) {
