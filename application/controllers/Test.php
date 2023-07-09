@@ -295,7 +295,12 @@ class Test extends Secure_Controller
             $obj['employeer_id'] = $employee_id;
             $obj['customer_id'] = $customer_id;
             $obj['contact_lens_type'] = '';
-			$obj['reason'] = $this->input->post('reason');
+			if($this->input->post('reason') == null)
+			{
+				$obj['reason'] = '';
+			} else {
+				$obj['reason'] = $this->input->post('reason');
+			}
 			if($this->Employee->has_grant('test_step_one'))
 			{
 				$obj['step'] = 3;
