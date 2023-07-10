@@ -127,6 +127,9 @@ CREATE TABLE `ospos_test` (
 -- ADD fields to ospos_customers
 ALTER TABLE `ospos_customers` ADD `points` DECIMAL(10,2) NOT NULL DEFAULT '0' AFTER `password`; 
 
+-- ALTER TABLE table_name MODIFY COLUMN column_name datatype; 
+ALTER TABLE `ospos_test` MODIFY COLUMN `reason` text CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_uuid`; 
+
 ALTER TABLE `ospos_customers` ADD `customer_uuid` VARCHAR(250) NOT NULL DEFAULT UUID() AFTER `points`;
 ALTER TABLE `ospos_items` ADD `category_code` VARCHAR(250) NOT NULL DEFAULT '' AFTER `code`;  
 ALTER TABLE `ospos_items` ADD `ref_item_id` VARCHAR(50) NOT NULL DEFAULT '' AFTER `category_code`;  
