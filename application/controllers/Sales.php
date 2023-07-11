@@ -443,7 +443,9 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-
+	/*
+	** Chức năng: dùng để xuất hàng (tạo phiếu xuất, và tạo thanh toán nếu có)
+	*/
 	public function before_complete() // Xuất đơn hàng;
 	{
 		$data = array();
@@ -458,7 +460,7 @@ class Sales extends Secure_Controller
 			$payment_kind = $this->lang->line('sales_reserve_money');
 			$this->sale_lib->add_payment($payment_type, $amount_tendered,$payment_kind); // Thêm vào trả trước với loại thanh toán $type
 		
-			$data['cart'] = $this->sale_lib->get_cart();
+			$data['cart'] = $this->sale_lib->get_cart(); // Lấy danh sách các sản phẩm từ cart
 			//var_dump($this->sale_lib->get_sale_id());
 			$_iSaleID = $this->sale_lib->get_sale_id();
 			$status = 1; //Trạng thái Đơn hàng: xuất hàng
@@ -491,7 +493,7 @@ class Sales extends Secure_Controller
 			$payments = array();
 			$payment['payment_type'] = $payment_type;
 			$payment['payment_amount'] = 0;
-			$payment['payment_kind'] = $this->lang->line('sales_reserve_money');
+			$payment['payment_kind'] = $this->lang->line('sales_reserve_money'); //"Đặt trước:"
 			//var_dump($data['payments']);
 			//die();
 
@@ -542,6 +544,8 @@ class Sales extends Secure_Controller
 					$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
 					$this->_reload($data);
 				} else {
+					$data1 = array();
+					$data1['status'] = $status;
 					// Lưu thông tin vào bản ghi Sale
 					$ctv_id = $this->input->post('ctvs');
 					$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : null;
@@ -584,9 +588,9 @@ class Sales extends Secure_Controller
 					//$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 					$data['sale_id'] = 'Bán ' . $data['sale_id_num'];
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
+					$data1 = $this->_load_sale_data($data['sale_id_num']);
 					$data['code'] = $sale_info['code'];
-					$data = $this->xss_clean($data);
-
+					
 					if ($data['sale_id_num'] == -1) {
 						$data['error_message'] = $this->lang->line('sales_transaction_failed');
 					} else {
@@ -594,12 +598,12 @@ class Sales extends Secure_Controller
 						$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']); // Barcode của mã hóa đơn
 					}
 
-					$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-					$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-					$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-
+					$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+					$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+					$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
+					$data1 = $this->xss_clean($data1);
 					if ($this->sale_lib->is_invoice_number_enabled()) {
-						$this->load->view('sales/invoice', $data);
+						$this->load->view('sales/invoice', $data1);
 					} else {
 						/*
 						** Block QRcode
@@ -637,17 +641,17 @@ class Sales extends Secure_Controller
 
 							//$this->ciqrcode->generate($params);
 
-							$data['qrcode_string'] = $this->ciqrcode->generate($params);
-							$data['url_string'] = $qr_url_data;
-							$data['footer_string'] = 'Quét mã QR để nhận quà';
-							$data['sale_uuid'] = $sale_info['sale_uuid'];
+							$data1['qrcode_string'] = $this->ciqrcode->generate($params);
+							$data1['url_string'] = $qr_url_data;
+							$data1['footer_string'] = 'Quét mã QR để nhận quà';
+							$data1['sale_uuid'] = $sale_info['sale_uuid'];
 						} else {
-							$data['footer_string'] = '';
-							$data['qrcode_string'] = '';
-							$data['url_string'] = '';
-							$data['sale_uuid'] = $sale_info['sale_uuid'];
+							$data1['footer_string'] = '';
+							$data1['qrcode_string'] = '';
+							$data1['url_string'] = '';
+							$data1['sale_uuid'] = $sale_info['sale_uuid'];
 						}
-						$this->load->view('sales/receipt', $data);
+						$this->load->view('sales/receipt', $data1);
 					}
 
 					$this->sale_lib->clear_all();
@@ -718,10 +722,18 @@ class Sales extends Secure_Controller
 						'ctv_id' =>$ctv_id,
 						//'sale_time'	=> date('Y-m-d H:i:s'), //don't update time
 					);
+					if(empty($data['payments'][$this->lang->line('sales_paid_money')])){ //added 07/07/2023
+						$_tt["Thanh toán thẻ"] = array( "payment_type"=> "Thanh toán thẻ",
+														"payment_amount"=> 0,
+														"payment_kind"=>"Thanh toán",
+														"payment_id"=> 0);
+						$data['payments'][$this->lang->line('sales_paid_money')] = 	$_tt;
+					}
+					//var_dump($data['payments']); echo $this->lang->line('sales_paid_money'); die();
 					if($data['payments'][$this->lang->line('sales_paid_money')]) {
 						$success = $this->Sale->update($sale_id, $sale_data, $data['payments'][$this->lang->line('sales_paid_money')], $employee_id, $customer_id, $amount_change);
 					}else{
-						$success = $this->Sale->update($sale_id, $sale_data, $data['payments'][$this->lang->line('sales_reserve_money')], $employee_id, $customer_id, $amount_change);
+						//$success = $this->Sale->update($sale_id, $sale_data, $data['payments'][$this->lang->line('sales_reserve_money')], $employee_id, $customer_id, $amount_change);
 					}
 					if (!$success) {
 						$data['sale_id_num'] = -1;
@@ -746,20 +758,21 @@ class Sales extends Secure_Controller
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
 				}
 				$data['code'] = $sale_info['code'];
-				$data = $this->xss_clean($data);
+				
 
 				if ($data['sale_id_num'] == -1) {
-					$data['error_message'] = $this->lang->line('sales_transaction_failed');
+					$data1['error_message'] = $this->lang->line('sales_transaction_failed');
 				} else {
-					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
+					$data1['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
 				}
+				$data1 = $this->_load_sale_data($data['sale_id_num']);
 
-				$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-				$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-				$data['email_receipt'] = $this->sale_lib->get_email_receipt();
+				$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+				$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+				$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
 
 				if ($this->sale_lib->is_invoice_number_enabled()) {
-					$this->load->view('sales/invoice', $data);
+					$this->load->view('sales/invoice', $data1);
 				} else {
 
 					/*
@@ -808,18 +821,20 @@ class Sales extends Secure_Controller
 						
 						//$this->ciqrcode->generate($params);
 					
-						$data['qrcode_string'] = $this->ciqrcode->generate($params);
-						$data['url_string'] = $qr_url_data;
-						$data['footer_string'] = 'Quét mã QR để nhận quà';
-						$data['sale_uuid'] = $sale_info['sale_uuid'];
+						$data1['qrcode_string'] = $this->ciqrcode->generate($params);
+						$data1['url_string'] = $qr_url_data;
+						$data1['footer_string'] = 'Quét mã QR để nhận quà';
+						$data1['sale_uuid'] = $sale_info['sale_uuid'];
 					} else {
-						$data['footer_string'] = '';
-						$data['qrcode_string'] = '';
-						$data['url_string'] = '';
-						$data['sale_uuid'] = $sale_info['sale_uuid'];
+						$data1['footer_string'] = '';
+						$data1['qrcode_string'] = '';
+						$data1['url_string'] = '';
+						$data1['sale_uuid'] = $sale_info['sale_uuid'];
 					}
 
-					$this->load->view('sales/receipt', $data);
+					$data1 = $this->xss_clean($data1);
+
+					$this->load->view('sales/receipt', $data1);
 				}
 
 				$this->sale_lib->clear_all(); //CLEAR ALL DATA CART in SESSION
@@ -1017,81 +1032,81 @@ class Sales extends Secure_Controller
 
 	private function _load_sale_data($sale_id)
 	{
-		$this->sale_lib->clear_all();
+		$this->sale_lib->clear_all(); //empty carts
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
-	if ($sale_info != null) {
-		$this->sale_lib->copy_entire_sale($sale_id);
-		$data = array();
-		$data['cart'] = $this->sale_lib->get_cart();
-		$data['payments'] = $this->sale_lib->get_payments();
-		$data['subtotal'] = $this->sale_lib->get_subtotal();
-		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(true);
-		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(true, true);
-		$data['taxes'] = $this->sale_lib->get_taxes();
-		$data['total'] = $this->sale_lib->get_total();
-		$data['discount'] = $this->sale_lib->get_discount();
-		$data['receipt_title'] = $this->lang->line('sales_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
-		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
-		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
-		$data['employee'] = $employee_info->last_name . ' ' . $employee_info->first_name;
-		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
+		if ($sale_info != null) {
+			$this->sale_lib->copy_entire_sale($sale_id);
+			$data = array();
+			$data['cart'] = $this->sale_lib->get_cart();
+			$data['payments'] = $this->sale_lib->get_payments();
+			$data['subtotal'] = $this->sale_lib->get_subtotal();
+			$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(true);
+			$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(true, true);
+			$data['taxes'] = $this->sale_lib->get_taxes();
+			$data['total'] = $this->sale_lib->get_total();
+			$data['discount'] = $this->sale_lib->get_discount();
+			$data['receipt_title'] = $this->lang->line('sales_receipt');
+			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
+			$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
+			$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
+			$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
+			$data['amount_due'] = $this->sale_lib->get_amount_due();
+			$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
+			$data['employee'] = $employee_info->last_name . ' ' . $employee_info->first_name;
+			$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
-		$data['sale_id_num'] = $sale_id;
-		$data['code'] = $sale_info['code'];
-		$data['sale_id'] = 'POS ' . $sale_id;
-		$data['comments'] = $sale_info['comment'];
-		$data['status'] = $sale_info['status'];
-		$data['invoice_number'] = $sale_info['invoice_number'];
-		$data['sale_uuid'] = $sale_info['sale_uuid'];
-		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone'),
-			$this->config->item('account_number')
-		));
-		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
-		$data['print_after_sale'] = false;
-	} else {
-		//$this->sale_lib->copy_entire_sale($sale_id);
-		$data = array();
-		$data['cart'] = '';
-		$data['payments'] = '';
-		$data['subtotal'] = '';
-		$data['discounted_subtotal'] = '';
-		$data['tax_exclusive_subtotal'] = '';
-		$data['taxes'] = '';
-		$data['total'] = '';
-		$data['discount'] = '';
-		$data['receipt_title'] = '';
-		$data['status'] = 1;
-		$data['transaction_time'] = '';
-		$data['transaction_date'] = '';
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['amount_change'] = '';
-		$data['amount_due'] = '';
-		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
-		$data['employee'] = $employee_info->last_name . ' ' . $employee_info->first_name;
-		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
+			$data['sale_id_num'] = $sale_id;
+			$data['code'] = $sale_info['code'];
+			$data['sale_id'] = 'POS ' . $sale_id;
+			$data['comments'] = $sale_info['comment'];
+			$data['status'] = $sale_info['status'];
+			$data['invoice_number'] = $sale_info['invoice_number'];
+			$data['sale_uuid'] = $sale_info['sale_uuid'];
+			$data['company_info'] = implode("\n", array(
+				$this->config->item('address'),
+				$this->config->item('phone'),
+				$this->config->item('account_number')
+			));
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
+			$data['print_after_sale'] = false;
+		} else {
+			//$this->sale_lib->copy_entire_sale($sale_id);
+			$data = array();
+			$data['cart'] = '';
+			$data['payments'] = '';
+			$data['subtotal'] = '';
+			$data['discounted_subtotal'] = '';
+			$data['tax_exclusive_subtotal'] = '';
+			$data['taxes'] = '';
+			$data['total'] = '';
+			$data['discount'] = '';
+			$data['receipt_title'] = '';
+			$data['status'] = 1;
+			$data['transaction_time'] = '';
+			$data['transaction_date'] = '';
+			$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
+			$data['amount_change'] = '';
+			$data['amount_due'] = '';
+			$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
+			$data['employee'] = $employee_info->last_name . ' ' . $employee_info->first_name;
+			$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
-		$data['sale_id_num'] = $sale_id;
-		$data['code'] = '';
-		$data['sale_id'] = 'POS ' . $sale_id;
-		$data['comments'] = '';
-		$data['invoice_number'] = '';
-		$data['sale_uuid'] = '';
-		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone'),
-			$this->config->item('account_number')
-		));
-		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
-		$data['print_after_sale'] = false;
+			$data['sale_id_num'] = $sale_id;
+			$data['code'] = '';
+			$data['sale_id'] = 'POS ' . $sale_id;
+			$data['comments'] = '';
+			$data['invoice_number'] = '';
+			$data['sale_uuid'] = '';
+			$data['company_info'] = implode("\n", array(
+				$this->config->item('address'),
+				$this->config->item('phone'),
+				$this->config->item('account_number')
+			));
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
+			$data['print_after_sale'] = false;
 
-	}
-
+		}
+		$this->sale_lib->clear_all(); //empty carts
 		return $this->xss_clean($data);
 	}
 

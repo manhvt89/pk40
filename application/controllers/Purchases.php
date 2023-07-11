@@ -6,8 +6,8 @@ require_once("Secure_Controller.php");
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-
+//use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Purchases extends Secure_Controller
 {
@@ -292,12 +292,11 @@ class Purchases extends Secure_Controller
 			$this->_reload($data);	
 		}
 	}
-	
-	public function receipt($purchase_id)
+
+	function load_receipt_data($purchase_id=0)
 	{
-		//$purchase_info = $this->Purchase->get_info($purchase_id)->row_array();		
+		$this->purchase_lib->clear_all();
 		$purchase_info = $this->Purchase->get_info_uuid($purchase_id)->row_array();
-		//var_dump($purchase_info);
 		$this->purchase_lib->copy_entire_purchase($purchase_info['id']);
 
 		$data['cart'] = $this->purchase_lib->get_cart();
@@ -330,7 +329,14 @@ class Purchases extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
-
+		$this->purchase_lib->clear_all();
+		return $data;
+	}
+	
+	public function receipt($purchase_id)
+	{
+		
+		$data = $this->load_receipt_data($purchase_id);
 		$data['print_after_sale'] = 0;
 
 		$data = $this->xss_clean($data);
@@ -577,13 +583,13 @@ class Purchases extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_failed')));
 		}
 		else
-		{
+		{	
 			$array_file = explode('.', $_FILES['file_path']['name']);
             $extension  = end($array_file);
             if('csv' == $extension) {
                 $reader = new Csv();
             } else {
-                $reader = new Xlsx();
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
 
             $spreadsheet = $reader->load($_FILES['file_path']['tmp_name']);
@@ -948,6 +954,301 @@ class Purchases extends Secure_Controller
 		} else{
 			echo 'Bạn đang truy cập không hợp lệ';
 		}
+	}
+
+	public function export($purchase_uuid=0)
+	{
+		$purchase_uuid = $this->input->get('purchase_uuid');
+		$data = $this->load_receipt_data($purchase_uuid);
+		//var_dump($data);
+		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
+		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+        $sheet = $spreadsheet->getActiveSheet();
+
+		/**
+		 * Thiết lập độ rộng các cột
+		 */
+
+		$sheet->getColumnDimension('A')->setWidth(24,'pt');
+		$sheet->getColumnDimension('B')->setWidth(75,'pt');
+		$sheet->getColumnDimension('C')->setWidth(250,'pt');
+		$sheet->getColumnDimension('D')->setWidth(36,'pt');
+		$sheet->getColumnDimension('E')->setWidth(46,'pt');
+		
+		$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+		$sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+		$sheet->getPageSetup()->setFitToWidth(1);
+		$sheet->getPageSetup()->setFitToHeight(0);
+		//$sheet->getPageSetup()->setPrintArea('A1:E5');
+
+
+
+
+        $writer = new Xlsx($spreadsheet); // instantiate Xlsx
+
+		// Title
+		//$title = $data['receipt_title'];
+		$title = 'PHIẾU NHẬP HÀNG';
+		$date = $data['transaction_time'];
+		$employee = $data['employee'];
+		$supplier = 'Nhà cung cấp: '.$data['supplier'];
+		$supplier_add = $data['supplier_address'];
+		$barcode = $data['barcode'];
+
+		
+                
+                
+
+		$company_name = $this->config->item('company');
+		$company_add = $this->config->item('address');
+		$company_phone = $this->config->item('phone');
+
+		$top_title1="CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+		$top_title2="Độc lập - Tự do - Hạnh Phúc";
+		
+		$index = 2;
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			
+		];
+		$sheet->mergeCells('A'.$index.':B'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_name); 
+
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('C'.$index, $top_title1); 
+
+		$index++;
+		$sheet->mergeCells('A'.$index.':B'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_add); 
+
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('C'.$index, $top_title2);
+		$index++;
+		$sheet->mergeCells('A'.$index.':B'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_phone);
+
+		$sheet->mergeCells('C'.$index.':E'.$index);
+
+	
+
+		$index = $index + 2;
+		$sheet->mergeCells('A'.$index.':E'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => true,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+				'rotation' => 90,
+				'startColor' => [
+					'argb' => 'FFA0A0A0',
+				],
+				'endColor' => [
+					'argb' => 'FFFFFFFF',
+				],
+			],
+		];
+		
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, strtoupper($title)); 
+		$index++;
+		$sheet->setCellValue('A'.$index, $date);
+
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('C'.$index, $supplier);
+
+		$index++;
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		//$sheet->setCellValue('C'.$index, $supplier);
+		// Header ---
+		$index++;
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'top' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'left'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'right'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'bottom'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				]
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+				'rotation' => 90,
+				'startColor' => [
+					'argb' => '00A0A0A0',
+				],
+				'endColor' => [
+					'argb' => 'FFFFFFFF',
+				],
+			],
+		];
+		
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, 'STT'); 
+
+		$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+		$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
+
+		
+
+		$sheet->setCellValue('B'.$index, 'Mã sản phẩm');
+		$sheet->setCellValue('C'.$index, 'Tên sản phẩm');
+		$sheet->setCellValue('D'.$index, 'ĐVT'); 
+		$sheet->setCellValue('E'.$index, 'Số lượng'); 
+        $filename = 'Yeu_cau_Nhap_Hang'.time(); // set filename for excel file to be exported
+		// Body
+		
+		if(!empty($data['cart']))
+		{	$i = 0;
+			foreach($data['cart'] as $item)
+			{
+				$index++;
+				$i++;
+				$styleArray = [
+					'font' => [
+						'bold' => false,
+					],
+					'alignment' => [
+						'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					],
+					'borders' => [
+						'top' => [
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'left'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'right'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'bottom'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						]
+					],
+				];
+				$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+				$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+				$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
+
+				$styleArray = [
+					'font' => [
+						'bold' => false,
+					],
+					'alignment' => [
+						'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+					],
+					'borders' => [
+						'top' => [
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'left'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'right'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						],
+						'bottom'=>[
+							'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+						]
+					],
+				];
+				$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+				$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
+
+				$sheet->setCellValue('A'.$index, $i); 
+				$sheet->setCellValue('B'.$index, $item['item_number']);
+				$sheet->setCellValue('C'.$index, $item['item_name']);
+				$sheet->setCellValue('D'.$index, 'Miếng'); 
+				$sheet->setCellValue('E'.$index, $item['item_quantity']);
+			}
+		} else {
+			$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong yêu cầu đặt hàng'); 
+		}
+
+		// footer
+		$index++;
+		$index++;
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('C'.$index, 'Người lập phiếu'); 
+
+		$index++;
+		$sheet->mergeCells('C'.$index.':E'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('C'.$index, $employee); 
+ 
+		$sheet->getPageSetup()->setPrintArea('A1:E'.$index);
+
+        header('Content-Type: application/vnd.ms-excel'); // generate excel file
+        header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');	// download file 
 	}
 
 }

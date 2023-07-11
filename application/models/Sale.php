@@ -486,6 +486,10 @@ class Sale extends CI_Model
 			// add new payments
 			foreach($payments as $payment)
 			{
+				if($payment['payment_amount'] == 0) //Số tiền bằng 0 thì không thực hiện ghi vào db
+				{
+					continue;
+				}
 				$sales_payments_data = array(
 					'sale_id' => $sale_id,
 					'payment_type' => $payment['payment_type'],
