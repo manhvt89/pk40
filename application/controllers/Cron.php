@@ -945,9 +945,9 @@ class Cron extends CI_Controller{
                 if($bCanUpdate) // Nếu update
                 {
                     $_oItem = array();
-                    $_oItem['unit_price'] = $_oProduct->unit_price;
+                    $_oItem['unit_price'] = $_oProduct->unit_price; //Giá bán
                     $_oItem['name'] = $_oProduct->name;
-                    $_oItem['cost_price'] = $_oProduct->cost_price;
+                    $_oItem['cost_price'] = $_oProduct->cost_price; //Giá nhập (giá vốn)
                     $_oItem['ref_item_id'] = $_oProduct->item_id;
                     if($bupdateCat)
                     {
@@ -989,6 +989,12 @@ class Cron extends CI_Controller{
                         'custom9'				=> '',
                         'custom10'				=> ''
                     );
+
+                    if($category == 11)
+                    {
+                        $item_data['cost_price'] = '132000';
+                        $item_data['unit_price'] = '425000';
+                    }
                 
                     if( $this->Product->save_item($item_data))
                     {
