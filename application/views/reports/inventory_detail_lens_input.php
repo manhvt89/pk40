@@ -167,7 +167,7 @@ $(document).ready(function()
 							'<td>-4.00</td></tr>';
 
 						_row_index = 1; //The first row
-						for (i = 2; i < 26; i++) {
+						for (i = 2; i < 34; i++) {
 							var row = '<tr class="rp_number" data-row="'+i+'"><td> +' + re_map[i] + '</td>';
 							for (j = 1; j < 18; j++) {
 								var _hypD = hyperopia[i][j];
