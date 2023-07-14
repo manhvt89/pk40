@@ -995,6 +995,14 @@ class Cron extends CI_Controller{
                         $item_data['cost_price'] = '132000';
                         $item_data['unit_price'] = '425000';
                     }
+                    if($category == 6) //1.74
+                    {
+                        $item_data['unit_price'] = '1250000';
+                    }
+                    if($category == 9) //1.74
+                    {
+                        $item_data['unit_price'] = '680000';
+                    }
                 
                     if( $this->Product->save_item($item_data))
                     {
