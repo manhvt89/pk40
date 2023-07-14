@@ -182,14 +182,14 @@ class Barcode_lib
 		$barcode = $this->generate_barcode($item, $barcode_config);
 		$display_table .= "<div align='center'><img src='data:image/png;base64,$barcode' /></div></tr>";
 		$display_table .= "<div align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
-		$display_table .= "<div align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . " - <b class='category-barcode'>".$item['item_category']."</b></div>";
+		$display_table .= "<div align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</div>";
 		$display_table .= "</div>";
 
 		$display_table .= "<div class='print-barcode_2'>";
 		$display_table .= "<div class='store_name' align='center'><b>".$barcode_config['store_name']."</b></div>";
 		
 		//$display_table .= "<div class='headline' align='center'>Chăm sóc đôi mắt bạn</div>";
-		$display_table .= "<div align='center'>".$barcode_config['store_address']." - <b class='category-barcode'>".$item['item_category']."</b></div>";
+		$display_table .= "<div align='center'>".$barcode_config['store_address']."<br> <b class='category-barcode'>".$item['item_category']."</b></div>";
 		$display_table .= "</div>";
 		
 		return $display_table;

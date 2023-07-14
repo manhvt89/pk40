@@ -6,21 +6,21 @@
                                                 margin: 0px 3px 0px 3px;
                                                 /*transform: rotate(45deg);*/
                                             }
-
+                                            
                                             .print-barcode_2 {
                                                 width: 50mm;
                                                 transform: rotate(180deg);
-                                                padding-bottom: 16px;
+                                                padding-bottom: 3px;
                                                 border-spacing: 1px;
                                             }
-
+                                            
                                             .print-barcode_1 {
                                                 width: 50mm;
                                                 outline: 1px dashed;
                                                 border-spacing: 1px;
                                                 height: 20mm;
                                             }
-
+                                            
                                             .print-page-barcode {
                                                 width: 105mm;
                                                 /*
@@ -30,18 +30,18 @@
                                                 /*width: 420px;*/
                                                 margin: auto;
                                             }
-
+                                            
                                             .category-barcode {
                                                 transform: rotate(90deg);
                                             }
-
+                                            
                                             .buttonpr {
                                                 width: 105mm;
                                                 margin: auto;
                                                 padding: 25px;
                                                 text-align: center;
                                             }
-
+                                            
                                             .bt-print-barcode {
                                                 width: 40mm;
                                                 margin: auto;
@@ -50,12 +50,12 @@
                                                 background-color: gray;
                                                 font-family: 'Times New Roman', Times, serif;
                                             }
-
-                                            .store_name{
+                                            
+                                            .store_name {
                                                 font-size: 14px;
                                                 font-family: initial;
                                             }
-
+                                            
                                             @media print {
                                                 .pagebreak {
                                                     clear: both;
