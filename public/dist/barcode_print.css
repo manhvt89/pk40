@@ -10,7 +10,7 @@
                                             .print-barcode_2 {
                                                 width: 50mm;
                                                 transform: rotate(180deg);
-                                                padding-bottom: 3px;
+                                                padding-bottom: 10px;
                                                 border-spacing: 1px;
                                             }
                                             
