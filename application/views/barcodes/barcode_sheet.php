@@ -37,7 +37,7 @@
 					<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
 					</div>
 
-				<?	} ?>
+				<?php	} ?>
 			<?php 
 				++$count;
 			}
