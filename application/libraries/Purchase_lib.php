@@ -425,7 +425,7 @@ class Purchase_lib
 			$_aItem['item_name'] = $row->item_name;
 			$_aItem['cost_price'] = $row->item_price;
 			$_aItem['unit_price'] = $row->item_u_price;
-			$_aItem['quanlity'] = $row->item_quantity;
+			$_aItem['quanlity'] = (int) $row->item_quantity;
 			$_aItem['category'] = $row->item_category;
 			if($row->type == 0 || $row->type == 2)
 			{
@@ -434,7 +434,7 @@ class Purchase_lib
 				$_aItem['status'] = 1;
 			}
 
-			var_dump($_aItem);
+			//var_dump($_aItem);
 			//var_dump($_aItem);
 			if ($full == 0) {
 
