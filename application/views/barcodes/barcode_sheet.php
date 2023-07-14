@@ -37,8 +37,9 @@
 					<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
 					</div>
 
-			<?	} ?>
-			<?php ++$count;
+				<?	} ?>
+			<?php 
+				++$count;
 			}
 		} else { ?>
 		Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.
