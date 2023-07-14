@@ -78,7 +78,7 @@ class Receiving extends CI_Model
 		{
 			//update Purachse
 			$_ParrentUpdateData = array(
-				'completed' => 4
+				'completed' => 6
 			);
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->Purchase->update($_ParrentUpdateData,$purchase_id);
