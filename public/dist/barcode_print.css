@@ -16,7 +16,7 @@
                                             
                                             .print-barcode_1 {
                                                 width: 50mm;
-                                                outline: 1px dashed;
+                                                /*outline: 1px dashed;*/
                                                 border-spacing: 1px;
                                                 height: 20mm;
                                             }
