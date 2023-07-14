@@ -29,13 +29,13 @@
 				}
 				if($count % $columns == 0){
 				?>
-				<div class="2" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">
-						<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
-				</div>
+					<div class="2" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">
+							<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
+					</div>
 				<?php } else { ?>
 					<div class="1" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 2mm;">
 					<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
-			</div>
+					</div>
 
 			<?	} ?>
 			<?php ++$count;
