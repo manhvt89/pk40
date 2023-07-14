@@ -144,7 +144,9 @@ class Purchase_lib
 		$quantity = 0;
 		foreach ($items as $item)
 		{
-			$quantity = $quantity + $item['item_quantity'];
+			
+				$quantity = $quantity + $item['item_quantity'];
+			
 		}
 		$this->set_quantity($quantity);
 
@@ -431,9 +433,11 @@ class Purchase_lib
 			} else {
 				$_aItem['status'] = 1;
 			}
-			
+
+			var_dump($_aItem);
 			//var_dump($_aItem);
 			if ($full == 0) {
+
 				$this->add_item($_aItem, $row->item_id);
 			} else {
 
