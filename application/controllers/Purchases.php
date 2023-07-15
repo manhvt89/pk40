@@ -869,7 +869,12 @@ class Purchases extends Secure_Controller
 			$this->receiving_lib->set_purchase_id($purchase_info['id']);
 			foreach($_aThePurchase['items'] as $item)
 			{
-				$this->receiving_lib->add_item($item['item_id'],$item['item_quantity'],1);
+				if(is_numeric($item['item_quantity'])){
+					$item_quantity = (int) $item['item_quantity'];
+				} else {
+					$item_quantity = 0;
+				}
+				$this->receiving_lib->add_item($item['item_id'],$item_quantity,1);
 			}
 			
 			redirect(base_url("receivings"));

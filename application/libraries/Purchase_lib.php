@@ -145,7 +145,12 @@ class Purchase_lib
 		foreach ($items as $item)
 		{
 			
+			if(is_numeric($item['item_quantity'])){
 				$quantity = $quantity + $item['item_quantity'];
+			} else {
+				$quantity = $quantity + 0;
+			}
+			
 			
 		}
 		$this->set_quantity($quantity);
