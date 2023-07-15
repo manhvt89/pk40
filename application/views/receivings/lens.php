@@ -138,6 +138,8 @@
 				$(cell).css('font-weight','bold');
 				$(cell).css('color','black');
 				$(cell).css('background-color', '#dcdcdc');	
+			} else {
+				//$(cell).value(0);
 			}
 			if (y % 2) {
 				if(x != 0)
@@ -147,6 +149,7 @@
         	}
 
 		},
+		
 		
 	}); 
 	hyo = jspreadsheet(document.getElementById('input_grid_data_hyo'),{
