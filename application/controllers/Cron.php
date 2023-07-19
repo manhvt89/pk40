@@ -990,18 +990,33 @@ class Cron extends CI_Controller{
                         'custom10'				=> ''
                     );
 
+                    if($category == 2)
+                    {
+                        $item_data['cost_price'] = '0';
+                        $item_data['unit_price'] = '105000';
+                    }
+                    if($category == 4) //1.74
+                    {
+                        $item_data['unit_price'] = '315000';
+                    }
+                    if($category == 5) //1.74
+                    {
+                        $item_data['unit_price'] = '650000';
+                    }
+                    if($category == 10)
+                    {
+                        $item_data['cost_price'] = '0';
+                        $item_data['unit_price'] = '240000';
+                    }
                     if($category == 11)
                     {
-                        $item_data['cost_price'] = '132000';
+                        $item_data['cost_price'] = '0';
                         $item_data['unit_price'] = '425000';
                     }
-                    if($category == 6) //1.74
+                    if($category == 12)
                     {
-                        $item_data['unit_price'] = '1250000';
-                    }
-                    if($category == 9) //1.74
-                    {
-                        $item_data['unit_price'] = '680000';
+                        $item_data['cost_price'] = '132000';
+                        $item_data['unit_price'] = '650000';
                     }
                 
                     if( $this->Product->save_item($item_data))
