@@ -16,35 +16,7 @@
 	  <div class="buttonpr no-print">
 				<button onclick="window.print()" class="bt-print-barcode">Print</button>
 	  </div>
-	  <div class="print-page-barcode">
-		<?php 
-		if (!empty($items)) {
-			$count = 0;
-	        $columns = 2;
-			foreach ($items as $item) {
-				if ($count % $columns == 0 and $count != 0) {
-					?>
-							<div class="pagebreak"></div>
-							<?php
-				}
-				if($count % $columns == 0){
-				?>
-					<div class="2" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">
-							<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
-					</div>
-				<?php } else { ?>
-					<div class="1" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 2mm;">
-					<?php echo $this->barcode_lib->_display_barcode($item, $barcode_config); ?>
-					</div>
-
-				<?php	} ?>
-			<?php 
-				++$count;
-			}
-		} else { ?>
-		Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.
-		<?php }?>
-	  </div>
+	  <?php print_barcode($items,"G2X75",$barcode_config);?>
 </body>
 
 </html>

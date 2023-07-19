@@ -752,6 +752,131 @@ function vn_str_filter ($str){
 return $str;
 }
 
+function print_barcode_gong_2x105($items,$barcode_config)
+{
+    $CI =& get_instance();
+    $_sHtml = '<div style=" width: 75mm; margin:auto; ">';
+    $_sHtml = $_sHtml . '<div class="print-page-barcode">';
+	
+    if (!empty($items)) {
+			$count = 0;
+	        $columns = 2;
+			foreach ($items as $item) {
+				if ($count % $columns == 0 and $count != 0) {
+					
+					$_sHtml = $_sHtml . '<div class="pagebreak"></div>';
+						
+				}
+				if($count % $columns == 0){
+                    $_sHtml = $_sHtml . '<div class="2" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">';
+					$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode($item, $barcode_config);
+					$_sHtml = $_sHtml .'</div>';
+				} else {
+					$_sHtml = $_sHtml . '<div class="1" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 2mm;">';
+					$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode($item, $barcode_config); 
+					$_sHtml = $_sHtml .'</div>';
 
+				} 
+			
+				$count++;
+			}
+		} else { 
+		    $_sHtml = $_sHtml . 'Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.';
+		}
+    $_sHtml = $_sHtml .'</div>';
+    echo $_sHtml;
+}
+
+function print_barcode_gong_2x75($items,$barcode_config)
+{
+    $CI =& get_instance();
+    $_sHtml = '<div style=" width: 75mm; margin:auto; ">';
+
+    if (!empty($items)) {
+			$count = 0;
+			foreach ($items as $item) {
+
+                $_sHtml = $_sHtml . '<div class="2" style=" width: 50mm; text-align: center; transform: rotate(90deg);clear:both;margin:0mm 0mm 0mm 6mm;">';
+                $_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_2x75($item, $barcode_config);
+                $_sHtml = $_sHtml .'</div>';
+                $_sHtml = $_sHtml . '<div class="pagebreak"></div>';
+			
+				$count++;
+			}
+		} else { 
+		    $_sHtml = $_sHtml . 'Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.';
+		}
+    $_sHtml = $_sHtml .'</div>';
+    echo $_sHtml;
+}
+
+function print_barcode_mat_2x75($items,$barcode_config)
+{
+    $CI =& get_instance();
+    $_sHtml = '<div style=" width: 75mm; margin:auto; ">';
+
+	if (!empty($items)) {
+		$count = 0;
+	  	foreach($items as $item)
+		{ 
+			if ($count % 2 == 0 and $count != 0)
+			{
+				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
+			}
+			$_sHtml = $_sHtml . '<div class="2" style=" width: 33mm; text-align: center;float: left; margin:0px; padding: 0mm 1mm 0mm 2mm ">';
+			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_lens($item, $barcode_config);
+			$_sHtml = $_sHtml . '</div>';
+		    ++$count; 
+		} 
+	} else {
+		$_sHtml = $_sHtml . 'Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.';
+	}
+    $_sHtml = $_sHtml .'</div>';
+    echo $_sHtml;
+}
+function print_barcode_mat_3x105($items,$barcode_config)
+{
+    $CI =& get_instance();
+    $_sHtml = '<div style=" width: 105mm; margin:auto; ">';
+
+	if (!empty($items)) {
+		$count = 0;
+	  	foreach($items as $item)
+		{ 
+			if ($count % 3 == 0 and $count != 0)
+			{
+				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
+			}
+			$_sHtml = $_sHtml . '<div class="2" style=" width: 35mm; text-align: center;float: left; margin:0px; ">';
+			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_lens($item, $barcode_config);
+			$_sHtml = $_sHtml . '</div>';
+		    ++$count; 
+		} 
+	} else {
+		$_sHtml = $_sHtml . 'Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.';
+	}
+    $_sHtml = $_sHtml .'</div>';
+    echo $_sHtml;
+}
+function print_barcode($items,$type,$barcode_config)
+{
+    switch ($type)
+    {
+        case "M2X75":
+            print_barcode_mat_2x75($items,$barcode_config);
+            break;
+        case "M3X105":
+            print_barcode_mat_3x105($items,$barcode_config);
+            break;
+        case "G2X75":
+            print_barcode_gong_2x75($items,$barcode_config);
+            break;
+        case "G2X105":
+            print_barcode_gong_2x105($items,$barcode_config);
+            break;
+        default: 
+            break;
+    }
+}
 
 ?>

@@ -25,6 +25,8 @@ delete from ospos_sms_sale;
 delete from ospos_total;
 delete from ospos_sales_items;
 delete from ospos_test;
+delete from ospos_purchases_items;
+delete from ospos_purchases;
 
 
 
