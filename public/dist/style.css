@@ -1,36 +1,109 @@
 .prescription_title {
-    font-size: 20px;
-    font-family: arial;
+  font-size: 20px;
+  font-family: arial;
 }
-
-#prescription th{
-  background-color:  #EEEEEE;
+#prescription th {
+  background-color: #EEEEEE;
   padding: 5px 0px 5px 0px;
 }
-
-#prescription{
-    margin: 0px 0px 25px 0px;
+#prescription {
+  margin: 0px 0px 25px 0px;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+}
+#prescription .prescription_head th {
+  background-color: #999;
+  padding: 5px;
+  text-align: center;
+  color: #FFF;
+}
+#prescription .prescription_head th:nth-child(3){
+  width: 55px;
+}
+#prescription .prescription_head th:nth-child(4){
+  width: 45px;
 }
 
+#prescription tbody tr td:nth-child(3)
+{
+   text-align: center;
+}
+
+#prescription tbody tr td:nth-child(4)
+{
+   text-align: center;
+}
+
+#prescription tbody tr td:nth-child(4) input
+{
+  font-size: 16px;
+  padding-right: 5px;
+  line-height: 1.5;
+  box-shadow: 0 -1px 0 #ddd inset;
+  border: medium none;
+  height: 30px;
+}
+
+#prescription tbody tr td .input-test {
+  width: 35px;
+  font-size: 16px;
+  padding-right: 5px;
+  line-height: 1.5;
+  box-shadow: 0 -1px 0 #ddd inset;
+  border: medium none;
+  height: 30px;
+  text-align: right;
+}
+
+.pres_number{
+  text-align: center;
+}
+
+#prescription-print tr td, #prescription-print tr th {
+   border: black 1px solid;
+}
+
+#print_data tr th, #prescription-print tr th{
+   background-color: #e1e1e1 !important;
+}
+
+#prescription-print tr th:nth-child(3){
+  width: 55px;
+}
+
+#prescription-print tr th:nth-child(4){
+  width: 45px;
+}
+
+#prescription-print tr td:nth-child(3){
+  text-align: center;
+}
+
+#prescription-print tr td:nth-child(4){
+  width: 45px;
+  text-align: right;
+  padding-right: 8px;
+}
+
+#print_test_form{
+  border-style:none;
+}
 .hidden {
     display: none;
 }
-
 .checkbox label:after,
 .radio label:after {
     content: '';
     display: table;
     clear: both;
 }
-
 .search .input-sm {
     width: 280px;
 }
-
 .container {
     /*margin-bottom: 100px;*/
 }
-
 .checkbox .cr,
 .radio .cr {
     position: relative;
@@ -43,11 +116,9 @@
     margin-right: .5em;
     margin-top: 0;
 }
-
 .radio .cr {
     border-radius: 50%;
 }
-
 .checkbox .cr .cr-icon,
 .radio .cr .cr-icon {
     position: absolute;
@@ -56,39 +127,32 @@
     top: 50%;
     left: 20%;
 }
-
 .radio .cr .cr-icon {
     margin-left: 0.04em;
 }
-
 .checkbox label input[type="checkbox"],
 .radio label input[type="radio"] {
     display: none;
 }
-
 .checkbox label input[type="checkbox"]+.cr>.cr-icon,
 .radio label input[type="radio"]+.cr>.cr-icon {
     transform: scale(3) rotateZ(-20deg);
     opacity: 0;
     transition: all .3s ease-in;
 }
-
 .checkbox label input[type="checkbox"]:checked+.cr>.cr-icon,
 .radio label input[type="radio"]:checked+.cr>.cr-icon {
     transform: scale(1) rotateZ(0deg);
     opacity: 1;
 }
-
 .checkbox label input[type="checkbox"]:disabled+.cr,
 .radio label input[type="radio"]:disabled+.cr {
     opacity: .5;
 }
-
 #register .radio+.radio,
 #register .checkbox+.checkbox {
     margin-top: -5px;
 }
-
 #register .radio,
 #register .checkbox {
     display: block;
@@ -98,7 +162,6 @@
     padding-top: 0px;
     padding-left: 15px;
 }
-
 #register .radio label,
 #register .checkbox label {
     cursor: pointer;
@@ -107,28 +170,23 @@
     margin-bottom: 0;
     padding-left: 0px;
 }
-
 #register tr td:last-child {
     text-align: left;
 }
-
 #footer {
     display: none;
 }
-
 #register .control-label {
     padding-top: 2px;
     text-align: left;
     padding-left: 3px;
     font-size: 13px;
 }
-
 #register .form-group {
     margin-top: 7px;
     margin-bottom: 7px;
     margin-left: 0px;
 }
-
 td .input-test {
     width: 75px;
     font-size: 16px;
@@ -138,17 +196,14 @@ td .input-test {
     border: medium none;
     height: 30px;
 }
-
 .textarea_test {
     width: 100%;
     padding: 10px;
 }
-
 #update_test_button,
 #clear_test_button {
     margin-top: 0.5em;
 }
-
 .old_data tr td,
 .old_data tr th {
     border: 1px solid black;
@@ -157,92 +212,76 @@ td .input-test {
     font-family: Arial;
     font-weight: normal;
 }
-
 .old_data table {
     margin: 0px;
 }
-
 .old_data .active {
     background-color: #ffffee;
 }
-
 .row #overall_sale {
     width: 34%;
 }
-
 .row #register_wrapper_test,
 .row #register_wrapper {
     width: 65%;
 }
-
 #register_wrapper_test {
     float: left;
     font-size: 13px;
     width: 65%;
 }
-
 #principle_print {
     float: left;
     font-size: 14px;
     width: 96%;
     margin: 10px;
 }
-
 #principle_print {
     /*  height: 210mm;
-    width: 148.5mm;*/
+width: 148.5mm;*/
     display: none;
     /*transform: rotate(270deg);*/
 }
-
 .precription_header_print {
     width: 100%;
     font-family: Arial;
     font-size: 14px;
     margin-bottom: 15px;
 }
-
 .precription_header_print .print_title {
     text-align: center;
     font-size: 26px;
     font-weight: bold;
     font-family: Arial;
 }
-
 #print_data {
     border-collapse: collapse;
 }
-
 #print_data th,
 #print_data td {
     border: 1px solid black;
     padding: 0px;
     text-align: center;
 }
-
 #footer_precription {
     text-align: left;
     font-size: 14px;
     font-family: Arial;
 }
-
 #footer_precription p {
     padding-left: 25px;
     font-style: italic;
 }
-
 .precription_number {
     text-align: right;
     width: 25%;
 }
-
 #print_data .control-label,
 #body_precription .control-label {
     text-align: left;
     padding: 0 5px 0 0;
     font-size: 14px;
 }
-
 #body_precription th {
     text-align: center;
     font-size: 15px;
@@ -251,24 +290,20 @@ td .input-test {
     padding: 2px 0 2px 0;
     border-bottom: 1px solid #5d6368;
 }
-
 #body_precription tr {
     vertical-align: middle;
 }
-
 #body_precription td .form-group {
     margin-bottom: 5px;
     margin-top: 5px;
     margin-left: 10px;
 }
-
 #body_precription {
     margin: 5px 0;
     border-collapse: collapse;
     border: 1px solid #5d6368;
     vertical-align: middle;
 }
-
 #sale_receipt {
     text-transform: uppercase;
     font-size: 20px;
@@ -276,13 +311,11 @@ td .input-test {
     line-height: 110%;
     padding-top: 5px;
 }
-
 .logo {
     float: left;
     width: 25%;
     margin-right: 2px;
 }
-
 .name {
     width: 100%;
     float: left;
@@ -291,33 +324,27 @@ td .input-test {
     line-height: 110%;
     margin-top: 10px;
 }
-
 .address,
 .phone {
     width: 100%;
     text-align: left;
     font-size: 16px;
 }
-
 .order_address,
 .order_phone {
     width: 100%;
     text-align: left;
     font-size: 16px;
 }
-
 #sale_id {
     font-size: 14px;
 }
-
 .clearboth {
     clear: both;
 }
-
 .time {
     font-style: italic;
 }
-
 .employee_signal {
     width: 50%;
     text-align: center;
@@ -325,72 +352,58 @@ td .input-test {
     line-height: 110%;
     font-size: 16px;
 }
-
 #receipt_items {
     margin: 0px;
     font-size: 16px;
     border-top: 1px dashed black;
 }
-
 #employee {
     margin-top: 25px;
 }
-
 .customer {
     float: left;
     width: 100%;
     text-align: left;
     font-size: 16px;
 }
-
 .order_receipt_items {
     margin-top: 10px;
     width: 100%;
 }
-
 .customer_number {
     float: left;
     width: 100%;
     text-align: left;
     font-size: 16px;
 }
-
 #receipt_items tr {
     line-height: 120%;
 }
-
 .active {
     background-color: lightgrey;
 }
-
 .total {
     font-size: 16px;
 }
-
 #print_data .form-group {
     margin: 0px;
 }
-
 #receipt_items tr th,
 #receipt_items tr td {
     /*border: 1px dashed black;*/
 }
-
 #receipt_items .total td {
     border: none;
 }
-
 #sale_id {
     float: left;
     width: 40%;
 }
-
 #sale_time {
     float: left;
     width: 59%;
     font-size: 14px;
 }
-
 #view_report_lens_category table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -401,85 +414,68 @@ td .input-test {
     line-height: normal;
     margin: 25px 0 10px 0;
 }
-
 .heder_table_contact_len {
     font-weight: bold;
     line-height: 2;
 }
-
 .rp_header_table_len {
     line-height: 2.0;
     font-weight: bold;
     background-color: lavender;
 }
-
 #view_report_lens_category table tr {
     line-height: 1.5;
 }
-
 .rp_number td:first-child {
     font-weight: bold;
     background-color: lavender;
 }
-
 #rp_inventory_2 td:first-child {
     font-weight: bold;
     background-color: lavender;
 }
-
 #view_report_lens_category table tr td {
     border: solid black 1px;
 }
-
 #rp_inventory .rp_title {
     text-align: center;
     vertical-align: middle;
     font-size: 28px;
     text-transform: uppercase;
 }
-
 .btn-info {
     background-color: red;
 }
-
 #list_tested_today {
     margin-bottom: 10px;
     font-size: 11px;
     font-family: Arial;
 }
-
 #list_tested_today tr td,
 #list_tested tr th {
     padding: 2px 8px;
 }
-
 #list_tested {
     font-size: 11px;
     font-family: Arial;
 }
-
 #list_tested tr th {
     border-bottom: 0 red;
 }
-
 .barcode {
     padding-bottom: 20px;
 }
-
 .total {
     border-top: 1px dashed #000;
 }
-
 #report_summary {
     margin-bottom: 25px;
     font-weight: bold;
     font-size: 18px;
 }
-
 .bootstrap-table .table>tbody>tr>td {
     vertical-align: middle;
 }
-
 #rp_inventory input,
 #rp_inventory_hyo input {
     font-family: inherit;
@@ -490,78 +486,61 @@ td .input-test {
     width: 100%;
     text-align: center;
 }
-
 #rp_inventory tr:nth-child(even),
 #rp_inventory_hyo tr:nth-child(even) {
     background-color: #D6EEEE;
 }
-
 #rp_inventory tr:nth-child(even) input,
 #rp_inventory_hyo tr:nth-child(even) input {
     background-color: #D6EEEE;
 }
-
 #report_summary table {
     margin: auto;
 }
-
 #report_summary table tr td:nth-of-type(1) {
     text-align: left;
 }
-
 #report_summary table tr td:nth-of-type(2) {
     text-align: right;
     min-width: 100px;
 }
-
 #report_summary table tr {
     margin: 5px 0 5px 0;
 }
-
 #report_summary .label-dauky {
     margin: 0px;
 }
-
 #report_summary .label-cuoiky {
     margin: 0px;
 }
-
 #report_summary .label-chitrongky {
     margin: 0px;
 }
-
 #report_summary .label-thutrongky {
     margin: 0px;
 }
-
 #report_summary .label-chinoibo {
     margin: 0px;
     padding-left: 20px;
 }
-
 #report_summary .label-chikhac {
     margin: 0px;
     padding-left: 20px;
 }
-
 #table_holder {
     padding-top: 10px;
 }
-
 #register .po-error07 td {
     background-color: bisque;
 }
-
 #register .po-error06 td {
     background-color: coral;
 }
-
 .row #po_wrapper {
     width: 75%;
     float: left;
     font-size: 13px;
 }
-
 .row #overall_po {
     width: 24%;
     float: left;
@@ -572,43 +551,42 @@ td .input-test {
     text-align: center;
     background-color: #BBB;
 }
-
 @media print {
     /*
-    Edit for BILL
-    *
-    .name {
-        font-size: 20px;
-    }
-    .time {
-        font-size: 15px;
-    }
-    .customer_number,
-    .phone {
-        font-size: 16px;
-    }
-    #receipt_items {
-        font-size: 16px;
-    }
-    #receipt_items thead th:not(:first-child) {
-        display: none;
-    }
-    #receipt_items tbody th {
-        font-weight: normal;
-    }
-    #receipt_items td:not(:last-child) {
-        display: none;
-    }
-    td,
-    th {
-        display: block;
-    }
-    td[data-th]:before {
-        content: attr(data-th);
-    }
-    /*
-    END for BILL
-    */
+Edit for BILL
+*
+.name {
+font-size: 20px;
+}
+.time {
+font-size: 15px;
+}
+.customer_number,
+.phone {
+font-size: 16px;
+}
+#receipt_items {
+font-size: 16px;
+}
+#receipt_items thead th:not(:first-child) {
+display: none;
+}
+#receipt_items tbody th {
+font-weight: normal;
+}
+#receipt_items td:not(:last-child) {
+display: none;
+}
+td,
+th {
+display: block;
+}
+td[data-th]:before {
+content: attr(data-th);
+}
+/*
+END for BILL
+*/
     .barcode {
         padding-bottom: 20px;
     }
@@ -689,24 +667,19 @@ td .input-test {
         text-align: center;
     }
 }
-
-
 /*End print*/
-
 .steps {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
 }
-
 @media (min-width:992px) {
     .steps {
         -ms-flex-direction: row;
         flex-direction: row;
     }
 }
-
 .step {
     -ms-flex: 1 1 0px;
     flex: 1 1 0;
@@ -715,18 +688,15 @@ td .input-test {
     padding: 1.75rem 1.75rem 1.9rem;
     transition: all .1s ease-out
 }
-
 .step:not(:last-of-type) {
     border-bottom: 0
 }
-
 @media (min-width:992px) {
     .step:not(:last-of-type) {
         border-right: 0;
         border-bottom: 2px solid #e2e9f0
     }
 }
-
 .step:hover {
     background-color: #fff;
     border-color: transparent;
@@ -735,7 +705,6 @@ td .input-test {
     padding-bottom: 2rem;
     z-index: 3
 }
-
 @media (min-width:992px) {
     .step:hover {
         margin-bottom: 0;
@@ -744,45 +713,35 @@ td .input-test {
         padding-bottom: 1.9rem
     }
 }
-
 .step:hover:not(:last-of-type) {
     border-bottom: 0
 }
-
 @media (min-width:992px) {
     .step:hover:not(:last-of-type) {
         border-right: 0;
         border-bottom: 2px solid transparent
     }
 }
-
 .step__icon {
     margin-bottom: 2.4rem
 }
-
 .step .step__icon {
     font-size: 3rem
 }
-
 .step__title {
     margin-bottom: .45rem
 }
-
 .step tr td {}
-
 .step tr {
     /*border-bottom: 1px solid #ddd;*/
     vertical-align: middle;
 }
-
 .step tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-
 .step tr:hover {
     background-color: coral;
 }
-
 @media (min-width:992px) {
     #show_po_list,
     #show_sales_button {
@@ -809,4 +768,5 @@ td .input-test {
         font-size: 14px;
         font-family: arial;
     }
+    Ư Ư
 }

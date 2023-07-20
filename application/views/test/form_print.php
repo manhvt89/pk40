@@ -206,6 +206,47 @@
 			</td>
 		</tr>
 		<tr>
+			<td colspan="3">
+			<?php $pres_max = count($pres_names) < 6? count($pres_names) : 6; 
+					$cr_thuoc = count($prescription_list); //var_dump($prescription_list);
+				if($cr_thuoc > 0): ?>
+			<table class="sales_table_100 s-100" id="prescription-print">
+				<thead>
+				<tr class="prescription_head" style="text-align:center">
+					<th style="text-align:center" width="5%"><span >STT</span></th>
+					<th style="text-align:center"><span >Tên thuốc</span></th>
+					<th style="text-align:center"><span >Đơn vị</span></th>
+					<th style="text-align:center"><span >SL</span></th>
+					<th style="text-align:center"><span >Chỉ dẫn dùng</span></th>
+				</tr>
+				</thead>
+				<tbody id="cart_contents2">
+				
+				<?php 	
+				for($i=1; $i <= $cr_thuoc; $i++): ?>
+				<tr id="row_<?=$i?>" class="pres_row">
+					<td class="pres_number"><?=$i?></td>
+					<td>
+						<?=$prescription_list[$i-1]['name']?>
+					</td>
+					<td>
+						<?=$prescription_list[$i-1]['dvt']?>
+						
+					</td>
+					<td>
+						<?=$prescription_list[$i-1]['sl']?>
+					</td>
+					<td>
+						<?=$prescription_list[$i-1]['hdsd']?>
+					</td>
+				</tr>
+				<?php endfor; ?>
+				</tbody>
+			</table>
+			<?php endif;?>
+			</td>
+		</tr>
+		<tr>
 
 			<td colspan="3">
 				<?php echo ($type==1)? "Đơn theo yêu cầu khách hàng":''; ?>
