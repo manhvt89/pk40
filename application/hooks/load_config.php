@@ -46,6 +46,10 @@ function load_config()
                 $_value = explode(";",$v);
                 if(count($_value) > 4)
                 {
+                    if(!is_numeric($_value[2]))
+                    {
+                        $_value[2] = 0;
+                    }
                     $_items = ['id'=>$_value[0],'name'=>$_value[1],'price'=>$_value[2],'dvt'=>$_value[3],'hdsd'=>$_value[4],'price_display'=>number_format($_value[2],0,',','.').'đ'];
             
                     $_arrTmp[] = $_items;
