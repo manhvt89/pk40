@@ -212,6 +212,13 @@ $config['caOSStatus'] = array(
     2=>'Hoàn thành'
 );
 
+$config['GBarcode'] = array(
+    'template'=>'G2X75'
+);
+$config['MBarcode'] = array(
+    'template'=>'M2X75'
+);
+
 $config['default_city'] = 'Hà Nội';
 
         

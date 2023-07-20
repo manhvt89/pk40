@@ -16,7 +16,7 @@
 	  <div class="buttonpr no-print">
 	  	<button onclick="window.print()" class="bt-print-barcode">Print</button>
 	  </div>
-	  <?php print_barcode($items,"M2X75",$barcode_config);?>
+	  <?php print_barcode($items,$this->config->item('MBarcode')['template'],$barcode_config);?>
 </body>
 
 </html>
