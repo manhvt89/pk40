@@ -35,7 +35,7 @@
    text-align: center;
 }
 
-#prescription tbody tr td:nth-child(4) input
+#prescription tbody tr td input
 {
   font-size: 16px;
   padding-right: 5px;
@@ -43,6 +43,7 @@
   box-shadow: 0 -1px 0 #ddd inset;
   border: medium none;
   height: 30px;
+  padding-left: 10px;
 }
 
 #prescription tbody tr td .input-test {

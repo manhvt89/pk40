@@ -458,7 +458,7 @@ if (isset($success))
 
 								</td>
 							</tr>
-							<?php foreach ($detail_tests as $detail_test) : ?>
+							<?php foreach ($detail_tests as $detail_test) : $lists = json_decode($detail_test['prescription']); //var_dump($list); die();?>
 							<tr>
 								<td><?php echo date('d-m-Y',$detail_test['test_time']);?></td>
 								<?php $reArr =  json_decode($detail_test['right_e'],true);
@@ -513,9 +513,20 @@ if (isset($success))
 										</tr>
 										<tr>
 											<td></td>
-											<td colspan='6'><?php echo $detail_test['note']; ?></td>
+											<td colspan='6' style="text-align: left;">
+												<?php echo $detail_test['note']; ?> <br>
+												<?php
+													if(!empty($lists)): 
+														$_index = 1; 
+														foreach($lists as $list): ?>
+															<?=$_index?>.<?=$list->name?> | <?=$list->sl?> <?=$list->dvt?><br/>
+												<?php 
+												 			$_index++; 
+														endforeach;
+													endif;
+													?>
+											</td>
 										</tr>
-
 										</tbody>
 									</table>
 								</td>
