@@ -219,6 +219,6 @@ $config['MBarcode'] = array(
     'template'=>'M2X75'
 );
 
-$config['default_city'] = 'Hà Nội';
+$config['default_city'] = 'Ninh Bình';
 
         

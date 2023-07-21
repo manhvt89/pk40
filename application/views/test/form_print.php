@@ -259,7 +259,7 @@
 			<p>Khám lại sau <?php echo $duration; ?> tháng, khi đi nhớ mang theo đơn này.</p>
 		</td>
 	</tr>
-		<tr><td colspan="3" style="text-align: right;">Hà Nội, ngày <?php echo date('d',$test_time); ?> tháng <?php echo date('m',$test_time); ?> năm <?php echo date('Y',$test_time); ?>.
+		<tr><td colspan="3" style="text-align: right;"><?=$this->config->item('default_city')?>, ngày <?php echo date('d',$test_time); ?> tháng <?php echo date('m',$test_time); ?> năm <?php echo date('Y',$test_time); ?>.
 				<br/><br/><br/></td></tr>
 	<tr>
 		<td style="text-align: center; vertical-align: bottom"><b>Bác sĩ</b></td>
