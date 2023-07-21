@@ -195,7 +195,7 @@ class Barcode_lib
 		return $display_table;
 	}
 
-	public function _display_barcode_2x75($item, $barcode_config) // @gong 2x75
+	public function _display_barcode_1x75($item, $barcode_config) // @gong 2x75
 	{
 		//var_dump($item);die();
 		$item['unit_price'] = $item['price'];
@@ -210,9 +210,9 @@ class Barcode_lib
 
 		$display_table .= "<div class='print-barcode_2'>";
 		$display_table .= "<div style='font-size: 10px; font-family: 'Arial' !important;' align='center'><b>".$barcode_config['store_name']."</b></div>";
-		
 		//$display_table .= "<div class='headline' align='center'>Chăm sóc đôi mắt bạn</div>";
 		$display_table .= "<div align='center' style='font-size:8px'>".$barcode_config['store_address']."</div>";
+		$display_table .= "<div align='center' style='font-size:8px'>0904642141</div>";
 		$display_table .= "</div>";
 		
 		return $display_table;

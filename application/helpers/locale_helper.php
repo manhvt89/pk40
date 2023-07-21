@@ -797,9 +797,9 @@ function print_barcode_gong_1x75($items,$barcode_config)
 			foreach ($items as $item) {
 
                 $_sHtml = $_sHtml . '<div class="2" style="border: 1px blue dot;  width: 50mm; height:50mm; float:right; text-align: center; transform: rotate(90deg);margin:0mm 0mm 0mm 0mm;">';
-                $_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_2x75($item, $barcode_config);
+                $_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_1x75($item, $barcode_config);
                 $_sHtml = $_sHtml .'</div>';
-                $_sHtml = $_sHtml . '<div class="pagebreak" style="clear:right"></div>';
+                $_sHtml = $_sHtml . '<div style="clear:right"></div><div class="pagebreak"></div>';
 			
 				$count++;
 			}
