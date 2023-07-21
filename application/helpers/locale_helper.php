@@ -787,19 +787,19 @@ function print_barcode_gong_2x105($items,$barcode_config)
     echo $_sHtml;
 }
 
-function print_barcode_gong_2x75($items,$barcode_config)
+function print_barcode_gong_1x75($items,$barcode_config)
 {
     $CI =& get_instance();
-    $_sHtml = '<div style=" width: 75mm; margin:auto; ">';
+    $_sHtml = '<div style=" width: 75mm; margin:auto; border: blue 1px dot; overflow: hidden;">';
 
     if (!empty($items)) {
 			$count = 0;
 			foreach ($items as $item) {
 
-                $_sHtml = $_sHtml . '<div class="2" style=" width: 50mm; text-align: center; transform: rotate(90deg);clear:both;margin:0mm 0mm 0mm 6mm;">';
+                $_sHtml = $_sHtml . '<div class="2" style="border: 1px blue dot;  width: 50mm; height:50mm; float:right; text-align: center; transform: rotate(90deg);margin:0mm 0mm 0mm 0mm;">';
                 $_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_2x75($item, $barcode_config);
                 $_sHtml = $_sHtml .'</div>';
-                $_sHtml = $_sHtml . '<div class="pagebreak"></div>';
+                $_sHtml = $_sHtml . '<div class="pagebreak" style="clear:right"></div>';
 			
 				$count++;
 			}
@@ -868,8 +868,8 @@ function print_barcode($items,$type,$barcode_config)
         case "M3X105":
             print_barcode_mat_3x105($items,$barcode_config);
             break;
-        case "G2X75":
-            print_barcode_gong_2x75($items,$barcode_config);
+        case "G1X75":
+            print_barcode_gong_1x75($items,$barcode_config);
             break;
         case "G2X105":
             print_barcode_gong_2x105($items,$barcode_config);

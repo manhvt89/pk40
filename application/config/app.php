@@ -213,7 +213,7 @@ $config['caOSStatus'] = array(
 );
 
 $config['GBarcode'] = array(
-    'template'=>'G2X75'
+    'template'=>'G1X75'
 );
 $config['MBarcode'] = array(
     'template'=>'M2X75'
