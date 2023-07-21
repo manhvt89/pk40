@@ -211,10 +211,17 @@ $config['caOSStatus'] = array(
     1=>'Mới tạo', // Tạo mới đơn hàng và xuất hàng
     2=>'Hoàn thành'
 );
-
+/**
+ * G2X105
+ * G1X75
+ */
 $config['GBarcode'] = array(
     'template'=>'G2X105'
 );
+/**
+ * M3X105
+ * M2X75
+ */
 $config['MBarcode'] = array(
     'template'=>'M3X105'
 );
