@@ -208,7 +208,7 @@ class Barcode_lib
 		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . " </b></div>";
 		$display_table .= "</div>";
 
-		$display_table .= "<div class='print-barcode_2' style='width:50mm; height:15mm; padding-bottom: 0mm;'>";
+		$display_table .= "<div class='print-barcode_2' style='width:50mm; height:15mm; margin: 2mm 0mm 0mm 0mm; padding-bottom: 0mm'>";
 		$display_table .= "<div style='font-size: 11px; font-family: 'Arial' !important;' align='center'><b>".$barcode_config['store_name']."</b></div>";
 		//$display_table .= "<div class='headline' align='center'>Chăm sóc đôi mắt bạn</div>";
 		$display_table .= "<div align='center' style='font-size:9px'>".$barcode_config['store_address']."</div>";

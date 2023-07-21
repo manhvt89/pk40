@@ -1015,7 +1015,7 @@ class Cron extends CI_Controller{
                     }
                     if($category == 12)
                     {
-                        $item_data['cost_price'] = '132000';
+                        $item_data['cost_price'] = '0';
                         $item_data['unit_price'] = '650000';
                     }
                 
