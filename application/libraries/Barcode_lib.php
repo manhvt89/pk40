@@ -200,7 +200,7 @@ class Barcode_lib
 		//var_dump($item);die();
 		$item['unit_price'] = $item['price'];
 		$barcode_config['barcode_width'] = 0;
-		$display_table = "<div class='print-barcode_1' style='border:blue 1px dotted; width:50mm; height:15mm'>";
+		$display_table = "<div class='print-barcode_1' style='border:blue 1px dotted; width:50mm; height:14mm'>";
 		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
 		$barcode = $this->generate_barcode($item, $barcode_config);
 		$display_table .= "<div align='center' style='font-size:9px'><img src='data:image/png;base64,$barcode' /></div></tr>";
