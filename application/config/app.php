@@ -213,12 +213,12 @@ $config['caOSStatus'] = array(
 );
 
 $config['GBarcode'] = array(
-    'template'=>'G1X75'
+    'template'=>'G2X105'
 );
 $config['MBarcode'] = array(
-    'template'=>'M2X75'
+    'template'=>'M3X105'
 );
 
-$config['default_city'] = 'Ninh Bình';
+$config['default_city'] = 'Lào Cai';
 
         
