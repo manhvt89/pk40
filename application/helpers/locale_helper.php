@@ -755,7 +755,7 @@ return $str;
 function print_barcode_gong_2x105($items,$barcode_config)
 {
     $CI =& get_instance();
-    $_sHtml = '<div style=" width: 75mm; margin:auto; ">';
+    $_sHtml = '<div style=" width: 105mm; margin:auto; ">';
     $_sHtml = $_sHtml . '<div class="print-page-barcode">';
 	
     if (!empty($items)) {
