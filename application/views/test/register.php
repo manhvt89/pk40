@@ -208,6 +208,15 @@ if (isset($success))
 
 $(document).ready(function()
 {
+	$(window).keydown(function(event){
+		if((event.keyCode == 13) && ($(event.target)[0]!=$("textarea")[0])) {
+
+
+		//if(event.keyCode == 13) {
+		event.preventDefault();
+		return false;
+		}
+	});
 	<?php if(!$this->Employee->has_grant('test_step_one')): ?>
 		
 	$("#list_tested_today tr").click(function(){
@@ -222,11 +231,15 @@ $(document).ready(function()
 	$("#old_data_view tr").click(function(){
 		//alert($(this).attr('id'));
 		var strId = $(this).attr('id');
-		var Ids = strId.split('_');
-		var test_id = Ids[1];
-		//alert(strId);
-		$('#hdd_test_id').val(test_id);
-		$('#view_test_form').submit();
+		if(undefined != strId )
+		{
+			console.log(strId);
+			var Ids = strId.split('_');
+			var test_id = Ids[1];
+			//alert(strId);
+			$('#hdd_test_id').val(test_id);
+			$('#view_test_form').submit();
+		}
 	});
 	<?php endif; ?>
 
@@ -321,7 +334,43 @@ $(document).ready(function()
 
 	// Danh sách thuốc đã lưu trữ dưới dạng JSON
 	var medicationList = <?=$json_pres_a?>; 
+	var prescription_list = <?=$json_prescription_list?>;
 
+	prescription_list.forEach(myFunction);
+
+	function myFunction(medication, index, array) {
+		var $newPrescriptionItem = $('<tr></tr>');
+		var $col_stt = $('<td></td>');
+		var $col_name = $('<td><input name="pres_name[]" type="hidden" value="'+medication.name+'"/>'+medication.name+'</td>');
+		var $col_dvt = $('<td><input name="pres_dvt[]" type="hidden" value="'+medication.dvt+'"/>'+medication.dvt+'</td>');
+		var $col_sl = $('<td><input name="pres_amount[]" type="number" maxlength="4" size="4" value=""/></td>');
+		var $col_hdsd = $('<td><input name="pres_hdsd[]" type="text" maxlength="250" size="45" value="'+medication.hdsd+'"/></td>');
+		$newPrescriptionItem.append($col_stt);
+		$newPrescriptionItem.append($col_name);
+		$newPrescriptionItem.append($col_dvt);
+		$newPrescriptionItem.append($col_sl);
+		$newPrescriptionItem.append($col_hdsd);
+		//$newPrescriptionItem.text(medication.name);
+
+		var $deleteButton = $('<button class="delete-button">Xóa</button>');
+		$deleteButton.on('click', function() {
+			$('#done_test_form').keypress(function(e){
+		if (e.keyCode == 13) {
+				e.preventDefault()
+				return false;
+			}
+		});
+			var cf = confirm('Bạn chắc muốn xóa');
+			if(cf == true)
+			{
+				$newPrescriptionItem.remove();
+			}
+		});
+
+		$newPrescriptionItem.append($deleteButton);
+		$('#cart_contents2').append($newPrescriptionItem);
+		
+	}
   // Tìm kiếm thuốc
   $('#search-input').on('input', function() {
     var searchQuery = $(this).val().toLowerCase();
@@ -381,7 +430,18 @@ $(document).ready(function()
 
     var $deleteButton = $('<button class="delete-button">Xóa</button>');
     $deleteButton.on('click', function() {
-      $newPrescriptionItem.remove();
+		$('#done_test_form').keypress(function(e){
+			console.log(e)
+		if (e.keyCode == 13) {
+				e.preventDefault()
+				return false;
+			}
+		});
+			var cf = confirm('Bạn chắc muốn xúa');
+			if(cf == true)
+			{
+				$newPrescriptionItem.remove();
+			}
     });
 
     $newPrescriptionItem.append($deleteButton);

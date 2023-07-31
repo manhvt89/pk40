@@ -277,11 +277,15 @@ class Test extends Secure_Controller
 			$obj['old_toltal'] = $this->input->post('old_distance') . ';' . $this->input->post('old_reading');
 			$obj['r_va_o'] = $this->input->post('r_va_o') ? $this->input->post('r_va_o') : '';
 			$obj['l_va_o'] = $this->input->post('l_va_o') ? $this->input->post('l_va_o') : '';
+			$obj['r_va_lo'] = $this->input->post('r_va_o') ? $this->input->post('r_va_lo') : '';
+			$obj['l_va_lo'] = $this->input->post('l_va_o') ? $this->input->post('l_va_lo') : '';
+
 			$obj['right_e_old'] = json_encode($reOldArray);
             $obj['left_e_old'] = json_encode($leOldArray);
 			$obj['prescription'] = json_encode($presArray);
 
             $obj['note'] = $this->input->post('note') ? $this->input->post('note') : '';
+			$obj['duration_dvt'] = $this->input->post('duration_dvt') ? $this->input->post('duration_dvt') : '';
             $obj['right_e'] = json_encode($reArray);
             $obj['left_e'] = json_encode($leArray);
             $obj['toltal'] = $this->input->post('distance') . ';' . $this->input->post('reading');
@@ -381,12 +385,7 @@ class Test extends Secure_Controller
 		//$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 
 		$customer_info = $this->_load_customer_data($this->test_lib->get_customer(), $data, TRUE);
-		//$data['invoice_number'] = $this->_substitute_invoice_number($customer_info);
-		//$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
-
-		//$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-
-		//$data['payments_cover_total'] = $this->sale_lib->get_amount_due() <= 0;
+		$data['duration_dvts'] = $this->config->item('duration_dvts');
         $pres_names_q = $this->Prescription->get_all();
 		
 		$pres_names[""] = array();
@@ -401,6 +400,8 @@ class Test extends Secure_Controller
 		$data['pres_a'] = $pres_a;
 		$data['json_pres_a'] = json_encode($pres_names_q);
 
+		$data['json_prescription_list'] = json_encode(array());
+		$data['duration_dvt'] = 'Tháng';
 		if(isset($data['test_id'])) // view detail test
         {
             $test = $this->Testex->get_info($data['test_id']);
@@ -408,6 +409,7 @@ class Test extends Secure_Controller
                 //var_dump($test);
                 $data['toltal'] = explode(';', $test['toltal']);
                 $data['duration'] = $test['duration'];
+				$data['duration_dvt'] = $test['duration_dvt'];
                 $data['code'] = $test['code'];
                 $data['lens_type'] = explode(';', $test['lens_type']);
                 $data['type'] = $test['type'];
@@ -422,14 +424,19 @@ class Test extends Secure_Controller
 
 				//Added by ManhVT support BS
 				$data['prescription_list'] = $test['prescription'] != "" ? json_decode($test['prescription'],true) : array();
-
+				
+				$data['json_prescription_list'] = $test['prescription'] != "" ? $test['prescription'] : json_encode(array());
 				$data['r_va_o'] = $test['r_va_o'] != "" ? $test['r_va_o'] : $data['right_e']['VA'];
 				$data['l_va_o'] = $test['l_va_o'] != "" ? $test['l_va_o'] : $data['left_e']['VA'];
+				$data['r_va_lo'] = $test['r_va_lo'] != "" ? $test['r_va_lo'] : $data['right_e']['VA'];
+				$data['l_va_lo'] = $test['l_va_lo'] != "" ? $test['l_va_lo'] : $data['left_e']['VA'];
 				$data['right_e_old'] = $test['right_e_old'] != "" ? json_decode($test['right_e_old'],true) : $data['right_e'];
             	$data['left_e_old'] = $test['left_e_old'] != "" ? json_decode($test['left_e_old'],true) : $data['left_e'];
 				$data['old_toltal'] = $test['old_toltal'] != "" ? explode(';', $test['old_toltal']) : $data['toltal'];
 				$data['reason'] = $test['reason'];
             }
+
+			
 
         }else{
 			if($this->Employee->has_grant('test_step_one'))
@@ -460,6 +467,7 @@ class Test extends Secure_Controller
 					}
 				}
 				$data['tests'] = $_tests;
+				$data['duration_dvt'] = 'Tháng';
 			}
         }
         $data = $this->xss_clean($data);

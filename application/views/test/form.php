@@ -8,15 +8,15 @@
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
-			<th colspan="2" style="text-align:left">Thị lực không kính</th>
+			<th colspan="4" style="text-align:center">Thị lực không kính</th>
 		</tr>
 		</thead>
 		<tbody id="cart_contents">
 		<tr>
-			<td> 				
+			<td style="width: 15%;"> 				
 				<b><?php echo $this->lang->line('test_right_eye') ?></b>
 			</td>
-			<td>
+			<td style="text-align:left">
 				<?php echo form_input(array(
 						'name'=>'r_va_o',
 						'class'=>'input-test',
@@ -24,9 +24,7 @@
 						'value'=>$r_va_o)
 				);?>
 			</td>
-		</tr>
-		<tr>
-			<td>
+			<td style="width: 15%;">
 				<b><?php echo $this->lang->line('test_left_eye') ?></b>
 			</td>
 			<td>
@@ -43,7 +41,40 @@
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
-			<th colspan="8" style="text-align:left">Kính cũ</th>
+			<th colspan="4" style="text-align:center">Thị lực kính lỗ</th>
+		</tr>
+		</thead>
+		<tbody id="cart_contents">
+		<tr>
+			<td style="width: 15%;"> 				
+				<b><?php echo $this->lang->line('test_right_eye') ?></b>
+			</td>
+			<td style="text-align:left">
+				<?php echo form_input(array(
+						'name'=>'r_va_lo',
+						'class'=>'input-test',
+						'style'=>'width: 155px;',
+						'value'=>$r_va_lo)
+				);?>
+			</td>
+			<td style="width: 15%;">
+				<b><?php echo $this->lang->line('test_left_eye') ?></b>
+			</td>
+			<td>
+				<?php echo form_input(array(
+						'name'=>'l_va_lo',
+						'class'=>'input-test',
+						'style'=>'width: 155px;',
+						'value'=>$l_va_lo)
+				);?>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<table class="sales_table_100 s-100" id="register">
+		<thead>
+		<tr>
+			<th colspan="8" style="text-align:center">Kính cũ</th>
 		</tr>
 		<tr>
 			<th style="width: 15%;"><?php echo $this->lang->line('test_eyes'); ?></th>
@@ -185,7 +216,7 @@
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
-			<th colspan="8" style="text-align:left">Kính đề nghị</th>
+			<th colspan="8" style="text-align:center">Kính đề nghị</th>
 		</tr>
 		<tr>
 			<th style="width: 15%;"><?php echo $this->lang->line('test_eyes'); ?></th>
@@ -433,6 +464,9 @@
 									'value'=>$duration ? $duration : 6)
 							);?>
 						</div>
+						<div class='col-xs-4'>
+						<?php echo form_dropdown('duration_dvt', $duration_dvts, $duration_dvt, array('class'=>'form-control','id'=>'duration_dvt')); ?>
+						</div>
 
 					</div>
 				</td>
@@ -473,7 +507,7 @@
 	<table class="sales_table_100 s-100" id="prescription">
 		<thead>
 		<tr style="text-align:center">
-			<th colspan="5" style="text-align:center"><span class="prescription_title">Đơn Thuốc</span></th>
+			<th colspan="6" style="text-align:center"><span class="prescription_title">Đơn Thuốc</span></th>
 		</tr>
 		<tr class="prescription_head" style="text-align:center">
 			<th style="text-align:center" width="5%"><span >STT</span></th>
@@ -481,35 +515,11 @@
 			<th style="text-align:center"><span >Đơn vị</span></th>
 			<th style="text-align:center"><span >SL</span></th>
 			<th style="text-align:center"><span >Chỉ dẫn dùng</span></th>
+			<th style="text-align:center"><span ></span></th>
 		</tr>
 		</thead>
 		<tbody id="cart_contents2">
-		<?php $pres_max = count($pres_names) < 6? count($pres_names) : 6; 
-			  $cr_thuoc = count($prescription_list); //var_dump($prescription_list);
-		 if($cr_thuoc > 0):	  
-		 for($i=1; $i <= $cr_thuoc; $i++): ?>
-		<tr id="row_<?=$i?>" class="pres_row">
-			<td class="pres_number"><?=$i?></td>
-			<td>
-				<input type="hidden" name="pres_name[]" value="<?=$prescription_list[$i-1]['name']?>" /><?=$prescription_list[$i-1]['name']?>
-			</td>
-			<td>
-				<input type="hidden" name="pres_dvt[]" value="<?=$prescription_list[$i-1]['dvt']?>" /><?=$prescription_list[$i-1]['dvt']?>
-				
-			</td>
-			<td>
-			<?php echo form_input(array(
-							'name'=>'pres_amount[]',
-							'class'=>'input-test pres_sl',
-							'value'=>$prescription_list[$i-1]['sl'])
-					);?>
-			</td>
-			<td>
-			<input type="text" name="pres_hdsd[]" value="<?=$prescription_list[$i-1]['hdsd']?>" />
-			
-			</td>
-		</tr>
-		<?php endfor; endif;?>
+		
 		</tbody>
 	</table>
 	<div id="search-container" class="s-100">
@@ -533,7 +543,7 @@
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
-			<th colspan="2" style="width: 15%;">Thị lực không kính</th>
+			<th colspan="4">Thị lực không kính</th>
 		</tr>
 		</thead>
 		<tbody id="cart_contents">
@@ -541,7 +551,7 @@
 			<td style="width: 15%;"> 				
 				<b><?php echo $this->lang->line('test_right_eye') ?></b>
 			</td>
-			<td>
+			<td style="text-align: left;">
 				<?php echo form_input(array(
 						'name'=>'r_va_o',
 						'class'=>'input-test',
@@ -549,14 +559,45 @@
 						'value'=>'')
 				);?>
 			</td>
-		</tr>
-		<tr>
-			<td>
+			<td style="width: 15%;">
 				<b><?php echo $this->lang->line('test_left_eye') ?></b>
 			</td>
 			<td>
 				<?php echo form_input(array(
 						'name'=>'l_va_o',
+						'class'=>'input-test',
+						'style'=>'width: 155px;',
+						'value'=>'')
+				);?>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<table class="sales_table_100 s-100" id="register">
+		<thead>
+		<tr>
+			<th colspan="4" style="text-align:center">Thị lực kính lỗ</th>
+		</tr>
+		</thead>
+		<tbody id="cart_contents">
+		<tr>
+			<td style="width: 15%;"> 				
+				<b><?php echo $this->lang->line('test_right_eye') ?></b>
+			</td>
+			<td style="text-align:left">
+				<?php echo form_input(array(
+						'name'=>'r_va_lo',
+						'class'=>'input-test',
+						'style'=>'width: 155px;',
+						'value'=>'')
+				);?>
+			</td>
+			<td style="width: 15%;">
+				<b><?php echo $this->lang->line('test_left_eye') ?></b>
+			</td>
+			<td>
+				<?php echo form_input(array(
+						'name'=>'l_va_lo',
 						'class'=>'input-test',
 						'style'=>'width: 155px;',
 						'value'=>'')
@@ -957,6 +998,10 @@
 								'class'=>'input-test',
 								'value'=>6)
 						);?>
+					</div>
+			
+					<div class='col-xs-4'>
+						<?php echo form_dropdown('duration_dvt', $duration_dvts, $duration_dvt, array('class'=>'form-control','id'=>'duration_dvt')); ?>
 					</div>
 
 				</div>

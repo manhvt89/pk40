@@ -5,9 +5,28 @@
 <?php echo form_open($controller_name."/print", array('id'=>'print_test_form', 'class'=>'form-horizontal panel panel-default')); ?>
 <?php if($this->test_lib->get_test_id()):?>
 <table class="precription_header_print">
+	<?php if($this->config->item('test_header') == 1): ?>
+	<thead>
+		<tr>
+			<th colspan="2">
+				<?=$this->config->item('ten_phong_kham')?>
+			</th>
+		</tr>
+		<tr>
+			<th colspan="2">
+				Địa chỉ: <?=$this->config->item('address')?>
+			</th>
+		</tr>
+		<tr>
+			<th colspan="2">
+				Điện thoại: <?=$this->config->item('lien_he')?>
+			</th>
+		</tr>
+	</thead>
+	<?php endif; ?>
 	<tbody>
 		<tr>
-			<td colspan="2" class="print_title">ĐƠN KÍNH</td>
+			<td colspan="2" class="print_title">KẾT QUẢ KHÁM</td>
 		</tr>
 		<tr>
 			<td width="60%">
@@ -30,8 +49,41 @@
 		</tr>
 	</tbody>
 </table>
+<?php if($this->config->item('hien_thi_VA')): ?>
+<table class="sales_table_100" id="print_data" style="margin-bottom: 5px;">
+	<thead>
+		<tr>
+			<th colspan="3" style="text-align: center; border: 0px; background-color: white !important;">
+				THỊ LỰC
+			</th>
+		</tr>
+		<tr>
+			<th style="width: 33%;"></th>
+			<th style="width: 33%;">Mắt phải (R)</th>
+			<th style="width: 34%;">Mắt trái (L)</th>
+		</tr>	
+	</thead>
+	<tbody>
+		<tr>
+			<td style="text-align: left;"><b>Thị lực không kính</b></td>
+			<td><?=$r_va_o?></td>
+			<td><?=$l_va_o?></td>
+		</tr>
+		<tr>
+			<td style="text-align: left;"><b>Thị lực kính lỗ</b></td>
+			<td><?=$r_va_lo?></td>
+			<td><?=$l_va_lo?></td>
+		</tr>
+	</tbody>
+</table>
+<?php endif;?>
 <table class="sales_table_100" id="print_data">
 	<thead>
+		<tr>
+			<th colspan="8" style="text-align: center; border: 0px; background-color: white !important;">
+				ĐƠN KÍNH
+			</th>
+		</tr>
 	<tr>
 		<th style="width: 13%;"><?php echo $this->lang->line('test_eyes'); ?></th>
 		<th style="width: 10%;"><?php echo $this->lang->line('test_sph'); ?></th>
@@ -45,7 +97,7 @@
 	</thead>
 	<tbody id="print_contents">
 		<tr>
-			<td>
+			<td style="text-align: left;">
 				<b>Phải (<?php echo $this->lang->line('test_right_eye') ?>)</b>
 			</td>
 			<td>
@@ -82,7 +134,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td style="text-align: left;">
 				<b>Trái (<?php echo $this->lang->line('test_left_eye') ?>)</b>
 			</td>
 			<td>
@@ -120,7 +172,7 @@
 		</tr>
 	</tbody>
 </table>
-
+<?php if($this->config->item('loai_mat_kinh') ==1): ?>
 <table class="sales_table_100" id="body_precription">
 	<thead>
 	<tr>
@@ -186,11 +238,11 @@
 		</tr>
 	</tbody>
 </table>
-
+<?php endif;?>
 <table class="sales_table_100" id="footer_precription">
 	<thead>
 	<tr>
-		<th colspan="3">Đơn thuốc/Ghi chú</th>
+		<th colspan="3"><?php if($note != ''){ echo mb_strtoupper($this->lang->line('test_note')); }?></th>
 	</tr>
 	</thead>
 	<tbody id="footer_precription_contents">
@@ -212,6 +264,11 @@
 				if($cr_thuoc > 0): ?>
 			<table class="sales_table_100 s-100" id="prescription-print">
 				<thead>
+					<tr>
+						<th colspan="5" style="border: 0px; background-color: white !important;">
+							ĐƠN THUỐC
+						</th>
+					</tr>
 				<tr class="prescription_head" style="text-align:center">
 					<th style="text-align:center" width="5%"><span >STT</span></th>
 					<th style="text-align:center"><span >Tên thuốc</span></th>
@@ -255,17 +312,17 @@
 		</tr>
 	<tr>
 		<td class="precription_note" colspan="3">
-			<b>Chú ý: </br></b>
-			<p>Khám lại sau <?php echo $duration; ?> tháng, khi đi nhớ mang theo đơn này.</p>
+			<b>Chú ý: </b>Khám lại sau <?php echo $duration; ?> <?=$duration_dvt?>, khi đi nhớ mang theo đơn này.
 		</td>
 	</tr>
 		<tr><td colspan="3" style="text-align: right;"><?=$this->config->item('default_city')?>, ngày <?php echo date('d',$test_time); ?> tháng <?php echo date('m',$test_time); ?> năm <?php echo date('Y',$test_time); ?>.
 				<br/><br/><br/></td></tr>
 	<tr>
 		<td style="text-align: center; vertical-align: bottom"><b>Bác sĩ</b></td>
-		<td width="30%" style="text-align: center; vertical-align: bottom"><b>Y tá</b></td>
+		<td width="30%" style="text-align: center; vertical-align: bottom">
+			<b><?php if($this->config->item('test_display_nurse')==1): ?>Y tá<?php endif; ?></b></td>
 		<td width="30%" style="text-align: center">
-			<b>Khúc xạ viên</b></td>
+			<b><?php if($this->config->item('test_display_kxv')==1): ?>Khúc xạ viên<?php endif; ?></b></td>
 	</tr>
 	</tbody>
 </table>

@@ -823,7 +823,8 @@ function print_barcode_mat_2x75($items,$barcode_config)
 			{
 				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
 			}
-			$_sHtml = $_sHtml . '<div class="2" style=" width: 33mm; text-align: center;float: left; margin:0px; padding: 0mm 1mm 0mm 2mm ">';
+			//$_sHtml = $_sHtml . '<div class="2" style=" width: 33mm; text-align: center;float: left; margin:0px; padding: 0mm 1mm 0mm 2mm ">';
+            $_sHtml = $_sHtml . '<div class="2" style=" width: 35mm; text-align: center;float: left; margin:0mm 1mm 0mm 1mm; padding: 0mm 0mm 0mm 0mm ">';
 			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_lens($item, $barcode_config);
 			$_sHtml = $_sHtml . '</div>';
 		    ++$count; 

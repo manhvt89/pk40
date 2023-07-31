@@ -361,7 +361,12 @@ class Testex extends CI_Model
 		if(!isset($items['test_time'])) {
 			$items['test_time'] = time();
 		}
-		$items['expired_date'] = $items['test_time'] + $items['duration']*24*30*3600;
+		if(is_numeric($items['duration']))
+		{
+			$items['expired_date'] = $items['test_time'] + $items['duration']*24*30*3600;
+		} else {
+			$items['expired_date'] = $items['test_time'];
+		}
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
