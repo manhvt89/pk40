@@ -316,7 +316,7 @@
 		</td>
 	</tr>
 		<tr><td colspan="3" style="text-align: right;"><?=$this->config->item('default_city')?>, ngày <?php echo date('d',$test_time); ?> tháng <?php echo date('m',$test_time); ?> năm <?php echo date('Y',$test_time); ?>.
-				<br/><br/><br/></td></tr>
+				</td></tr>
 	<tr>
 		<td style="text-align: center; vertical-align: bottom">
 			<?php if($this->config->item('test_display_kxv')==1): ?><b>Khúc xạ viên</b><?php endif; ?>
@@ -324,7 +324,7 @@
 		<td width="30%" style="text-align: center; vertical-align: bottom">
 			<b><?php if($this->config->item('test_display_nurse')==1): ?>Y tá<?php endif; ?></b></td>
 		<td width="50%" style="text-align: center">
-			<b>Bác sĩ</b></br>
+			<b>Bác sĩ</b></br><br/><br/><br/>
 			<?php if($this->config->item('hien_thi_ten_bac_si')==1): ?><b><?=$this->config->item('ten_bac_si')?></b><?php endif; ?>
 		</td>
 	</tr>
