@@ -325,7 +325,7 @@
 			<b><?php if($this->config->item('test_display_nurse')==1): ?>Y tá<?php endif; ?></b></td>
 		<td width="50%" style="text-align: center">
 			<b>Bác sĩ</b></br><br/><br/><br/>
-			<?php if($this->config->item('hien_thi_ten_bac_si')==1): ?><b><?=$this->config->item('ten_bac_si')?></b><?php endif; ?>
+			<?php if($this->config->item('hien_thi_ten_bac_si')==1): ?><?=$this->config->item('ten_bac_si')?><?php endif; ?>
 		</td>
 	</tr>
 	</tbody>
