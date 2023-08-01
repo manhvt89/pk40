@@ -32,7 +32,7 @@
 			<td width="60%">
 				<table>
 					<tr>
-						<td>Tên khách hàng: <?php echo 	$customer;?></td>
+						<td>Họ tên: <?php echo 	$customer;?></td>
 					</tr>
 					<tr>
 						<td>Địa chỉ: <?php echo $customer_address; ?></td>
