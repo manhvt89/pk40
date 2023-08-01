@@ -3,7 +3,7 @@
 $lang["test_new"] = "Thêm mới";
 $lang['test_test_time'] = "Ngày tháng";
 $lang['test_customer_name'] = "Tên khách hàng";
-$lang['test_note'] = "Chuẩn đoán";
+$lang['test_note'] = "Chẩn đoán";
 $lang['test_right_e'] = "Mắt phải (R)";
 $lang['test_left_e'] = "Mắt trái (L)";
 $lang['test_toltal'] = "Tầm nhìn";
