@@ -409,7 +409,10 @@ class Test extends Secure_Controller
                 //var_dump($test);
                 $data['toltal'] = explode(';', $test['toltal']);
                 $data['duration'] = $test['duration'];
-				$data['duration_dvt'] = $test['duration_dvt'];
+				if(!empty($test['duration_dvt']))
+				{
+					$data['duration_dvt'] = $test['duration_dvt'];
+				}
                 $data['code'] = $test['code'];
                 $data['lens_type'] = explode(';', $test['lens_type']);
                 $data['type'] = $test['type'];
