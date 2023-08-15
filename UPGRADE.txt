@@ -53,15 +53,7 @@ Roles/mod_add
 Roles/mod_view
 Roles/mod_edit
 
----------------------------------------------
-Cuối tuần Update lên các phần mềm. tongkho, 157, kmviethan, (nhi 3 cửa hàng)
-
-- Update các loại báo cáo.
-- Xây dựng thêm module quản lý công nợ;
-- Xây dựng module KPI;
-- Xây dựng module HR;
-- Xây dựng module quản lý survey;
-- Xây dựng module quản lý điểm;
+--------------------------------------------
 --------------------------
 
 15/08/2023
