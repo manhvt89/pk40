@@ -1,9 +1,4 @@
-
-
 Update
-15/08/2023
-- Nâng cấp đơn thuốc phục vụ phòng khám.
-
 19/10/2022
 - Update QRCode on <i class="fas fa-money-bill    ">Bill</i>
 - Update Sales models
@@ -68,3 +63,6 @@ Cuối tuần Update lên các phần mềm. tongkho, 157, kmviethan, (nhi 3 c�
 - Xây dựng module quản lý survey;
 - Xây dựng module quản lý điểm;
 --------------------------
+
+15/08/2023
+- Nâng cấp đơn thuốc phục vụ phòng khám.
