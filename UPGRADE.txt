@@ -1,5 +1,8 @@
 
+
 Update
+15/08/2023
+- Nâng cấp đơn thuốc phục vụ phòng khám.
 
 19/10/2022
 - Update QRCode on <i class="fas fa-money-bill    ">Bill</i>
