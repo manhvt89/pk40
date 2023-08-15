@@ -37,6 +37,9 @@
 					<tr>
 						<td>Địa chỉ: <?php echo $customer_address; ?></td>
 					</tr>
+					<tr>
+						<td>Năm sinh: <?php echo $age; ?></td>
+					</tr>
 				</table>
 				
 			</td>

@@ -545,7 +545,7 @@ class Sales extends Secure_Controller
 					$this->_reload($data);
 				} else {
 					$data1 = array();
-					$data1['status'] = $status;
+					$data1['status'] = $status; //1 Trạng thái xuất đơn hàng
 					// Lưu thông tin vào bản ghi Sale
 					$ctv_id = $this->input->post('ctvs');
 					$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : null;

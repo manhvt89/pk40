@@ -377,8 +377,8 @@ $(document).ready(function()
     var searchResults = [];
 
     if (searchQuery.length > 0) {
-      searchResults = medicationList.filter(function(medication) {
-        return medication.name.toLowerCase().includes(searchQuery);
+      	searchResults = medicationList.filter(function(medication) {
+        	return medication.name.toLowerCase().includes(searchQuery);
       });
     }
 
@@ -387,7 +387,9 @@ $(document).ready(function()
 
   // Thêm thuốc vào đơn thuốc
   $('#search-results').on('click', 'li', function() {
-    var medicationName = $(this).text();
+    var myArray = $(this).text().split(" | ");
+	var medicationName = myArray[0];
+	console.log(medicationName);
     var medication = medicationList.find(function(medication) {
       return medication.name === medicationName;
     });
@@ -455,7 +457,7 @@ $(document).ready(function()
 
     searchResults.forEach(function(result) {
       var $resultItem = $('<li></li>');
-      $resultItem.text(result.name);
+      $resultItem.text(result.name + ' | Số lượng: '+result.sl);
       $searchResults.append($resultItem);
     });
   }
