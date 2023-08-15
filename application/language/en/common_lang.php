@@ -2,8 +2,8 @@
 $lang['module_customer_info'] = 'Tìm thông tin bảo hành';
 $lang['module_customer_info_desc'] = 'Tìm thông tin bảo hành';
 $lang['customer_info_no_customer_info_to_display'] = 'Không tìm thấy thông tin khách hàng này';
-$lang['common_age_required'] = 'Cần phải nhập tuổi của bệnh nhân';
-$lang['common_age'] = "Tuổi";
+$lang['common_age_required'] = 'Cần phải nhập năm sinh của bệnh nhân';
+$lang['common_age'] = "Năm sinh";
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_city"] = "Tỉnh";

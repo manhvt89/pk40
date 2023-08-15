@@ -58,3 +58,5 @@ Roles/mod_edit
 
 15/08/2023
 - Nâng cấp đơn thuốc phục vụ phòng khám.
+- Chuyển Tuổi sang năm sinh
+ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0'; 

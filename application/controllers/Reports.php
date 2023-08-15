@@ -3625,6 +3625,11 @@ class Reports extends Secure_Controller
 
         $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
         $headers = $this->xss_clean($model->_getDataColumns());
+        if($this->Employee->has_grant('items_unitprice_hide'))
+        {
+            //unset();
+            unset($headers['details'][5]); //cost_price
+        }
         //var_dump($headers);
         $report_data = $model->_getData($inputs);
         $data = null;
@@ -3650,7 +3655,13 @@ class Reports extends Secure_Controller
 
                 foreach($report_data['details'][$key] as $drow)
                 {
-                    $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    if($this->Employee->has_grant('items_unitprice_hide'))
+                    {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    
+                    } else {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    }
                 }
                 $i++;
             }
@@ -3772,6 +3783,10 @@ class Reports extends Secure_Controller
 
         $headers = $this->xss_clean($model->_getDataColumns());
         //var_dump($headers);
+        if($this->Employee->has_grant('items_unitprice_hide'))
+        {
+            unset($headers['details'][5]); //remove giá vốn
+        }
         $report_data = $model->_getData($inputs);
         $data = null;
         if(!$report_data)
@@ -3794,7 +3809,12 @@ class Reports extends Secure_Controller
                 ));
                 foreach($report_data['details'][$key] as $drow)
                 {
-                    $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    if($this->Employee->has_grant('items_unitprice_hide'))
+                    {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    } else {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    }
                 }
                 $i++;
             }
@@ -3845,6 +3865,10 @@ class Reports extends Secure_Controller
         $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
         $headers = $this->xss_clean($model->_getDataColumns());
         //var_dump($headers);
+        if($this->Employee->has_grant('items_unitprice_hide'))
+        {
+            unset($headers['details'][5]); //remove giá vốn
+        }
         $report_data = $model->_getData($inputs);
         $data = null;
         if(!$report_data)
@@ -3869,7 +3893,12 @@ class Reports extends Secure_Controller
 
                 foreach($report_data['details'][$key] as $drow)
                 {
-                    $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    if($this->Employee->has_grant('items_unitprice_hide'))
+                    {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    } else {
+                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                    }
                 }
                 $i++;
             }
