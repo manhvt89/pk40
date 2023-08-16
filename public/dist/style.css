@@ -87,7 +87,7 @@
 
 #prescription-print tr td:nth-child(4) {
     width: 45px;
-    text-align: right;
+    text-align: center;
     padding-right: 8px;
 }
 
