@@ -893,8 +893,21 @@ function print_barcode_gong_2x2x105($items,$barcode_config)
 	
     if (!empty($items)) {
 			$count = 0;
+            $index = 0;
 	        $columns = 2;
-			foreach ($items as $item) {
+            $_aItems = [];
+            
+
+            foreach ($items as $item) {
+                
+                if ($count % $columns == 0 and $count != 0) {
+					$index++;
+				}
+                $_aItems[$index][] = $item;
+                $count++;
+            }
+            $count = 0;
+			foreach ($_aItems as $item) {
 				if ($count % $columns == 0 and $count != 0) {
 					
 					$_sHtml = $_sHtml . '<div class="pagebreak"></div>';
