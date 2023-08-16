@@ -344,7 +344,7 @@ $(document).ready(function()
 		var $col_name = $('<td><input name="pres_name[]" type="hidden" value="'+medication.name+'"/>'+medication.name+'</td>');
 		var $col_dvt = $('<td><input name="pres_dvt[]" type="hidden" value="'+medication.dvt+'"/>'+medication.dvt+'</td>');
 		var $col_sl = $('<td><input name="pres_amount[]" type="number" maxlength="4" size="4" value="'+medication.sl+'"/></td>');
-		var $col_hdsd = $('<td><input name="pres_hdsd[]" type="text" maxlength="250" size="45" value="'+medication.hdsd+'"/></td>');
+		var $col_hdsd = $('<td><input name="pres_hdsd[]" type="text" maxlength="250" size="25" value="'+medication.hdsd+'"/></td>');
 		$newPrescriptionItem.append($col_stt);
 		$newPrescriptionItem.append($col_name);
 		$newPrescriptionItem.append($col_dvt);
