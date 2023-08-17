@@ -63,3 +63,8 @@ ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLAT
 
 - Ẩn giá vốn báo cáo gọng/kính mát
 - Thêm năm sinh kết quả khám
+
+17/08/2023
+- Cập nhật kết quả khám.
++ app.php
++ /form_print.php
