@@ -68,3 +68,8 @@ ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLAT
 - Cập nhật kết quả khám.
 + app.php
 + /form_print.php
+18/08/2023
+- Cập nhật file app.php
+$config['Location_Barcode'] = '';
+- countrollers/Barcode.php
+
