@@ -195,7 +195,7 @@ class Barcode_lib
 		return $display_table;
 	}
 
-	public function _display_barcode_1x75($item, $barcode_config) // @gong 2x75
+	public function _display_barcode_1x75($item, $barcode_config) // @gong 1x75
 	{
 		//var_dump($item);die();
 		$item['unit_price'] = $item['price'];

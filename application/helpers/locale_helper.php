@@ -791,13 +791,13 @@ function print_barcode_gong_2x105($items,$barcode_config)
 function print_barcode_gong_1x75($items,$barcode_config)
 {
     $CI =& get_instance();
-    $_sHtml = '<div style=" width: 75mm; margin:auto; border: blue 1px dot; overflow: hidden;">';
+    $_sHtml = '<div style=" width: 75mm; margin:auto; border: green 0px solid; overflow: hidden;">';
 
     if (!empty($items)) {
 			$count = 0;
 			foreach ($items as $item) {
 
-                $_sHtml = $_sHtml . '<div class="2" style="border: 1px blue dot;  width: 50mm; height:45mm; float:left; text-align: center; transform: rotate(270deg);margin:0mm 0mm 0mm 0mm;">';
+                $_sHtml = $_sHtml . '<div class="2" style="border: green 0px solid;  width: 52mm; height:35mm; float:left; text-align: center; transform: rotate(270deg);margin:0mm 0mm 0mm 0mm;">';
                 $_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_1x75($item, $barcode_config);
                 $_sHtml = $_sHtml .'</div>';
                 $_sHtml = $_sHtml . '<div style="clear:left"></div><div class="pagebreak"></div>';
