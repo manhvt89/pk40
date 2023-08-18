@@ -172,7 +172,7 @@ class Barcodes extends Secure_Controller
 		//$item_ids = explode(':', $item_ids);
 		$results = $this->printbarcode_lib->get_cart();
 		$config = $this->barcode_lib->get_barcode_config();
-		$config['location'] = 'Cơ sở 1';
+		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
 		$data['barcode_config'] = $config;
 
