@@ -39,11 +39,11 @@
 }
 
 @font-face {
-    font-family: 'LibreBarcode128-Regular';
-    src: url('../fonts/LibreBarcode128-Regular.ttf');
-    src: url('../fonts/LibreBarcode128-Regular.ttf') format('truetype');
+    font-family: 'BarcodeFont';
+    src: url('../fonts/BarcodeFont.ttf');
+    src: url('../fonts/BarcodeFont.ttf') format('truetype');
 }
 
 .LibreBarcode128 {
-    font-family: 'LibreBarcode128-Regular' !important;
+    font-family: 'BarcodeFont' !important;
 }
