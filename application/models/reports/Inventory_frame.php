@@ -103,7 +103,7 @@ class Inventory_frame extends Report
 
 	public function _getDataColumns()
 	{
-		return array(
+		return [
 
             'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
@@ -114,16 +114,17 @@ class Inventory_frame extends Report
 				array('end_quantity' => 'Cuối kỳ'),
 				
 			),
-            'details' => array(
-                $this->lang->line('reports_item_name'),
-                $this->lang->line('reports_item_number'),
-                $this->lang->line('reports_quantity'),
-                $this->lang->line('reports_reorder_level'),
-                $this->lang->line('reports_stock_location'),
-                $this->lang->line('reports_cost_price'), //Giá vốn
-                $this->lang->line('reports_unit_price'),
-                $this->lang->line('reports_sub_total_value'))
-		            );
+            'details' => [
+                'name'=>$this->lang->line('reports_item_name'),
+                'item_number'=>$this->lang->line('reports_item_number'),
+                'quantity'=>$this->lang->line('reports_quantity'),
+                'reoder_level'=>$this->lang->line('reports_reorder_level'),
+                'location'=>$this->lang->line('reports_stock_location'),
+                'cost_price'=>$this->lang->line('reports_cost_price'), //Giá vốn
+            	'unit_price'=>$this->lang->line('reports_unit_price'),
+                'sub_total'=>$this->lang->line('reports_sub_total_value')
+		            ]
+				];
 	}
 
 	public function _getData(array $inputs)

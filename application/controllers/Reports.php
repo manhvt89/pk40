@@ -3628,7 +3628,8 @@ class Reports extends Secure_Controller
         if($this->Employee->has_grant('items_unitprice_hide'))
         {
             //unset();
-            unset($headers['details'][5]); //cost_price
+            unset($headers['details']['cost_price']); //cost_price
+            unset($headers['details']['sub_total']); //cost_price
         }
         //var_dump($headers);
         $report_data = $model->_getData($inputs);
@@ -3658,10 +3659,31 @@ class Reports extends Secure_Controller
                     //var_dump(to_currency($drow['unit_price']));die();
                     if($this->Employee->has_grant('items_unitprice_hide'))
                     {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], '',to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                        $details_data[$i][] = $this->xss_clean(
+                            [
+                                'name'=>$drow['name'], 
+                                'item_number'=>$drow['item_number'], 
+                                'quality'=>number_format($drow['quantity']), 
+                                'reorder_level'=>number_format($drow['reorder_level']), 
+                                'location'=>$drow['location_name'],
+                                //'cost_price'=>to_currency($drow['cost_price']),
+                                'unit_price'=>to_currency($drow['unit_price']), 
+                                //'sub_total'=>to_currency($drow['sub_total_value'])
+                            ]);
                     
                     } else {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       // $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       $details_data[$i][] = $this->xss_clean(
+                        [
+                            'name'=>$drow['name'], 
+                            'item_number'=>$drow['item_number'], 
+                            'quality'=>number_format($drow['quantity']), 
+                            'reorder_level'=>number_format($drow['reorder_level']), 
+                            'location'=>$drow['location_name'],
+                            'cost_price'=>to_currency($drow['cost_price']),
+                            'unit_price'=>to_currency($drow['unit_price']), 
+                            'sub_total'=>to_currency($drow['sub_total_value'])
+                        ]);
                     }
                 }
                 $i++;
