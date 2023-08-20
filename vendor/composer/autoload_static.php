@@ -32,6 +32,10 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
             'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
         ),
+        'H' => 
+        array (
+            'Hbgl\\Barcode\\' => 13,
+        ),
         'D' => 
         array (
             'Dompdf\\' => 7,
@@ -39,6 +43,8 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         'C' => 
         array (
             'Complex\\' => 8,
+            'Com\\Tecnick\\Color\\' => 18,
+            'Com\\Tecnick\\Barcode\\' => 20,
         ),
     );
 
@@ -57,8 +63,8 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -76,6 +82,10 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Hbgl\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hbgl/php-code-128-encoder/src',
+        ),
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
@@ -83,6 +93,14 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+        'Com\\Tecnick\\Color\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tecnickcom/tc-lib-color/src',
+        ),
+        'Com\\Tecnick\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tecnickcom/tc-lib-barcode/src',
         ),
     );
 
