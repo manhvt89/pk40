@@ -39,10 +39,10 @@
 }
 
 @font-face {
-    font-family: 'BarcodeFont';
+    font-family: 'code128';
     src: url('../fonts/code128.ttf') format('truetype');
 }
 
 .LibreBarcode128 {
-    font-family: 'BarcodeFont' !important;
+    font-family: 'code128' !important;
 }
