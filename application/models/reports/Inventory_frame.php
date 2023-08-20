@@ -213,7 +213,7 @@ class Inventory_frame extends Report
         $data['details'] = array();
         foreach($data['summary'] as $key=>$value)
         {
-            $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
+            $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value');
             $this->db->from('items AS items');
             $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
             $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');

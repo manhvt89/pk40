@@ -3629,7 +3629,7 @@ class Reports extends Secure_Controller
         {
             //unset();
             unset($headers['details']['cost_price']); //cost_price
-            unset($headers['details']['sub_total']); //cost_price
+            //unset($headers['details']['sub_total']); //cost_price
         }
         //var_dump($headers);
         $report_data = $model->_getData($inputs);
@@ -3668,7 +3668,7 @@ class Reports extends Secure_Controller
                                 'location'=>$drow['location_name'],
                                 //'cost_price'=>to_currency($drow['cost_price']),
                                 'unit_price'=>to_currency($drow['unit_price']), 
-                                //'sub_total'=>to_currency($drow['sub_total_value'])
+                                'sub_total'=>to_currency($drow['sub_total_value'])
                             ]);
                     
                     } else {
