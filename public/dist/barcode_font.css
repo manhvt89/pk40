@@ -40,8 +40,7 @@
 
 @font-face {
     font-family: 'BarcodeFont';
-    src: url('../fonts/BarcodeFont.ttf');
-    src: url('../fonts/BarcodeFont.ttf') format('truetype');
+    src: url('../fonts/LibreBarcode128Text-Regular.ttf') format('truetype');
 }
 
 .LibreBarcode128 {
