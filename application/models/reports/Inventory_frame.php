@@ -120,7 +120,7 @@ class Inventory_frame extends Report
                 $this->lang->line('reports_quantity'),
                 $this->lang->line('reports_reorder_level'),
                 $this->lang->line('reports_stock_location'),
-                $this->lang->line('reports_cost_price'),
+                $this->lang->line('reports_cost_price'), //Giá vốn
                 $this->lang->line('reports_unit_price'),
                 $this->lang->line('reports_sub_total_value'))
 		            );
