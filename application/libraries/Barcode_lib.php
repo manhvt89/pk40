@@ -202,16 +202,16 @@ class Barcode_lib
 		$item['unit_price'] = $item['price'];
 		$barcode_config['barcode_width'] = 0;
 		$display_table = "<div class='print-barcode_1' style='width:52mm; height:14mm'>";
-		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
+		$display_table .= "<div align='center' style='font-size:10px'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
 		/*
 		$barcode = $this->generate_barcode($item, $barcode_config);
 		$display_table .= "<div align='center' style='font-size:14px'><img src='data:image/JPEG;base64,$barcode' /></div></tr>";
 		*/
 		if($item['item_number'] != '') {
-			$display_table .= "<div align='center' style='font-size:35px' class='LibreBarcode128'>" . Code128Encoder::encode($item['item_number']) . "</div></tr>";
+			$display_table .= "<div align='center' style='font-size:32px' class='LibreBarcode128'>" . Code128Encoder::encode($item['item_number']) . "</div></tr>";
 		}
-		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
-		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . " </b></div>";
+		$display_table .= "<div align='center' style='font-size:14px; line-height:12px;'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
+		$display_table .= "<div align='center' style='font-size:14px; line-height:12px;'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . " </b></div>";
 		$display_table .= "</div>";
 
 		$display_table .= "<div class='print-barcode_2' style='width:50mm; height:15mm; margin: 0mm 0mm 0mm 0mm; padding-bottom: 0mm'>";
