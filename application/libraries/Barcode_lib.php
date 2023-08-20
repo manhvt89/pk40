@@ -208,7 +208,7 @@ class Barcode_lib
 		$display_table .= "<div align='center' style='font-size:14px'><img src='data:image/JPEG;base64,$barcode' /></div></tr>";
 		*/
 		if($item['item_number'] != '') {
-			$display_table .= "<div align='center' style='font-size:29px' class='LibreBarcode128'>" . Code128Encoder::encode($item['item_number']) . "</div></tr>";
+			$display_table .= "<div align='center' style='font-size:35px' class='LibreBarcode128'>" . Code128Encoder::encode($item['item_number']) . "</div></tr>";
 		}
 		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
 		$display_table .= "<div align='center' style='font-size:9px'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . " </b></div>";
