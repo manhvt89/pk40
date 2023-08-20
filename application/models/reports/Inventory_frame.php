@@ -117,7 +117,7 @@ class Inventory_frame extends Report
             'details' => [
                 'name'=>$this->lang->line('reports_item_name'),
                 'item_number'=>$this->lang->line('reports_item_number'),
-                'quatity'=>$this->lang->line('reports_quantity'),
+                'quantity'=>$this->lang->line('reports_quantity'),
                 'reoder_level'=>$this->lang->line('reports_reorder_level'),
                 'location'=>$this->lang->line('reports_stock_location'),
                 'cost_price'=>$this->lang->line('reports_cost_price'), //Giá vốn

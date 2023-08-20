@@ -3663,7 +3663,7 @@ class Reports extends Secure_Controller
                             [
                                 'name'=>$drow['name'], 
                                 'item_number'=>$drow['item_number'], 
-                                'quality'=>number_format($drow['quantity']), 
+                                'quantity'=>number_format($drow['quantity']),
                                 'reorder_level'=>number_format($drow['reorder_level']), 
                                 'location'=>$drow['location_name'],
                                 //'cost_price'=>to_currency($drow['cost_price']),
