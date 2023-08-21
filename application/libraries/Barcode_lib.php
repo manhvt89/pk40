@@ -248,9 +248,9 @@ class Barcode_lib
 		$_sFirstname = '';
 		for($i = 0; $i < $_iLength - 2 ; $i++)
 		{
-			$_sFirstname = $_sFirstname . $_aNames[$i];
+			$_sFirstname = $_sFirstname .' ' .$_aNames[$i];
 		}
-		
+		$_sFirstname = trim($_sFirstname); //clear blank
 		
 		//$display_table .= "<div style='width:100%; font-size:9px; padding-bottom: 5px;' align='center'>" . $this->manage_display_layout_lens($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
 		$display_table .= "<div style='width:100%; font-size:10px; padding-bottom: 0px;' align='center'>" . $_sFirstname . "</div>";
