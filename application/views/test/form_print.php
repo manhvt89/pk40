@@ -58,130 +58,152 @@
 	</tbody>
 </table>
 	<?php if($this->config->item('hien_thi_VA')): ?>
-		<table class="sales_table_100" id="print_data" style="margin-bottom: 5px; <?=$_sFont_size?>">
-		<thead>
-			<tr>
-				<th colspan="3" style="text-align: center; border: 0px; background-color: white !important;">
-					THỊ LỰC
-				</th>
-			</tr>
-			<tr>
-				<th style="width: 33%;"></th>
-				<th style="width: 33%;">Mắt phải (R)</th>
-				<th style="width: 34%;">Mắt trái (L)</th>
-			</tr>	
-		</thead>
-		<tbody>
-			<tr>
-				<td style="text-align: left;"><b>Thị lực không kính</b></td>
-				<td><?=$r_va_o?></td>
-				<td><?=$l_va_o?></td>
-			</tr>
-			<tr>
-				<td style="text-align: left;"><b>Thị lực kính lỗ</b></td>
-				<td><?=$r_va_lo?></td>
-				<td><?=$l_va_lo?></td>
-			</tr>
-		</tbody>
-	</table>
+		<?php if( (trim($r_va_o) != '') || (trim($l_va_o) != '') || (trim($r_va_lo) != '') || (trim($l_va_lo) != '')):  ?>
+			<table class="sales_table_100" id="print_data" style="margin-bottom: 5px; <?=$_sFont_size?>">
+				<thead>
+					<tr>
+						<th colspan="3" style="text-align: center; border: 0px; background-color: white !important;">
+							THỊ LỰC
+						</th>
+					</tr>
+					<tr>
+						<th style="width: 33%;"></th>
+						<th style="width: 33%;">Mắt phải (R)</th>
+						<th style="width: 34%;">Mắt trái (L)</th>
+					</tr>	
+				</thead>
+				<tbody>
+					<tr>
+						<td style="text-align: left;"><b>Thị lực không kính</b></td>
+						<td><?=$r_va_o?></td>
+						<td><?=$l_va_o?></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;"><b>Thị lực kính lỗ</b></td>
+						<td><?=$r_va_lo?></td>
+						<td><?=$l_va_lo?></td>
+					</tr>
+				</tbody>
+			</table>
+		<?php endif; ?>
 	<?php endif; ?>
 	<?php if($this->config->item('hien_thi_kinh_cu')):?>
-		<table class="sales_table_100" id="print_data" style="<?=$_sFont_size?>">
-		<thead>
+		<?php if( (trim($right_e_old['SPH']) != '') 
+					|| (trim($right_e_old['CYL']) != '')
+					|| (trim($right_e_old['AX']) != '') 
+					|| (trim($right_e_old['ADD']) != '')
+					|| (trim($right_e_old['VA']) != '') 
+					|| (trim($right_e_old['PD']) != '')
+					|| (trim($left_e_old['SPH']) != '') || (trim($left_e_old['CYL']) != '') 
+					|| (trim($left_e_old['AX']) != '') || (trim($left_e_old['ADD']) != '')
+					|| (trim($left_e_old['VA']) != '') || (trim($left_e_old['PD']) != '')):  ?>
+			<table class="sales_table_100" id="print_data" style="<?=$_sFont_size?>">
+			<thead>
+				<tr>
+					<th colspan="8" style="text-align: center; border: 0px; background-color: white !important;">
+						KÍNH CŨ
+					</th>
+				</tr>
 			<tr>
-				<th colspan="8" style="text-align: center; border: 0px; background-color: white !important;">
-					KÍNH CŨ
-				</th>
+				<th style="width: 13%;"><?php echo $this->lang->line('test_eyes'); ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('test_sph'); ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('test_cyl'); ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('test_ax'); ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('test_add'); ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('test_va'); ?></th>
+				<th style="width: 9%;"><?php echo $this->lang->line('test_pd'); ?></th>
+				<th style="width: 28%;"></th>
 			</tr>
-		<tr>
-			<th style="width: 13%;"><?php echo $this->lang->line('test_eyes'); ?></th>
-			<th style="width: 10%;"><?php echo $this->lang->line('test_sph'); ?></th>
-			<th style="width: 10%;"><?php echo $this->lang->line('test_cyl'); ?></th>
-			<th style="width: 10%;"><?php echo $this->lang->line('test_ax'); ?></th>
-			<th style="width: 10%;"><?php echo $this->lang->line('test_add'); ?></th>
-			<th style="width: 10%;"><?php echo $this->lang->line('test_va'); ?></th>
-			<th style="width: 9%;"><?php echo $this->lang->line('test_pd'); ?></th>
-			<th style="width: 28%;"></th>
-		</tr>
-		</thead>
-		<tbody id="print_contents">
-			<tr>
-				<td style="text-align: left;">
-					<b>Phải (<?php echo $this->lang->line('test_right_eye') ?>)</b>
-				</td>
-				<td>
-					<?php echo ($right_e_old['SPH']==0)? "PLANO": $right_e_old['SPH'];?>
-				</td>
-				<td>
-					<?php echo $right_e_old['CYL'];?>
-				</td>
-				<td>
-					<?php echo $right_e_old['AX'];?>
-				</td>
-				<td>
-					<?php echo $right_e_old['ADD'];?>
-				</td>
-				<td>
-					<?php echo $right_e_old['VA'];?>
-				</td>
-				<td>
-					<?php echo $right_e_old['PD'];?>
-				</td>
-				<td>
-					<div class="form-group form-group-sm">
+			</thead>
+			<tbody id="print_contents">
+				<tr>
+					<td style="text-align: left;">
+						<b>Phải (<?php echo $this->lang->line('test_right_eye') ?>)</b>
+					</td>
+					<td>
+						<?php echo ($right_e_old['SPH']==0)? "PLANO": $right_e_old['SPH'];?>
+					</td>
+					<td>
+						<?php echo $right_e_old['CYL'];?>
+					</td>
+					<td>
+						<?php echo $right_e_old['AX'];?>
+					</td>
+					<td>
+						<?php echo $right_e_old['ADD'];?>
+					</td>
+					<td>
+						<?php echo $right_e_old['VA'];?>
+					</td>
+					<td>
+						<?php echo $right_e_old['PD'];?>
+					</td>
+					<td>
+						<div class="form-group form-group-sm">
 
-						<div class='col-xs-1'>
-							<?php echo form_checkbox(array(
-									'name'=>'distance',
-									'id'=>'distance',
-									'value'=>"Nhìn xa",
-									'checked'=> $old_toltal[0]? 1: 0)
-							);?>
+							<div class='col-xs-1'>
+								<?php echo form_checkbox(array(
+										'name'=>'distance',
+										'id'=>'distance',
+										'value'=>"Nhìn xa",
+										'checked'=> $old_toltal[0]? 1: 0)
+								);?>
+							</div>
+							<?php echo form_label($this->lang->line('test_distance'), 'distance', array('class'=>'control-label col-xs-9')); ?>
 						</div>
-						<?php echo form_label($this->lang->line('test_distance'), 'distance', array('class'=>'control-label col-xs-9')); ?>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: left;">
-					<b>Trái (<?php echo $this->lang->line('test_left_eye') ?>)</b>
-				</td>
-				<td>
-					<?php echo ($left_e_old['SPH']==0)?'PLANO': $left_e_old['SPH'];?>
-				</td>
-				<td>
-					<?php echo $left_e_old['CYL'];?>
-				</td>
-				<td>
-					<?php echo $left_e_old['AX'];?>
-				</td>
-				<td>
-					<?php echo $left_e_old['ADD'];?>
-				</td>
-				<td>
-					<?php echo $left_e_old['VA'];?>
-				</td>
-				<td>
-					<?php echo $left_e_old['PD'];?>
-				</td>
-				<td>
-					<div class="form-group form-group-sm">
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">
+						<b>Trái (<?php echo $this->lang->line('test_left_eye') ?>)</b>
+					</td>
+					<td>
+						<?php echo ($left_e_old['SPH']==0)?'PLANO': $left_e_old['SPH'];?>
+					</td>
+					<td>
+						<?php echo $left_e_old['CYL'];?>
+					</td>
+					<td>
+						<?php echo $left_e_old['AX'];?>
+					</td>
+					<td>
+						<?php echo $left_e_old['ADD'];?>
+					</td>
+					<td>
+						<?php echo $left_e_old['VA'];?>
+					</td>
+					<td>
+						<?php echo $left_e_old['PD'];?>
+					</td>
+					<td>
+						<div class="form-group form-group-sm">
 
-						<div class='col-xs-1'>
-							<?php echo form_checkbox(array(
-									'name'=>'reading',
-									'id'=>'reading',
-									'value'=>"Nhìn gần",
-									'checked'=> $old_toltal[1]?1:0)
-							);?>
+							<div class='col-xs-1'>
+								<?php echo form_checkbox(array(
+										'name'=>'reading',
+										'id'=>'reading',
+										'value'=>"Nhìn gần",
+										'checked'=> $old_toltal[1]?1:0)
+								);?>
+							</div>
+							<?php echo form_label($this->lang->line('test_reading'), 'reading', array('class'=>'control-label col-xs-9')); ?>
 						</div>
-						<?php echo form_label($this->lang->line('test_reading'), 'reading', array('class'=>'control-label col-xs-9')); ?>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+		<?php endif; ?>
 	<?php endif; ?>
+
+	<?php if( (trim($right_e_old['SPH']) != '') 
+					|| (trim($right_e['CYL']) != '')
+					|| (trim($right_e['AX']) != '') 
+					|| (trim($right_e['ADD']) != '')
+					|| (trim($right_e['VA']) != '') 
+					|| (trim($right_e['PD']) != '')
+					|| (trim($left_e['SPH']) != '') || (trim($left_e['CYL']) != '') 
+					|| (trim($left_e['AX']) != '') || (trim($left_e['ADD']) != '')
+					|| (trim($left_e['VA']) != '') || (trim($left_e['PD']) != '')):  ?>
 		<table class="sales_table_100" id="print_data" style="<?=$_sFont_size?>">
 		<thead>
 			<tr>
@@ -277,6 +299,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<?php endif; ?>
 	<?php if($this->config->item('loai_mat_kinh') ==1): ?>
 		<table class="sales_table_100" id="body_precription" style="<?=$_sFont_size?>">
 		<thead>

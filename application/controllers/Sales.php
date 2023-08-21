@@ -1249,6 +1249,8 @@ class Sales extends Secure_Controller
 		if(!empty($_oSale_info))
 		{
 			$sale_id = $_oSale_info->sale_id;
+		} else {
+			redirect('/');
 		}
 		$data = [];
 

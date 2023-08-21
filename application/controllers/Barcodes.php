@@ -112,6 +112,9 @@ class Barcodes extends Secure_Controller
 		$config = $this->barcode_lib->get_barcode_config();
 		$config['store_name'] = $this->config->item('company');
 		$config['store_address'] = $this->config->item('address');
+		$config['location'] = $this->config->item('Location_Barcode');
+		$config['phone'] = $this->config->item('Phone_Barcode');
+		$config['slogan'] = $this->config->item('Slogan_Barcode');
 		$data['items'] = [];
 		$data['barcode_config'] = $config;
 
@@ -143,7 +146,10 @@ class Barcodes extends Secure_Controller
 		$config = $this->barcode_lib->get_barcode_config();
 		$config['store_name'] = $this->config->item('company');
 		$config['store_address'] = $this->config->item('address');
-			
+		$config['location'] = $this->config->item('Location_Barcode');
+		$config['phone'] = $this->config->item('Phone_Barcode');
+		$config['slogan'] = $this->config->item('Slogan_Barcode');
+
 		$data['barcode_config'] = $config;
 
 		$data['barcode_config'] = $config;
@@ -173,6 +179,8 @@ class Barcodes extends Secure_Controller
 		$results = $this->printbarcode_lib->get_cart();
 		$config = $this->barcode_lib->get_barcode_config();
 		$config['location'] = $this->config->item('Location_Barcode');
+		$config['phone'] = $this->config->item('Phone_Barcode');
+		$config['slogan'] = $this->config->item('Slogan_Barcode');
 		$data['items'] = [];
 		$data['barcode_config'] = $config;
 

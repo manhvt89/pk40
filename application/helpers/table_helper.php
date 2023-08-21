@@ -154,7 +154,7 @@ function get_test_data_row($test, $controller,$sale_display=0)
 				<td>AX</td>
 				<td>ADD</td>
 				<td>VA</td>
-				<td>PD/2</td>
+				<td>PD</td>
 			</tr>
 			<tr>
 				<td> R </td>
