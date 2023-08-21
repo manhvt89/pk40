@@ -54,10 +54,10 @@ if(isset($error))
 			
 					//show_report('', 'reports_inventory_detail_lens');
 				?>
-				<a class="list-group-item" href="<?php echo site_url('reports/inventory_contact_lens');?>"><?php echo 'Báo cáo Áp Tròng'; ?></a>
-				<a class="list-group-item" href="<?php echo site_url('reports/inventory_frame');?>"><?php echo 'Báo cáo Gọng Kính'; ?></a>
-				<a class="list-group-item" href="<?php echo site_url('reports/inventory_sun_glasses');?>"><?php echo 'Báo cáo Kính Mát'; ?></a>
-				<a class="list-group-item" href="<?php echo site_url('reports/inventory_detail_lens');?>"><?php echo 'Báo cáo chi tiết Mắt Kính'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/inventory_contact_lens');?>"><?php echo 'Thuốc - Áp Tròng'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/inventory_frame');?>"><?php echo 'Gọng Kính'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/inventory_sun_glasses');?>"><?php echo 'Kính Mát'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/inventory_detail_lens');?>"><?php echo 'Chi tiết Tròng Kính'; ?></a>
 				
 				</div>
 			</div>
