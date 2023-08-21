@@ -188,7 +188,7 @@ class Barcode_lib
 			$display_table .= "<div align='center' style='font-size:39px; line-height: 39px;' class='LibreBarcode128'>" . Code128Encoder::encode($item['item_number']) . "</div></tr>";
 		}
 		$display_table .= "<div align='center'><b style='font-size:11px;'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</b> </div>";
-		$display_table .= "<div align='center'><b style='font-size:14px;'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</b>- <b class='category-barcode'>".$item['item_category']."</b></div>";
+		$display_table .= "<div align='center'><b style='font-size:14px;'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</b>- <span class='category-barcode'>".$item['item_category']."</span></div>";
 		$display_table .= "</div>";
 
 		$display_table .= "<div class='print-barcode_2'>";
