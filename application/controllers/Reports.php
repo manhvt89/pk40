@@ -1037,6 +1037,7 @@ class Reports extends Secure_Controller
         //var_dump($report_data['details']);
         foreach($report_data['summary'] as $key => $row)
 		{
+            //var_dump($row);
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'sale_date' => $row['sale_date'],
@@ -1050,7 +1051,7 @@ class Reports extends Secure_Controller
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
-				'edit' => anchor('sales/edit/'.$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				'edit' => anchor('sales/edit/'.$row['sale_uuid'], '<span class="glyphicon glyphicon-edit"></span>',
 					//array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
                     array('class' => 'modal-dlg print_hide', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
 				)

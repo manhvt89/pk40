@@ -83,7 +83,7 @@ class Detailed_sales extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, kind, sale_time, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, sale_uuid ,kind, sale_time, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
 
 		if($inputs['location_id'] != 'all')

@@ -1243,16 +1243,16 @@ class Sales extends Secure_Controller
 
 	public function edit($uuid)
 	{
-		$sale_info = $this->Sale->get_info_by_uuid($uuid)->row();
+		$_oSale_info = $this->Sale->get_info_by_uuid($uuid)->row();
 		//var_dump($sale_info);
 		$sale_id = 0;
-		if(!empty($sale_info))
+		if(!empty($_oSale_info))
 		{
-			$sale_id = $sale_info->sale_id;
+			$sale_id = $_oSale_info->sale_id;
 		}
-		$data = array();
+		$data = [];
 
-		$data['employees'] = array();
+		$data['employees'] = [];
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
@@ -1264,6 +1264,7 @@ class Sales extends Secure_Controller
 		}
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
+		//$sale_info = $this->Sale->get_info($sale_id)->row_array();	
 		$data['selected_customer_name'] = $sale_info['customer_name'];
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;

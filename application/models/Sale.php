@@ -1092,6 +1092,7 @@ class Sale extends CI_Model
 			(
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
+					sale_uuid,
 					sales.sale_time,
 					sales.sale_id,
 					sales.comment,
