@@ -195,7 +195,7 @@
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<?php if( (trim($right_e_old['SPH']) != '') 
+	<?php if( (trim($right_e['SPH']) != '') 
 					|| (trim($right_e['CYL']) != '')
 					|| (trim($right_e['AX']) != '') 
 					|| (trim($right_e['ADD']) != '')
