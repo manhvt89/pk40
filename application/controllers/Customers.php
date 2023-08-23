@@ -92,7 +92,7 @@ class Customers extends Persons
         {
             $data['city'] = 'Bình Thuận';
         } */
-		if($info->age = '')
+		if($info->age == '')
 		{
 			$info->age = 30;
 		}
