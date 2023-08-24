@@ -195,7 +195,7 @@ class Barcodes extends Secure_Controller
 				}
 			}
 		}
-		var_dump($data);
+		//var_dump($data);
 		// display barcodes
 		$this->load->view('barcodes/barcode_sheet_lens', $data);
 	}
