@@ -3661,8 +3661,8 @@ class Reports extends Secure_Controller
                     {
                         $details_data[$i][] = $this->xss_clean(
                             [
-                                'name'=>$drow['name'], 
-                                'item_number'=>$drow['item_number'], 
+                                'name'=>$drow['name'],
+                                'item_number'=>$drow['item_number'],
                                 'quantity'=>number_format($drow['quantity']),
                                 'reorder_level'=>number_format($drow['reorder_level']), 
                                 'location'=>$drow['location_name'],
