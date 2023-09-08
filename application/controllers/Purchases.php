@@ -1429,7 +1429,6 @@ class Purchases extends Secure_Controller
 		// footer
  
 		$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
-
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
         header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
         header('Cache-Control: max-age=0');
