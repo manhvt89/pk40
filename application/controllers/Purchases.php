@@ -1299,7 +1299,7 @@ class Purchases extends Secure_Controller
 	
 		$employee = $data['employee'];
 		
-		$index = 0;
+		$index = 1;
 		$styleArray = [
 			'font' => [
 				'bold' => false,
