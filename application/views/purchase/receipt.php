@@ -28,10 +28,12 @@ if (isset($error_message))
 				<div class='btn btn-sm btn-pedding pull-right' id='pedding_button'><span class="glyphicon glyphicon-hourglass">&nbsp</span>Đang chờ duyệt</div>
 			<?php endif;?>
 		<?php elseif($completed == 3): ?>
+			<div class='btn btn-sm btn-info pull-right' id='barcode_excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel (in Barcode)</div>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_button'><span class="glyphicon glyphicon-import">&nbsp</span>In Barcode</div>
 			<div class='btn btn-sm btn-info pull-right' id='excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel</div>
 			<div class='btn btn-sm btn-info pull-right' id='import_button'><span class="glyphicon glyphicon-import">&nbsp</span>Nhập kho</div>		
 		<?php elseif($completed == 6): ?>
+			<div class='btn btn-sm btn-info pull-right' id='barcode_excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel (in Barcode)</div>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_button'><span class="glyphicon glyphicon-import">&nbsp</span>In Barcode</div>
 			<?php echo anchor("purchases", '<span class="glyphicon glyphicon-file">&nbsp</span>' .'Đơn đặt hàng mới', array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 		<?php endif; ?>
@@ -172,6 +174,14 @@ $(document).ready(function()
 	$("#excel_export_button").click(function()
     {	
 		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
+		$('#action_form').attr('method', 'get');
+		$('#action_form').submit();
+		
+    });
+
+	$("#barcode_excel_export_button").click(function()
+    {	
+		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/barcode_export"); ?>');
 		$('#action_form').attr('method', 'get');
 		$('#action_form').submit();
 		
