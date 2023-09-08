@@ -1268,7 +1268,10 @@ class Purchases extends Secure_Controller
 	{
 		$purchase_uuid = $this->input->get('purchase_uuid');
 		$data = $this->load_receipt_data($purchase_uuid);
+		//$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
+		//$cart = $this->Purchase->get_purchase_items($purchase_info['id'])->result();
 		//var_dump($data);
+		//var_dump($cart);die();
 		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
 		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
         $sheet = $spreadsheet->getActiveSheet();
@@ -1277,11 +1280,10 @@ class Purchases extends Secure_Controller
 		 * Thiết lập độ rộng các cột
 		 */
 
-		$sheet->getColumnDimension('A')->setWidth(24,'pt');
-		$sheet->getColumnDimension('B')->setWidth(75,'pt');
-		$sheet->getColumnDimension('C')->setWidth(250,'pt');
+		$sheet->getColumnDimension('A')->setWidth(100,'pt');
+		$sheet->getColumnDimension('B')->setWidth(175,'pt');
+		$sheet->getColumnDimension('C')->setWidth(70,'pt');
 		$sheet->getColumnDimension('D')->setWidth(36,'pt');
-		$sheet->getColumnDimension('E')->setWidth(46,'pt');
 		
 		$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
 		$sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
@@ -1297,19 +1299,8 @@ class Purchases extends Secure_Controller
 		// Title
 		//$title = $data['receipt_title'];
 	
-		$employee = $data['employee'];
 		
 		$index = 1;
-		$styleArray = [
-			'font' => [
-				'bold' => false,
-			],
-			'alignment' => [
-				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-			],
-			
-		];
-	
 		$styleArray = [
 			'font' => [
 				'bold' => false,
@@ -1389,8 +1380,7 @@ class Purchases extends Secure_Controller
 				];
 				$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 				$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
-				$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
-
+				
 				$styleArray = [
 					'font' => [
 						'bold' => false,
@@ -1416,16 +1406,16 @@ class Purchases extends Secure_Controller
 				$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
 				$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 
-				
+				//var_dump( $item);die();
 				$sheet->setCellValue('A'.$index, $item['item_number']);
 				$sheet->setCellValue('B'.$index, $item['item_name']);
-				$sheet->setCellValue('D'.$index, $item['unit_price']); 
-				$sheet->setCellValue('C'.$index, $item['item_quantity']);
+				$sheet->setCellValue('C'.$index, $item['item_u_price']); 
+				$sheet->setCellValue('D'.$index, $item['item_quantity']);
 			}
 		} else {
 			$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong yêu cầu đặt hàng'); 
 		}
-
+		
 		// footer
  
 		$sheet->getPageSetup()->setPrintArea('A1:D'.$index);

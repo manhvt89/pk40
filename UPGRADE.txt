@@ -73,3 +73,10 @@ ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLAT
 $config['Location_Barcode'] = '';
 - countrollers/Barcode.php
 
+
+------------
+UPDATE SL ve 0 theo danh mục sản phẩm.
+UPDATE `ospos_item_quantities` SET `quantity` = 0 WHERE `item_id` IN (SELECT ospos_items.item_id FROM ospos_items WHERE ospos_items.category = 'Gong T1');
+UPDATE `ospos_item_quantities` SET `quantity` = 0 WHERE `item_id` IN (SELECT ospos_items.item_id FROM ospos_items WHERE ospos_items.category = 'Gong T2'); 
+UPDATE `ospos_item_quantities` SET `quantity` = 0 WHERE `item_id` IN (SELECT ospos_items.item_id FROM ospos_items WHERE ospos_items.category = 'Gong T3');  
+

@@ -4,9 +4,6 @@ database
 application/config/email.php
 application/config/database.php
 application/config/app.php
-application/sessions/*
-application/logs/*
-application/uploads/*
 public/license/.licenses
 public/bower_components
 *.patch
