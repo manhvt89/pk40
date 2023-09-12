@@ -600,7 +600,7 @@ function get_accounting_manage_summary($payments, $revenue, $controller)
 		$table .= '<tr><td>Tổng doanh thu: </td><td>'.$total.'</td></tr>';
 		$table .= '</table>';
 	}
-	$table .= '</div><div class="step"><p class="step__title">Quỹ tiền mặt</p><table>';
+	$table .= '</div><div class="step"><p class="step__title">Quỹ tiền</p><table>';
 	$table .= '<tr><td><p class="label-dauky">Số dư đầu kỳ (1): </p></td><td><b>'. to_currency($payments['starting']).'</b></td></tr>';
 	$table .= '<tr><td><p class="label-thutrongky">Thu trong kỳ (2): </p></td><td><b>'. to_currency($payments['in']).'</b></td></tr>';
 	$table .= '<tr><td><p class="label-chitrongky">Chi trong kỳ (3)=(4)+(5): </p></td><td><b>'. to_currency($payments['po']-0).'</b></td></tr>';
