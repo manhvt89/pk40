@@ -4,8 +4,10 @@ database
 application/config/email.php
 application/config/database.php
 application/config/app.php
+application/config/config.php
 public/license/.licenses
 public/bower_components
+public/index.php
 *.patch
 patches/
 .idea/
