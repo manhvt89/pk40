@@ -339,12 +339,13 @@ class Receiving_lib
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
-		$receiving_id = $_oReceiveInfo->receiving_id;
+		
 		//$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id)->row();
 		if(empty($_oReceiveInfo))
 		{
 			return '';
 		}
+		$receiving_id = $_oReceiveInfo->receiving_id;
 		if($_oReceiveInfo->mode == 0)
 		{
 			$this->set_mode('receive');
