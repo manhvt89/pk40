@@ -579,10 +579,11 @@ class Receivings extends Secure_Controller
 			 * Thiết lập độ rộng các cột
 			 */
 
-			$sheet->getColumnDimension('A')->setWidth(100, 'pt');
+			$sheet->getColumnDimension('A')->setWidth(35, 'pt');
 			$sheet->getColumnDimension('B')->setWidth(175, 'pt');
 			$sheet->getColumnDimension('C')->setWidth(70, 'pt');
 			$sheet->getColumnDimension('D')->setWidth(36, 'pt');
+			$sheet->getColumnDimension('E')->setWidth(100, 'pt');
 
 			$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
 			$sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
@@ -610,11 +611,11 @@ class Receivings extends Secure_Controller
 				$name_ch = '';
 			}
 			
-			$title_vt = 'Bảng kê vật tư';
+			$title_vt = '';
 
 			$index = 1;
 
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:E$index");
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -648,10 +649,10 @@ class Receivings extends Secure_Controller
 				],
 			];
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
-			$sheet->setCellValue('A'.$index, $title);
+			$sheet->setCellValue('A'.$index,  strToUpper($title));
 
 			$index++;
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:E$index");
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -688,7 +689,7 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('A'.$index, $name_ncc);
 
 			$index++;
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:E$index");
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -725,7 +726,7 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('A'.$index, $name_ch);
 
 			$index++;
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:E$index");
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -808,15 +809,19 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('B'.$index, 'Tên sản phẩm');
 			$sheet->setCellValue('C'.$index, 'Giá');
 			$sheet->setCellValue('D'.$index, 'Số lượng');
+			$sheet->setCellValue('E'.$index, 'Thành tiền');
 			$filename = 'Phieu_tra_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
 			// Body
-
+			$_dTotal = 0;
 			if(!empty($data['cart'])) {
+				
 				$i = 0;
 				foreach($data['cart'] as $item) {
 					//var_dump($item);die();
+					$_dSubtotal = $item['price']*$item['quantity'];
 					$index++;
 					$i++;
+
 					$styleArray = [
 						'font' => [
 							'bold' => false,
@@ -872,11 +877,49 @@ class Receivings extends Secure_Controller
 					$sheet->setCellValue('B'.$index, $item['name']);
 					$sheet->setCellValue('C'.$index, $item['price']);
 					$sheet->setCellValue('D'.$index, $item['quantity']);
+					$sheet->setCellValue('E'.$index,$_dSubtotal);
+					$_dTotal = $_dTotal + $_dSubtotal;
 				}
 			} else {
 				$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong phiếu trả hàng');
 			}
-
+			$index++;
+			$sheet->mergeCells("A$index:D$index");
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, 'Tổng cộng');
+			$sheet->setCellValue('E'.$index, $_dTotal);
 			// footer
 
 			$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
