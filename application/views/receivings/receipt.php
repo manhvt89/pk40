@@ -8,12 +8,14 @@ if (isset($error_message)) {
 ?>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
-
+<?php echo form_open($controller_name."/act", array('id'=>'action_form', 'class'=>'form-horizontal panel panel-default')); ?>
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
 	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<div class='btn btn-sm btn-info pull-right' id='excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel</div>
 </div>
-
+<?php echo form_hidden('receive_id', $purchase_uuid);?>
+<?php echo form_close(); ?>
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
@@ -134,5 +136,25 @@ if (isset($error_message)) {
 		<?php echo $receiving_id; ?>
 	</div>
 </div>
+<script type="text/javascript">
+$(document).ready(function()
+{
 
+    
+	$("#excel_export_button").click(function()
+    {	
+		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
+		$('#action_form').attr('method', 'get');
+		$('#action_form').submit();
+		
+    });
+	
+
+	
+	
+});
+
+
+
+</script>
 <?php $this->load->view("partial/footer"); ?>

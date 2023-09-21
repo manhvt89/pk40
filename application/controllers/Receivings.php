@@ -1,7 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
-
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+//use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Receivings extends Secure_Controller
 {
 	public function __construct()
@@ -288,6 +292,7 @@ class Receivings extends Secure_Controller
 			$this->load->view("receivings/receipt", $data);
 		} else {
 			$this->receiving_lib->copy_entire_receiving($receiving_info);
+			$data['receive_id'] = $receiving_id;
 			$data['cart'] = $this->receiving_lib->get_cart();
 			$data['total'] = $this->receiving_lib->get_total();
 			$data['mode'] = $this->receiving_lib->get_mode();
@@ -548,6 +553,177 @@ class Receivings extends Secure_Controller
 		return $return;
 	}
 
+	function export($receive_id=0)
+	{
+		$receive_id = $this->input->get('receive_id');
+		$receiving_info = $this->Receiving->get_info($receive_id)->row();
 
+		if(empty($receiving_info))
+		{
+			$data['error_message'] = 'Không tồn tại phiếu này';
+			$this->load->view("receivings/receipt", $data);
+		} else {
+			$this->receiving_lib->copy_entire_receiving($receiving_info);
+			$data['receive_id'] = $receiving_id;
+			$data['cart'] = $this->receiving_lib->get_cart();
+			
+			//$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
+			//$cart = $this->Purchase->get_purchase_items($purchase_info['id'])->result();
+			//var_dump($data);
+			//var_dump($cart);die();
+			$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
+			$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+			$sheet = $spreadsheet->getActiveSheet();
+
+			/**
+			 * Thiết lập độ rộng các cột
+			 */
+
+			$sheet->getColumnDimension('A')->setWidth(100, 'pt');
+			$sheet->getColumnDimension('B')->setWidth(175, 'pt');
+			$sheet->getColumnDimension('C')->setWidth(70, 'pt');
+			$sheet->getColumnDimension('D')->setWidth(36, 'pt');
+
+			$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+			$sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+			$sheet->getPageSetup()->setFitToWidth(1);
+			$sheet->getPageSetup()->setFitToHeight(0);
+			//$sheet->getPageSetup()->setPrintArea('A1:E5');
+
+
+
+
+			$writer = new Xlsx($spreadsheet); // instantiate Xlsx
+
+			// Title
+			//$title = $data['receipt_title'];
+
+
+			$index = 1;
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			//$sheet->setCellValue('A'.$index, 'STT');
+
+			$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+			$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+			$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
+
+
+
+			$sheet->setCellValue('A'.$index, 'STT');
+			$sheet->setCellValue('B'.$index, 'Tên sản phẩm');
+			$sheet->setCellValue('C'.$index, 'Giá');
+			$sheet->setCellValue('D'.$index, 'Số lượng');
+			$filename = 'Yeu_cau_Nhap_Hang_'.$purchase_uuid.'_'.time(); // set filename for excel file to be exported
+			// Body
+
+			if(!empty($data['cart'])) {
+				$i = 0;
+				foreach($data['cart'] as $item) {
+					var_dump($item);die();
+					$index++;
+					$i++;
+					$styleArray = [
+						'font' => [
+							'bold' => false,
+						],
+						'alignment' => [
+							'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+						],
+						'borders' => [
+							'top' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'left' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'right' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'bottom' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							]
+						],
+					];
+					$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+					$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+
+					$styleArray = [
+						'font' => [
+							'bold' => false,
+						],
+						'alignment' => [
+							'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+						],
+						'borders' => [
+							'top' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'left' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'right' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'bottom' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							]
+						],
+					];
+					$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+					$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
+
+					//var_dump( $item);die();
+					$sheet->setCellValue('A'.$index, $i+1);
+					$sheet->setCellValue('B'.$index, $item['item_name']);
+					$sheet->setCellValue('C'.$index, $item['item_u_price']);
+					$sheet->setCellValue('D'.$index, $item['item_quantity']);
+				}
+			} else {
+				$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong phiếu trả hàng');
+			}
+
+			// footer
+
+			$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
+			header('Content-Type: application/vnd.ms-excel'); // generate excel file
+			header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"');
+			header('Cache-Control: max-age=0');
+
+			$writer->save('php://output');	// download file
+		}
+	}
 }
 ?>
