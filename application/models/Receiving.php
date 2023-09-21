@@ -264,6 +264,7 @@ class Receiving extends CI_Model
 					receiving_time,
 					receivings_items.receiving_id,
 					comment,
+					receivings.mode,
 					item_location,
 					reference,
 					payment_type,
