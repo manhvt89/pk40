@@ -335,21 +335,29 @@ class Receiving_lib
 		}
 	}
 
-	public function copy_entire_receiving($receiving_id)
+	public function copy_entire_receiving($_oReceiveInfo)
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
-
-		$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id)->row();
-		var_dump($_oReceiveInfo);
-		die();
+		$receiving_id = $_oReceiveInfo->receiving_id;
+		//$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id)->row();
+		if(empty($_oReceiveInfo))
+		{
+			return '';
+		}
+		if($_oReceiveInfo->mode == 0)
+		{
+			$this->set_mode('receive');
+		} else {
+			$this->set_mode('return');
+		}
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
 		}
 
-		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
+		$this->set_supplier($_oReceiveInfo->person_id);
 		//$this->set_reference($this->CI->Receiving->get_info($receiving_id)->row()->reference);
 	}
 

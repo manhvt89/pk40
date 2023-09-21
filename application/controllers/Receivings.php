@@ -280,7 +280,7 @@ class Receivings extends Secure_Controller
 	public function receipt($receiving_id)
 	{
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
-		$this->receiving_lib->copy_entire_receiving($receiving_id);
+		$this->receiving_lib->copy_entire_receiving($receiving_info);
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['mode'] = $this->receiving_lib->get_mode();
