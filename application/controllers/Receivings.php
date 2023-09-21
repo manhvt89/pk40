@@ -603,12 +603,22 @@ class Receivings extends Secure_Controller
 			if($receiving_info->mode == 0)
 			{
 				$title = 'Phiếu nhập hàng';
-				$name_ncc = '';
-				$name_ch = '';
+				if($receiving_info->company_name == null)
+				{
+					$name_ncc = '';
+				} else {
+					$name_ncc = 'Nhà cung cấp: '.$receiving_info->company_name;
+				}
+				$name_ch = $this->config->item('company');
 			} else {
 				$title = 'Phiếu trả hàng nhà cung cấp';
-				$name_ncc = '';
-				$name_ch = '';
+				if($receiving_info->company_name == null)
+				{
+					$name_ncc = '';
+				} else {
+					$name_ncc = 'Nhà cung cấp: '.$receiving_info->company_name;
+				}
+				$name_ch = $this->config->item('company');
 			}
 			
 			$title_vt = '';
