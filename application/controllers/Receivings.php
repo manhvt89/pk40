@@ -646,13 +646,13 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('B'.$index, 'Tên sản phẩm');
 			$sheet->setCellValue('C'.$index, 'Giá');
 			$sheet->setCellValue('D'.$index, 'Số lượng');
-			$filename = 'Yeu_cau_Nhap_Hang_'.$purchase_uuid.'_'.time(); // set filename for excel file to be exported
+			$filename = 'Phieu_tra_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
 			// Body
 
 			if(!empty($data['cart'])) {
 				$i = 0;
 				foreach($data['cart'] as $item) {
-					var_dump($item);die();
+					//var_dump($item);die();
 					$index++;
 					$i++;
 					$styleArray = [
@@ -707,9 +707,9 @@ class Receivings extends Secure_Controller
 
 					//var_dump( $item);die();
 					$sheet->setCellValue('A'.$index, $i+1);
-					$sheet->setCellValue('B'.$index, $item['item_name']);
-					$sheet->setCellValue('C'.$index, $item['item_u_price']);
-					$sheet->setCellValue('D'.$index, $item['item_quantity']);
+					$sheet->setCellValue('B'.$index, $item['name']);
+					$sheet->setCellValue('C'.$index, $item['price']);
+					$sheet->setCellValue('D'.$index, $item['quantity']);
 				}
 			} else {
 				$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong phiếu trả hàng');
