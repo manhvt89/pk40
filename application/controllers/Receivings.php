@@ -621,8 +621,7 @@ class Receivings extends Secure_Controller
 				$name_ch = $this->config->item('company');
 			}
 			
-			$title_vt = '';
-
+			$title_vt = date('d/m/Y',strtotime($receiving_info->receiving_time));
 			$index = 1;
 
 			$sheet->mergeCells("A$index:E$index");
@@ -668,7 +667,7 @@ class Receivings extends Secure_Controller
 					'bold' => false,
 				],
 				'alignment' => [
-					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
 				],
 				'borders' => [
 					'top' => [
@@ -705,7 +704,7 @@ class Receivings extends Secure_Controller
 					'bold' => false,
 				],
 				'alignment' => [
-					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
 				],
 				'borders' => [
 					'top' => [
@@ -742,7 +741,7 @@ class Receivings extends Secure_Controller
 					'bold' => false,
 				],
 				'alignment' => [
-					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
 				],
 				'borders' => [
 					'top' => [
