@@ -14,7 +14,7 @@ if (isset($error_message)) {
 	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 	<div class='btn btn-sm btn-info pull-right' id='excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel</div>
 </div>
-<?php echo form_hidden('receive_id', $purchase_uuid);?>
+<?php echo form_hidden('receive_id', $_receive_id);?>
 <?php echo form_close(); ?>
 <div id="receipt_wrapper">
 	<div id="receipt_header">
