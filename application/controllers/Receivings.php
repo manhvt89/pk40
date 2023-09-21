@@ -594,12 +594,173 @@ class Receivings extends Secure_Controller
 
 
 			$writer = new Xlsx($spreadsheet); // instantiate Xlsx
+			$title = 'Phiếu nhập hàng';
+			$name_ncc = '';
+			$name_ch = '';
 
 			// Title
-			//$title = $data['receipt_title'];
-
+			if($receiving_info->mode == 0)
+			{
+				$title = 'Phiếu nhập hàng';
+				$name_ncc = '';
+				$name_ch = '';
+			} else {
+				$title = 'Phiếu trả hàng nhà cung cấp';
+				$name_ncc = '';
+				$name_ch = '';
+			}
+			
+			$title_vt = 'Bảng kê vật tư';
 
 			$index = 1;
+
+			$sheet->mergeCells("A$index:D$index");
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, $title);
+
+			$index++;
+			$sheet->mergeCells("A$index:D$index");
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, $name_ncc);
+
+			$index++;
+			$sheet->mergeCells("A$index:D$index");
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, $name_ch);
+
+			$index++;
+			$sheet->mergeCells("A$index:D$index");
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, $title_vt);
+
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -633,6 +794,7 @@ class Receivings extends Secure_Controller
 				],
 			];
 
+			$index++;
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 			//$sheet->setCellValue('A'.$index, 'STT');
 
@@ -706,7 +868,7 @@ class Receivings extends Secure_Controller
 					$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 
 					//var_dump( $item);die();
-					$sheet->setCellValue('A'.$index, $i+1);
+					$sheet->setCellValue('A'.$index, $i);
 					$sheet->setCellValue('B'.$index, $item['name']);
 					$sheet->setCellValue('C'.$index, $item['price']);
 					$sheet->setCellValue('D'.$index, $item['quantity']);
