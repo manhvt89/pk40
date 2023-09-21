@@ -340,7 +340,7 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->remove_supplier();
 
-		$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id);
+		$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id)->row();
 		var_dump($_oReceiveInfo);
 		die();
 
