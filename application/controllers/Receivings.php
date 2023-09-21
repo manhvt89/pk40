@@ -300,7 +300,12 @@ class Receivings extends Secure_Controller
 			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 			$employee_info = $this->Employee->get_info($receiving_info->employee_id);
 			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-
+			if($data['mode']=='return')
+			{
+				$data['receipt_title'] = 'PHIẾU TRẢ HÀNG';
+			} else {
+				$data['receipt_title'] = $this->lang->line('receivings_receipt');
+			}
 			$supplier_id = $this->receiving_lib->get_supplier();
 			if($supplier_id != -1) {
 				$supplier_info = $this->Supplier->get_info($supplier_id);
