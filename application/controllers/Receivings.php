@@ -557,7 +557,7 @@ class Receivings extends Secure_Controller
 	{
 		$receive_id = $this->input->get('receive_id');
 		$receiving_info = $this->Receiving->get_info($receive_id)->row();
-
+		var_dump($receiving_info);die();
 		if(empty($receiving_info))
 		{
 			$data['error_message'] = 'Không tồn tại phiếu này';
@@ -898,8 +898,8 @@ class Receivings extends Secure_Controller
 					//var_dump( $item);die();
 					$sheet->setCellValue('A'.$index, $i);
 					$sheet->setCellValue('B'.$index, $item['name']);
-					$sheet->setCellValue('C'.$index, $item['price']);
-					$sheet->setCellValue('D'.$index, $item['quantity']);
+					$sheet->setCellValue('C'.$index, number_format($item['price']));
+					$sheet->setCellValue('D'.$index, number_format($item['quantity']));
 					$sheet->setCellValue('E'.$index,number_format($_dSubtotal));
 					$_dTotal = $_dTotal + $_dSubtotal;
 				}
@@ -943,7 +943,7 @@ class Receivings extends Secure_Controller
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 			$sheet->setCellValue('A'.$index, 'Tổng cộng');
 			$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
-			$sheet->setCellValue('D'.$index, $_sum);
+			$sheet->setCellValue('D'.$index, number_format($_sum));
 
 			$styleArray = [
 				'font' => [
