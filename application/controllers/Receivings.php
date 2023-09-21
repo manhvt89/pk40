@@ -600,6 +600,7 @@ class Receivings extends Secure_Controller
 			$name_ch = '';
 
 			// Title
+			$j = 1;
 			if($receiving_info->mode == 0)
 			{
 				$title = 'Phiếu nhập hàng';
@@ -611,6 +612,7 @@ class Receivings extends Secure_Controller
 				}
 				$name_ch = $this->config->item('company');
 			} else {
+				$j = 0-1;
 				$title = 'Phiếu trả hàng nhà cung cấp';
 				if($receiving_info->company_name == null)
 				{
@@ -828,10 +830,10 @@ class Receivings extends Secure_Controller
 				$i = 0;
 				foreach($data['cart'] as $item) {
 					//var_dump($item);die();
-					$_dSubtotal = $item['price']*$item['quantity'];
+					$_dSubtotal = $item['price']*$item['quantity']*$j;
 					$index++;
 					$i++;
-					$_sum = $_sum + $item['quantity'];
+					$_sum = $_sum + $item['quantity']*$j;
 					$styleArray = [
 						'font' => [
 							'bold' => false,
@@ -908,7 +910,7 @@ class Receivings extends Secure_Controller
 					$sheet->setCellValue('A'.$index, $i);
 					$sheet->setCellValue('B'.$index, $item['name']);
 					$sheet->setCellValue('C'.$index, number_format($item['price']));
-					$sheet->setCellValue('D'.$index, number_format($item['quantity']));
+					$sheet->setCellValue('D'.$index, number_format($item['quantity']*$j));
 					$sheet->setCellValue('E'.$index,number_format($_dSubtotal));
 					$_dTotal = $_dTotal + $_dSubtotal;
 				}
