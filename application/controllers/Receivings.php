@@ -564,7 +564,7 @@ class Receivings extends Secure_Controller
 			$this->load->view("receivings/receipt", $data);
 		} else {
 			$this->receiving_lib->copy_entire_receiving($receiving_info);
-			$data['receive_id'] = $receiving_id;
+			$data['receive_id'] = $receive_id;
 			$data['cart'] = $this->receiving_lib->get_cart();
 			
 			//$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
