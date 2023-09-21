@@ -894,7 +894,7 @@ class Receivings extends Secure_Controller
 					];
 					$sheet->getStyle('C'.$index)->applyFromArray($styleArray_right);
 					$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
-
+					$sheet->getStyle('E'.$index)->applyFromArray($styleArray_right);
 					//var_dump( $item);die();
 					$sheet->setCellValue('A'.$index, $i);
 					$sheet->setCellValue('B'.$index, $item['name']);
@@ -944,7 +944,41 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('A'.$index, 'Tổng cộng');
 			$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 			$sheet->setCellValue('D'.$index, $_sum);
+
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+				'fill' => [
+					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+					'rotation' => 90,
+					'startColor' => [
+						'argb' => '00A0A0A0',
+					],
+					'endColor' => [
+						'argb' => 'FFFFFFFF',
+					],
+				],
+			];
 			$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
+
 			$sheet->setCellValue('E'.$index, number_format($_dTotal));
 			// footer
 
