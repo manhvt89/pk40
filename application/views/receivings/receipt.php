@@ -6,6 +6,11 @@ if (isset($error_message))
 	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 	exit;
 }
+if(empty($data))
+{
+	echo "<div class='alert alert-dismissible alert-danger'>Không tồn tại phiếu này</div>";
+	exit;
+}
 ?>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
