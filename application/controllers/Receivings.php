@@ -557,7 +557,7 @@ class Receivings extends Secure_Controller
 	{
 		$receive_id = $this->input->get('receive_id');
 		$receiving_info = $this->Receiving->get_info($receive_id)->row();
-		var_dump($receiving_info);die();
+		//var_dump($receiving_info);die();
 		if(empty($receiving_info))
 		{
 			$data['error_message'] = 'Không tồn tại phiếu này';
@@ -605,7 +605,7 @@ class Receivings extends Secure_Controller
 				$title = 'Phiếu nhập hàng';
 				if($receiving_info->company_name == null)
 				{
-					$name_ncc = '';
+					$name_ncc = 'Nhà cung cấp:';
 				} else {
 					$name_ncc = 'Nhà cung cấp: '.$receiving_info->company_name;
 				}
@@ -614,7 +614,7 @@ class Receivings extends Secure_Controller
 				$title = 'Phiếu trả hàng nhà cung cấp';
 				if($receiving_info->company_name == null)
 				{
-					$name_ncc = '';
+					$name_ncc = 'Nhà cung cấp:';
 				} else {
 					$name_ncc = 'Nhà cung cấp: '.$receiving_info->company_name;
 				}
