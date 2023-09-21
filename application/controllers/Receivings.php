@@ -281,6 +281,7 @@ class Receivings extends Secure_Controller
 	{
 		$data = array();
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row();
+		var_dump($receiving_info);die();
 		if(empty($receiving_info))
 		{
 			$this->load->view("receivings/receipt", $data);
