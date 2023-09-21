@@ -802,7 +802,7 @@ class Receivings extends Secure_Controller
 			$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
 			$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
 			$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
-
+			$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
 
 
 			$sheet->setCellValue('A'.$index, 'STT');
@@ -813,6 +813,7 @@ class Receivings extends Secure_Controller
 			$filename = 'Phieu_tra_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
 			// Body
 			$_dTotal = 0;
+			$_sum =0;
 			if(!empty($data['cart'])) {
 				
 				$i = 0;
@@ -821,7 +822,7 @@ class Receivings extends Secure_Controller
 					$_dSubtotal = $item['price']*$item['quantity'];
 					$index++;
 					$i++;
-
+					$_sum = $_sum + $item['quantity'];
 					$styleArray = [
 						'font' => [
 							'bold' => false,
@@ -847,7 +848,7 @@ class Receivings extends Secure_Controller
 					$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 					$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
 
-					$styleArray = [
+					$styleArray_left = [
 						'font' => [
 							'bold' => false,
 						],
@@ -869,7 +870,29 @@ class Receivings extends Secure_Controller
 							]
 						],
 					];
-					$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+					$styleArray_right = [
+						'font' => [
+							'bold' => false,
+						],
+						'alignment' => [
+							'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+						],
+						'borders' => [
+							'top' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'left' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'right' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+							'bottom' => [
+								'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							]
+						],
+					];
+					$sheet->getStyle('C'.$index)->applyFromArray($styleArray_right);
 					$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 
 					//var_dump( $item);die();
@@ -877,14 +900,14 @@ class Receivings extends Secure_Controller
 					$sheet->setCellValue('B'.$index, $item['name']);
 					$sheet->setCellValue('C'.$index, $item['price']);
 					$sheet->setCellValue('D'.$index, $item['quantity']);
-					$sheet->setCellValue('E'.$index,$_dSubtotal);
+					$sheet->setCellValue('E'.$index,number_format($_dSubtotal));
 					$_dTotal = $_dTotal + $_dSubtotal;
 				}
 			} else {
 				$sheet->setCellValue('A'.$index, 'Chưa có sản phẩm trong phiếu trả hàng');
 			}
 			$index++;
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:C$index");
 			$styleArray = [
 				'font' => [
 					'bold' => false,
@@ -919,7 +942,10 @@ class Receivings extends Secure_Controller
 			];
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 			$sheet->setCellValue('A'.$index, 'Tổng cộng');
-			$sheet->setCellValue('E'.$index, $_dTotal);
+			$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('D'.$index, $_sum);
+			$sheet->getStyle('E'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('E'.$index, number_format($_dTotal));
 			// footer
 
 			$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
