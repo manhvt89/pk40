@@ -1200,7 +1200,13 @@ class Reports extends Secure_Controller
 		foreach($report_data['summary'] as $key => $row)
 		{
             $receiving_time = strtotime($row['receiving_time']);
-            
+            $_sMode = '';
+            if($row["mode"] == 0)
+            {
+                $_sMode = 'Nhập hàng';
+            } else {
+                $_sMode = 'Trả hàng nhà CC';
+            }
             if ($now_time < $receiving_time ) {
                 $summary_data[] = $this->xss_clean(
                     array(
@@ -1213,6 +1219,7 @@ class Reports extends Secure_Controller
                         'payment_type' => $row['payment_type'],
                         'reference' => $row['reference'],
                         'comment' => $row['comment'],
+                        'mode'=>$_sMode,
                         'edit' => anchor(
                             'receivings/edit/' . $row['receiving_id'],
                             '<span class="glyphicon glyphicon-edit"></span>',
@@ -1236,6 +1243,7 @@ class Reports extends Secure_Controller
                         'payment_type' => $row['payment_type'],
                         'reference' => $row['reference'],
                         'comment' => $row['comment'],
+                        'mode'=>$_sMode,
                         'edit' => anchor(
                             'receivings/edit/' . $row['receiving_id'],
                             '<span class="glyphicon glyphicon-edit"></span>',

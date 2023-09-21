@@ -29,7 +29,8 @@ class Detailed_receivings extends Report
                     array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
                     array('payment_type' => $this->lang->line('reports_payment_type')),
                     array('reference' => $this->lang->line('receivings_reference')),
-                    array('comment' => $this->lang->line('reports_comments'))),
+                    array('comment' => $this->lang->line('reports_comments')),
+					array('mode' => 'Loại')),
                 'details' => array(
                     $this->lang->line('reports_item_number'),
                     $this->lang->line('reports_name'),
@@ -49,7 +50,9 @@ class Detailed_receivings extends Report
                     array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
                     array('payment_type' => $this->lang->line('reports_payment_type')),
                     array('reference' => $this->lang->line('receivings_reference')),
-                    array('comment' => $this->lang->line('reports_comments'))),
+                    array('comment' => $this->lang->line('reports_comments')),
+					array('mode' => 'Loại')
+				),
                 'details' => array(
                     $this->lang->line('reports_item_number'),
                     $this->lang->line('reports_name'),
