@@ -341,7 +341,7 @@ class Receiving_lib
 		$this->remove_supplier();
 		
 		//$_oReceiveInfo = $this->CI->Receiving->get_info($receiving_id)->row();
-		var_dump($_oReceiveInfo);
+		//var_dump($_oReceiveInfo);
 		if(empty($_oReceiveInfo))
 		{
 			return '';
