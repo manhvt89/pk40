@@ -1,16 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php
-if (isset($error_message))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
-	exit;
-}
-var_dump($data);die();
-if(empty($data))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>Không tồn tại phiếu này</div>";
-	exit;
+if (isset($error_message)) {
+    echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+    exit;
 }
 ?>
 
