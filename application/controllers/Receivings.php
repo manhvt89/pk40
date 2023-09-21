@@ -279,47 +279,49 @@ class Receivings extends Secure_Controller
 	
 	public function receipt($receiving_id)
 	{
+		$data = array();
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
-		$this->receiving_lib->copy_entire_receiving($receiving_info);
-		$data['cart'] = $this->receiving_lib->get_cart();
-		$data['total'] = $this->receiving_lib->get_total();
-		$data['mode'] = $this->receiving_lib->get_mode();
-		$data['receipt_title'] = $this->lang->line('receivings_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
-		$data['payment_type'] = $receiving_info['payment_type'];
-		$data['reference'] = $this->receiving_lib->get_reference();
-		$data['receiving_id'] = 'RECV ' . $receiving_id;
-		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
-		$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-
-		$supplier_id = $this->receiving_lib->get_supplier();
-		if($supplier_id != -1)
+		if(empty($receiving_info))
 		{
-			$supplier_info = $this->Supplier->get_info($supplier_id);
-			$data['supplier'] = $supplier_info->company_name;
-			$data['first_name'] = $supplier_info->first_name;
-			$data['last_name'] = $supplier_info->last_name;
-			$data['supplier_email'] = $supplier_info->email;
-			$data['supplier_address'] = $supplier_info->address_1;
-			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
-			{
-				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;				
+			$this->load->view("receivings/receipt", $data);
+		} else {
+			$this->receiving_lib->copy_entire_receiving($receiving_info);
+			$data['cart'] = $this->receiving_lib->get_cart();
+			$data['total'] = $this->receiving_lib->get_total();
+			$data['mode'] = $this->receiving_lib->get_mode();
+			$data['receipt_title'] = $this->lang->line('receivings_receipt');
+			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
+			$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
+			$data['payment_type'] = $receiving_info['payment_type'];
+			$data['reference'] = $this->receiving_lib->get_reference();
+			$data['receiving_id'] = 'RECV ' . $receiving_id;
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+			$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
+			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+
+			$supplier_id = $this->receiving_lib->get_supplier();
+			if($supplier_id != -1) {
+				$supplier_info = $this->Supplier->get_info($supplier_id);
+				$data['supplier'] = $supplier_info->company_name;
+				$data['first_name'] = $supplier_info->first_name;
+				$data['last_name'] = $supplier_info->last_name;
+				$data['supplier_email'] = $supplier_info->email;
+				$data['supplier_address'] = $supplier_info->address_1;
+				if(!empty($supplier_info->zip) or !empty($supplier_info->city)) {
+					$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
+				} else {
+					$data['supplier_location'] = '';
+				}
 			}
-			else
-			{
-				$data['supplier_location'] = '';
-			}
+
+			$data['print_after_sale'] = false;
+
+			$data = $this->xss_clean($data);
+
+			$this->load->view("receivings/receipt", $data);
+
+			$this->receiving_lib->clear_all();
 		}
-
-		$data['print_after_sale'] = FALSE;
-
-		$data = $this->xss_clean($data);
-		
-		$this->load->view("receivings/receipt", $data);
-
-		$this->receiving_lib->clear_all();
 	}
 
 	private function _reload($data = array())
