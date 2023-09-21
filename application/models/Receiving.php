@@ -54,11 +54,20 @@ class Receiving extends CI_Model
 		return $this->db->update('receivings', $receiving_data);
 	}
 
-	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE,$purchase_id=0)
+	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE,$purchase_id=0,$mode = 'receive')
 	{
+		$_iMode = 0;
 		if(count($items) == 0)
 		{
 			return -1;
+		}
+		if($mode == '')
+		{
+			$mode = 'receive';
+		}
+		if($mode != 'receive')
+		{
+			$_iMode = 1;
 		}
 
 		$receivings_data = array(
@@ -67,7 +76,8 @@ class Receiving extends CI_Model
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
-			'reference' => $reference
+			'reference' => $reference,
+			'mode'=>$_iMode
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing

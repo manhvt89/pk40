@@ -46,7 +46,7 @@ if (isset($error_message))
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo $this->lang->line('receivings_id').": ".$receiving_id; ?></div>
+		<div id="sale_id"><?php echo 'Mã phiếu'.": ".$receiving_id; ?></div>
 		<?php 
 		if (!empty($reference))
 		{
@@ -55,9 +55,8 @@ if (isset($error_message))
 		<?php 
 		}
 		?>
-		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
+		
 	</div>
-
 	<table id="receipt_items">
 		<tr>
 			<th style="width:40%;"><?php echo $this->lang->line('items_item'); ?></th>
@@ -128,6 +127,7 @@ if (isset($error_message))
 
 	<div id="sale_return_policy">
 		<?php echo nl2br($this->config->item('return_policy')); ?>
+		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
 	</div>
 
 	<div id='barcode'>

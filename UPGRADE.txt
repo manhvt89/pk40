@@ -1,4 +1,12 @@
 Update
+
+21/09/2023 
+v1.1_PK40
+Update báo cáo trả hàng nhà cung cấp.
+ALTER TABLE `ospos_receivings` ADD `mode` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0: Nhập hàng; 1: Trả hàng' AFTER `reference`; 
+
+
+
 19/10/2022
 - Update QRCode on <i class="fas fa-money-bill    ">Bill</i>
 - Update Sales models

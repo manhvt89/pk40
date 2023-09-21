@@ -340,6 +340,10 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->remove_supplier();
 
+		$_oReceiveInfo = $this->CI->Receivingget_info($receiving_id);
+		var_dump($_oReceiveInfo);
+		die();
+
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);

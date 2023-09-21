@@ -190,7 +190,7 @@ class Receivings extends Secure_Controller
 	
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['quantity'] = $this->receiving_lib->get_quantity();
-		$data['receipt_title'] = $this->lang->line('receivings_receipt');
+		
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['comment'] = $this->receiving_lib->get_comment();
@@ -199,6 +199,12 @@ class Receivings extends Secure_Controller
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
 		$data['purchase_id'] = $this->receiving_lib->get_purchase_id();
+		if($data['mode']=='return')
+		{
+			$data['receipt_title'] = 'PHIẾU TRẢ HÀNG';
+		} else {
+			$data['receipt_title'] = $this->lang->line('receivings_receipt');
+		}
 		if($this->input->post('amount_tendered') != NULL)
 		{
 			$data['amount_tendered'] = $this->input->post('amount_tendered');
@@ -230,7 +236,7 @@ class Receivings extends Secure_Controller
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location'], $data['purchase_id']);
+		$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location'], $data['purchase_id'],$data['mode']);
 
 		$data = $this->xss_clean($data);
 
