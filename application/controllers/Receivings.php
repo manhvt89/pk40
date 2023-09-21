@@ -280,7 +280,7 @@ class Receivings extends Secure_Controller
 	public function receipt($receiving_id)
 	{
 		$data = array();
-		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
+		$receiving_info = $this->Receiving->get_info($receiving_id)->row();
 		if(empty($receiving_info))
 		{
 			$this->load->view("receivings/receipt", $data);
@@ -290,13 +290,13 @@ class Receivings extends Secure_Controller
 			$data['total'] = $this->receiving_lib->get_total();
 			$data['mode'] = $this->receiving_lib->get_mode();
 			$data['receipt_title'] = $this->lang->line('receivings_receipt');
-			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
+			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info->receiving_time));
 			$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
-			$data['payment_type'] = $receiving_info['payment_type'];
+			$data['payment_type'] = $receiving_info->payment_type;
 			$data['reference'] = $this->receiving_lib->get_reference();
 			$data['receiving_id'] = 'RECV ' . $receiving_id;
 			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
-			$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
+			$employee_info = $this->Employee->get_info($receiving_info->employee_id);
 			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 			$supplier_id = $this->receiving_lib->get_supplier();
