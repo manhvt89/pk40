@@ -600,10 +600,11 @@ class Receivings extends Secure_Controller
 			$name_ch = '';
 
 			// Title
+			$filename = 'Phieu_tra_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
 			$j = 1;
 			if($receiving_info->mode == 0)
 			{
-				$title = 'Phiếu nhập hàng';
+				$title = 'PHIẾU NHẬP HÀNG';
 				if($receiving_info->company_name == null)
 				{
 					$name_ncc = 'Nhà cung cấp:';
@@ -611,9 +612,10 @@ class Receivings extends Secure_Controller
 					$name_ncc = 'Nhà cung cấp: '.$receiving_info->company_name;
 				}
 				$name_ch = $this->config->item('company');
+				$filename = 'Phieu_nhap_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
 			} else {
 				$j = 0-1;
-				$title = 'Phiếu trả hàng nhà cung cấp';
+				$title = 'PHIẾU TRẢ HÀNG NHÀ CUNG CẤP';
 				if($receiving_info->company_name == null)
 				{
 					$name_ncc = 'Nhà cung cấp:';
@@ -660,7 +662,7 @@ class Receivings extends Secure_Controller
 				],
 			];
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
-			$sheet->setCellValue('A'.$index,  strToUpper($title));
+			$sheet->setCellValue('A'.$index,  $title);
 
 			$index++;
 			$sheet->mergeCells("A$index:E$index");
@@ -821,7 +823,7 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('C'.$index, 'Giá');
 			$sheet->setCellValue('D'.$index, 'Số lượng');
 			$sheet->setCellValue('E'.$index, 'Thành tiền');
-			$filename = 'Phieu_tra_hang_'.$receive_id.'_'.time(); // set filename for excel file to be exported
+			
 			// Body
 			$_dTotal = 0;
 			$_sum =0;
