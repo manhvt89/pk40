@@ -995,6 +995,12 @@ class Receivings extends Secure_Controller
 			$sheet->setCellValue('E'.$index, number_format($_dTotal));
 			// footer
 
+			$index++;
+			$sheet->mergeCells("A$index:D$index");
+			$footer = "Người nhận                        Người giao                  Người lập";
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('E'.$index, $footer);
+
 			$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
 			header('Content-Type: application/vnd.ms-excel'); // generate excel file
 			header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"');
