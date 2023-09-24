@@ -994,12 +994,33 @@ class Receivings extends Secure_Controller
 
 			$sheet->setCellValue('E'.$index, number_format($_dTotal));
 			// footer
-
+			$styleArray = [
+				'font' => [
+					'bold' => false,
+				],
+				'alignment' => [
+					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+				],
+				'borders' => [
+					'top' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'left' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'right' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					],
+					'bottom' => [
+						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					]
+				],
+			];
 			$index++;
-			$sheet->mergeCells("A$index:D$index");
+			$sheet->mergeCells("A$index:E$index");
 			$footer = "Người nhận                        Người giao                  Người lập";
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
-			$sheet->setCellValue('E'.$index, $footer);
+			$sheet->setCellValue('A'.$index, $footer);
 
 			$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
 			header('Content-Type: application/vnd.ms-excel'); // generate excel file
