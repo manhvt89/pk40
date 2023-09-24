@@ -1018,7 +1018,7 @@ class Receivings extends Secure_Controller
 			];
 			$index++;
 			$sheet->mergeCells("A$index:E$index");
-			$footer = "Người nhận                        Người giao                  Người lập";
+			$footer = "    Người nhận                                   Người giao                                               Người lập";
 			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
 			$sheet->setCellValue('A'.$index, $footer);
 
