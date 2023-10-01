@@ -594,7 +594,7 @@ function get_accounting_manage_summary($payments, $revenue, $controller)
 		$total = 0;
 		
 		$table .= '<tr><td>Tiền chuyển khoản: </td><td>0</td></tr>';
-		$table .= '<tr><td>Tiền thanh toán thẻ: </td><td>0</td></tr>';
+		$table .= '<tr><td>Tiền lẻ: </td><td>0</td></tr>';
 		$table .= '<tr><td>Tiền mặt: </td><td>0</td></tr>';
 		
 		$table .= '<tr><td>Tổng doanh thu: </td><td>'.$total.'</td></tr>';

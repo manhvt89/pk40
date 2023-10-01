@@ -856,6 +856,7 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	
 	$('#amount_tendered').number(true,0,',','.');
 	$('.decimal').number(true,0,',','.');
 	$('.bonus').number(true,2,',','.');
@@ -1040,7 +1041,8 @@ $(document).ready(function()
 		var paymentAmount = parseFloat($(this).val());
 		console.log(totalAmount);
 		console.log(paymentAmount);
-		if ((paymentMethod == "Chuyển khoản" || paymentMethod == "Thanh toán thẻ") && paymentAmount > totalAmount) {
+		console.log(paymentMethod);
+		if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount) || ((paymentMethod == "Tiền lẻ") && (paymentAmount > 10000 || paymentAmount > totalAmount))) {
 			alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
 			$(this).val(totalAmount.toFixed(0));
 			return false;
@@ -1054,7 +1056,7 @@ $(document).ready(function()
 		
 		var paymentMethod = $(this).val();
         var totalAmount = parseFloat($("#hd_amount_due").val());
-		if (paymentMethod == "Chuyển khoản" || paymentMethod == "Thanh toán thẻ" || paymentMethod == "Tiền mặt") {
+		if (paymentMethod == "Chuyển khoản" || paymentMethod == "Tiền lẻ" || paymentMethod == "Tiền mặt") {
             $("#amount_tendered").val(totalAmount.toFixed(0));
         } else {
             $("#amount_tendered").val("");
@@ -1070,7 +1072,7 @@ $(document).ready(function()
                 var paymentAmount = parseFloat($(this).val());
 				console.log(totalAmount);
 				console.log(paymentAmount);
-                if ((paymentMethod == "Chuyển khoản" || paymentMethod == "Thanh toán thẻ") && paymentAmount > totalAmount) {
+                if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount) || ((paymentMethod == "Tiền lẻ") && (paymentAmount > 10000 || paymentAmount > totalAmount))) {
                     alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
                     $(this).val(totalAmount.toFixed(0));
                 }
@@ -1094,7 +1096,7 @@ $(document).ready(function()
 			var paymentAmount = parseFloat($(this).val());
 			console.log(totalAmount);
 			console.log(paymentAmount);
-			if ((paymentMethod == "Chuyển khoản" || paymentMethod == "Thanh toán thẻ") && paymentAmount > totalAmount) {
+			if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount) || ((paymentMethod == "Tiền lẻ") && (paymentAmount > 10000 || paymentAmount > totalAmount))) {
 				alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
 				$(this).val(totalAmount.toFixed(0));
 				return false;
