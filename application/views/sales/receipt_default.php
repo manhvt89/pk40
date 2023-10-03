@@ -8,8 +8,9 @@
 		<?php
 		}
 		?>
-
+		<?php if($this->config->item('company_name_display') == 1): ?>
 		<div id="company_name1" class="name" ><?php echo $this->config->item('company'); ?></div>
+		<?php endif; ?>
 		<div id="company_address" class="address" >Địa chỉ: <?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_address" class="phone" >Điện thoại: <?php echo $this->config->item('phone'); ?></div>
 		<div id="company_phone" class="phone" >Website: <?php echo $this->config->item('website'); ?></div>
