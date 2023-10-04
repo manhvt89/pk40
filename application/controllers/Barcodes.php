@@ -116,9 +116,10 @@ class Barcodes extends Secure_Controller
 		$data['barcode_config'] = $config;
 
 		$data['barcode_config'] = $config;
-
+		//var_dump($results);
 		foreach($results as $item)
 		{
+			$item['unit_price'] = $item['price'];
 			$_max = (int)$item['quantity'];
 			if($_max > 0)
 			{
@@ -150,6 +151,7 @@ class Barcodes extends Secure_Controller
 		$data['items'] = [];
 		foreach($results as $item)
 		{
+			$item['unit_price'] = $item['price'];
 			$_max = (int)$item['quantity'];
 			if($_max > 0)
 			{
@@ -171,13 +173,15 @@ class Barcodes extends Secure_Controller
 		//var_dump($data['cart']); die();
 		//$item_ids = explode(':', $item_ids);
 		$results = $this->printbarcode_lib->get_cart();
-		$config = $this->barcode_lib->get_barcode_config();
+		$config = $this->barcode_lib->get_barcode_config('lens');
 		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
+		var_dump($config);
 		$data['barcode_config'] = $config;
 
 		foreach($results as $item)
 		{
+			$item['unit_price'] = $item['price'];
 			$_max = (int)$item['quantity'];
 			if($_max > 0)
 			{

@@ -723,7 +723,7 @@ class Sales extends Secure_Controller
 						//'sale_time'	=> date('Y-m-d H:i:s'), //don't update time
 					);
 					if(empty($data['payments'][$this->lang->line('sales_paid_money')])){ //added 07/07/2023
-						$_tt["Tiền lẻ"] = array( "payment_type"=> "Tiền lẻ",
+						$_tt["Giảm thêm"] = array( "payment_type"=> "Giảm thêm",
 														"payment_amount"=> 0,
 														"payment_kind"=>"Thanh toán",
 														"payment_id"=> 0);

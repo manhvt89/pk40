@@ -39,11 +39,52 @@
 }
 
 @font-face {
+    font-family: 'Oswald-Regular';
+    src: url('../fonts/Oswald-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald-Bold';
+    src: url('../fonts/Oswald-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald-ExtraLight';
+    src: url('../fonts/Oswald-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald-Light';
+    src: url('../fonts/Oswald-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald-Medium';
+    src: url('../fonts/Oswald-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald-SemiBold';
+    src: url('../fonts/Oswald-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'BarcodeFont';
-    src: url('../fonts/BarcodeFont.ttf');
-    src: url('../fonts/BarcodeFont.ttf') format('truetype');
+    src: url('../fonts/barcode128/LibreBarcode128Text-Regular.ttf') format('truetype');
 }
 
 .LibreBarcode128 {
     font-family: 'BarcodeFont' !important;
+}
+
+.font_Oswald-Light {
+    font-family: 'Oswald-Light' !important;
+}
+
+.font_Oswald-Bold {
+    font-family: 'Oswald-Bold' !important;
+}
+
+.font_Oswald-Medium {
+    font-family: 'Oswald-Medium' !important;
 }

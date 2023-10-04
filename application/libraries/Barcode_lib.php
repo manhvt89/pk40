@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 use emberlabs\Barcode\BarcodeBase;
+use Hbgl\Barcode\Code128Encoder;
 require APPPATH.'/views/barcodes/BarcodeBase.php';
 require APPPATH.'/views/barcodes/Code39.php';
 require APPPATH.'/views/barcodes/Code128.php';
@@ -22,23 +23,53 @@ class Barcode_lib
 		return $this->supported_barcodes;
 	}
 	
-	public function get_barcode_config()
+	public function get_barcode_config($prefix = '')
 	{
-		$data['company'] = $this->CI->config->item('company');
-		$data['barcode_content'] = $this->CI->config->item('barcode_content');
-		$data['barcode_type'] = $this->CI->config->item('barcode_type');
-		$data['barcode_font'] = $this->CI->config->item('barcode_font');
-		$data['barcode_font_size'] = $this->CI->config->item('barcode_font_size');
-		$data['barcode_height'] = $this->CI->config->item('barcode_height');
-		$data['barcode_width'] = $this->CI->config->item('barcode_width');
-		$data['barcode_quality'] = $this->CI->config->item('barcode_quality');
-		$data['barcode_first_row'] = $this->CI->config->item('barcode_first_row');
-		$data['barcode_second_row'] = $this->CI->config->item('barcode_second_row');
-		$data['barcode_third_row'] = $this->CI->config->item('barcode_third_row');
-		$data['barcode_num_in_row'] = $this->CI->config->item('barcode_num_in_row');
-		$data['barcode_page_width'] = $this->CI->config->item('barcode_page_width');	  
-		$data['barcode_page_cellspacing'] = $this->CI->config->item('barcode_page_cellspacing');
-		$data['barcode_generate_if_empty'] = $this->CI->config->item('barcode_generate_if_empty');
+		$_aRanges = [
+			'lens',
+			'g2'
+		];
+		$data = [];
+		//echo $prefix;
+		if(!in_array($prefix,$_aRanges))
+		{
+			$prefix = '';
+		}
+		//echo $prefix; die();
+		if($prefix == '')
+		{
+			$data['company'] = $this->CI->config->item('company');
+			$data['barcode_content'] = $this->CI->config->item('barcode_content');
+			$data['barcode_type'] = $this->CI->config->item('barcode_type');
+			$data['barcode_font'] = $this->CI->config->item('barcode_font');
+			$data['barcode_font_size'] = $this->CI->config->item('barcode_font_size');
+			$data['barcode_height'] = $this->CI->config->item('barcode_height');
+			$data['barcode_width'] = $this->CI->config->item('barcode_width');
+			$data['barcode_quality'] = $this->CI->config->item('barcode_quality');
+			$data['barcode_first_row'] = $this->CI->config->item('barcode_first_row');
+			$data['barcode_second_row'] = $this->CI->config->item('barcode_second_row');
+			$data['barcode_third_row'] = $this->CI->config->item('barcode_third_row');
+			$data['barcode_num_in_row'] = $this->CI->config->item('barcode_num_in_row');
+			$data['barcode_page_width'] = $this->CI->config->item('barcode_page_width');	  
+			$data['barcode_page_cellspacing'] = $this->CI->config->item('barcode_page_cellspacing');
+			$data['barcode_generate_if_empty'] = $this->CI->config->item('barcode_generate_if_empty');
+		} else {
+			$data['company'] = $this->CI->config->item($prefix.'_company');
+			$data['barcode_content'] = $this->CI->config->item($prefix.'_barcode_content');
+			$data['barcode_type'] = $this->CI->config->item($prefix.'_barcode_type');
+			$data['barcode_font'] = $this->CI->config->item($prefix.'_barcode_font');
+			$data['barcode_font_size'] = $this->CI->config->item($prefix.'_barcode_font_size');
+			$data['barcode_height'] = $this->CI->config->item($prefix.'_barcode_height');
+			$data['barcode_width'] = $this->CI->config->item($prefix.'_barcode_width');
+			$data['barcode_quality'] = $this->CI->config->item($prefix.'_barcode_quality');
+			$data['barcode_first_row'] = $this->CI->config->item($prefix.'_barcode_first_row');
+			$data['barcode_second_row'] = $this->CI->config->item($prefix.'_barcode_second_row');
+			$data['barcode_third_row'] = $this->CI->config->item($prefix.'_barcode_third_row');
+			$data['barcode_num_in_row'] = $this->CI->config->item($prefix.'_barcode_num_in_row');
+			$data['barcode_page_width'] = $this->CI->config->item($prefix.'_barcode_page_width');	  
+			$data['barcode_page_cellspacing'] = $this->CI->config->item($prefix.'_barcode_page_cellspacing');
+			$data['barcode_generate_if_empty'] = $this->CI->config->item($prefix.'_barcode_generate_if_empty');
+		}
 		
 		return $data;
 	}
@@ -224,6 +255,7 @@ class Barcode_lib
 	public function _display_barcode_lens($item, $barcode_config)
 	{
 		//$barcode_config['barcode_width'] = 145;
+		/*
 		$barcode_config['barcode_width'] = 0;
 		$display_table = "<div class='' style='width:100%; '>";
 		$display_table .= "<div style='width:100%; font-size:9px; padding-bottom: 5px;' align='center'>" . $this->manage_display_layout_lens($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
@@ -233,6 +265,49 @@ class Barcode_lib
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout_lens('location', $item, $barcode_config) . "</td></tr>";
 		$display_table .= "</div>";
 		
+		return $display_table;
+		*/
+		//var_dump($item);
+		if(empty($item) || empty($barcode_config))
+		{
+			return '';
+		}
+		//$barcode_config['barcode_width'] = 145;
+		$barcode_config['barcode_width'] = 0;
+		$display_table = "<div class='' style='width:100%; height:22mm'>";
+		if($barcode_config['barcode_first_row'] != 'not_show' && $barcode_config['barcode_first_row'] != '') {
+			$_sName = $item[$barcode_config['barcode_first_row']];
+			$_aNames = explode(' ', $_sName);
+			//var_dump($_aNames);
+			$_iLength = count($_aNames);
+			if($_iLength < 3) {
+				return '';
+			}
+			$_sLastName = $_aNames[$_iLength - 2] . ' ' . $_aNames[$_iLength - 1];
+			$_sFirstname = '';
+			for($i = 0; $i < $_iLength - 2 ; $i++) {
+				$_sFirstname = $_sFirstname . ' ' . $_aNames[$i];
+			}
+			$_sFirstname = trim($_sFirstname); //clear blank
+
+			$display_table .= "<div style='width:100%; padding-bottom: 0px;' align='center' class='barcode-item-" . $barcode_config['barcode_first_row'] . "'>" . $_sFirstname . "</div>";
+			$display_table .= "<div style='width:100%; padding-bottom: 3px;' align='center' class='barcode-item-line-2-" . $barcode_config['barcode_first_row'] . "'>" . $_sLastName . "</div>";
+		}
+		/*
+		$barcode = $this->generate_barcode($item, $barcode_config);
+		$display_table .= "<div style='width:100%; font-size:9px;' align='center'><img src='data:image/png;base64,$barcode' /></div>";
+		*/
+		if($item['item_number'] != '') {
+			$display_table .= "<div align='center' style='font-size:39px; line-height: 39px;' class='LibreBarcode128'>" . htmlentities(Code128Encoder::encode($item['item_number'])) . "</div>";
+		}
+		if($barcode_config['barcode_second_row'] != 'not_show' && $barcode_config['barcode_second_row'] != '') {
+			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_second_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
+		}
+		if($barcode_config['barcode_third_row'] != 'not_show' && $barcode_config['barcode_third_row'] != '') {
+			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_third_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</div>";
+		}
+		//$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</td></tr>";
+		$display_table .= "</div>";
 		return $display_table;
 	}
 	public function _display_barcode_lens_bak($item, $barcode_config)

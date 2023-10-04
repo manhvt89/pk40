@@ -1048,8 +1048,8 @@ $(document).ready(function()
 			alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
 			$(this).val(totalAmount.toFixed(0));
 			return false;
-		} else if ((paymentMethod == "Tiền lẻ") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
-			alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc tiền lẻ.");
+		} else if ((paymentMethod == "Giảm thêm") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
+			alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
 			$(this).val(totalAmount.toFixed(0));
 			return false;
 		} else {
@@ -1064,7 +1064,7 @@ $(document).ready(function()
         var totalAmount = parseFloat($("#hd_amount_due").val());
 		if (paymentMethod == "Chuyển khoản" || paymentMethod == "Tiền mặt") {
             $("#amount_tendered").val(totalAmount.toFixed(0));
-        } else if(paymentMethod == "Tiền lẻ"){
+        } else if(paymentMethod == "Giảm thêm"){
 			$("#amount_tendered").val("");
 		}else {
             $("#amount_tendered").val("");
@@ -1083,8 +1083,8 @@ $(document).ready(function()
                 if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount)) {
                     alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
                     $(this).val(totalAmount.toFixed(0));
-                } else if ((paymentMethod == "Tiền lẻ") && (paymentAmount > 10000 || paymentAmount > totalAmount)){
-					alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc tiền lẻ.");
+                } else if ((paymentMethod == "Giảm thêm") && (paymentAmount > 10000 || paymentAmount > totalAmount)){
+					alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
 					$(this).val(totalAmount.toFixed(0));
 				}
     });
@@ -1111,8 +1111,8 @@ $(document).ready(function()
 				alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
 				$(this).val(totalAmount.toFixed(0));
 				return false;
-			} else if((paymentMethod == "Tiền lẻ") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
-				alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc tiền lẻ.");
+			} else if((paymentMethod == "Giảm thêm") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
+				alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
 				$(this).val(totalAmount.toFixed(0));
 			} else {
 				$('#add_payment_form').submit();

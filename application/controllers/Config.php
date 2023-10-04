@@ -559,7 +559,38 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
-			'barcode_content' => $this->input->post('barcode_content')
+			'barcode_content' => $this->input->post('barcode_content'),
+
+			/** Lens */
+			'lens_barcode_type' => $this->input->post('lens_barcode_type'),
+			'lens_barcode_quality' => $this->input->post('lens_barcode_quality'),
+			'lens_barcode_width' => $this->input->post('lens_barcode_width'),
+			'lens_barcode_height' => $this->input->post('lens_barcode_height'),
+			'lens_barcode_font' => $this->input->post('lens_barcode_font'),
+			'lens_barcode_font_size' => $this->input->post('lens_barcode_font_size'),
+			'lens_barcode_first_row' => $this->input->post('lens_barcode_first_row'),
+			'lens_barcode_second_row' => $this->input->post('lens_barcode_second_row'),
+			'lens_barcode_third_row' => $this->input->post('lens_barcode_third_row'),
+			'lens_barcode_num_in_row' => $this->input->post('lens_barcode_num_in_row'),
+			'lens_barcode_page_width' => $this->input->post('lens_barcode_page_width'),
+			'lens_barcode_page_cellspacing' => $this->input->post('lens_barcode_page_cellspacing'),
+			'lens_barcode_generate_if_empty' => $this->input->post('lens_barcode_generate_if_empty') != NULL,
+			'lens_barcode_content' => $this->input->post('lens_barcode_content'),
+			/** Gong2 */
+			'g2_barcode_type' => $this->input->post('g2_barcode_type'),
+			'g2_barcode_quality' => $this->input->post('g2_barcode_quality'),
+			'g2_barcode_width' => $this->input->post('g2_barcode_width'),
+			'g2_barcode_height' => $this->input->post('g2_barcode_height'),
+			'g2_barcode_font' => $this->input->post('g2_barcode_font'),
+			'g2_barcode_font_size' => $this->input->post('g2_barcode_font_size'),
+			'g2_barcode_first_row' => $this->input->post('g2_barcode_first_row'),
+			'g2_barcode_second_row' => $this->input->post('g2_barcode_second_row'),
+			'g2_barcode_third_row' => $this->input->post('g2_barcode_third_row'),
+			'g2_barcode_num_in_row' => $this->input->post('g2_barcode_num_in_row'),
+			'g2_barcode_page_width' => $this->input->post('g2_barcode_page_width'),
+			'g2_barcode_page_cellspacing' => $this->input->post('g2_barcode_page_cellspacing'),
+			'g2_barcode_generate_if_empty' => $this->input->post('g2_barcode_generate_if_empty') != NULL,
+			'g2_barcode_content' => $this->input->post('g2_barcode_content')
         );
         
         $result = $this->Appconfig->batch_save($batch_save_data);
