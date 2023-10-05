@@ -112,6 +112,7 @@ class Barcodes extends Secure_Controller
 		$config = $this->barcode_lib->get_barcode_config();
 		$config['store_name'] = $this->config->item('company');
 		$config['store_address'] = $this->config->item('address');
+		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
 		$data['barcode_config'] = $config;
 
@@ -176,7 +177,7 @@ class Barcodes extends Secure_Controller
 		$config = $this->barcode_lib->get_barcode_config('lens');
 		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
-		var_dump($config);
+		//var_dump($config);
 		$data['barcode_config'] = $config;
 
 		foreach($results as $item)

@@ -206,6 +206,7 @@ class Barcode_lib
 	public function _display_barcode($item, $barcode_config) // @gong
 	{
 		//var_dump($item);die();
+		/*
 		$item['unit_price'] = $item['price'];
 		$barcode_config['barcode_width'] = 0;
 		$display_table = "<div class='print-barcode_1'>";
@@ -221,6 +222,33 @@ class Barcode_lib
 		
 		//$display_table .= "<div class='headline' align='center'>Chăm sóc đôi mắt bạn</div>";
 		$display_table .= "<div align='center'>".$barcode_config['store_address']."</div>";
+		$display_table .= "</div>";
+		
+		return $display_table;
+		*/
+		$item['unit_price'] = $item['price'];
+		$barcode_config['barcode_width'] = 0;
+		$display_table = "<div class='print-barcode_1'>";
+		if($barcode_config['barcode_first_row'] != 'not_show' && $barcode_config['barcode_first_row'] != '') {
+			$display_table .= "<div class='barcode-item-" . $barcode_config['barcode_first_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . " </div>";
+		}
+		/*
+		$barcode = $this->generate_barcode($item, $barcode_config);
+		$display_table .= "<div align='center'><img src='data:image/png;base64,$barcode' /></div></tr>";
+		*/
+		if($item['item_number'] != '') {
+			$display_table .= "<div align='center' style='font-size:".$barcode_config['barcode_quality']."px; line-height: ".$barcode_config['barcode_quality']."px;' class='LibreBarcode128'>" . htmlentities(Code128Encoder::encode($item['item_number'])) . "</div>";
+		}
+		if($barcode_config['barcode_second_row'] != 'not_show' && $barcode_config['barcode_second_row'] != '') {
+			$display_table .= "<div class='barcode-item-" . $barcode_config['barcode_second_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "- <b>".$barcode_config['location']."</b></div>";	
+		}
+		$display_table .= "</div>";
+		$display_table .= "<div class='print-barcode_2'>";
+		
+		$display_table .= "<div class='store_name' align='center'><b>".$barcode_config['store_name']."</b></div>";
+		//$display_table .= "<div class='headline' align='center'>Chăm sóc đôi mắt bạn</div>";
+		$display_table .= "<div class='store_address' align='center'>".$barcode_config['store_address']."</div>";
+		
 		$display_table .= "</div>";
 		
 		return $display_table;
@@ -274,7 +302,7 @@ class Barcode_lib
 		}
 		//$barcode_config['barcode_width'] = 145;
 		$barcode_config['barcode_width'] = 0;
-		$display_table = "<div class='' style='width:100%; height:22mm'>";
+		$display_table = "<div class='' style='width:100%; height:".$barcode_config['barcode_height']."mm'>";
 		if($barcode_config['barcode_first_row'] != 'not_show' && $barcode_config['barcode_first_row'] != '') {
 			$_sName = $item[$barcode_config['barcode_first_row']];
 			$_aNames = explode(' ', $_sName);
@@ -298,10 +326,10 @@ class Barcode_lib
 		$display_table .= "<div style='width:100%; font-size:9px;' align='center'><img src='data:image/png;base64,$barcode' /></div>";
 		*/
 		if($item['item_number'] != '') {
-			$display_table .= "<div align='center' style='font-size:39px; line-height: 39px;' class='LibreBarcode128'>" . htmlentities(Code128Encoder::encode($item['item_number'])) . "</div>";
+			$display_table .= "<div align='center' style='font-size:".$barcode_config['barcode_quality']."px; line-height: ".$barcode_config['barcode_quality']."px;' class='LibreBarcode128'>" . htmlentities(Code128Encoder::encode($item['item_number'])) . "</div>";
 		}
 		if($barcode_config['barcode_second_row'] != 'not_show' && $barcode_config['barcode_second_row'] != '') {
-			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_second_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
+			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_second_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . " - <b>".$barcode_config['location']."</b></div>";
 		}
 		if($barcode_config['barcode_third_row'] != 'not_show' && $barcode_config['barcode_third_row'] != '') {
 			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_third_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</div>";
@@ -353,7 +381,8 @@ class Barcode_lib
 		{
 			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 		}
-		return character_limiter($result, 25);
+		//return character_limiter($result, 25);
+		return $result;
 	}
 	private function manage_display_layout_lens($layout_type, $item, $barcode_config)
 	{

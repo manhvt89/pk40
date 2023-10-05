@@ -16,7 +16,10 @@
 	  <div class="buttonpr no-print">
 				<button onclick="window.print()" class="bt-print-barcode">Print</button>
 	  </div>
+	  <div id="main_barcode_printer" class="<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?>" style="font-size:<?php echo $barcode_config['barcode_font_size']; ?>px">
+	  
 	  <?php print_barcode($items,$this->config->item('GBarcode')['template'],$barcode_config);?>
+	  </div>
 </body>
 
 </html>

@@ -756,8 +756,8 @@ function print_barcode_gong_2x105($items,$barcode_config)
 {
     $CI =& get_instance();
     
-    $_sHtml = '<div style=" width: 105mm; margin:auto; ">';
-    $_sHtml = $_sHtml . '<div class="print-page-barcode">';
+    $_sHtml = '<div style=" width: '.$barcode_config['barcode_page_width'].'mm; margin:auto; ">';
+    //$_sHtml = $_sHtml . '<div class="print-page-barcode">';
 	
     if (!empty($items)) {
 			$count = 0;
@@ -769,11 +769,11 @@ function print_barcode_gong_2x105($items,$barcode_config)
 						
 				}
 				if($count % $columns == 0){
-                    $_sHtml = $_sHtml . '<div class="2" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">';
+                    $_sHtml = $_sHtml . '<div class="2" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:0mm 0mm 0mm 1mm;">';
 					$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode($item, $barcode_config);
 					$_sHtml = $_sHtml .'</div>';
 				} else {
-					$_sHtml = $_sHtml . '<div class="1" style=" width: 50mm; text-align: center;float: left; margin:0mm 0mm 0mm 2mm;">';
+					$_sHtml = $_sHtml . '<div class="1" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:0mm 0mm 0mm '.$barcode_config['barcode_page_cellspacing'].'mm;">';
 					$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode($item, $barcode_config); 
 					$_sHtml = $_sHtml .'</div>';
 
@@ -839,7 +839,7 @@ function print_barcode_mat_2x75($items,$barcode_config)
 function print_barcode_mat_3x105($items,$barcode_config)
 {
     $CI =& get_instance();
-    $_sHtml = '<div style=" width: 105mm; margin:auto; ">';
+    $_sHtml = '<div style=" width: '.$barcode_config['barcode_page_width'].'mm; margin:auto; ">';
 
 	if (!empty($items)) {
 		$count = 0;
@@ -849,7 +849,7 @@ function print_barcode_mat_3x105($items,$barcode_config)
 			{
 				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
 			}
-			$_sHtml = $_sHtml . '<div class="2" style=" width: 35mm; text-align: center;float: left; margin:0px; ">';
+			$_sHtml = $_sHtml . '<div class="2" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:0px; ">';
 			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_lens($item, $barcode_config);
 			$_sHtml = $_sHtml . '</div>';
 		    ++$count; 

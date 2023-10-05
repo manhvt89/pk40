@@ -39,6 +39,11 @@
 }
 
 @font-face {
+    font-family: 'Oswald-VariableFont_wght';
+    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'Oswald-Regular';
     src: url('../fonts/Oswald-Regular.ttf') format('truetype');
 }
@@ -73,6 +78,11 @@
     src: url('../fonts/barcode128/LibreBarcode128Text-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'fontawesome-webfont';
+    src: url('../fonts/fontawesome-webfont.ttf') format('truetype');
+}
+
 .LibreBarcode128 {
     font-family: 'BarcodeFont' !important;
 }
@@ -87,4 +97,24 @@
 
 .font_Oswald-Medium {
     font-family: 'Oswald-Medium' !important;
+}
+
+.font_Oswald-SemiBold {
+    font-family: 'Oswald-SemiBold' !important;
+}
+
+.font_Oswald-ExtraLight {
+    font-family: 'Oswald-ExtraLight' !important;
+}
+
+.font_Oswald-Regular {
+    font-family: 'Oswald-Regular' !important;
+}
+
+.font_Oswald-VariableFont_wght {
+    font-family: 'Oswald-VariableFont_wght' !important;
+}
+
+.font_fontawesome-webfont {
+    font-family: 'fontawesome-webfont' !important;
 }
