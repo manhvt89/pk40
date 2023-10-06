@@ -367,7 +367,7 @@ class Config extends Secure_Controller
 		
 	public function save_general()
 	{
-		echo '123';die();
+
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
