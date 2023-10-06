@@ -1449,12 +1449,12 @@ class Items extends Secure_Controller
 					'name'					=> $data[1] != null ? $data[1]:'',
 					'description'			=> $data[11] != null ? $data[11]:0,
 					'category'				=> $data[2] != null ? $data[2]:'',
-					'cost_price'			=> $data[4] != null ? $data[4]:0,
-					'unit_price'			=> $data[5] != null ? $data[5]:0,
-					'reorder_level'			=> $data[10] != null ? $data[10]:0,
+					'cost_price'			=> is_numeric($data[4]) == true ? $data[4]:0,
+					'unit_price'			=> is_numeric($data[5]) == true ? $data[5]:0,
+					'reorder_level'			=> is_numeric($data[10]) == true ? $data[10]:0,
 					'supplier_id'			=> $this->Supplier->exists($data[3]) ? $data[3] : NULL,
 					'allow_alt_description'	=> $data[12] != null ? $data[12] : '',
-					'is_serialized'			=> $data[13] != '' ? '1' : '0',
+					'is_serialized'			=> $data[13] != null ? '1' : '0',
 					'custom1'				=> $data[14] != null ? $data[14]:'',
 					'custom2'				=> $data[15] != null ? $data[15]:'',
 					'custom3'				=> $data[16] != null ? $data[16]:'',
@@ -1473,7 +1473,7 @@ class Items extends Secure_Controller
 					$item_data['item_number'] = $item_number;
 					$invalidated = $this->Item->item_number_exists($item_number);
 				}
-				//var_dump($item_data);die();
+				var_dump($item_data);die();
 				if(!$invalidated && $this->Item->save($item_data))
 						{
 							$items_taxes_data = NULL;
