@@ -1,5 +1,5 @@
 <?php
-class Reminder extends CI_Model
+class Appointment extends CI_Model
 {
 
 	//added to support reminder clients retest
@@ -54,17 +54,6 @@ class Reminder extends CI_Model
 		return null;
 	}
 
-	public function get_info_by_uuid($uuid)
-	{
-		$this->db->from('reminders');
-		$this->db->where('reminder_uuid',$uuid);
-		$query = $this->db->get();
-		if($query->result()) {
-			return $query->result()[0];
-		}
-		return null;
-	}
-
 	/*
 	 Get number of rows for the takings (sales/manage) view
 	*/
@@ -91,7 +80,6 @@ class Reminder extends CI_Model
 			$this->db->group_start();
 			// customer last name
 			$this->db->like('reminders.name', $search);
-			$this->db->or_like('reminders.phone', $search);
 			$this->db->group_end();
 		}
 		//$this->db->group_by('test.sale_id');
@@ -155,17 +143,6 @@ class Reminder extends CI_Model
 		return $success;
 	}
 
-	public function get_histories_by_reminder_id( $id )
-	{
-		$this->db->from('ospos_history_reminder');
-		$this->db->where('reminder_id',$id);
-		$query = $this->db->get();
-		if($query->result()) {
-			return $query->result();
-		}
-		return null;
-	}
-
 	public function save($items)
 	{
 		if(count($items) == 0)
@@ -180,28 +157,6 @@ class Reminder extends CI_Model
 		$this->db->trans_start();
 
 		$this->db->insert('reminders', $items);
-		$id = $this->db->insert_id();
-		$this->db->trans_complete();
-		
-		if($this->db->trans_status() === FALSE)
-		{
-			return -1;
-		}
-		
-		return $id;
-	}
-
-	public function save_history($items)
-	{
-		if(count($items) == 0)
-		{
-			return -1;
-		}
-		
-		// Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
-
-		$this->db->insert('history_reminder', $items);
 		$id = $this->db->insert_id();
 		$this->db->trans_complete();
 		

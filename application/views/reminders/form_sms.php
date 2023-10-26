@@ -12,22 +12,61 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('reminder_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2 required')); ?>
+			<?php echo form_label($this->lang->line('reminder_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
-					<?php echo form_input(array('class'=>'form-control input-sm required', 'type'=>'text', 'name'=>'phone', 'value'=>$reminder_info->phone));?>
+					<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'phone', 'value'=>$reminder_info->phone, 'readonly'=>'true'));?>
 				</div>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('reminder_messages'), 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2 required')); ?>
+			<?php echo form_label('Địa chỉ', 'address_label', array('for'=>'address', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea(array('class'=>'form-control input-sm required', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-address"></span></span>
+					<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'address', 'value'=>$reminder_info->address, 'readonly'=>'true'));?>
+				</div>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label('Kết quả', 'status_label', array('for'=>'status', 'class'=>'control-label col-xs-2 required')); ?>
+			<div class="col-xs-10">
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
+					<?php echo form_dropdown('status', $status, $reminder_info->status, array('class'=>'form-control')); ?>
+				</div>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label('Lưu ý', 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2')); ?>
+			<div class="col-xs-10">
+				<?php echo form_textarea(array('class'=>'form-control input-sm', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
 			</div>
 		</div>
 	</fieldset>
 <?php echo form_close(); ?>
+<div>
+	<?php if($histories != null):?>
+	<ul>
+		<?php
+		 $i=1;
+		 foreach($histories as $history): 
+		 $_status = '';
+		 if($history->status < 5)
+		 {
+			$_status = $status[$history->status];
+		 } else {
+			$_status = 'Đang khám lại';
+		 }
+		 ?>
+		<li>
+			<?php echo 'Lần '.$i .': <br/>'. date('d/m/Y',$history->created_time). ' - '. $_status .'<br/>'.$history->content;?> 
+		</li>
+		<?php $i++; endforeach;?>
+	</ul>
+	<?php endif;?>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function()
@@ -38,6 +77,8 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 				success:function(response)
 				{
+					//alert(response);
+					//alert(response.id);
 					dialog_support.hide();
 					table_support.handle_submit('<?php echo site_url('messages'); ?>', response);
 				},
@@ -46,28 +87,19 @@ $(document).ready(function()
 		},
 		rules:
 		{
-			phone:
+			status:
 			{
-				required:true,
-				number:true
+				required:true
 			},
-			message:
-			{
-				required:true,
-				number:false
-			}
+			
    		},
 		messages:
 		{
-			phone:
+			status:
 			{
-				required:"<?php echo $this->lang->line('messages_phone_number_required'); ?>",
-				number:"<?php echo $this->lang->line('messages_phone'); ?>"
+				required:"Bạn cần chọn kết quả cuộc gọi"
 			},
-			message:
-			{
-				required:"<?php echo $this->lang->line('messages_message_required'); ?>"
-			}
+			
 		}
 	}, form_support.error));
 });

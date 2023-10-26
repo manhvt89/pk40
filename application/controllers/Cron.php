@@ -593,6 +593,7 @@ class Cron extends CI_Controller{
 		//$reminder = $this->Model_main->get_days_request_reminders($timestamp);
 
         // send sms
+        /* Không gửi sms.
         if($this->sms_lib->init()) {
             $status = $this->sms_lib->send('0904991997', 'hello world');
             $content = "KINH MAT VIET HAN: Da den han kiem tra mat ban $reminder->name. 91 Truong Dinh, HBT, HN. LH:0969864555";
@@ -629,7 +630,7 @@ class Cron extends CI_Controller{
             }
             $this->sms_lib->close();
         }
-
+        */
 	}
 
 	public function send_sms_client()
@@ -1259,5 +1260,316 @@ class Cron extends CI_Controller{
         }
         
     }
+    /**
+     * Đồng bộ dữ liệu nhằm mục đích hiển thị nhắc nhờ bệnh nhân trước n ngày.
+     */
+    public function synchro_appointments()
+    {
+        
+        //1. Get list tests to reminder
 
+        $tests = $this->Testex->get_info_tests_today();
+        //var_dump($test->result());
+        $data_rows = array();
+        $ids = array();
+
+        foreach ($tests->result() as $test) {
+            $data_rows[$test->test_id] = $test;
+            $ids[] = $test->test_id;
+        }
+
+        //var_dump($data_rows);
+        $exits_reminders = $this->Reminder->get_reminders_in($ids);
+        if($exits_reminders->result())
+        {
+            foreach ($exits_reminders->result() as $reminder)
+            {
+                //remove it from $data_rows
+                unset($data_rows[$reminder->test_id]);
+            }
+        }
+        if($data_rows) {
+            foreach ($data_rows as $row) {
+                $item['created_date'] = time();
+                $item['test_id'] = $row->test_id;
+                $item['name'] = $row->last_name . ' ' . $row->first_name;
+                $item['tested_date'] = $row->test_time;
+                $item['duration'] = $row->duration;
+                $item['status'] = 0;
+                $item['remain'] = 1;
+                $item['des'] = $row->note;
+                $item['customer_id'] = $row->customer_id;
+                $item['action'] = '';
+                $item['expired_date'] = $row->expired_date;
+                $item['phone'] = $row->phone_number;
+                $the_id = $this->Reminder->save($item);
+                if($the_id)
+                {
+                    echo "Đã đồng bộ thành công " . $the_id . PHP_EOL;
+                }
+            }
+
+        }
+        else{
+            echo "Không có bản ghi nào được đồng bộ" . PHP_EOL;
+        }
+
+        $reminders = $this->Reminder->get_reminders_sms();
+
+		//$reminder = $this->Model_main->get_days_request_reminders($timestamp);
+
+        // send sms
+        if($this->sms_lib->init()) {
+            $status = $this->sms_lib->send('0904991997', 'hello world');
+            $content = "KINH MAT VIET HAN: Da den han kiem tra mat ban $reminder->name. 91 Truong Dinh, HBT, HN. LH:0969864555";
+            foreach ($reminders->result() as $reminder)
+            {
+                if($reminder->phone) {
+                    $status = $this->sms_lib->send($reminder->phone, $content);
+                    if ($status) {
+                        //update reminder with is_sms = 1
+                        //$reminder->is_sms = 1;
+                        $data['is_sms'] = 1;
+                        $this->Reminder->update($reminder->id, $data);
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $this->Messages->save($item);
+
+                        echo "Đã gửi sms thành công đến $reminder->name " . PHP_EOL;
+                        sleep(30); //wait 30s before active to next task
+                    }else{
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $item['status'] = 1;
+                        $this->Messages->save($item);
+                    }
+                }
+            }
+            $this->sms_lib->close();
+        }
+
+    }
+
+    public function sync_reminder(){
+		if(!$this->input->is_cli_request()){
+			//echo "This script can only be accessed via the command line" . PHP_EOL;
+			//return;
+		}
+		//1. Get list tests to yesterday
+
+        $tests = $this->Testex->get_info_tests_yeserday();
+        //var_dump($test->result());
+        $data_rows = array();
+        $ids = array();
+
+        foreach ($tests->result() as $test) {
+            $data_rows[$test->test_id] = $test;
+            $ids[] = $test->test_id;
+        }
+        //var_dump($data_rows);
+        $exits_reminders = $this->Reminder->get_reminders_in($ids);
+        if($exits_reminders->result())
+        {
+            foreach ($exits_reminders->result() as $reminder)
+            {
+                //remove it from $data_rows
+                unset($data_rows[$reminder->test_id]);
+            }
+        }
+        if($data_rows) {
+            foreach ($data_rows as $row) {
+                $item['created_date'] = time();
+                $item['test_id'] = $row->test_id;
+                $item['name'] = $row->last_name . ' ' . $row->first_name;
+                $item['tested_date'] = $row->test_time;
+                $item['duration'] = $row->duration;
+                $item['status'] = 0;
+                $item['remain'] = 1;
+                $item['des'] = $row->note;
+                $item['customer_id'] = $row->customer_id;
+                $item['action'] = '';
+                $item['expired_date'] = $row->expired_date;
+                $item['phone'] = $row->phone_number;
+                $the_id = $this->Reminder->save($item);
+                if($the_id)
+                {
+                    echo "Đã đồng bộ thành công " . $the_id . PHP_EOL;
+                }
+            }
+
+        }
+        else{
+            echo "Không có bản ghi nào được đồng bộ" . PHP_EOL;
+        }
+
+        $reminders = $this->Reminder->get_reminders_sms();
+
+		//$reminder = $this->Model_main->get_days_request_reminders($timestamp);
+
+        // send sms
+        /* Không gửi sms.
+        if($this->sms_lib->init()) {
+            $status = $this->sms_lib->send('0904991997', 'hello world');
+            $content = "KINH MAT VIET HAN: Da den han kiem tra mat ban $reminder->name. 91 Truong Dinh, HBT, HN. LH:0969864555";
+            foreach ($reminders->result() as $reminder)
+            {
+                if($reminder->phone) {
+                    $status = $this->sms_lib->send($reminder->phone, $content);
+                    if ($status) {
+                        //update reminder with is_sms = 1
+                        //$reminder->is_sms = 1;
+                        $data['is_sms'] = 1;
+                        $this->Reminder->update($reminder->id, $data);
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $this->Messages->save($item);
+
+                        echo "Đã gửi sms thành công đến $reminder->name " . PHP_EOL;
+                        sleep(30); //wait 30s before active to next task
+                    }else{
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $item['status'] = 1;
+                        $this->Messages->save($item);
+                    }
+                }
+            }
+            $this->sms_lib->close();
+        }
+        */
+	}
+    public function init_reminder(){
+		if(!$this->input->is_cli_request()){
+			//echo "This script can only be accessed via the command line" . PHP_EOL;
+			//return;
+		}
+		//1. Get list tests to yesterday
+
+        $tests = $this->Testex->get_info_tests();
+        var_dump($tests->result());
+        //die();
+        $data_rows = array();
+        $ids = array();
+
+        foreach ($tests->result() as $test) {
+            $data_rows[$test->test_id] = $test;
+            $ids[] = $test->test_id;
+        }
+        //var_dump($data_rows);
+        $exits_reminders = $this->Reminder->get_reminders_in($ids);
+        if($exits_reminders->result())
+        {
+            foreach ($exits_reminders->result() as $reminder)
+            {
+                //remove it from $data_rows
+                unset($data_rows[$reminder->test_id]);
+            }
+        }
+        if($data_rows) {
+            foreach ($data_rows as $row) {
+                if($row->test_id != null) {
+                    $expired_date = 0;
+
+                    switch ($row->duration_dvt) {
+                        case 'Ngày':
+                            $expired_date = $row->test_time + 3600 * 24 * $row->duration;
+                            break;
+                        case 'Tuần':
+                            $expired_date = $row->test_time + 7 * 3600 * 24 * $row->duration;
+                            break;
+                        case 'Tháng':
+                            $expired_date = $row->test_time + 30 * 3600 * 24 * $row->duration;
+                            break;
+                        default:
+                            $expired_date = $row->test_time + 30 * 3600 * 24 * $row->duration;
+                            break;
+                    }
+
+                    $item['created_date'] = time();
+                    $item['test_id'] = $row->test_id;
+                    $item['name'] = $row->last_name . ' ' . $row->first_name;
+                    $item['tested_date'] = $row->test_time;
+                    $item['duration'] = $row->duration;
+                    $item['duration_dvt'] = $row->duration_dvt == null ? 'Tháng' : $row->duration_dvt;
+                    $item['status'] = 0;
+                    $item['remain'] = 1;
+                    $item['des'] = $row->note;
+                    $item['customer_id'] = $row->customer_id;
+                    $item['action'] = '';
+                    $item['expired_date'] = $expired_date;
+                    $item['phone'] = $row->phone_number;
+                    $item['address'] = $row->address_1 == null ? '' : $row->address_1;
+                    $the_id = $this->Reminder->save($item);
+                    if($the_id) {
+                        echo "Đã đồng bộ thành công " . $the_id . PHP_EOL;
+                    }
+                }
+            }
+
+        }
+        else{
+            echo "Không có bản ghi nào được đồng bộ" . PHP_EOL;
+        }
+
+        $reminders = $this->Reminder->get_reminders_sms();
+
+		//$reminder = $this->Model_main->get_days_request_reminders($timestamp);
+
+        // send sms
+        /* Không gửi sms.
+        if($this->sms_lib->init()) {
+            $status = $this->sms_lib->send('0904991997', 'hello world');
+            $content = "KINH MAT VIET HAN: Da den han kiem tra mat ban $reminder->name. 91 Truong Dinh, HBT, HN. LH:0969864555";
+            foreach ($reminders->result() as $reminder)
+            {
+                if($reminder->phone) {
+                    $status = $this->sms_lib->send($reminder->phone, $content);
+                    if ($status) {
+                        //update reminder with is_sms = 1
+                        //$reminder->is_sms = 1;
+                        $data['is_sms'] = 1;
+                        $this->Reminder->update($reminder->id, $data);
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $this->Messages->save($item);
+
+                        echo "Đã gửi sms thành công đến $reminder->name " . PHP_EOL;
+                        sleep(30); //wait 30s before active to next task
+                    }else{
+                        $item['created_date'] = time();
+                        $item['to'] = $reminder->phone;
+                        $item['content'] = $content;
+                        $item['type'] = 1;
+                        $item['employee_id'] = 0;
+                        $item['name'] = $reminder->name;
+                        $item['status'] = 1;
+                        $this->Messages->save($item);
+                    }
+                }
+            }
+            $this->sms_lib->close();
+        }
+        */
+	}
+    
 }

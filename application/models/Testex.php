@@ -363,11 +363,18 @@ class Testex extends CI_Model
 		}
 		if(is_numeric($items['duration']))
 		{
-			$items['expired_date'] = $items['test_time'] + $items['duration']*24*30*3600;
+			if($items['duration_dvt'] == 'Tháng')
+			{
+				$items['expired_date'] = $items['test_time'] + $items['duration']*24*30*3600;
+			} elseif($items['duration_dvt'] == 'Tuần'){
+				$items['expired_date'] = $items['test_time'] + $items['duration']*24*7*3600;
+			} else {
+				$items['expired_date'] = $items['test_time'] + $items['duration']*24*3600;
+			}
+			
 		} else {
 			$items['expired_date'] = $items['test_time'];
 		}
-
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
@@ -642,6 +649,57 @@ class Testex extends CI_Model
 
 		// drop the temporary table to contain memory consumption as it's no longer required
 		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
+	}
+
+	public function get_info_tests_yeserday()
+	{
+		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
+		// create a temporary table to contain all the payments per sale item
+		$this->db->select("
+				max(test.test_id) as test_id,
+				test.test_time as test_time,
+				test.note as note,
+				test.code as code,
+				test.*,
+				customers_p.*,
+				people.*
+		");
+
+		$this->db->from('customers AS customers_p');
+		$this->db->join('test AS test', 'test.customer_id = customers_p.person_id', 'left');
+		$this->db->join('people AS people', 'test.customer_id = people.person_id', 'left');
+		//$this->db->where("DATE(FROM_UNIXTIME(test.test_time)) = CURDATE()");
+		$this->db->where('DATE(FROM_UNIXTIME(test.expired_date)) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() - INTERVAL 5 DAY');
+
+		$this->db->where("reminder",1);
+		//AND test_time + duration * con >= $pre7day ");
+		$this->db->group_by('customer_id');
+		return $this->db->get();
+	}
+	public function get_info_tests()
+	{
+		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
+		// create a temporary table to contain all the payments per sale item
+		$this->db->select("
+				max(test.test_id) as test_id,
+				test.test_time as test_time,
+				test.note as note,
+				test.code as code,
+				test.*,
+				customers_p.*,
+				people.*
+		");
+
+		$this->db->from('customers AS customers_p');
+		$this->db->join('test AS test', 'test.customer_id = customers_p.person_id', 'left');
+		$this->db->join('people AS people', 'test.customer_id = people.person_id', 'left');
+		//$this->db->where("DATE(FROM_UNIXTIME(test.test_time)) = CURDATE()");
+		//$this->db->where('DATE(FROM_UNIXTIME(test.test_time)) BETWEEN CURDATE() - INTERVAL 1 DAY AND CURDATE() - INTERVAL 1 SECOND');
+
+		//$this->db->where("reminder",1);
+		//AND test_time + duration * con >= $pre7day ");
+		$this->db->group_by('customer_id');
+		return $this->db->get();
 	}
 }
 ?>

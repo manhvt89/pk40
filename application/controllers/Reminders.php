@@ -16,51 +16,86 @@ class Reminders extends Secure_Controller
 	{
 
 
-	    if(!$this->Employee->has_grant('customers_manager', $this->person_id))
-        {
-            redirect('no_access/customers/manage_customers');
-        }else {
+	    //if(!$this->Employee->has_grant('customers_manager', $this->person_id))
+        //{
+        //    redirect('no_access/customers/manage_customers');
+       //}else {
             $data['table_headers'] = $this->xss_clean(get_reminder_table_headers());
 
             $this->load->view('reminders/manage', $data);
-        }
+       // }
 	}
 
     public function send_form($id = -1)
     {
+		/*
+		 $config['reminder_status'] = [
+			''=>'',
+			'Sai số điện thoại'=>'Sai số điện thoại', //1
+			'Chưa liên lạc được'=>'Chưa liên lạc được', //2
+			'Chưa sắp xếp được thời gian' => 'Chưa sắp xếp được thời gian',//3
+			'Đã đặt lịch'=>'Đã đặt lịch'//4
+			//'Đã khám'//5
+		];
+		 
+		*/
         $phone   = $this->input->post('phone');
         $message = $this->input->post('message');
+		$status =  $this->input->post('status');
+		$employeer_id = 0;
+		$employee_name = '';
         $info = $this->Reminder->get_info($id);
-        if($this->sms_lib->init()) {
-            $response = $this->sms_lib->send($phone, $message);
-            $this->sms_lib->close();
-        }else{
-            $response = false;
-        }
+		//var_dump($_status);die();
+		
 
-        if($response)
+		$employeer_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_info = $this->Employee->get_info($employeer_id);
+		$employee_name = get_fullname($employee_info->first_name,$employee_info->last_name);
+
+		$history_reminder = [
+			'employeer_id'=> $employeer_id,
+  			'customer_id'=>$info->customer_id,
+  			'reminder_id'=>$info->id,
+  			'customer_name' =>$info->name,
+  			'employee_name' =>$employee_name,
+  			'content' => $message == null? '':$message,
+  			'status' => $status,
+			'created_time'=>time()
+		];
+
+		$rs = $this->Reminder->save_history($history_reminder);
+
+        if($rs > 0)
         {
             //save to messages table
-            $item['created_date'] = time();
-            $item['to'] = $phone;
-            $item['content'] = $message;
-            $item['type'] = 1;
-            $item['employee_id'] = $this->person_id;
-            $item['name'] = $info->name;
-            $this->Messages->save($item);
-            $data['is_sms'] = 1;
+            $data['status'] = $status;
             $this->Reminder->update($id,$data);
-            echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone, 'id' => $this->xss_clean($id)));
+            echo json_encode(array('success' => TRUE, 'message' => 'Đã liên hệ đến số' . ' ' . $phone, 'id' => $this->xss_clean($id)));
         }
         else
         {
-            echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone, 'id' => -1));
+            echo json_encode(array('success' => FALSE, 'message' => 'Lỗi cập nhận liên hệ đến số' . ' ' . $phone, 'id' => -1));
         }
     }
 
-	public function smsview($id = -1)
+	public function smsview($uuid = -1)
     {
-        $info = $this->Reminder->get_info($id);
+        //$info = $this->Reminder->get_info($id);
+		$info = $this->Reminder->get_info_by_uuid($uuid);
+		$data['status'] = $this->config->item('reminder_status');
+		//$data['$selected_status'] = 
+		$histories = null;
+		if($info == null)
+		{
+			$info->id = 0;
+			$info->name = '';
+			$info->phone = '';
+			$info->address = '';
+			$info->status = '';
+		} else {
+			$histories = $this->Reminder->get_histories_by_reminder_id($info->id);
+		}
+		$data['histories'] = $histories;
         $data['reminder_info'] = $info;
 
         $this->load->view('reminders/form_sms', $data);
@@ -217,195 +252,5 @@ class Reminders extends Secure_Controller
 		}
 	}
 
-	/*
-	Customers import from excel spreadsheet
-	*/
-	public function excel()
-	{
-		$name = 'import_customers.csv';
-		$data = file_get_contents('../' . $name);
-		force_download($name, $data);
-	}
-	
-	public function excel_import()
-	{
-		$this->load->view('customers/form_excel_import', NULL);
-	}
-    // Import KH từ phần mềm quản lý cũ
-	public function do_excel_import()
-	{
-		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
-		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
-		}
-		else
-		{
-			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
-			{
-                // Skip the first row as it's the table description
-				fgetcsv($handle);
-				$i = 1;
-
-				$failCodes = array();
-
-				while(($data = fgetcsv($handle)) !== FALSE) 
-				{
-					// XSS file data sanity check
-					$data = $this->xss_clean($data);
-
-					if(sizeof($data) >= 16)
-					{
-						$fullname = $data[3];
-                        $names = explode(' ', $fullname);
-                        $firstname = $names[count($names) - 1];
-                        unset($names[count($names) - 1]);
-                        $lastname = join(' ', $names);
-                        $firstname = mb_convert_case($firstname, MB_CASE_TITLE, "UTF-8");
-                        $lastname = mb_convert_case($lastname, MB_CASE_TITLE, "UTF-8");
-
-					    $person_data = array(
-							'first_name'	=> $firstname,
-							'last_name'		=> $lastname,
-							'gender'		=> 0,
-							'email'			=> $data[10],
-							'phone_number'	=> $data[8],
-							'address_1'		=> $data[7],
-							'address_2'		=> '',
-							'city'			=> 'HN',
-							'state'			=> 'HN',
-							'zip'			=> '100000',
-							'country'		=> 'VN',
-							'comments'		=> '',
-                            'age'           => 0
-						);
-						
-						$customer_data = array(
-							'company_name'		=> '',
-							'discount_percent'	=> 0,
-							'taxable'			=> 1
-						);
-						
-						$account_number = $data[1];
-						$invalidated = FALSE;
-						if($account_number != '') 
-						{
-							$customer_data['account_number'] = $account_number;
-							$invalidated = $this->Customer->account_number_exists($account_number);
-						}
-					}
-					else 
-					{
-						$invalidated = TRUE;
-					}
-
-					if($invalidated || !$this->Customer->save_customer($person_data, $customer_data))
-					{	
-						$failCodes[] = $i;
-					}
-					
-					++$i;
-				}
-				
-				if(count($failCodes) > 0)
-				{
-					$message = $this->lang->line('customers_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-					
-					echo json_encode(array('success' => FALSE, 'message' => $message));
-				}
-				else
-				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_excel_import_success')));
-				}
-			}
-			else 
-			{
-                echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
-			}
-		}
-	}
-    // import của hệ thống mới
-	public function do_excel_import_bk()
-    {
-        if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
-        {
-            echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
-        }
-        else
-        {
-            if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
-            {
-                // Skip the first row as it's the table description
-                fgetcsv($handle);
-                $i = 1;
-
-                $failCodes = array();
-
-                while(($data = fgetcsv($handle)) !== FALSE)
-                {
-                    // XSS file data sanity check
-                    $data = $this->xss_clean($data);
-
-                    if(sizeof($data) >= 16)
-                    {
-                        $person_data = array(
-                            'first_name'	=> $data[0],
-                            'last_name'		=> $data[1],
-                            'gender'		=> $data[2],
-                            'email'			=> $data[3],
-                            'phone_number'	=> $data[4],
-                            'address_1'		=> $data[5],
-                            'address_2'		=> $data[6],
-                            'city'			=> $data[7],
-                            'state'			=> $data[8],
-                            'zip'			=> $data[9],
-                            'country'		=> $data[10],
-                            'comments'		=> $data[11],
-                            'age'           => $data[16]
-                        );
-
-                        $customer_data = array(
-                            'company_name'		=> $data[12],
-                            'discount_percent'	=> $data[14],
-                            'taxable'			=> $data[15] == '' ? 0 : 1
-                        );
-
-                        $account_number = $data[13];
-                        $invalidated = FALSE;
-                        if($account_number != '')
-                        {
-                            $customer_data['account_number'] = $account_number;
-                            $invalidated = $this->Customer->account_number_exists($account_number);
-                        }
-                    }
-                    else
-                    {
-                        $invalidated = TRUE;
-                    }
-
-                    if($invalidated || !$this->Customer->save_customer($person_data, $customer_data))
-                    {
-                        $failCodes[] = $i;
-                    }
-
-                    ++$i;
-                }
-
-                if(count($failCodes) > 0)
-                {
-                    $message = $this->lang->line('customers_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-
-                    echo json_encode(array('success' => FALSE, 'message' => $message));
-                }
-                else
-                {
-                    echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_excel_import_success')));
-                }
-            }
-            else
-            {
-                echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
-            }
-        }
-    }
 }
 ?>

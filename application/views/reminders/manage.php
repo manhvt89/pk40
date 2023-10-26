@@ -26,11 +26,71 @@ $(document).ready(function()
 		location.href = "mailto:" + recipients.join(",");
 	});
 
-});
+	
 
+});
+function rowStyle(row, index) {
+    var classes = [
+      'bg-blue',
+      'bg-green',
+      'bg-orange',
+      'bg-yellow',
+      'bg-red'
+    ]
+	console.log(row.style);
+	switch (row.style) {
+		case '1':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FF851B'
+				}
+			}
+			break;
+		case '2':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FFDC00'
+				}
+			}
+			break;	
+		case '3':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FFDC00'
+				}
+			}
+			break;
+		case '4':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#2ECC40'
+				}
+			}
+			break;
+		case '5':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#0074D9'
+				}
+			}
+			break;
+		default:
+			return {
+				css: {
+					color: 'red'
+				}
+			}
+			break;
+	}
+  }
 </script>
 <div id="table_holder">
-	<table id="table" data-search="true"></table>
+	<table id="table" data-search="true" data-row-style="rowStyle"></table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

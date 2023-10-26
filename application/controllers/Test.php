@@ -294,7 +294,7 @@ class Test extends Secure_Controller
                 $this->input->post('progressive') . ';' .
                 $this->input->post('rx');
             $obj['type'] = $this->input->post('type') ? $this->input->post('type') : 0;
-            $obj['reminder'] = $this->input->post('reminder') ? $this->input->post('reminder') : 0;
+            $obj['reminder'] = $this->input->post('reminder') ? $this->input->post('reminder') : 1;
             $obj['duration'] = $this->input->post('duration') ? $this->input->post('duration') : 6;
             $obj['employeer_id'] = $employee_id;
             $obj['customer_id'] = $customer_id;

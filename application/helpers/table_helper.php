@@ -4,17 +4,18 @@ function get_reminder_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
+	$headers = [
 		array('no' => $CI->lang->line('reminder_no')),
 		array('name' => $CI->lang->line('reminder_name')),
-		array('phone' => $CI->lang->line('reminder_phone')),
 		array('tested_date' => $CI->lang->line('reminder_tested_date')),
+		array('duration'=>'Thời gian'),
 		array('des' => $CI->lang->line('reminder_description')),
 		array('remain'=>$CI->lang->line('reminder_remain')),
-		array('messages'=>$CI->lang->line('reminder_messages')),
-		array('call'=>$CI->lang->line('reminder_call')),
-		array('retest'=>$CI->lang->line('reminder_retest'))
-	);
+		array('phone' => $CI->lang->line('reminder_phone')),
+		array('update'=>'Cập nhật'),
+		
+		array('status'=>'Trạng thái')
+	];
 
 	//$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
 
@@ -25,6 +26,27 @@ function get_reminder_data_row($reminder,$controller)
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 	$diff = time() - $reminder->expired_date;
+	$status = '';
+	switch ($reminder->status) {
+		case 1:
+			$status = 'Sai số điện thoại';
+			break;
+		case 2:
+			$status = 'Chưa liên lạc được';
+			break;
+		case 3:
+			$status = 'Chưa sắp xếp được thời gian';
+			break;
+		case 4:
+			$status = 'Đã đặt lịch';
+			break;
+		case 5:
+			$status = 'Đã khám';
+			break;
+		default:	
+			$status = 'Chưa liên hệ';
+			break;
+	}
 	return array (
 		'no' => $reminder->no,
 		'name' => $reminder->name,
@@ -32,8 +54,11 @@ function get_reminder_data_row($reminder,$controller)
 		'remain'=>floor($diff/(60*60*24)),
 		'tested_date' => date('d/m/Y',$reminder->tested_date),
 		'des' => $reminder->des,
-		'messages' => empty($reminder->phone) ? '' : anchor("reminders/smsview/$reminder->id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+		'status'=>$status,
+		'style'=>$reminder->status,
+		'duration' => $reminder->duration . ' '. $reminder->duration_dvt,
+		'update' => empty($reminder->phone) ? '' : anchor("reminders/smsview/$reminder->reminder_uuid", '<span class="glyphicon glyphicon-phone"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>'Cập nhật')),
 		);
 }
 function get_test_manage_table_headers($sale_display=0)
