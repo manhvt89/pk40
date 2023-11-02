@@ -256,7 +256,8 @@ class Sales extends Secure_Controller
 		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
 
 		$payment_type = $this->input->post('payment_type');
-
+		$ctv_id = $this->input->post('ctvs');
+		$this->sale_lib->set_partner_id($ctv_id);
 		if($this->form_validation->run() == FALSE)
 		{
 			if($payment_type == $this->lang->line('sales_giftcard'))
@@ -343,8 +344,11 @@ class Sales extends Secure_Controller
 		}
 
 		$mode = $this->sale_lib->get_mode();
-		$ctvs = $this->Ctv->get_list();
-		$this->sale_lib->set_ctv($ctvs);
+		//var_dump($this->sale_lib->get_ctv());die();
+		if($this->sale_lib->get_ctv() == null) { // Chỉ khi chưa có trong session thì mới đọc trong csdl;
+			$ctvs = $this->Ctv->get_list();
+			$this->sale_lib->set_ctv($ctvs);
+		}
 		$quantity = ($mode == 'return') ? -1 : 1;
 		if($mode == 'payment'){
 			$this->sale_lib->set_edit(1);
@@ -695,6 +699,10 @@ class Sales extends Secure_Controller
 		$customer_info = $this->_load_customer_data($customer_id, $data);
 		$invoice_number = $this->_substitute_invoice_number($customer_info);
 		$sale_id = $this->sale_lib->get_sale_id();
+
+		$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+		$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
 		if(empty($data['payments']))
 		{
 			$data['payments'][$this->lang->line('sales_paid_money')] = array();
@@ -759,17 +767,50 @@ class Sales extends Secure_Controller
 				}
 				$data['code'] = $sale_info['code'];
 				
-
+				
 				if ($data['sale_id_num'] == -1) {
 					$data1['error_message'] = $this->lang->line('sales_transaction_failed');
 				} else {
+					$this->sale_lib->clear_all(); //Thành công thì CLEAR ALL DATA CART in SESSION. update 29/10/2023
 					$data1['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']);
+					//$sale_info['amount_due']
+					//ManhVT added 29/10/2023 - Thêm tính năng update history_ctv
+					if($sale_info['sync'] == 0) {
+						$_time = time();
+						$ctv_info = $this->Employee->get_info($ctv_id);
+						//var_dump($ctv_info);
+						//die();
+						$_ctv_name = get_fullname($ctv_info->first_name, $ctv_info->last_name);
+						$_ctv_code = $ctv_info->code;
+						$_ctv_phone = $ctv_info->phone_number;
+						$_comission_rate = $ctv_info->comission_rate;
+						$_employee_name = get_fullname($employee_info->first_name, $employee_info->last_name);
+						$_customer_name = get_fullname($customer_info->first_name, $customer_info->last_name);
+						$_comission_amount = ($_comission_rate * $sale_info['amount_due']) / 100;
+						$history_data = [
+							'ctv_id' => $ctv_id,
+							'sale_id' => $sale_info['sale_id'],
+							'employee_id' => $sale_info['employee_id'],
+							'customer_id' => $sale_info['customer_id'],
+							'ctv_name' => $_ctv_name,
+							'ctv_code' => $_ctv_code,
+							'ctv_phone' => $_ctv_phone,
+							'sale_code' =>  $sale_info['code'],
+							'employee_name' => $_employee_name,
+							'customer_name' => $_customer_name,
+							'created_time' => $_time,
+							'payment_time' => $_time,
+							'payment_amount' => $sale_info['amount_due'],
+							'comission_amount' => $_comission_amount,
+							'comission_rate' => $_comission_rate,
+							'status' => 0
+						];
+						$this->History_ctv->save($history_data);
+					}
 				}
 				$data1 = $this->_load_sale_data($data['sale_id_num']);
 
-				$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-				$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-				$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
+				
 
 				if ($this->sale_lib->is_invoice_number_enabled()) {
 					$this->load->view('sales/invoice', $data1);
@@ -837,7 +878,7 @@ class Sales extends Secure_Controller
 					$this->load->view('sales/receipt', $data1);
 				}
 
-				$this->sale_lib->clear_all(); //CLEAR ALL DATA CART in SESSION
+				//$this->sale_lib->clear_all(); //CLEAR ALL DATA CART in SESSION
 			}
 		}else{
 			$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F5';
@@ -1112,6 +1153,10 @@ class Sales extends Secure_Controller
 
 	private function _reload($data = array())
 	{		
+		if($this->sale_lib->get_ctv() == null) { // Chỉ khi chưa có trong session thì mới đọc trong csdl;
+			$ctvs = $this->Ctv->get_list();
+			$this->sale_lib->set_ctv($ctvs);
+		}
 		$data['sale_id'] = $this->sale_lib->get_sale_id();
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['quantity'] = $this->sale_lib->get_quantity();

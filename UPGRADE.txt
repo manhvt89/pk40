@@ -1,5 +1,71 @@
 Update
 
+29/10/2023
+- Update config/autoload.php
+- updaTE config/app.PHP
+
+- Update gọi ddienj chăm sóc khách hàng
+- update cộng tác viên (nhóm CTV)
+
+INSERT INTO `ospos_roles` VALUES (8,'CTV','CTV','CTV','7b498149-5877-1117-a953-040300000000',0,0,0,0,'1');
+ALTER TABLE `ospos_employees` ADD `total_sale` decimal(10,2) NOT NULL DEFAULT 0.00 AFTER `log`;
+
+DROP TABLE IF EXISTS `ospos_history_ctv`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ospos_history_ctv` (
+  `history_ctv_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ctv_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `ctv_name` varchar(255) DEFAULT NULL,
+  `ctv_code` varchar(255) DEFAULT NULL,
+  `ctv_phone` varchar(255) DEFAULT NULL,
+  `sale_code` varchar(50) DEFAULT NULL,
+  `employee_name` varchar(255) DEFAULT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `created_time` int(11) DEFAULT current_timestamp(),
+  `payment_time` int(11) DEFAULT current_timestamp(),
+  `payment_amount` decimal(15,2) NOT NULL,
+  `comission_amount` decimal(15,2) NOT NULL,
+  `comission_rate` decimal(5,2) NOT NULL,
+  `history_ctv_uuid` varchar(50) NOT NULL DEFAULT uuid(),
+  `status` tinyint(1) DEFAULT 0 COMMENT '{0: moi tao; 1: Yeu cau thanh toan, 2: phê duyệt; 3: đã thanh toán }',
+  PRIMARY KEY (`history_ctv_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ospos_history_reminder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ospos_history_reminder` (
+  `history_reminder_id` int(11) NOT NULL AUTO_INCREMENT,
+  `employeer_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `reminder_id` int(11) NOT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `employee_name` varchar(255) DEFAULT NULL,
+  `content` varchar(255) DEFAULT '''',
+  `status` tinyint(1) DEFAULT 0 COMMENT '{0: chua lien lac duoc; 1: sai so dien thoai; 2: da hen; 3: chua sap xep dc}',
+  `created_time` int(11) DEFAULT current_timestamp(),
+  `history_reminder_uuid` varchar(50) NOT NULL DEFAULT uuid(),
+  PRIMARY KEY (`history_reminder_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1267 DEFAULT CHARSET=utf8;
+-- Cron update vào bảng này hàng ngày (sau 0h sáng)
+
+ALTER TABLE `ospos_reminders` ADD `address` VARCHAR(255) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_id`; 
+ALTER TABLE `ospos_reminders` ADD `reminder_uuid` VARCHAR(36) DEFAULT UUID() AFTER `test_id`; 
+ALTER TABLE `ospos_test` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_uuid`;
+ALTER TABLE `ospos_reminders` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_id`;
+ALTER TABLE `ospos_reminders` ADD `duration` int(2) DEFAULT 6 AFTER `test_id`;
+ALTER TABLE `ospos_employees` ADD `comission_rate` decimal(5,2) NOT NULL DEFAULT 0 AFTER `log`;
+ALTER TABLE `ospos_employees` ADD `code` VARCHAR(20) NOT NULL DEFAULT '' AFTER `log`;
+ALTER TABLE `ospos_sales` ADD `sync` tinyint(1) DEFAULT 0 COMMENT '{0: moi tao; 1: Đã sync vào bảng history_ctv}' AFTER `updated_at`;
+
+
+
+
+
 21/09/2023 
 v1.1_PK40
 Update báo cáo trả hàng nhà cung cấp.

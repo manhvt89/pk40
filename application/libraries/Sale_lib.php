@@ -722,6 +722,7 @@ class Sale_lib
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
+		$this->set_partner_id($this->CI->Sale->get_ctv($sale_id)->person_id);
 		$this->set_sale_id($sale_id);
 	}
 	
@@ -773,6 +774,7 @@ class Sale_lib
 		$this->clear_status();
 		$this->clear_parent_id();
 		$this->clear_current();
+		$this->clear_ctv();
 	}
 	
 	public function is_customer_taxable()
@@ -1215,6 +1217,11 @@ class Sale_lib
 	public function clear_status()
 	{
 		$this->CI->session->unset_userdata('status');
+	}
+
+	public function clear_ctv()
+	{
+		$this->CI->session->unset_userdata('ctv');
 	}
 
 	

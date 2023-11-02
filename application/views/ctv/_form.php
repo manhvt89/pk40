@@ -2,16 +2,13 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('ctvs/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=>'form-horizontal')); ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
-			<a data-toggle="tab" href="#employee_basic_info"><?php echo $this->lang->line("employees_basic_information"); ?></a>
+			<a data-toggle="tab" href="#employee_basic_info">Thông tin chung</a>
 		</li>
 		<li role="presentation">
-			<a data-toggle="tab" href="#employee_login_info"><?php echo $this->lang->line("employees_login_info"); ?></a>
-		</li>
-		<li role="presentation">
-			<a data-toggle="tab" href="#employee_permission_info"><?php echo $this->lang->line("employees_permission_info"); ?></a>
+			<a data-toggle="tab" href="#employee_login_info">Thông tin đăng nhập</a>
 		</li>
 	</ul>
 
@@ -96,26 +93,6 @@
 				</div>
 			</fieldset>
 		</div>
-
-		<div class="tab-pane" id="employee_permission_info">
-			<fieldset>
-				<p><?php echo $this->lang->line("employees_permission_desc"); ?></p>
-
-				<ul id="permission_list">
-					<?php
-					foreach($allroles as $role)
-					{ //var_dump($role);
-					?>
-						<li>	
-							<?php echo form_checkbox("role[]", $role->id, $role->flag==1?TRUE:FALSE, "class='module'"); ?>
-							<span><?=$role->name?></span>						
-						</li>
-					<?php
-					}
-					?>
-				</ul>
-			</fieldset>
-		</div>
 	</div>
 <?php echo form_close(); ?>
 
@@ -124,38 +101,6 @@
 $(document).ready(function()
 {
 	$.validator.setDefaults({ ignore: [] });
-
-	$.validator.addMethod("module", function (value, element) {
-		var result = $("#permission_list input").is(":checked");
-		$(".module").each(function(index, element)
-		{
-			var parent = $(element).parent();
-			var checked =  $(element).is(":checked");
-			if ($("ul", parent).length > 0 && result)
-			{
-				result &= !checked || (checked && $("ul > li > input:checked", parent).length > 0);
-			}
-		});
-		return result;
-	}, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
-
-	$("ul#permission_list > li > input[name='grants[]']").each(function() 
-	{
-	    var $this = $(this);
-	    $("ul > li > input", $this.parent()).each(function() 
-	    {
-		    var $that = $(this);
-	        var updateCheckboxes = function (checked) 
-	        {
-				$that.prop("disabled", !checked);
-	         	!checked && $that.prop("checked", false);
-	        }
-	       $this.change(function() {
-	            updateCheckboxes($this.is(":checked"));
-	        });
-			updateCheckboxes($this.is(":checked"));
-	    });
-	});
 	
 	$('#employee_form').validate($.extend({
 		submitHandler:function(form) 

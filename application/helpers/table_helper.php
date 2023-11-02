@@ -991,5 +991,56 @@ function get_purchase_data_last_row($sales)
 	);
 }
 //[[!-- Added by ManhVT - 26/01/2023 - 
+function get_ctv_manage_table_headers()
+{
+	$CI =& get_instance();
+	array('sale_id' => $CI->lang->line('common_id'),'halign'=>'center', 'align'=>'right');
+	$headers = [
+		['people.person_id' => $CI->lang->line('common_id')],
+		['code' => 'Mã CTV'],
+		//['last_name' => $CI->lang->line('common_last_name')],
+		//['first_name' => $CI->lang->line('common_first_name')],
+		['full_name' => 'Họ và tên'],
+		['email' => $CI->lang->line('common_email')],
+		['phone_number' => $CI->lang->line('common_phone_number')],
+		['address_1' => $CI->lang->line('common_address_1')],
+		['comission_rate'=> 'Chiết khấu %', 'halign'=>'center', 'align'=>'right'],
+		['total_sale'=> 'Doanh số', 'halign'=>'center', 'align'=>'right'],
+	];
 
+
+	return transform_headers($headers);
+}
+
+function get_ctv_data_row($person)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+
+	$return = array (
+		'people.person_id' => $person->person_id,
+		'code'=> $person->code,
+		//'last_name' => $person->last_name,
+		//'first_name' => $person->first_name,
+		'full_name'=> $person->last_name .' '. $person->first_name,
+		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+		'phone_number' => $person->phone_number,
+		'address_1'=>$person->address_1,
+		'comission_rate' => $person->comission_rate .'%',
+		'total_sale'=> number_format($person->total_sale),
+		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>'Cập nhận thông tin cộng tác viên')
+	));
+
+	if($CI->Employee->has_grant('customers_phonenumber_hide'))
+	{
+		unset($return['phone_number']);
+	}
+	if(!$CI->Employee->has_grant('customers_view'))
+	{
+		unset($return['edit']);
+	}
+
+	return $return;
+}
 ?>

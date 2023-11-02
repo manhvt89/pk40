@@ -53,6 +53,7 @@ class Sale extends CI_Model
 		$this->db->select('
 				sales.sale_id AS sale_id,
 				sales.code as code,
+				sales.sync as sync,
 				sales.status as status,
 				sales.sale_uuid as sale_uuid,
 				customer.account_number as account_number,
@@ -475,6 +476,12 @@ class Sale extends CI_Model
 		$success = 0;
 		if(!empty($payments))
 		{
+			if($sale_data['ctv_id'] == 0) // Nếu không có CTV thì không đồng bộ vào bảng history_ctv
+			{
+				$sale_data['sync'] = 1;
+			} else {
+				$sale_data['sync'] = 0;
+			}
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->trans_start();
 
@@ -675,6 +682,11 @@ class Sale extends CI_Model
 			//$code = 'STD' . time();
 			$code = 'STD' . $now;
 		}
+		$sync = 0;
+		if($ctv_id == 0) // Nếu không có cộng tác vieenl sync = 1; không đồng bộ vào bảng history_ctv
+		{
+			$sync = 1;
+		}
 
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s',$now),//'sale_time'		 => date('Y-m-d H:i:s'),
@@ -689,6 +701,7 @@ class Sale extends CI_Model
 			'doctor_id'=>$doctor_id,
 			'paid_points'=>$points,
 			'code'=>$code,
+			'sync'=>$sync,
 			'created_at'=>$now //added 01/07/2023
 		);
 		//var_dump($sales_data);die();
@@ -1014,6 +1027,14 @@ class Sale extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+	}
+
+	public function get_ctv($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->Employee->get_info($this->db->get()->row()->ctv_id);
 	}
 
 	public function check_invoice_number_exists($invoice_number, $sale_id = '')
