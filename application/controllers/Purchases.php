@@ -612,7 +612,7 @@ class Purchases extends Secure_Controller
 				}
 			}
 			//echo $_iMaxColumn; die();
-			if ($_iMaxColumn == 5) // Chỉ xử  lý định dạng 5 cột; không có barcode tự sinh bacode
+			if ($_iMaxColumn == 7) // Chỉ xử  lý định dạng 7 cột; không có barcode tự sinh bacode
 			{
 				$_iLogedUserID = $this->Employee->get_logged_in_employee_info()->person_id;
 				$_oLogedUser = $this->Employee->get_info($_iLogedUserID);
@@ -638,9 +638,12 @@ class Purchases extends Secure_Controller
 						'item_number'       => $_sBarcode,
 						'item_name'      => $sheet_data[$i]['0'],
 						'category'        => $sheet_data[$i]['1'],
-						'unit_price' => extract_price_excel_to_vnd($sheet_data[$i]['2']),//Giá bán
-						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['3']), //Giá nhập
-						'quanlity' => $sheet_data[$i]['4']
+						'unit_price' => extract_price_excel_to_vnd($sheet_data[$i]['3']),//Giá bán
+						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['2']), //Giá nhập
+						'quanlity' => $sheet_data[$i]['4'],
+						'custom1' => $sheet_data[$i]['5'],
+						'description' => $sheet_data[$i]['6']
+
 					);
 					
 					$this->purchase_lib->add_item($data);
@@ -668,9 +671,11 @@ class Purchases extends Secure_Controller
 						'item_number'       => $sheet_data[$i]['0'],
 						'item_name'      => $sheet_data[$i]['1'],
 						'category'        => $sheet_data[$i]['2'],
-						'unit_price' => extract_price_excel_to_vnd($sheet_data[$i]['3']),//Giá bán
-						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['4']), //Giá nhập
-						'quanlity' => $_quanlity
+						'unit_price' => extract_price_excel_to_vnd($sheet_data[$i]['4']),//Giá bán
+						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['3']), //Giá nhập
+						'quanlity' => $_quanlity,
+						'custom1' => $sheet_data[$i]['6'],
+						'description' => $sheet_data[$i]['7']
 					);
 					if(!$this->Item->item_number_exists($data['item_number']))
 					{

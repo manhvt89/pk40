@@ -176,6 +176,8 @@ class Purchase_lib
 		$unit_price = trim($_aItem['unit_price']);
 		$quantity = trim($_aItem['quanlity']);
 		$category = trim($_aItem['category']);
+		$custom1 = trim($_aItem['custom1']);
+		$description = trim($_aItem['description']);
 	
 		$status = isset($_aItem['status'])? trim($_aItem['status']):0 ;
 		$_iMaxKey = 0;
@@ -234,7 +236,9 @@ class Purchase_lib
 				'item_category' => $category,
 				'line' => $insertkey,
 				'total' => $this->get_item_total($quantity, $cost_price, 0),
-				'status' => $status
+				'status' => $status,
+				'custom1'=>$custom1,
+				'description'=>$description
 			);
 
 

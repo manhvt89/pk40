@@ -105,7 +105,7 @@ class Purchase extends CI_Model
 					// Tạo mới sản phẩm;
 					$item_data = array(
                         'name'					=> $item['item_name'],
-                        'description'			=> '',
+                        'description'			=> $item['description'],
                         'category'				=> $item['item_category'],
                         'cost_price'			=> $item['item_price'],
                         'unit_price'			=> $item['item_u_price'],
@@ -113,7 +113,7 @@ class Purchase extends CI_Model
                         'supplier_id'			=> $supplier_id,
                         'allow_alt_description'	=> '0',
                         'is_serialized'			=> '0',
-                        'custom1'				=> '',
+                        'custom1'				=> $item['custom1'],
                         'custom2'				=> '',
                         'custom3'				=> '',
                         'custom4'				=> '',
