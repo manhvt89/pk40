@@ -47,7 +47,7 @@ class Items extends Secure_Controller
 		$sort = $this->input->get('sort');
 		$order = $this->input->get('order');
 
-        $search = str_replace(' ','%',$search);
+        //$search = str_replace(' ','%',$search);
 		$this->item_lib->set_item_location($this->input->get('stock_location'));
 
 		$filters = array('start_date' => $this->input->get('start_date'),
