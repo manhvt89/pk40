@@ -653,7 +653,7 @@ class Items extends Secure_Controller
 	*/
 	public function excel()
 	{
-		$name = 'import_items.csv';
+		$name = 'import_items.xlsx';
 		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
