@@ -25,7 +25,7 @@ function get_reminder_data_row($reminder,$controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$diff = time() - $reminder->expired_date;
+	$diff = $reminder->expired_date - time();
 	$status = '';
 	switch ($reminder->status) {
 		case 1:
