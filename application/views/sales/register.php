@@ -129,6 +129,7 @@ if (isset($success))
 				</li>
 				<li class="pull-left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>++$tabindex)); ?>
+					<?php echo form_input(array('name'=>'add_hidden_ctv', 'id'=>'add_hidden_ctv', 'class'=>'form-control input-sm', 'size'=>'50', 'type'=>'hidden')); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-left" style="font-size: large; font-weight: bold">
@@ -176,7 +177,7 @@ if (isset($success))
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'view_'.$line)); ?>
 					<tr>
 						<td></td>
-						<td><?php echo $item['item_number']; ?></td>
+						<td><?php echo $item['item_number']; ?> - <?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
 						<td style="align: center;">
 							<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' trong kho ' . $item['stock_name'] . ']'; ?>
 						</td>
@@ -296,7 +297,7 @@ if (isset($success))
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
-							<td><?php echo $item['item_number']; ?></td>
+							<td><?php echo $item['item_number']; ?><?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
 							<td style="align: center;">
 								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
@@ -973,6 +974,19 @@ $(document).ready(function()
 	{
 		$.post('<?php echo site_url($controller_name."/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
 	});
+
+	$("#ctv").change(function()
+	{
+		var ctv_id = $('#ctv').val();
+		
+		$('#hidden_ctv').val(ctv_id);
+		//var ctv_id = $('#ctv').val();
+		$('#add_hidden_ctv').val(ctv_id);
+		$("input[name='edit_hidden_ctv']").val(ctv_id);
+
+		console.log($('#hidden_ctv').val());
+		$.post('<?php echo site_url($controller_name."/change_ctv");?>', {ctv_id: $('#ctv').val()});
+	});
 	
     $("#finish_sale_button").click(function()
     {
@@ -1040,6 +1054,9 @@ $(document).ready(function()
 		var totalAmount = parseFloat($("#hd_amount_due").val());
 		//var paymentAmount = parseFloat($(this).val());
 		var paymentAmount = parseFloat($("#amount_tendered").val());
+
+		//var ctv_id = $('#ctv').val();
+		//$('#add_hidden_ctv').val(ctv_id);
 		
 		console.log(totalAmount);
 		console.log(paymentAmount);
@@ -1105,6 +1122,9 @@ $(document).ready(function()
 			var paymentMethod = $("#payment_types").val();
 			var totalAmount = parseFloat($("#hd_amount_due").val());
 			var paymentAmount = parseFloat($(this).val());
+			var ctv_id = $('#ctv').val();
+			$('#add_hidden_ctv').val(ctv_id);
+
 			console.log(totalAmount);
 			console.log(paymentAmount);
 			if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount)) {

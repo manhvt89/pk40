@@ -424,7 +424,7 @@ class Employee extends Person
 			return $this->session->userdata('theUser');
 			//return $this->get_info($this->session->userdata('person_id'));
 		}
-
+		
 		return FALSE;
 	}
 

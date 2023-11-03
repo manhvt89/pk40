@@ -336,7 +336,8 @@ class Sales extends Secure_Controller
 				$discount = $discount_percent;
 			}
 		}
-
+		//$ctv_id = $this->input->post('add_hidden_ctv');
+		//$this->sale_lib->set_partner_id($ctv_id);
 		// if the customer discount is 0 or no customer is selected apply the default sales discount
 		if($discount == 0)
 		{
@@ -409,6 +410,8 @@ class Sales extends Secure_Controller
 		//var_dump($discount);
 		//die();
 		$item_location = $this->input->post('location');
+		//$ctv_id = $this->input->post('ctvs');
+		//$this->sale_lib->set_partner_id($ctv_id);
 		if($quantity == null)
 		{
 			echo 'Invalid Data';
@@ -594,19 +597,23 @@ class Sales extends Secure_Controller
 					$sale_info = $this->Sale->get_info($data['sale_id_num'])->row_array();
 					$data1 = $this->_load_sale_data($data['sale_id_num']);
 					$data['code'] = $sale_info['code'];
+					$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+					$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+					$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
+					$_is_invoice_number_enabled = $this->sale_lib->is_invoice_number_enabled();
+					
 					
 					if ($data['sale_id_num'] == -1) {
 						$data['error_message'] = $this->lang->line('sales_transaction_failed');
 					} else {
+						$this->sale_lib->clear_all();
 						//$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 						$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['code']); // Barcode của mã hóa đơn
 					}
 
-					$data1['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-					$data1['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-					$data1['email_receipt'] = $this->sale_lib->get_email_receipt();
+					
 					$data1 = $this->xss_clean($data1);
-					if ($this->sale_lib->is_invoice_number_enabled()) {
+					if ($_is_invoice_number_enabled) {
 						$this->load->view('sales/invoice', $data1);
 					} else {
 						/*
@@ -658,7 +665,7 @@ class Sales extends Secure_Controller
 						$this->load->view('sales/receipt', $data1);
 					}
 
-					$this->sale_lib->clear_all();
+					
 				}
 			}
 		}
@@ -809,8 +816,6 @@ class Sales extends Secure_Controller
 					}
 				}
 				$data1 = $this->_load_sale_data($data['sale_id_num']);
-
-				
 
 				if ($this->sale_lib->is_invoice_number_enabled()) {
 					$this->load->view('sales/invoice', $data1);
@@ -1606,6 +1611,11 @@ class Sales extends Secure_Controller
 			$data['edit'] = 1; // Thực hiện thanh toán; form này không cho sửa.
 		}
 		$this->_reload($data);
+	}
+
+	public function change_ctv()
+	{
+ 		$this->sale_lib->set_partner_id($this->input->post('ctv_id'));
 	}
 	
 }
