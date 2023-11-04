@@ -656,7 +656,7 @@ class Purchases extends Secure_Controller
 				$this->purchase_lib->set_check(0); //reset lại biến kiểm tra; cần phải kiểm tra. nhấn nút kiểm tra;
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
 			}
-			elseif($_iMaxColumn == 6) // Xử lý định dạng 6 cột
+			elseif($_iMaxColumn == 8) // Xử lý định dạng 6 cột
 			{
 				for($i = 1; $i < count($sheet_data); $i++) {
 					//$rowData = $sheet->rangeToArray('A' . $i . ':' . $highestColumn . $i,NULL,TRUE,FALSE);
@@ -1411,7 +1411,7 @@ class Purchases extends Secure_Controller
 				$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
 				$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 
-				//var_dump( $item);die();
+				var_dump( $item);die();
 				$sheet->setCellValue('A'.$index, $item['item_number']);
 				$sheet->setCellValue('B'.$index, $item['item_name']);
 				$sheet->setCellValue('C'.$index, $item['item_u_price']); 

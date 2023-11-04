@@ -436,6 +436,9 @@ class Purchase_lib
 			$_aItem['unit_price'] = $row->item_u_price;
 			$_aItem['quanlity'] = (int) $row->item_quantity;
 			$_aItem['category'] = $row->item_category;
+			$_aItem['custom1'] = $row->custom1;
+			$_aItem['description'] = $row->description;
+
 			if($row->type == 0 || $row->type == 2)
 			{
 				$_aItem['status'] = 9;

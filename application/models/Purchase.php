@@ -256,7 +256,9 @@ class Purchase extends CI_Model
 	}
 	public function get_purchase_items($purchase_id)
 	{
+		$this->db->select('purchases_items.*,items.description, items.custom1');
 		$this->db->from('purchases_items');
+		$this->db->join('items','items.item_id = purchases_items.item_id','left');
 		$this->db->where('purchase_id', $purchase_id);
 		return $this->db->get();
 	}
