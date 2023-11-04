@@ -512,6 +512,7 @@ class Purchase extends CI_Model
 					$this->db->insert('purchases_items', $_aPurchasesItemsData);
 				}
 			} else { //Sản phẩm đã tồn tại trong items table
+				echo '123';die();
 				$cur_item_info = $this->Item->get_info_by_id_or_number($item['item_number']);
 				$_aPurchasesItemsData = array(
 					'purchase_id' => $_iPurchaseID,

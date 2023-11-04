@@ -190,7 +190,7 @@ class Purchases extends Secure_Controller
 		$data = array();
 		
 		$data['cart'] = $this->purchase_lib->get_cart();
-		var_dump($data['cart']);die();
+		//var_dump($data['cart']);die();
 		$data['total'] = $this->purchase_lib->get_total();
 		$data['quantity'] = $this->purchase_lib->get_quantity();
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
