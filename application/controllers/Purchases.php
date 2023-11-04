@@ -1276,7 +1276,7 @@ class Purchases extends Secure_Controller
 		//$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
 		//$cart = $this->Purchase->get_purchase_items($purchase_info['id'])->result();
 		//var_dump($data);
-		var_dump($data);die();
+		//var_dump($data);die();
 		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
 		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
         $sheet = $spreadsheet->getActiveSheet();
@@ -1411,7 +1411,7 @@ class Purchases extends Secure_Controller
 				$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
 				$sheet->getStyle('D'.$index)->applyFromArray($styleArray);
 
-				var_dump( $item);die();
+				//var_dump( $item);die();
 				$sheet->setCellValue('A'.$index, $item['item_number']);
 				$sheet->setCellValue('B'.$index, $item['item_name']);
 				$sheet->setCellValue('C'.$index, $item['item_u_price']); 

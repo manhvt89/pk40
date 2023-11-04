@@ -183,15 +183,15 @@ class Purchase_lib
 		$_iMaxKey = 0;
 		//Get items in the receiving so far.
 		if ($status == 0) {
-			if (!ctype_digit($quantity)) {
+			if (!is_numeric($quantity)) {
 				$quantity = 0;
 				$status = 1;
 			}
-			if (!ctype_digit($cost_price)) {
+			if (!is_numeric($cost_price)) {
 				$cost_price = 0;
 				$status = 1;
 			}
-			if (!ctype_digit($unit_price)) {
+			if (!is_numeric($unit_price)) {
 				$unit_price = 0;
 				$status = 1;
 			}
