@@ -170,6 +170,7 @@ class Purchase_lib
 	 */
 	public function add_item($_aItem,$item_id=0)
 	{
+		var_dump($_aItem);
 		$item_number = strtoupper(trim($_aItem['item_number']));
 		$item_name = trim($_aItem['item_name']);
 		$cost_price = trim($_aItem['cost_price']);
