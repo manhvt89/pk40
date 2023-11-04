@@ -178,6 +178,8 @@ class Purchase_lib
 		$category = trim($_aItem['category']);
 		$custom1 = trim($_aItem['custom1']);
 		$description = trim($_aItem['description']);
+
+		echo $unit_price;die();
 	
 		$status = isset($_aItem['status'])? trim($_aItem['status']):0 ;
 		$_iMaxKey = 0;
