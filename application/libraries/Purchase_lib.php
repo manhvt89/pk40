@@ -432,7 +432,7 @@ class Purchase_lib
 
 		foreach($this->CI->Purchase->get_purchase_items($purchase_id)->result() as $row)
 		{
-			var_dump($row);
+			var_dump($row); die();
 			$_aItem['item_number'] = $row->item_number;
 			$_aItem['item_name'] = $row->item_name;
 			$_aItem['cost_price'] = $row->item_price;
