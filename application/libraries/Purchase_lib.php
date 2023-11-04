@@ -170,7 +170,6 @@ class Purchase_lib
 	 */
 	public function add_item($_aItem,$item_id=0)
 	{
-		var_dump($_aItem);
 		$item_number = strtoupper(trim($_aItem['item_number']));
 		$item_name = trim($_aItem['item_name']);
 		$cost_price = trim($_aItem['cost_price']);
@@ -179,8 +178,6 @@ class Purchase_lib
 		$category = trim($_aItem['category']);
 		$custom1 = trim($_aItem['custom1']);
 		$description = trim($_aItem['description']);
-
-		echo $unit_price;die();
 	
 		$status = isset($_aItem['status'])? trim($_aItem['status']):0 ;
 		$_iMaxKey = 0;
@@ -429,10 +426,10 @@ class Purchase_lib
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
-		echo $purchase_id;
+
 		foreach($this->CI->Purchase->get_purchase_items($purchase_id)->result() as $row)
 		{
-			var_dump($row); die();
+			
 			$_aItem['item_number'] = $row->item_number;
 			$_aItem['item_name'] = $row->item_name;
 			$_aItem['cost_price'] = $row->item_price;
