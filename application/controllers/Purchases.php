@@ -1276,7 +1276,7 @@ class Purchases extends Secure_Controller
 		//$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
 		//$cart = $this->Purchase->get_purchase_items($purchase_info['id'])->result();
 		//var_dump($data);
-		var_dump($cart);die();
+		var_dump($data);die();
 		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
 		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
         $sheet = $spreadsheet->getActiveSheet();
