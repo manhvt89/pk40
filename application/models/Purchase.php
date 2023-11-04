@@ -216,6 +216,7 @@ class Purchase extends CI_Model
 					'item_number'=>$cur_item_info->item_number,
 					'item_quantity' => $item['item_quantity'],
 					'item_price' => $item['item_price'], // Giá nhập 
+					'item_u_price'=> $item['item_u_price'],
 					'item_category' => $cur_item_info->category,
 					'line' => $line,
 					'type'=>0 //Sản phẩm cũ

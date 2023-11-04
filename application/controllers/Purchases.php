@@ -249,7 +249,7 @@ class Purchases extends Secure_Controller
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
 		}
 		$data['completed'] = $completed;
-		
+		$this->purchase_lib->clear_all();
 		if ($data['purchase_id'] == 'POID -1') {
 			$_purchase_id = 0;
 			$data['purchase_uuid'] = 0;
@@ -263,13 +263,8 @@ class Purchases extends Secure_Controller
 			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['purchase_id']);
 			$data['valid_cart'] = true;
 		}
-
 		$data['print_after_sale'] = 0;
-		
-
 		$this->load->view("purchase/receipt",$data);
-
-		$this->purchase_lib->clear_all();
 	}
 
 	public function requisition_complete()
