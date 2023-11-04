@@ -429,7 +429,7 @@ class Purchase_lib
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
-
+		echo $purchase_id;
 		foreach($this->CI->Purchase->get_purchase_items($purchase_id)->result() as $row)
 		{
 			var_dump($row); die();
