@@ -920,11 +920,13 @@ function get_purchases_manage_table_headers()
 	$headers = array(
 		array('purchase_id' => $CI->lang->line('common_id'),'halign'=>'center', 'align'=>'right'),
 		array('purchase_time' => 'Ngày tạo','halign'=>'center','align'=>'left'),
+		array('edited_time' => 'Lần thao tác cuối','halign'=>'center','align'=>'left'),
 		array('name' => 'Tiêu đề ','halign'=>'center', 'align'=>'left'),
+		array('code' => 'Mã PO ','halign'=>'center', 'align'=>'left'),
 		array('total_quantity' => 'Số lượng','halign'=>'center', 'align'=>'right'),
 		array('total_amount' => 'Tổng tiền','halign'=>'center', 'align'=>'right'),
-		array('employeer' => 'Người tạo','halign'=>'center', 'align'=>'left'),
-		array('supplier'=>'Nhà cung cấp','halign'=>'center', 'align'=>'left'),
+		//array('employeer' => 'Người tạo','halign'=>'center', 'align'=>'left'),
+		//array('supplier'=>'Nhà cung cấp','halign'=>'center', 'align'=>'left'),
 		array('completed'=>'Trạng thái','halign'=>'center', 'align'=>'left'),
 	);
 	
@@ -939,11 +941,13 @@ function get_purchase_data_row($item)
 	$row = array (
 		'purchase_id' => $item->id,
 		'purchase_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($item->purchase_time) ),
+		'edited_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($item->edited_time) ),
 		'name' => $item->name,
+		'code' => $item->code,
 		'total_quantity' => number_format($item->total_quantity,0,',','.'),
 		'total_amount' => number_format($item->total_amount,0,',','.'),
-		'employeer' => '',
-		'supplier' => '',		
+		//'employeer' => '',
+		//'supplier' => '',		
 		'completed'=>((int)$item->completed != 0)? $CI->config->item('caPOStatus')[(int)$item->completed]: ($item->parent_id==0?$CI->config->item('caPOStatus')[(int)$item->completed]:'Đã chỉnh sửa')
 	);
 

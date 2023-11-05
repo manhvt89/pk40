@@ -73,7 +73,7 @@ $(document).ready(function()
 </div>
 
 <div id="table_holder">
-	<table id="table" data-sort-order="desc" data-sort-name="purchase_time" data-checkbox="false"></table>
+	<table id="table" data-sort-order="desc" data-sort-name="edited_time" data-checkbox="false"></table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

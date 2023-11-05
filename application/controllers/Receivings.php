@@ -221,6 +221,7 @@ class Receivings extends Secure_Controller
 
 		$supplier_info = '';
 		$supplier_id = $this->receiving_lib->get_supplier();
+		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 		if($supplier_id != -1)
 		{
 			$supplier_info = $this->Supplier->get_info($supplier_id);
@@ -240,8 +241,8 @@ class Receivings extends Secure_Controller
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location'], $data['purchase_id'],$data['mode']);
-
+		$data['_receive_id'] = $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location'], $data['purchase_id'],$data['mode']);
+		$data['receiving_id'] = 'RECV ' .$data['_receive_id'];
 		$data = $this->xss_clean($data);
 
 		if($data['receiving_id'] == 'RECV -1')
@@ -250,14 +251,13 @@ class Receivings extends Secure_Controller
 		}
 		else
 		{
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);				
+			$this->receiving_lib->clear_all();
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);		
 		}
-
-		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
 		$this->load->view("receivings/receipt",$data);
 
-		$this->receiving_lib->clear_all();
+		//$this->receiving_lib->clear_all();
 	}
 
 	public function requisition_complete()

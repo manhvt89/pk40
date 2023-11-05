@@ -86,7 +86,8 @@ class Purchase extends CI_Model
 			'total_quantity'=>$quantity,
 			'code' => $code,
 			'completed'=>$completed,
-			'comment' => $comment
+			'comment' => $comment,
+			'v'=>0
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -105,7 +106,7 @@ class Purchase extends CI_Model
 					// Tạo mới sản phẩm;
 					$item_data = array(
                         'name'					=> $item['item_name'],
-                        'description'			=> $item['description'],
+                        'description'			=> empty($item['description'])==true?'':$item['description'],
                         'category'				=> $item['item_category'],
                         'cost_price'			=> $item['item_price'],
                         'unit_price'			=> $item['item_u_price'],
@@ -113,7 +114,7 @@ class Purchase extends CI_Model
                         'supplier_id'			=> $supplier_id,
                         'allow_alt_description'	=> '0',
                         'is_serialized'			=> '0',
-                        'custom1'				=> $item['custom1'],
+                        'custom1'				=> empty($item['custom1'])==true?'':$item['custom1'],
                         'custom2'				=> '',
                         'custom3'				=> '',
                         'custom4'				=> '',
@@ -223,17 +224,12 @@ class Purchase extends CI_Model
 				);
 				$this->db->insert('purchases_items', $_aPurchasesItemsData);
 			}
-
-			
 		}
-
 		$this->db->trans_complete();
-		
 		if($this->db->trans_status() === FALSE)
 		{
 			return -1;
 		}
-
 		return $_iPurchaseID;
 	}
 	/**
@@ -325,7 +321,7 @@ class Purchase extends CI_Model
 
 		$this->db->from('purchases as purchases');
 		$this->db->where('curent', 1);
-		$this->db->where('DATE(purchases.purchase_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		$this->db->where('DATE(purchases.edited_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		
 		if(!empty($search))
 		{
@@ -369,34 +365,48 @@ class Purchase extends CI_Model
 		return $this->search($search, $filters,0,0,'id','desc')->num_rows();
 	}
 
-	public function _save($items,$quantity, $supplier_id, $employee_id, $name, $code ='POxxx' ,$comment = '',$completed = 0,$parent_id=0)
+	/**
+	 * items: danh sách các sản phẩm
+	 * purchase_info: thông tin PO
+	 */
+	public function _save($purchase_info,$data, $supplier_id, $employee_id)
 	{
+		$items = $data['cart'];
+		$quantity = $data['quantity'];
 		if(count($items) == 0)
 		{
 			return -1;
 		}
-		$_dCreatedTime = date('Y-m-d H:i:s');
+		if(empty($purchase_info))
+		{
+			return -1;
+		}
+		//$_dCreatedTime = date('Y-m-d H:i:s');
+		$_dEditTime = date('Y-m-d H:i:s');
+		$_dCreatedTime = $purchase_info['purchase_time'];
 		$_aPurchaseData = array(
 			'purchase_time' => $_dCreatedTime,
 			'supplier_id' => $this->Supplier->exists($supplier_id) ? $supplier_id : 0,
 			'employee_id' => $employee_id,
-			'name' => $name,
+			'name' => $purchase_info['name'],
 			'total_quantity'=>$quantity,
-			'code' => $code,
-			'completed'=>$completed,
-			'comment' => $comment,
-			'parent_id'=>$parent_id,
-			'curent'=>1
+			'code' => $purchase_info['code'],
+			'completed'=>0, //Trạng thái ban đầu
+			'comment' => $purchase_info['comment'],
+			'parent_id'=>$purchase_info['id'],
+			'curent'=>1,
+			'edited_time' => $_dEditTime,
+			'v'=>$purchase_info['v'] + 1,
 		);
 		$_ParrentUpdateData = array(
 			'curent' => 0,
-			'edited_time' => $_dCreatedTime,
+			'edited_time' => $_dEditTime,
 			'edited_employee_id' => $employee_id
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-		$this->update($_ParrentUpdateData,$parent_id);
+		$this->update($_ParrentUpdateData,$purchase_info['id']);
 
 		$this->db->insert('purchases', $_aPurchaseData);
 		$_iPurchaseID = $this->db->insert_id();
@@ -411,7 +421,7 @@ class Purchase extends CI_Model
 					// Tạo mới sản phẩm;
 					$item_data = array(
                         'name'					=> $item['item_name'],
-                        'description'			=> '',
+                        'description'			=> empty($item['description'])==true?'':$item['description'],
                         'category'				=> $item['item_category'],
                         'cost_price'			=> $item['item_price'],
                         'unit_price'			=> $item['item_u_price'],
@@ -419,7 +429,7 @@ class Purchase extends CI_Model
                         'supplier_id'			=> $supplier_id,
                         'allow_alt_description'	=> '0',
                         'is_serialized'			=> '0',
-                        'custom1'				=> '',
+                        'custom1'				=> empty($item['custom1'])==true?'':$item['custom1'],
                         'custom2'				=> '',
                         'custom3'				=> '',
                         'custom4'				=> '',
@@ -499,7 +509,7 @@ class Purchase extends CI_Model
 				} else {
 					$_aPurchasesItemsData = array(
 						'purchase_id' => $_iPurchaseID,
-						'created_time'=>$_dCreatedTime,
+						'created_time'=>$_dEditTime,
 						'item_id' => 0,
 						'item_name' => $item['item_name'],
 						'item_number'=>$item['item_number'],
@@ -517,7 +527,7 @@ class Purchase extends CI_Model
 				$cur_item_info = $this->Item->get_info_by_id_or_number($item['item_number']);
 				$_aPurchasesItemsData = array(
 					'purchase_id' => $_iPurchaseID,
-					'created_time'=>$_dCreatedTime,
+					'created_time'=>$_dEditTime,
 					'item_id' => $cur_item_info->item_id,
 					'item_name' => $cur_item_info->name,
 					'item_number'=>$cur_item_info->item_number,

@@ -227,7 +227,7 @@ class Purchases extends Secure_Controller
 			}
 		}
 		$_purchase_id = 0;
-		if ($purchase_id == 0) {	
+		if ($purchase_id == 0) {	// Tạo mới
 			$name = "Đơn nhập ngày " . date('d/m/Y hms', time());
 			$comment = '';
 			$data['reference'] = '';
@@ -237,7 +237,7 @@ class Purchases extends Secure_Controller
 			//SAVE PO to database
 			$_purchase_id = $this->Purchase->save($data['cart'], $data['quantity'], $supplier_id, $employee_id, $name, $code, $comment, $completed);
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
-		} else {
+		} else { // Chỉnh sửa lại
 			$purchase_info = $this->Purchase->get_info($purchase_id)->row_array();
 			$name = $purchase_info['name'];
 			$comment = '';
@@ -245,7 +245,7 @@ class Purchases extends Secure_Controller
 			$code = $purchase_info['code'];
 			$completed = 0;
 			$data = $this->xss_clean($data);
-			$_purchase_id = $this->Purchase->_save($data['cart'], $data['quantity'], $supplier_id, $employee_id, $name, $code, $comment, $completed, $purchase_id);
+			$_purchase_id = $this->Purchase->_save($purchase_info, $data, $supplier_id, $employee_id);
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
 		}
 		$data['completed'] = $completed;
@@ -812,8 +812,9 @@ class Purchases extends Secure_Controller
 		}
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
+		//var_dump($filters);
 		if ($sort == '')
-			$sort = 'purchase_time';
+			$sort = 'edited_time';
 
 		$purchases = $this->Purchase->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Purchase->get_found_rows($search, $filters);
