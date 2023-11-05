@@ -946,6 +946,7 @@ function get_purchase_data_row($item)
 		'code' => $item->code,
 		'total_quantity' => number_format($item->total_quantity,0,',','.'),
 		'total_amount' => number_format($item->total_amount,0,',','.'),
+		'style'=> $item->completed,
 		//'employeer' => '',
 		//'supplier' => '',		
 		'completed'=>((int)$item->completed != 0)? $CI->config->item('caPOStatus')[(int)$item->completed]: ($item->parent_id==0?$CI->config->item('caPOStatus')[(int)$item->completed]:'Đã chỉnh sửa')

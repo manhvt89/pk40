@@ -47,6 +47,66 @@ $(document).ready(function()
 		}
 	});
 });
+function rowStyle(row, index) {
+    var classes = [
+      'bg-blue',
+      'bg-green',
+      'bg-orange',
+      'bg-yellow',
+      'bg-red'
+    ]
+	console.log(row.style);
+	switch (row.style) {
+		case '0':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FF851B'
+				}
+			}
+			break;
+		case '2':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FFDC00'
+				}
+			}
+			break;	
+		case '3':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#FFDC00'
+				}
+			}
+			break;
+		case '4':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#2ECC40'
+				}
+			}
+			break;
+		case '6':
+			return {
+				css: {
+					color: '#000000',
+					'background-color':'#0074D9'
+				}
+			}
+			break;
+		default:
+			return {
+				css: {
+					color: 'red',
+					'background-color':'#0074D9'
+				}
+			}
+			break;
+	}
+  }
 </script>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
@@ -73,7 +133,7 @@ $(document).ready(function()
 </div>
 
 <div id="table_holder">
-	<table id="table" data-sort-order="desc" data-sort-name="edited_time" data-checkbox="false"></table>
+	<table id="table" data-sort-order="desc" data-sort-name="edited_time" data-checkbox="false" data-row-style="rowStyle"></table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>
