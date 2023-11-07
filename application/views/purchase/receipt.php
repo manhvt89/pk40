@@ -41,7 +41,9 @@ if (isset($error_message))
 	<?php echo anchor("purchases/manage", '<span class="glyphicon glyphicon-file">&nbsp</span>' .'Danh sách PO', array('class'=>'btn btn-info btn-sm', 'id'=>'show_po_list')); ?>
 	
 </div>
-<?php echo form_hidden('purchase_uuid', $purchase_uuid);?>
+<?php //echo form_hidden('purchase_uuid', $purchase_uuid);
+	echo form_input(array('name' => 'purchase_uuid', 'type'=>'hidden', 'id' =>'purchase_uuid','value'=>$purchase_uuid));
+?>
 <?php echo form_close(); ?>
 <div id="receipt_wrapper">
 	<div id="receipt_header">
@@ -173,9 +175,28 @@ $(document).ready(function()
 
 	$("#excel_export_button").click(function()
     {	
-		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
-		$('#action_form').attr('method', 'get');
-		$('#action_form').submit();
+		var purchase_uuid = $('#purchase_uuid').val();
+		$.ajax({
+			type: 'GET',
+			//url: '<?php echo site_url($controller_name . "/export/purchase_uuid/"); ?>'+purchase_uuid,
+			url: '<?php echo site_url($controller_name . "/export"); ?>',
+			data: { purchase_uuid: purchase_uuid},
+			dataType: 'binary',
+			success: function(data) {
+				var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+				var url = URL.createObjectURL(blob);
+				var a = document.createElement('a');
+				a.href = url;
+				a.download = 'danh_sach.xlsx';
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+				URL.revokeObjectURL(url);
+			}
+		});
+		//$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
+		//$('#action_form').attr('method', 'get');
+		//$('#action_form').submit();
 		
     });
 
