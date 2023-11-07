@@ -25,16 +25,17 @@
 .print-barcode_2 {
 	width: 50mm;
 	transform: rotate(180deg);
-	padding-top: 5px;
+	padding-top: 2px;
 	border-spacing: 1px;
+	height: 19mm;
 }
 
 .print-barcode_1 {
 	width: 50mm;
 	/*outline: 1px dashed;*/
-	padding-top: 10px;
+	padding-top: 2px;
 	border-spacing: 1px;
-	height: 20mm;
+	height: 19mm;
 }
 
 .print-page-barcode {
