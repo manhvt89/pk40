@@ -335,10 +335,9 @@ class Purchases extends Secure_Controller
 		$data['print_after_sale'] = 0;
 
 		$data = $this->xss_clean($data);
-		
+		$this->purchase_lib->clear_all();
 		$this->load->view("purchase/receipt", $data);
 
-		$this->purchase_lib->clear_all();
 	}
 
 	private function _reload($data = array())
@@ -866,9 +865,12 @@ class Purchases extends Secure_Controller
 			redirect(base_url("purchases/receipt/$purchase_uuid"));
 		}
 	}
-	public function import() // Nhập hàng vào kho, chuyển đến chức năng nhập kho
-	{
-		$purchase_uuid = $this->input->post('purchase_uuid');
+	public function import($cerf='',$purchase_uuid = '') // Nhập hàng vào kho, chuyển đến chức năng nhập kho
+	{	$purchase_uuid = $this->input->get('purchase_uuid');
+		if($purchase_uuid == '')
+		{
+			$purchase_uuid = $this->input->post('purchase_uuid');
+		}
 		$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
 		if(!empty($purchase_info))
 		{
