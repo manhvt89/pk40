@@ -204,57 +204,6 @@ if (isset($success))
 						<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 						<td></td>
 					</tr>
-					<tr>
-						<?php
-						if($item['allow_alt_description']==1)
-						{
-							?>
-							<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv');?></td>
-							<?php
-						}
-						?>
-
-						<td colspan='2' style="text-align: left;">
-							<?php
-							if($item['allow_alt_description']==1)
-							{
-								echo $item['description'];
-							}
-							else
-							{
-								if ($item['description']!='')
-								{
-									echo $item['description'];
-								}
-								else
-								{
-									echo $this->lang->line('sales_no_description');
-								}
-							}
-							?>
-						</td>
-						<td>&nbsp;</td>
-						<td style="color: #2F4F4F;">
-							<?php
-							if($item['is_serialized']==1)
-							{
-								echo $this->lang->line('sales_serial');
-							}
-							?>
-						</td>
-						<td colspan='4' style="text-align: left;">
-							<?php
-							if($item['is_serialized']==1)
-							{
-								echo $item['serialnumber'];
-							}
-							else
-							{
-
-							}
-							?>
-						</td>
-					</tr>
 					<?php echo form_close(); ?>
 					<?php
 				}
@@ -339,59 +288,7 @@ if (isset($success))
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
-						<tr>
-							<?php 
-							if($item['allow_alt_description']==1)
-							{
-							?>
-								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv');?></td>
-							<?php 
-							}
-							?>
-
-							<td colspan='2' style="text-align: left;">
-								<?php
-								if($item['allow_alt_description']==1)
-								{
-									echo form_input(array('name'=>'description', 'class'=>'form-control input-sm', 'value'=>$item['description']));
-								}
-								else
-								{
-									if ($item['description']!='')
-									{
-										echo $item['description'];
-										echo form_hidden('description', $item['description']);
-									}
-									else
-									{
-										echo $this->lang->line('sales_no_description');
-										echo form_hidden('description','');
-									}
-								}
-								?>
-							</td>
-							<td>&nbsp;</td>
-							<td style="color: #2F4F4F;">
-								<?php
-								if($item['is_serialized']==1)
-								{
-									echo $this->lang->line('sales_serial');
-								}
-								?>
-							</td>
-							<td colspan='4' style="text-align: left;">
-								<?php
-								if($item['is_serialized']==1)
-								{
-									echo form_input(array('name'=>'serialnumber', 'class'=>'form-control input-sm', 'value'=>$item['serialnumber']));
-								}
-								else
-								{
-									echo form_hidden('serialnumber', '');
-								}
-								?>
-							</td>
-						</tr>
+				
 					<?php echo form_close(); ?>
 			<?php
 				}
