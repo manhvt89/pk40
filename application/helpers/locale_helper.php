@@ -879,7 +879,7 @@ function print_barcode($items,$type,$barcode_config)
         case "G2X2X105":
             print_barcode_gong_2x2x105($items,$barcode_config);
             break;
-            case "T3X105":
+        case "T3X105":
                 print_barcode_thuoc_3x105($items,$barcode_config);
                 break;
         default: 
@@ -949,7 +949,7 @@ function print_barcode_thuoc_3x105($items,$barcode_config)
 			{
 				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
 			}
-			$_sHtml = $_sHtml . '<div class="2" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:0px; ">';
+			$_sHtml = $_sHtml . '<div class="2" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:7px 0 0 0; ">';
 			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_thuoc($item, $barcode_config);
 			$_sHtml = $_sHtml . '</div>';
 		    ++$count; 
