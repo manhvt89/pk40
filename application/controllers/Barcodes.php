@@ -197,6 +197,37 @@ class Barcodes extends Secure_Controller
 		$this->load->view('barcodes/barcode_sheet_lens', $data);
 	}
 
+	public function barcode2()
+	{
+		$this->load->library('barcode_lib');
+
+		//$data['cart'] = $this->printbarcode_lib->get_cart();
+		//var_dump($data['cart']); die();
+		//$item_ids = explode(':', $item_ids);
+		$results = $this->printbarcode_lib->get_cart();
+		$config = $this->barcode_lib->get_barcode_config('lens');
+		$config['location'] = $this->config->item('Location_Barcode');
+		$data['items'] = [];
+		//var_dump($config);
+		$data['barcode_config'] = $config;
+
+		foreach($results as $item)
+		{
+			$item['unit_price'] = $item['price'];
+			$_max = (int)$item['quantity'];
+			if($_max > 0)
+			{
+				for($i = 1;$i < $_max +1;$i++)
+				{
+					$data['items'][] = $item;
+				}
+			}
+		}
+
+		// display barcodes
+		$this->load->view('barcodes/barcode_sheet_thuoc', $data);
+	}
+
 	public function empty()
 	{
 		$this->printbarcode_lib->clear_all();

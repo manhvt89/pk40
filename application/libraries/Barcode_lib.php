@@ -537,6 +537,55 @@ class Barcode_lib
 		return $display_table;
 	}
 
+	public function _display_barcode_thuoc($item, $barcode_config)
+	{
+		//$barcode_config['barcode_width'] = 145;
+		/*
+		$barcode_config['barcode_width'] = 0;
+		$display_table = "<div class='' style='width:100%; '>";
+		$display_table .= "<div style='width:100%; font-size:9px; padding-bottom: 5px;' align='center'>" . $this->manage_display_layout_lens($barcode_config['barcode_first_row'], $item, $barcode_config) . "</div>";
+		$barcode = $this->generate_barcode($item, $barcode_config);
+		$display_table .= "<div style='width:100%; font-size:9px;' align='center'><img src='data:image/png;base64,$barcode' /></div>";
+		$display_table .= "<div style='width:100%; font-size:9px;' align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</div>";
+		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout_lens('location', $item, $barcode_config) . "</td></tr>";
+		$display_table .= "</div>";
+		
+		return $display_table;
+		*/
+		//var_dump($item);
+		if(empty($item) || empty($barcode_config))
+		{
+			return '';
+		}
+		$item['category'] = $item['item_category'];
+		//$barcode_config['barcode_width'] = 145;
+		$barcode_config['barcode_width'] = 0;
+		$display_table = "<div class='' style='width:100%; height:".$barcode_config['barcode_height']."mm'>";
+		if($barcode_config['barcode_first_row'] != 'not_show' && $barcode_config['barcode_first_row'] != '') {
+			$_sName = $item[$barcode_config['barcode_first_row']];
+			
+			$_sFirstname = trim($_sName); //clear blank
+
+			$display_table .= "<div style='width:100%; padding-bottom: 0px;' align='center' class='barcode-item-" . $barcode_config['barcode_first_row'] . "'>" . $_sFirstname . "</div>";
+		}
+		/*
+		$barcode = $this->generate_barcode($item, $barcode_config);
+		$display_table .= "<div style='width:100%; font-size:9px;' align='center'><img src='data:image/png;base64,$barcode' /></div>";
+		*/
+		if($item['item_number'] != '') {
+			$display_table .= "<div align='center' style='font-size:".$barcode_config['barcode_quality']."px; line-height: ".$barcode_config['barcode_quality']."px;' class='LibreBarcode128'>" . htmlentities(Code128Encoder::encode($item['item_number'])) . "</div>";
+		}
+		if($barcode_config['barcode_second_row'] != 'not_show' && $barcode_config['barcode_second_row'] != '') {
+			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_second_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . " - <b>".$barcode_config['location']."</b></div>";
+		}
+		if($barcode_config['barcode_third_row'] != 'not_show' && $barcode_config['barcode_third_row'] != '') {
+			$display_table .= "<div style='width:100%;' align='center' class='barcode-item-" . $barcode_config['barcode_third_row'] . "'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</div>";
+		}
+		//$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</td></tr>";
+		$display_table .= "</div>";
+		return $display_table;
+	}
+
 }
 
 ?>

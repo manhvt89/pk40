@@ -879,6 +879,9 @@ function print_barcode($items,$type,$barcode_config)
         case "G2X2X105":
             print_barcode_gong_2x2x105($items,$barcode_config);
             break;
+            case "T3X105":
+                print_barcode_thuoc_3x105($items,$barcode_config);
+                break;
         default: 
             break;
     }
@@ -933,5 +936,28 @@ function print_barcode_gong_2x2x105($items,$barcode_config)
     echo $_sHtml;
 }
 
+function print_barcode_thuoc_3x105($items,$barcode_config)
+{
+    $CI =& get_instance();
+    $_sHtml = '<div style=" width: '.$barcode_config['barcode_page_width'].'mm; margin:auto; ">';
 
+	if (!empty($items)) {
+		$count = 0;
+	  	foreach($items as $item)
+		{ 
+			if ($count % 3 == 0 and $count != 0)
+			{
+				$_sHtml = $_sHtml . '<div class="pagebreak"></div>';	
+			}
+			$_sHtml = $_sHtml . '<div class="2" style=" width: '.$barcode_config['barcode_width'].'mm; text-align: center;float: left; margin:0px; ">';
+			$_sHtml = $_sHtml . $CI->barcode_lib->_display_barcode_thuoc($item, $barcode_config);
+			$_sHtml = $_sHtml . '</div>';
+		    ++$count; 
+		} 
+	} else {
+		$_sHtml = $_sHtml . 'Hiện tại chưa có sản phẩm nào để in barcode, vui lòng chọn sản phẩm để in.';
+	}
+    $_sHtml = $_sHtml .'</div>';
+    echo $_sHtml;
+}
 ?>

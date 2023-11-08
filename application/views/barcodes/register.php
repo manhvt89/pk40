@@ -28,12 +28,18 @@ if (isset($success))
 				<?php if(!empty($this->config->item('G1Barcode'))): ?>
 					<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode1", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode gọng 1',
-									array('class'=>'btn btn-primary btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng 1')); ?>
+									array('class'=>'btn btn-success btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng 1')); ?>
+					</li>
+				<?php endif;?>
+				<?php if(!empty($this->config->item('Thuoc'))): ?>
+					<li class="pull-right">
+						<?php echo anchor($controller_name."/barcode2", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode thuốc',
+									array('class'=>'btn btn-success btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode thuốc')); ?>
 					</li>
 				<?php endif;?>
 				<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode gọng',
-									array('class'=>'btn btn-primary btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng')); ?>
+									array('class'=>'btn btn-info btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng')); ?>
 				</li>
 				<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode_lens", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode mắt',
