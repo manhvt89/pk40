@@ -3957,6 +3957,117 @@ class Reports extends Secure_Controller
         echo json_encode($json);
     }
 
+    public function inventory_thuoc()
+    {
+        $this->load->model('reports/Inventory_thuoc');
+        $model = $this->Inventory_thuoc;
+        $data = array();
+        $data['item_count'] = $model->getItemCountDropdownArray();
+
+        $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
+        $stock_locations['all'] = $this->lang->line('reports_all');
+        $data['stock_locations'] = array_reverse($stock_locations, TRUE);
+
+        $this->load->view('reports/inventory_thuoc_input', $data);
+    }
+
+    public function ajax_inventory_thuoc()
+    {
+        $this->load->model('reports/Inventory_thuoc');
+        $model = $this->Inventory_thuoc;
+        $location_id = $this->input->post('location_id');
+
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        $location_id = $this->input->post('location_id');
+        $result = 1;
+
+        $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
+        $headers = $this->xss_clean($model->_getDataColumns());
+        if($this->Employee->has_grant('items_unitprice_hide'))
+        {
+            //unset();
+            unset($headers['details']['cost_price']); //cost_price
+            //unset($headers['details']['sub_total']); //cost_price
+        }
+        //var_dump($headers);
+        $report_data = $model->_getData($inputs);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = array();
+            $details_data = array();
+            $i = 1;
+            foreach($report_data['summary'] as $key => $row)
+            {
+
+                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $summary_data[] = $this->xss_clean(array(
+                    'id' => $i,
+                    'cat' => $row['category'],
+                    'begin_quantity' => number_format($begin_quantity),
+                    'end_quantity' => number_format($row['end_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                ));
+
+                foreach($report_data['details'][$key] as $drow)
+                {
+                    //var_dump(to_currency($drow['unit_price']));die();
+                    if($this->Employee->has_grant('items_unitprice_hide'))
+                    {
+                        $details_data[$i][] = $this->xss_clean(
+                            [
+                                'name'=>$drow['name'],
+                                'item_number'=>$drow['item_number'],
+                                'quantity'=>number_format($drow['quantity']),
+                                'reorder_level'=>number_format($drow['reorder_level']), 
+                                'location'=>$drow['location_name'],
+                                //'cost_price'=>to_currency($drow['cost_price']),
+                                'unit_price'=>to_currency($drow['unit_price']), 
+                                'sub_total'=>to_currency($drow['sub_total_value'])
+                            ]);
+                    
+                    } else {
+                       // $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       $details_data[$i][] = $this->xss_clean(
+                        [
+                            'name'=>$drow['name'],
+                            'item_number'=>$drow['item_number'], 
+                            'quantity'=>number_format($drow['quantity']), 
+                            'reorder_level'=>number_format($drow['reorder_level']), 
+                            'location'=>$drow['location_name'],
+                            'cost_price'=>to_currency($drow['cost_price']),
+                            'unit_price'=>to_currency($drow['unit_price']), 
+                            'sub_total'=>to_currency($drow['sub_total_value'])
+                        ]);
+                    }
+                }
+                $i++;
+            }
+
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
+                'headers_details' => transform_headers_readonly_raw($headers['details']),
+                'summary_data' => $summary_data,
+                'details_data' => $details_data,
+                'report_data' =>$report_data
+            );
+
+        }
+
+
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+    }
+
     
 }
 ?>

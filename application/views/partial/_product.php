@@ -6,15 +6,22 @@
 		if($key == 'iKindOfLens')
 		{
 			echo 'Mắt kính';
-		} elseif('filter_contact_lens' == $key)
+		} 
+		elseif('filter_contact_lens' == $key)
 		{
-		echo 'Áp tròng';
-		} elseif($key == 'filter')
+			echo 'Áp tròng';
+		} 
+		elseif($key == 'filter')
 		{
-		echo 'Gọng kính';
-		} elseif($key == 'filter_sun_glasses')
+			echo 'Gọng kính';
+		} 
+		elseif($key == 'filter_sun_glasses')
 		{
-		echo 'Kính râm';
+			echo 'Kính râm';
+		}
+		elseif($key == 'other_filter')
+		{
+			echo 'Thuốc';
 		}
 		else {
 			echo $key;
