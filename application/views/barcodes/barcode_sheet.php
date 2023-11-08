@@ -69,7 +69,7 @@ border-spacing: 1px;
 }
 
 .store_name {
-	font-size: 14px;
+	font-size: 12px;
 	font-family: initial;
 }
 
