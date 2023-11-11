@@ -20,10 +20,10 @@ class Reports extends Secure_Controller
 			$this->track_page('reports/' . $submodule_id, 'reports_' . $submodule_id);
             //echo $submodule_id; die();
 			// check access to report submodule
-			if(!$this->Employee->has_grant('reports_' . $submodule_id, $this->Employee->get_logged_in_employee_info()->person_id))
-			{
-				redirect('no_access/reports/reports_' . $submodule_id);
-			}
+			//if(!$this->Employee->has_grant('reports_' . $submodule_id, $this->Employee->get_logged_in_employee_info()->person_id))
+			//{
+			//	redirect('no_access/reports/reports_' . $submodule_id);
+			//}
 		}
 
 		$this->load->helper('report');
@@ -4068,6 +4068,199 @@ class Reports extends Secure_Controller
         echo json_encode($json);
     }
 
+    public function partner()
+	{
+		$data = array();
+		$data['specific_input_name'] = 'Báo cáo doanh thu CTV';
+		$employees = array();
+		$data['specific_input_data'] = $employees;
+
+		$this->load->view('reports/partner_input', $data);
+	}
+
+	public function ajax_partner()
+	{
+       
+		$this->load->model('reports/Partner');
+        $model = $this->Partner;
+        
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        
+        $result = 1;
+
+        $inputs = array('fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
+        $headers = $this->xss_clean($model->_getDataColumns());
+        
+        //var_dump($headers);
+        $report_data = $model->_getData($inputs);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = [];
+            $details_data = [];
+            $i = 1;
+            foreach($report_data['summary'] as $key => $row)
+            {
+                //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+  
+                $summary_data[] = $this->xss_clean(array(
+                    'id' => $i,
+                    'ctv_code' => $row['ctv_code'],
+                    'ctv_name' => $row['ctv_name'],
+                    'total' => number_format($row['tt']),
+                    'total_DT' => number_format($row['pm'])==0?'-':to_currency($row['pm']),
+                    'total_HH' => number_format($row['cm'])==0?'-':to_currency($row['cm']),
+                ));
+                $j = 1;
+                
+                $details_data[$i][] = $this->xss_clean(
+                    [
+                        'id'=>'',
+                        'datetime'=>'Thông tin cộng tác viên',
+                        'sale_name'=>$row['ctv_name'],
+                        'sale_code'=>$row['ctv_code'],
+                        'DT'=>number_format($row['pm'])==0?'-':to_currency($row['pm']), 
+                        'HH'=>number_format($row['cm'])==0?'-':to_currency($row['cm']),
+                    ]);
+                foreach($report_data['details'][$key] as $drow)
+                {
+                    //var_dump(to_currency($drow['unit_price']));die();
+                    $details_data[$i][] = $this->xss_clean(
+                        [
+                            'id'=>$j,
+                            'datetime'=>date('d-m-Y h:m:s',$drow['created_time']),
+                            'sale_name'=>$drow['customer_name'],
+                            'sale_code'=>$drow['sale_code'],
+                            'DT'=>to_currency($drow['payment_amount']), 
+                            'HH'=>to_currency($drow['comission_amount']),
+                        ]);
+                        $j++;
+                }
+                $i++;
+            }
+
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE,FALSE),
+                'summary_data' => $summary_data,
+                'details_data' => $details_data,
+                'report_data' =>$report_data
+            );
+
+        }
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
+
+    public function customer_care()
+	{
+		$data = array();
+		$data['specific_input_name'] = 'Báo cáo chăm sóc khách hàng';
+		$employees = array();
+		$data['specific_input_data'] = $employees;
+
+		$this->load->view('reports/customer_care_input', $data);
+	}
+
+	public function ajax_customer_care()
+	{
+       
+		$this->load->model('reports/Customer_care');
+        $model = $this->Customer_care;
+        
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        
+        $result = 1;
+
+        $inputs = array('fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
+        $headers = $this->xss_clean($model->_getDataColumns());
+        
+        //var_dump($headers);
+        $report_data = $model->_getData($inputs);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = [];
+            $details_data = [];
+            $i = 1;
+            foreach($report_data['summary'] as $key => $row)
+            {
+                //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+  
+                $summary_data[] = $this->xss_clean(array(
+                    'id' => $i,
+                    'employee_code' => $row['code'],
+                    'employee_name' => $row['employee_name'],
+                    'total' => number_format($row['tt']),
+                ));
+                $j = 1;
+                
+                foreach($report_data['details'][$key] as $drow)
+                {
+                    //var_dump(to_currency($drow['unit_price']));die();
+                    $status = '';
+                    switch ($drow['status']) {
+                        case 1:
+                            $status = 'Sai số điện thoại';
+                            break;
+                        case 2:
+                            $status = 'Chưa liên lạc được';
+                            break;
+                        case 3:
+                            $status = 'Chưa sắp xếp được thời gian';
+                            break;
+                        case 4:
+                            $status = 'Đã đặt lịch';
+                            break;
+                        case 5:
+                            $status = 'Đã khám';
+                            break;
+                        default:	
+                            $status = 'Chưa liên hệ';
+                            break;
+                    }
+                    $details_data[$i][] = $this->xss_clean(
+                        [
+                            'id'=>$j,
+                            'datetime'=>date('d-m-Y h:m:s',$drow['created_time']),
+                            'customer_name'=>$drow['customer_name'],
+                            'customer_code'=>$drow['account_number'],
+                            'content'=>$drow['content'], 
+                            'status'=>$status,
+                        ]);
+                        $j++;
+                }
+                $i++;
+            }
+
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE,FALSE),
+                'summary_data' => $summary_data,
+                'details_data' => $details_data,
+                'report_data' =>$report_data
+            );
+
+        }
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
     
 }
 ?>

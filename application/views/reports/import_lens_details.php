@@ -5,7 +5,10 @@
 <div id="page_subtitle"><?php echo $subtitle ?></div>
 
 <div id="table_holder">
-	<table id="table"></table>
+	<table 
+		id="table" 
+		data-export-types="['excel']">
+	</table>
 </div>
 
 <div id="report_summary">

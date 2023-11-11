@@ -81,6 +81,7 @@ if(isset($error))
 
 						};
 						//$('#table').bootstrapTable('refresh');
+						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
@@ -95,10 +96,11 @@ if(isset($error))
 							paginationVAlign: 'bottom',
 							detailView: false,
 							uniqueId: 'id',
-							escape: false
+							escape: false,
+							exportTypes: ['excel'],
 							
 						});
-						$('#table').bootstrapTable('load',{data: summary_data});
+						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
 					}
@@ -136,7 +138,7 @@ if(isset($error))
 						{
 
 						};
-
+						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
@@ -152,19 +154,12 @@ if(isset($error))
 							detailView: true,
 							uniqueId: 'id',
 							escape: false,
+							exportTypes: ['excel'],
 							onPageChange: init_dialog,
 							onPostBody: function() {
 								dialog_support.init("a.modal-dlg");
 							},
-							onExpandRow: function (index, row, $detail) {
-								//alert(JSON.stringify(header_details));
-								$detail.html('<table></table>').find("table").bootstrapTable({
-									columns: header_details,
-									data: detail_data[row.id],
-									sortable: true,
-									showExport: true,
-								});
-							}
+							
 						});
 
 						init_dialog();

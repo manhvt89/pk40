@@ -113,7 +113,13 @@ $(document).ready(function()
 </div>
 
 <div id="table_holder">
-    <table id="table" data-sort-order="desc" data-sort-name="item_number" data-search="true"></table>
+    <table 
+        id="table" 
+        data-sort-order="desc" 
+        data-sort-name="item_number" 
+        data-search="true" 
+        data-export-types="['excel']">
+    </table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

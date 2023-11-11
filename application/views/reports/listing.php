@@ -24,6 +24,8 @@ if(isset($error))
 				show_report_if_allowed('specific', 'ctvs', $person_id, 'reports_ctvs');
 				$bUser_type = $this->session->userdata('type');
 				?>
+				<a class="list-group-item" href="<?php echo site_url('reports/partner');?>"><?php echo 'Doanh thu theo CTV'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/customer_care');?>"><?php echo 'Kết quả chăm sóc khác hàng'; ?></a>
 				<?php  if( $bUser_type == 2): ?>
 				<a class="list-group-item" href="/reports/graphical_summary_sales">Báo cáo hình ảnh</a>
 				<?php endif; ?>

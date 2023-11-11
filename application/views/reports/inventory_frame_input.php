@@ -42,7 +42,10 @@ if(isset($error))
 		
 		</div>
 	</div>	
-	<table id="table"></table>
+	<table 
+		id="table" 
+		data-export-types="['excel']">
+	</table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>
@@ -81,7 +84,7 @@ if(isset($error))
 
 						};
 						//$('#table').bootstrapTable('refresh');
-						$('#table').bootstrapTable({
+						/*$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 							striped: true,
@@ -97,8 +100,39 @@ if(isset($error))
 							uniqueId: 'id',
 							escape: false
 							
+						});*/
+						$('#table').bootstrapTable('destroy');
+						$('#table').bootstrapTable({
+							columns: header_summary,
+							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+							striped: true,
+							pagination: true,
+							sortable: true,
+							showColumns: true,
+							uniqueId: 'id',
+							showExport: true,
+							data: summary_data,
+							iconSize: 'sm',
+							paginationVAlign: 'bottom',
+							detailView: true,
+							uniqueId: 'id',
+							escape: false,
+							onPageChange: init_dialog,
+							onPostBody: function() {
+								dialog_support.init("a.modal-dlg");
+							},
+							onExpandRow: function (index, row, $detail) {
+								//alert(JSON.stringify(header_details));
+								$detail.html('<table></table>').find("table").bootstrapTable({
+									columns: header_details,
+									data: detail_data[row.id],
+									sortable: true,
+									showExport: true,
+									exportTypes: ['excel'],
+								});
+							}
 						});
-						$('#table').bootstrapTable('load',{data: summary_data});
+						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
 					}
@@ -126,7 +160,6 @@ if(isset($error))
 				.done(function( msg ) {
 					if(msg.result == 1)
 					{
-
 						var detail_data = msg.data.details_data;
 						var header_summary = msg.data.headers_summary;
 						var summary_data = msg.data.summary_data;
@@ -136,7 +169,7 @@ if(isset($error))
 						{
 
 						};
-
+						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
@@ -163,6 +196,7 @@ if(isset($error))
 									data: detail_data[row.id],
 									sortable: true,
 									showExport: true,
+									exportTypes: ['excel'],
 								});
 							}
 						});

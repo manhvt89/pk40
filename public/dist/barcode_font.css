@@ -1,120 +1,121 @@
-@font-face {
-    font-family: 'SansationLight';
-    src: url('../fonts/SansationLight.eot');
-    src: local('SansationLight'), url('../fonts/SansationLight.woff') format('woff'), url('../fonts/SansationLight.ttf') format('truetype');
-}
-
-.font_SansationLight {
-    font-family: 'SansationLight' !important;
-}
-
-@font-face {
-    font-family: 'Arial';
-    src: url('../fonts/Arial.eot');
-    src: local('Arial'), url('../fonts/Arial.woff') format('woff'), url('../fonts/Arial.ttf') format('truetype');
-}
-
-.font_Arial {
-    font-family: 'Arial' !important;
-}
-
-@font-face {
-    font-family: 'JUNEBUG';
-    src: url('../fonts/JUNEBUG.eot');
-    src: local('JUNEBUG'), url('../fonts/JUNEBUG.woff') format('woff'), url('../fonts/JUNEBUG.ttf') format('truetype');
-}
-
-.font_JUNEBUG {
-    font-family: 'JUNEBUG' !important;
-}
-
-@font-face {
-    font-family: 'b-de-bonita-shadow';
-    src: url('../fonts/b-de-bonita-shadow.eot');
-    src: local('JUNEBUG'), url('../fonts/b-de-bonita-shadow.woff') format('woff'), url('../fonts/b-de-bonita-shadow.ttf') format('truetype');
-}
-
-.font_b-de-bonita-shadow {
-    font-family: 'b-de-bonita-shadow' !important;
-}
-
-@font-face {
-    font-family: 'Oswald-VariableFont_wght';
-    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-Regular';
-    src: url('../fonts/Oswald-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-Bold';
-    src: url('../fonts/Oswald-Bold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-ExtraLight';
-    src: url('../fonts/Oswald-ExtraLight.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-Light';
-    src: url('../fonts/Oswald-Light.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-Medium';
-    src: url('../fonts/Oswald-Medium.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Oswald-SemiBold';
-    src: url('../fonts/Oswald-SemiBold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'BarcodeFont';
-    src: url('../fonts/barcode128/LibreBarcode128Text-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'fontawesome-webfont';
-    src: url('../fonts/fontawesome-webfont.ttf') format('truetype');
-}
-
-.LibreBarcode128 {
-    font-family: 'BarcodeFont' !important;
-}
-
-.font_Oswald-Light {
-    font-family: 'Oswald-Light' !important;
-}
-
-.font_Oswald-Bold {
-    font-family: 'Oswald-Bold' !important;
-}
-
-.font_Oswald-Medium {
-    font-family: 'Oswald-Medium' !important;
-}
-
-.font_Oswald-SemiBold {
-    font-family: 'Oswald-SemiBold' !important;
-}
-
-.font_Oswald-ExtraLight {
-    font-family: 'Oswald-ExtraLight' !important;
-}
-
-.font_Oswald-Regular {
-    font-family: 'Oswald-Regular' !important;
-}
-
-.font_Oswald-VariableFont_wght {
-    font-family: 'Oswald-VariableFont_wght' !important;
-}
-
-.font_fontawesome-webfont {
-    font-family: 'fontawesome-webfont' !important;
-}
+                @font-face {
+                    font-family: 'SansationLight';
+                    src: url('../fonts/SansationLight.eot');
+                    src: local('SansationLight'), url('../fonts/SansationLight.woff') format('woff'), url('../fonts/SansationLight.ttf') format('truetype');
+                }
+                
+                .font_SansationLight {
+                    font-family: 'SansationLight' !important;
+                }
+                
+                @font-face {
+                    font-family: 'Arial';
+                    src: url('../fonts/Arial.eot');
+                    src: local('Arial'), url('../fonts/Arial.woff') format('woff'), url('../fonts/Arial.ttf') format('truetype');
+                }
+                
+                .font_Arial {
+                    font-family: 'Arial' !important;
+                }
+                
+                @font-face {
+                    font-family: 'JUNEBUG';
+                    src: url('../fonts/JUNEBUG.eot');
+                    src: local('JUNEBUG'), url('../fonts/JUNEBUG.woff') format('woff'), url('../fonts/JUNEBUG.ttf') format('truetype');
+                }
+                
+                .font_JUNEBUG {
+                    font-family: 'JUNEBUG' !important;
+                }
+                
+                @font-face {
+                    font-family: 'b-de-bonita-shadow';
+                    src: url('../fonts/b-de-bonita-shadow.eot');
+                    src: local('JUNEBUG'), url('../fonts/b-de-bonita-shadow.woff') format('woff'), url('../fonts/b-de-bonita-shadow.ttf') format('truetype');
+                }
+                
+                .font_b-de-bonita-shadow {
+                    font-family: 'b-de-bonita-shadow' !important;
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-VariableFont_wght';
+                    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-Regular';
+                    src: url('../fonts/Oswald-Regular.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-Bold';
+                    src: url('../fonts/Oswald-Bold.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-ExtraLight';
+                    src: url('../fonts/Oswald-ExtraLight.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-Light';
+                    src: url('../fonts/Oswald-Light.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-Medium';
+                    src: url('../fonts/Oswald-Medium.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'Oswald-SemiBold';
+                    src: url('../fonts/Oswald-SemiBold.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'BarcodeFont';
+                    src: url('../fonts/barcode128/LibreBarcode128Text-Regular.ttf') format('truetype');
+                }
+                
+                @font-face {
+                    font-family: 'fontawesome-webfont';
+                    src: url('../fonts/fontawesome-webfont.ttf') format('truetype');
+                }
+                
+                .LibreBarcode128 {
+                    font-family: 'BarcodeFont' !important;
+                    white-space: pre;
+                }
+                
+                .font_Oswald-Light {
+                    font-family: 'Oswald-Light' !important;
+                }
+                
+                .font_Oswald-Bold {
+                    font-family: 'Oswald-Bold' !important;
+                }
+                
+                .font_Oswald-Medium {
+                    font-family: 'Oswald-Medium' !important;
+                }
+                
+                .font_Oswald-SemiBold {
+                    font-family: 'Oswald-SemiBold' !important;
+                }
+                
+                .font_Oswald-ExtraLight {
+                    font-family: 'Oswald-ExtraLight' !important;
+                }
+                
+                .font_Oswald-Regular {
+                    font-family: 'Oswald-Regular' !important;
+                }
+                
+                .font_Oswald-VariableFont_wght {
+                    font-family: 'Oswald-VariableFont_wght' !important;
+                }
+                
+                .font_fontawesome-webfont {
+                    font-family: 'fontawesome-webfont' !important;
+                }

@@ -107,7 +107,7 @@ class Inventory_frame extends Report
 
             'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
-				array('cat' => 'Loại mắt'),
+				array('cat' => 'Loại gọng'),
 				array('begin_quantity' => 'Đầu kỳ'),
 				array('receive_quantity'=>'Nhập'),
 				array('sale_quantity'=>'Bán'),

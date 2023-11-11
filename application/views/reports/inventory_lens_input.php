@@ -42,7 +42,10 @@ if(isset($error))
 		
 		</div>
 	</div>
-	<table id="table"></table>
+	<table 
+		id="table" 
+		data-export-types="['excel']">
+	</table>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>
@@ -81,6 +84,7 @@ if(isset($error))
 
 						};
 						//$('#table').bootstrapTable('refresh');
+						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
@@ -138,6 +142,7 @@ if(isset($error))
 
 						};
 						//$('#table').bootstrapTable('refresh');
+						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
@@ -155,7 +160,7 @@ if(isset($error))
 							escape: false
 							
 						});
-						$('#table').bootstrapTable('load',{data: summary_data});
+						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
 					}
