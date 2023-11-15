@@ -51,6 +51,7 @@ CREATE TABLE `ospos_history_reminder` (
   `history_reminder_uuid` varchar(50) NOT NULL DEFAULT uuid(),
   PRIMARY KEY (`history_reminder_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1267 DEFAULT CHARSET=utf8;
+
 -- Cron update vào bảng này hàng ngày (sau 0h sáng)
 
 ALTER TABLE `ospos_reminders` ADD `address` VARCHAR(255) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_id`; 
@@ -62,6 +63,7 @@ ALTER TABLE `ospos_employees` ADD `comission_rate` decimal(5,2) NOT NULL DEFAULT
 ALTER TABLE `ospos_employees` ADD `code` VARCHAR(20) NOT NULL DEFAULT '' AFTER `log`;
 ALTER TABLE `ospos_sales` ADD `sync` tinyint(1) DEFAULT 0 COMMENT '{0: moi tao; 1: Đã sync vào bảng history_ctv}' AFTER `updated_at`;
 ALTER TABLE `ospos_purchases` ADD `v` tinyint(3) NOT NULL DEFAULT 0 AFTER `edited_time`;
+ALTER TABLE `ospos_reminders` CHANGE `duration` `duration` INT(2) NULL DEFAULT NULL; 
 
 
 
