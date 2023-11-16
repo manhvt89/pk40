@@ -4007,15 +4007,18 @@ class Reports extends Secure_Controller
             $i = 1;
             foreach($report_data['summary'] as $key => $row)
             {
-
+                //var_dump($row);die();
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
+                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
+                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
                     'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($row['end_quantity']),
-                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
-                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'end_quantity' => number_format($_end_quantity),
+                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
+                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
@@ -4027,9 +4030,9 @@ class Reports extends Secure_Controller
                             [
                                 'name'=>$drow['name'],
                                 'item_number'=>$drow['item_number'],
-                                'quantity'=>number_format($drow['quantity']),
-                                'reorder_level'=>number_format($drow['reorder_level']), 
-                                'location'=>$drow['location_name'],
+                                'total_received'=>$drow['total_received'],
+                                'total_sold'=>number_format($drow['total_sold']), 
+                                'quantity'=>number_format($drow['quantity']), 
                                 //'cost_price'=>to_currency($drow['cost_price']),
                                 'unit_price'=>to_currency($drow['unit_price']), 
                                 'sub_total'=>to_currency($drow['sub_total_value'])
@@ -4041,9 +4044,9 @@ class Reports extends Secure_Controller
                         [
                             'name'=>$drow['name'],
                             'item_number'=>$drow['item_number'], 
+                            'total_received'=>number_format($drow['total_received']),
+                            'total_sold'=>number_format($drow['total_sold']), 
                             'quantity'=>number_format($drow['quantity']), 
-                            'reorder_level'=>number_format($drow['reorder_level']), 
-                            'location'=>$drow['location_name'],
                             'cost_price'=>to_currency($drow['cost_price']),
                             'unit_price'=>to_currency($drow['unit_price']), 
                             'sub_total'=>to_currency($drow['sub_total_value'])
@@ -4055,7 +4058,7 @@ class Reports extends Secure_Controller
 
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
-                'headers_details' => transform_headers_readonly_raw($headers['details']),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
                 'summary_data' => $summary_data,
                 'details_data' => $details_data,
                 'report_data' =>$report_data
