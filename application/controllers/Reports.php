@@ -3625,6 +3625,7 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_frame()
     {
+        $filter = $this->config->item('filter'); //define in app.php
         $this->load->model('reports/Inventory_frame');
         $model = $this->Inventory_frame;
         $location_id = $this->input->post('location_id');
@@ -3648,7 +3649,7 @@ class Reports extends Secure_Controller
             //unset($headers['details']['sub_total']); //cost_price
         }
         //var_dump($headers);
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)
         {
@@ -3659,15 +3660,18 @@ class Reports extends Secure_Controller
             $i = 1;
             foreach($report_data['summary'] as $key => $row)
             {
-
+                //var_dump($row);die();
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
+                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
+                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
                     'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($row['end_quantity']),
-                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
-                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'end_quantity' => number_format($_end_quantity),
+                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
+                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
@@ -3679,9 +3683,9 @@ class Reports extends Secure_Controller
                             [
                                 'name'=>$drow['name'],
                                 'item_number'=>$drow['item_number'],
-                                'quantity'=>number_format($drow['quantity']),
-                                'reorder_level'=>number_format($drow['reorder_level']), 
-                                'location'=>$drow['location_name'],
+                                'total_received'=>$drow['total_received'],
+                                'total_sold'=>number_format($drow['total_sold']), 
+                                'quantity'=>number_format($drow['quantity']), 
                                 //'cost_price'=>to_currency($drow['cost_price']),
                                 'unit_price'=>to_currency($drow['unit_price']), 
                                 'sub_total'=>to_currency($drow['sub_total_value'])
@@ -3693,9 +3697,9 @@ class Reports extends Secure_Controller
                         [
                             'name'=>$drow['name'],
                             'item_number'=>$drow['item_number'], 
+                            'total_received'=>number_format($drow['total_received']),
+                            'total_sold'=>number_format($drow['total_sold']), 
                             'quantity'=>number_format($drow['quantity']), 
-                            'reorder_level'=>number_format($drow['reorder_level']), 
-                            'location'=>$drow['location_name'],
                             'cost_price'=>to_currency($drow['cost_price']),
                             'unit_price'=>to_currency($drow['unit_price']), 
                             'sub_total'=>to_currency($drow['sub_total_value'])
@@ -3707,7 +3711,7 @@ class Reports extends Secure_Controller
 
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
-                'headers_details' => transform_headers_readonly_raw($headers['details']),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
                 'summary_data' => $summary_data,
                 'details_data' => $details_data,
                 'report_data' =>$report_data
@@ -3736,9 +3740,9 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_lens()
     {
+        $filter = $this->config->item('filter_lens'); //define in app.php
         $this->load->model('reports/Inventory_lens');
         $model = $this->Inventory_lens;
-        $location_id = $this->input->post('location_id');
 
         $_sFromDate = $this->input->post('fromDate');
         $_sToDate = $this->input->post('toDate');
@@ -3753,7 +3757,7 @@ class Reports extends Secure_Controller
         $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
         $headers = $this->xss_clean($model->_getDataColumns());
         //var_dump($headers);
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)
         {
@@ -3762,6 +3766,7 @@ class Reports extends Secure_Controller
             $summary_data = array();
             $details_data = array();
             $i = 1;
+            /*
             foreach($report_data['summary'] as $key => $row)
             {
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
@@ -3779,6 +3784,65 @@ class Reports extends Secure_Controller
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
                 'summary_data' => $summary_data,
+                'report_data' =>$report_data
+            );
+            */
+            foreach($report_data['summary'] as $key => $row)
+            {
+                //var_dump($row);die();
+                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
+                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
+                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
+                $summary_data[] = $this->xss_clean(array(
+                    'id' => $i,
+                    'cat' => $row['category'],
+                    'begin_quantity' => number_format($begin_quantity),
+                    'end_quantity' => number_format($_end_quantity),
+                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
+                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                ));
+
+                foreach($report_data['details'][$key] as $drow)
+                {
+                    //var_dump(to_currency($drow['unit_price']));die();
+                    if($this->Employee->has_grant('items_unitprice_hide'))
+                    {
+                        $details_data[$i][] = $this->xss_clean(
+                            [
+                                'name'=>$drow['name'],
+                                'item_number'=>$drow['item_number'],
+                                'total_received'=>$drow['total_received'],
+                                'total_sold'=>number_format($drow['total_sold']), 
+                                'quantity'=>number_format($drow['quantity']), 
+                                //'cost_price'=>to_currency($drow['cost_price']),
+                                'unit_price'=>to_currency($drow['unit_price']), 
+                                'sub_total'=>to_currency($drow['sub_total_value'])
+                            ]);
+                    
+                    } else {
+                       // $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       $details_data[$i][] = $this->xss_clean(
+                        [
+                            'name'=>$drow['name'],
+                            'item_number'=>$drow['item_number'], 
+                            'total_received'=>number_format($drow['total_received']),
+                            'total_sold'=>number_format($drow['total_sold']), 
+                            'quantity'=>number_format($drow['quantity']), 
+                            'cost_price'=>to_currency($drow['cost_price']),
+                            'unit_price'=>to_currency($drow['unit_price']), 
+                            'sub_total'=>to_currency($drow['sub_total_value'])
+                        ]);
+                    }
+                }
+                $i++;
+            }
+
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
+                'summary_data' => $summary_data,
+                'details_data' => $details_data,
                 'report_data' =>$report_data
             );
 
@@ -3804,6 +3868,7 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_total_contact_lens()
     {
+        $filter = $this->config->item('filter_contact_lens'); //define in app.php
         $this->load->model('reports/Inventory_contact_lens');
         $model = $this->Inventory_contact_lens;
         $location_id = $this->input->post('location_id');
@@ -3826,7 +3891,7 @@ class Reports extends Secure_Controller
         {
             unset($headers['details'][5]); //remove giá vốn
         }
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData($inputs,$filter );
         $data = null;
         if(!$report_data)
         {
@@ -3837,22 +3902,50 @@ class Reports extends Secure_Controller
             $i = 1;
             foreach($report_data['summary'] as $key => $row)
             {
+                //var_dump($row);die();
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
+                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
+                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
                     'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($row['end_quantity']),
-                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
-                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'end_quantity' => number_format($_end_quantity),
+                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
+                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
                 ));
+
                 foreach($report_data['details'][$key] as $drow)
                 {
+                    //var_dump(to_currency($drow['unit_price']));die();
                     if($this->Employee->has_grant('items_unitprice_hide'))
                     {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                        $details_data[$i][] = $this->xss_clean(
+                            [
+                                'name'=>$drow['name'],
+                                'item_number'=>$drow['item_number'],
+                                'total_received'=>$drow['total_received'],
+                                'total_sold'=>number_format($drow['total_sold']), 
+                                'quantity'=>number_format($drow['quantity']), 
+                                //'cost_price'=>to_currency($drow['cost_price']),
+                                'unit_price'=>to_currency($drow['unit_price']), 
+                                'sub_total'=>to_currency($drow['sub_total_value'])
+                            ]);
+                    
                     } else {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       // $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       $details_data[$i][] = $this->xss_clean(
+                        [
+                            'name'=>$drow['name'],
+                            'item_number'=>$drow['item_number'], 
+                            'total_received'=>number_format($drow['total_received']),
+                            'total_sold'=>number_format($drow['total_sold']), 
+                            'quantity'=>number_format($drow['quantity']), 
+                            'cost_price'=>to_currency($drow['cost_price']),
+                            'unit_price'=>to_currency($drow['unit_price']), 
+                            'sub_total'=>to_currency($drow['sub_total_value'])
+                        ]);
                     }
                 }
                 $i++;
@@ -3860,7 +3953,7 @@ class Reports extends Secure_Controller
 
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
-                'headers_details' => transform_headers_readonly_raw($headers['details']),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
                 'summary_data' => $summary_data,
                 'details_data' => $details_data,
                 'report_data' =>$report_data
@@ -3887,6 +3980,7 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_sun_glasses()
     {
+        $filter = $this->config->item('filter'); 
         $this->load->model('reports/Inventory_sun_glasses');
         $model = $this->Inventory_sun_glasses;
         $location_id = $this->input->post('location_id');
@@ -3908,7 +4002,7 @@ class Reports extends Secure_Controller
         {
             unset($headers['details'][5]); //remove giá vốn
         }
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)
         {
@@ -3919,24 +4013,50 @@ class Reports extends Secure_Controller
             $i = 1;
             foreach($report_data['summary'] as $key => $row)
             {
-
+                //var_dump($row);die();
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
+                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
+                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
                     'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($row['end_quantity']),
-                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
-                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'end_quantity' => number_format($_end_quantity),
+                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
+                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
                 {
+                    //var_dump(to_currency($drow['unit_price']));die();
                     if($this->Employee->has_grant('items_unitprice_hide'))
                     {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                        $details_data[$i][] = $this->xss_clean(
+                            [
+                                'name'=>$drow['name'],
+                                'item_number'=>$drow['item_number'],
+                                'total_received'=>$drow['total_received'],
+                                'total_sold'=>number_format($drow['total_sold']), 
+                                'quantity'=>number_format($drow['quantity']), 
+                                //'cost_price'=>to_currency($drow['cost_price']),
+                                'unit_price'=>to_currency($drow['unit_price']), 
+                                'sub_total'=>to_currency($drow['sub_total_value'])
+                            ]);
+                    
                     } else {
-                        $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       // $details_data[$i][] = $this->xss_clean(array($drow['name'], $drow['item_number'], number_format($drow['quantity']), number_format($drow['reorder_level']), $drow['location_name'], to_currency($drow['cost_price']), to_currency($drow['unit_price']), to_currency($drow['sub_total_value'])));
+                       $details_data[$i][] = $this->xss_clean(
+                        [
+                            'name'=>$drow['name'],
+                            'item_number'=>$drow['item_number'], 
+                            'total_received'=>number_format($drow['total_received']),
+                            'total_sold'=>number_format($drow['total_sold']), 
+                            'quantity'=>number_format($drow['quantity']), 
+                            'cost_price'=>to_currency($drow['cost_price']),
+                            'unit_price'=>to_currency($drow['unit_price']), 
+                            'sub_total'=>to_currency($drow['sub_total_value'])
+                        ]);
                     }
                 }
                 $i++;
@@ -3944,7 +4064,7 @@ class Reports extends Secure_Controller
 
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
-                'headers_details' => transform_headers_readonly_raw($headers['details']),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
                 'summary_data' => $summary_data,
                 'details_data' => $details_data,
                 'report_data' =>$report_data
@@ -3973,6 +4093,7 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_thuoc()
     {
+        $filter = $this->config->item('filter_other'); //define in app.php
         $this->load->model('reports/Inventory_thuoc');
         $model = $this->Inventory_thuoc;
         $location_id = $this->input->post('location_id');
@@ -3996,7 +4117,7 @@ class Reports extends Secure_Controller
             //unset($headers['details']['sub_total']); //cost_price
         }
         //var_dump($headers);
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)
         {
@@ -4101,7 +4222,7 @@ class Reports extends Secure_Controller
         $headers = $this->xss_clean($model->_getDataColumns());
         
         //var_dump($headers);
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData2($inputs);
         $data = null;
         if(!$report_data)
         {
@@ -4193,7 +4314,7 @@ class Reports extends Secure_Controller
         $headers = $this->xss_clean($model->_getDataColumns());
         
         //var_dump($headers);
-        $report_data = $model->_getData($inputs);
+        $report_data = $model->_getData2($inputs);
         $data = null;
         if(!$report_data)
         {

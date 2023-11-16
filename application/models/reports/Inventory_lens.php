@@ -65,138 +65,30 @@ class Inventory_lens extends Report
 		return $return;
 	}
 
-	public function _getData(array $inputs)
-	{	
-        $filter = $this->config->item('filter_lens'); //define in app.php
-	    $this->db->select('items.category, SUM(item_quantities.quantity) AS end_quantity, stock_locations.location_id');
-        $this->db->from('items AS items');
-        $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
-        $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-        $this->db->where('items.deleted', 0);
-        $this->db->where('stock_locations.deleted', 0);
-        $this->db->where_in('items.category', $filter);
-
-		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
-
-		if($inputs['location_id'] != 'all')
-		{
-			$this->db->where('stock_locations.location_id', $inputs['location_id']);
-		}
-        $this->db->group_by('items.category');
-        $this->db->order_by('items.category');
-
-        $data = array();
-		
-		$tmp = $this->db->get()->result_array();
-
-		$sales = $this->_getSalesToday($inputs);
-		if(empty($sales))
-		{
-
-			foreach($tmp as $k=>$v)
-			{
-				$v['sale_quantity'] = 0;
-				$data['summary'][] = $v;
-			}
-			
-		} else {
-			$_sales = array();
-			foreach($sales as $k=>$v)
-			{
-				$_sales[$v['item_category']] = $v['quantity'];
-			}
-			foreach($tmp as $k=>$v)
-			{
-				if(isset($_sales[$v['category']]))
-				{
-					$v['sale_quantity'] = $_sales[$v['category']];
-				} else{
-					$v['sale_quantity'] = 0;
-				}
-				$data['summary'][] = $v;
-			}
-		}
-
-		$receives = $this->_getReceive($inputs);
-		if(empty($receives))
-		{
-			foreach($data['summary'] as $k=>$v)
-			{
-				$v['receive_quantity'] = 0;
-				$data['summary'][$k] = $v;
-			}
-		} else{
-			$_receives = array();
-			foreach($receives as $k=>$v)
-			{
-				$_receives[$v['item_category']] = $v['quantity'];
-			}
-
-			foreach($data['summary'] as $k=>$v)
-			{
-				if(isset($_receives[$v['category']]))
-				{
-					$v['receive_quantity'] = $_receives[$v['category']];
-				} else{
-					$v['receive_quantity'] = 0;
-				}
-				$data['summary'][$k] = $v;
-			}
-
-		}
-        //$data['summary'] = $this->db->get()->result_array();
-		//$data['summary'] = $tmp;
-		//var_dump($data);
-        return $data;
-
-	}
-
-	public function _getSalesToday($inputs)
-	{
-		$filter = $this->config->item('filter_lens'); //define in app.php
-		$this->db->select('s.sale_time, SUM(si.quantity_purchased) AS quantity, i.category as item_category');
-        $this->db->from('sales_items AS si');
-        $this->db->join('sales AS s', 'si.sale_id = s.sale_id');
-		$this->db->join('items AS i', 'si.item_id = i.item_id');
-        $this->db->where_in('i.category', $filter);
-		$this->db->where('DATE(s.sale_time) BETWEEN '. $this->db->escape($inputs['fromDate']).' AND '.$this->db->escape($inputs['toDate']));
-        $this->db->group_by('i.category');
-        $this->db->order_by('i.category');
-        $data = array();
-        $data = $this->db->get()->result_array();
-        return $data;
-	}
-
-	public function _getReceive($inputs)
-	{
-		$filter = $this->config->item('filter_lens'); //define in app.php
-		$this->db->select('r.receiving_time, SUM(ri.quantity_purchased) AS quantity, i.category as item_category');
-        $this->db->from('receivings_items AS ri');
-        $this->db->join('receivings AS r', 'ri.receiving_id = r.receiving_id');
-		$this->db->join('items AS i', 'ri.item_id = i.item_id');
-		$this->db->where_in('i.category', $filter);
-		$this->db->where('DATE(r.receiving_time) BETWEEN '. $this->db->escape($inputs['fromDate']).' AND '.$this->db->escape($inputs['toDate']));
-        $this->db->group_by('i.category');
-        $this->db->order_by('i.category');
-        $data = array();
-        $data = $this->db->get()->result_array();
-        return $data;
-	}
-
 	public function _getDataColumns()
 	{
-		return array(
+		return [
 
-			'summary' => array(
+            'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
 				array('cat' => 'Loại mắt'),
-				array('begin_quantity' => 'Đầu kỳ'),
-				array('receive_quantity'=>'Nhập'),
-				array('sale_quantity'=>'Bán'),
-				array('end_quantity' => 'Cuối kỳ'),
+				array('begin_quantity' => 'Đầu kỳ','align'=>'right'),
+				array('receive_quantity'=>'Nhập','align'=>'right'),
+				array('sale_quantity'=>'Xuất','align'=>'right'),
+				array('end_quantity' => 'Cuối kỳ','align'=>'right'),
 				
-			)
-		);
+			),
+            'details' => [
+				['item_number'=>$this->lang->line('reports_item_number')],
+                ['name'=>$this->lang->line('reports_item_name')],
+				['total_received'=>'Số lượng nhập','align'=>'right'],
+                ['total_sold'=>'Số lượng xuất','align'=>'right'],
+                ['quantity'=>'Tồn kho','align'=>'right'],
+                ['cost_price'=>$this->lang->line('reports_cost_price'),'align'=>'right'], //Giá vốn
+            	['unit_price'=>$this->lang->line('reports_unit_price'),'align'=>'right'],
+                ['sub_total'=>$this->lang->line('reports_sub_total_value'),'align'=>'right']
+		            ]
+				];
 	}
 
 

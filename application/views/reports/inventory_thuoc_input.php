@@ -92,7 +92,6 @@ if(isset($error))
 							pagination: true,
 							sortable: true,
 							showColumns: true,
-							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
 							iconSize: 'sm',

@@ -97,12 +97,21 @@ if(isset($error))
 							data: summary_data,
 							iconSize: 'sm',
 							paginationVAlign: 'bottom',
-							detailView: false,
-							uniqueId: 'id',
-							escape: false
+							detailView: true,
+							escape: false,
+							onExpandRow: function (index, row, $detail) {
+								//alert(JSON.stringify(header_details));
+								$detail.html('<table></table>').find("table").bootstrapTable({
+									columns: header_details,
+									data: detail_data[row.id],
+									sortable: true,
+									showExport: true,
+									exportTypes: ['excel'],
+								});
+							}
 							
 						});
-						$('#table').bootstrapTable('load',{data: summary_data});
+						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
 					}
@@ -150,14 +159,23 @@ if(isset($error))
 							pagination: true,
 							sortable: true,
 							showColumns: true,
-							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
 							iconSize: 'sm',
 							paginationVAlign: 'bottom',
-							detailView: false,
+							detailView: true,
 							uniqueId: 'id',
-							escape: false
+							escape: false,
+							onExpandRow: function (index, row, $detail) {
+								//alert(JSON.stringify(header_details));
+								$detail.html('<table></table>').find("table").bootstrapTable({
+									columns: header_details,
+									data: detail_data[row.id],
+									sortable: true,
+									showExport: true,
+									exportTypes: ['excel'],
+								});
+							}
 							
 						});
 						//$('#table').bootstrapTable('load',{data: summary_data});

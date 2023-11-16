@@ -126,7 +126,7 @@ class Inventory_thuoc extends Report
 		            ]
 				];
 	}
-
+	/*
 	public function _getData(array $inputs)
 	{	
         $filter = $this->config->item('filter_other'); //define in app.php
@@ -284,23 +284,7 @@ class Inventory_thuoc extends Report
         $data['details'] = array();
         foreach($data['summary'] as $key=>$value)
         {
-			/*
-            $this->db->select('items.name, items.item_number, COALESCE(SUM(sales_items.quantity_purchased), 0) AS total_sold, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value');
-            $this->db->from('items AS items');
-            $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
-            $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-			$this->db->join('(SELECT item_id, COALESCE(SUM(quantity_purchased), 0) AS total_sold FROM ospos_sales_items WHERE sale_id IN (SELECT sale_id FROM ospos_sales WHERE sale_time >= ? AND sale_time < ?) GROUP BY item_id) AS sales_items', 'sales_items.item_id = items.item_id', 'left');
-        
-			//$this->db->join('sales_items AS sales_items', 'sales_items.item_id = items.item_id','left');
-			//$this->db->join('(SELECT * FROM ospos_sales AS s WHERE DATE(s.sale_time) BETWEEN "'.$this->db->escape($inputs['fromDate']).'" AND "'.$this->db->escape($inputs['toDate']).'") AS sales', 'sales.sale_id = sales_items.sale_id', 'left');
-            $this->db->where('items.deleted', 0);
-            $this->db->where('stock_locations.deleted', 0);
-            $this->db->where('items.category', $value['category']);
-            $this->db->where('stock_locations.location_id', $value['location_id']);
-			//$this->db->where('DATE(sales.sale_time) BETWEEN '. $this->db->escape($inputs['fromDate']).' AND '.$this->db->escape($inputs['toDate']));
-			$this->db->group_by('items.item_id');
-            $this->db->order_by('items.name1');
-			*/
+			
 			
 			$sql = 'SELECT items.name, items.item_number, COALESCE(receivings_items.total_received, 0) AS total_received, COALESCE(sales_items.total_sold, 0) AS total_sold, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value
                 FROM ospos_items AS items
@@ -333,25 +317,11 @@ class Inventory_thuoc extends Report
 		//var_dump($data);
         return $data;
 
-	}
+	}*/
+	/*
 	// Get total sale from fromDate to Today 
 	public function _getSalesToday($inputs,$filter)
 	{
-		/*
-		$filter = $this->config->item('filter'); //define in app.php//
-
-		$this->db->select('s.sale_time, SUM(si.quantity_purchased) AS quantity, i.category as item_category');
-        $this->db->from('sales_items AS si');
-        $this->db->join('sales AS s', 'si.sale_id = s.sale_id');
-		$this->db->join('items AS i', 'si.item_id = i.item_id');
-        $this->db->where_in('i.category', $filter);
-		$this->db->where('DATE(s.sale_time) BETWEEN '. $this->db->escape($inputs['fromDate']).' AND '.$this->db->escape($inputs['toDate']));
-        $this->db->group_by('i.category');
-        $this->db->order_by('i.category');
-        $data = array();
-        $data = $this->db->get()->result_array();
-        return $data;
-		*/
 		
 		$this->db->select('s.sale_time, SUM(si.quantity_purchased) AS quantity, i.category as item_category');
         $this->db->from('sales_items AS si');
@@ -379,6 +349,7 @@ class Inventory_thuoc extends Report
         $data = $this->db->get()->result_array();
         return $data;
 	}
+	*/
 	//Lây phát sinh tăng (nhập hàng); phát sinh giảm bán hàng (xuất hàng)
 	public function _getAction($inputs,$filter)
 	{

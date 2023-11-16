@@ -110,23 +110,23 @@ class Inventory_frame extends Report
 				array('cat' => 'Loại gọng'),
 				array('begin_quantity' => 'Đầu kỳ'),
 				array('receive_quantity'=>'Nhập'),
-				array('sale_quantity'=>'Bán'),
+				array('sale_quantity'=>'Xuất'),
 				array('end_quantity' => 'Cuối kỳ'),
 				
 			),
             'details' => [
-                'name'=>$this->lang->line('reports_item_name'),
-                'item_number'=>$this->lang->line('reports_item_number'),
-                'quantity'=>$this->lang->line('reports_quantity'),
-                'reoder_level'=>$this->lang->line('reports_reorder_level'),
-                'location'=>$this->lang->line('reports_stock_location'),
-                'cost_price'=>$this->lang->line('reports_cost_price'), //Giá vốn
-            	'unit_price'=>$this->lang->line('reports_unit_price'),
-                'sub_total'=>$this->lang->line('reports_sub_total_value')
+				['item_number'=>$this->lang->line('reports_item_number')],
+                ['name'=>$this->lang->line('reports_item_name')],
+				['total_received'=>'Số lượng nhập','align'=>'right'],
+                ['total_sold'=>'Số lượng xuất','align'=>'right'],
+                ['quantity'=>'Tồn kho','align'=>'right'],
+                ['cost_price'=>$this->lang->line('reports_cost_price'),'align'=>'right'], //Giá vốn
+            	['unit_price'=>$this->lang->line('reports_unit_price'),'align'=>'right'],
+                ['sub_total'=>$this->lang->line('reports_sub_total_value'),'align'=>'right']
 		            ]
 				];
 	}
-
+	/*
 	public function _getData(array $inputs)
 	{	
         $filter = $this->config->item('filter'); //define in app.php
@@ -259,5 +259,6 @@ class Inventory_frame extends Report
         $data = $this->db->get()->result_array();
         return $data;
 	}
+	*/
 }
 ?>
