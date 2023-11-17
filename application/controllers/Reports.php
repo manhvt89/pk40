@@ -4094,7 +4094,7 @@ class Reports extends Secure_Controller
     public function ajax_inventory_thuoc()
     {
         $filter = $this->config->item('filter_other'); //define in app.php
-        var_dump($filter);
+        //var_dump($filter);
         $this->load->model('reports/Inventory_thuoc');
         $model = $this->Inventory_thuoc;
         $location_id = $this->input->post('location_id');
