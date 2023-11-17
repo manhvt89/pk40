@@ -49,6 +49,7 @@ abstract class Report extends CI_Model
 		$_aA['toDate'] = date('Y/m/d');
 		//$this->_getAction($_aA,$filter); chưa dùng
 		$sales = $this->_getSalesToday($_aA,$filter); // Lây total sale từ ngày bắt đầu đến hiện tại;
+		var_dump($sales);
 		if(empty($sales))
 		{
 
@@ -106,7 +107,6 @@ abstract class Report extends CI_Model
 
 		//Tính toán cuối kỳ B - tại thời điểm toDate
 		$_aB = $inputs;
-		
 		// Chuyển đổi chuỗi ngày thành đối tượng DateTime
 		$_dateTimeB = DateTime::createFromFormat('Y/m/d', $inputs['toDate']);
 
@@ -118,6 +118,7 @@ abstract class Report extends CI_Model
 		$_aB['fromDate'] = $nextDayString;
 		$_aB['toDate'] = date('Y/m/d');
 		$sales = $this->_getSalesToday($_aB,$filter); // Lây total sale từ ngày toDate bắt đầu đến hiện tại;
+		var_dump($sales);
 		if(empty($sales))
 		{
 
