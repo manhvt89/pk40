@@ -4126,10 +4126,10 @@ class Reports extends Secure_Controller
             $summary_data = array();
             $details_data = array();
             $i = 1;
-            var_dump($report_data['summary']);die();
+            //var_dump($report_data['summary']);die();
             foreach($report_data['summary'] as $key => $row)
             {
-                var_dump($row);die();
+                //var_dump($row);die();
                 $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
                 $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
                 $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];

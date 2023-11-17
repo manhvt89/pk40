@@ -224,7 +224,7 @@ abstract class Report extends CI_Model
 
             	$data['details'][$key] = $query->result_array();
         }
-		//var_dump($data);
+		var_dump($data['summary']);
         return $data;
 
 	}
