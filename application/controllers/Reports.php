@@ -4116,7 +4116,6 @@ class Reports extends Secure_Controller
             unset($headers['details']['cost_price']); //cost_price
             //unset($headers['details']['sub_total']); //cost_price
         }
-        var_dump($filter);
         $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)
