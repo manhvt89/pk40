@@ -4126,6 +4126,7 @@ class Reports extends Secure_Controller
             $summary_data = array();
             $details_data = array();
             $i = 1;
+            var_dump($report_data['summary']);die();
             foreach($report_data['summary'] as $key => $row)
             {
                 var_dump($row);die();
