@@ -144,15 +144,15 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'], 'quantity_' . $key, array('class'=>'required control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'], 'quantity_' . $key, array('class'=>'required hidden control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
-							'class'=>'required quantity form-control',
+							'class'=>'required quantity form-control hidden',
 							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
 							);?>
-				</div>
+					</div>
 			</div>
 		<?php
 		}
