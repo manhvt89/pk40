@@ -100,14 +100,59 @@ if(isset($error))
 							detailView: true,
 							escape: false,
 							onExpandRow: function (index, row, $detail) {
+								// Khi người dùng mở rộng một dòng (danh mục), tải dữ liệu chi tiết
+								var category = row.cat;
+								console.log('expandedRowIndex:'+expandedRowIndex);
+								console.log('category:'+ category);
+								var _strDate = $("#daterangepicker").val();
+								var _aDates = _strDate.split(" - ");			
+								var fromDate = _aDates[0];
+								var toDate = _aDates[1];
+								// Ẩn dữ liệu chi tiết của dòng đã mở rộng trước đó (nếu có)
+								if (expandedRowIndex !== -1 && expandedRowIndex !== index) {
+									$('#table').bootstrapTable('collapseRow', expandedRowIndex);
+								}
+
+								$.ajax({
+								url: '<?php echo site_url('reports/ajax_inventory_lens')?>',
+								method: 'get',
+								data: {
+									category: category,
+									fromDate:fromDate,
+									toDate:toDate
+								},
+								dataType: 'json',
+								success: function (data) {
+									console.log(data);
+									// Xây dựng nội dung chi tiết
+									if(data.result == 1)
+									{
+									//var detail_data = msg.data.details_data;
+										var detail_data = data.data.details_data;
+										// Thêm dữ liệu chi tiết vào nội dung
+										// Hiển thị nội dung chi tiết trong dòng đã mở rộng
+										
+										$detail.html('<table></table>').find("table").bootstrapTable({
+											columns: header_details,
+											data: detail_data,
+											sortable: true,
+											showExport: true,
+											exportTypes: ['excel'],
+										});
+										// Lưu trạng thái dòng đã mở rộng
+										expandedRowIndex = index;
+									}
+								},
+								error: function (error) {
+									console.log('Error fetching product details:', error);
+								}
+								});		
 								//alert(JSON.stringify(header_details));
-								$detail.html('<table></table>').find("table").bootstrapTable({
-									columns: header_details,
-									data: detail_data[row.id],
-									sortable: true,
-									showExport: true,
-									exportTypes: ['excel'],
-								});
+								
+							},
+							onCollapseRow: function (index, row) {
+								// Khi người dùng thu gọn dòng, đặt lại trạng thái dòng đã mở rộng
+								expandedRowIndex = -1;
 							}
 							
 						});
@@ -119,7 +164,7 @@ if(isset($error))
 				});
 
 		});
-
+		var expandedRowIndex = -1; // Sử dụng để theo dõi dòng nào đã được mở rộng
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 		$("#generate_report").click(function()
 		{
@@ -133,7 +178,7 @@ if(isset($error))
 			//var category = $('#category').val();
 			$.ajax({
 				method: "POST",
-				url: "<?php echo site_url('reports/ajax_inventory_lens')?>",
+				url: "<?php echo site_url('reports/ajax_inventory_cat_lens')?>",
 				data: { location_id: location_id, fromDate:fromDate,toDate:toDate ,csrf_ospos_v3: csrf_ospos_v3 },
 				dataType: 'json'
 			})
@@ -141,7 +186,7 @@ if(isset($error))
 					if(msg.result == 1)
 					{
 
-						var detail_data = msg.data.details_data;
+						
 						var header_summary = msg.data.headers_summary;
 						var summary_data = msg.data.summary_data;
 						var header_details = msg.data.headers_details;
@@ -167,14 +212,59 @@ if(isset($error))
 							uniqueId: 'id',
 							escape: false,
 							onExpandRow: function (index, row, $detail) {
+								// Khi người dùng mở rộng một dòng (danh mục), tải dữ liệu chi tiết
+								var category = row.cat;
+								console.log('expandedRowIndex:'+expandedRowIndex);
+								console.log('category:'+ category);
+								var _strDate = $("#daterangepicker").val();
+								var _aDates = _strDate.split(" - ");			
+								var fromDate = _aDates[0];
+								var toDate = _aDates[1];
+								// Ẩn dữ liệu chi tiết của dòng đã mở rộng trước đó (nếu có)
+								if (expandedRowIndex !== -1 && expandedRowIndex !== index) {
+									$('#table').bootstrapTable('collapseRow', expandedRowIndex);
+								}
+
+								$.ajax({
+								url: '<?php echo site_url('reports/ajax_inventory_lens')?>',
+								method: 'get',
+								data: {
+									category: category,
+									fromDate:fromDate,
+									toDate:toDate
+								},
+								dataType: 'json',
+								success: function (data) {
+									console.log(data);
+									// Xây dựng nội dung chi tiết
+									if(data.result == 1)
+									{
+									//var detail_data = msg.data.details_data;
+										var detail_data = data.data.details_data;
+										// Thêm dữ liệu chi tiết vào nội dung
+										// Hiển thị nội dung chi tiết trong dòng đã mở rộng
+										
+										$detail.html('<table></table>').find("table").bootstrapTable({
+											columns: header_details,
+											data: detail_data,
+											sortable: true,
+											showExport: true,
+											exportTypes: ['excel'],
+										});
+										// Lưu trạng thái dòng đã mở rộng
+										expandedRowIndex = index;
+									}
+								},
+								error: function (error) {
+									console.log('Error fetching product details:', error);
+								}
+								});		
 								//alert(JSON.stringify(header_details));
-								$detail.html('<table></table>').find("table").bootstrapTable({
-									columns: header_details,
-									data: detail_data[row.id],
-									sortable: true,
-									showExport: true,
-									exportTypes: ['excel'],
-								});
+								
+							},
+							onCollapseRow: function (index, row) {
+								// Khi người dùng thu gọn dòng, đặt lại trạng thái dòng đã mở rộng
+								expandedRowIndex = -1;
 							}
 							
 						});

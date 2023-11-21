@@ -176,26 +176,9 @@ abstract class Report extends CI_Model
 
 
         $data['details'] = array();
+		/*
         foreach($data['summary'] as $key=>$value)
-        {
-			/*
-            $this->db->select('items.name, items.item_number, COALESCE(SUM(sales_items.quantity_purchased), 0) AS total_sold, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value');
-            $this->db->from('items AS items');
-            $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
-            $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-			$this->db->join('(SELECT item_id, COALESCE(SUM(quantity_purchased), 0) AS total_sold FROM ospos_sales_items WHERE sale_id IN (SELECT sale_id FROM ospos_sales WHERE sale_time >= ? AND sale_time < ?) GROUP BY item_id) AS sales_items', 'sales_items.item_id = items.item_id', 'left');
-        
-			//$this->db->join('sales_items AS sales_items', 'sales_items.item_id = items.item_id','left');
-			//$this->db->join('(SELECT * FROM ospos_sales AS s WHERE DATE(s.sale_time) BETWEEN "'.$this->db->escape($inputs['fromDate']).'" AND "'.$this->db->escape($inputs['toDate']).'") AS sales', 'sales.sale_id = sales_items.sale_id', 'left');
-            $this->db->where('items.deleted', 0);
-            $this->db->where('stock_locations.deleted', 0);
-            $this->db->where('items.category', $value['category']);
-            $this->db->where('stock_locations.location_id', $value['location_id']);
-			//$this->db->where('DATE(sales.sale_time) BETWEEN '. $this->db->escape($inputs['fromDate']).' AND '.$this->db->escape($inputs['toDate']));
-			$this->db->group_by('items.item_id');
-            $this->db->order_by('items.name1');
-			*/
-			
+        {			
 			$sql = 'SELECT items.name, items.item_number, COALESCE(receivings_items.total_received, 0) AS total_received, COALESCE(sales_items.total_sold, 0) AS total_sold, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value
                 FROM ospos_items AS items
                 JOIN ospos_item_quantities AS item_quantities ON items.item_id = item_quantities.item_id
@@ -224,6 +207,46 @@ abstract class Report extends CI_Model
 
             	$data['details'][$key] = $query->result_array();
         }
+		*/
+		//var_dump($data['summary']);
+        return $data;
+
+	}
+
+	public function _getDetailData(array $inputs,$category='')
+	{	
+	    
+        $data['details'] = array();
+		
+		$sql = 'SELECT items.name, items.item_number, COALESCE(receivings_items.total_received, 0) AS total_received, COALESCE(sales_items.total_sold, 0) AS total_sold, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.unit_price * item_quantities.quantity) AS sub_total_value
+			FROM ospos_items AS items
+			JOIN ospos_item_quantities AS item_quantities ON items.item_id = item_quantities.item_id
+			JOIN ospos_stock_locations AS stock_locations ON item_quantities.location_id = stock_locations.location_id
+			LEFT JOIN (
+				SELECT item_id, COALESCE(SUM(quantity_purchased), 0) AS total_sold
+				FROM ospos_sales_items
+				WHERE sale_id IN (SELECT sale_id FROM ospos_sales WHERE DATE(sale_time) BETWEEN ? AND ?)
+				GROUP BY item_id
+			) AS sales_items ON sales_items.item_id = items.item_id
+			LEFT JOIN (
+				SELECT item_id, COALESCE(SUM(quantity_purchased), 0) AS total_received
+				FROM ospos_receivings_items
+				WHERE receiving_id IN (SELECT receiving_id FROM ospos_receivings WHERE DATE(receiving_time) BETWEEN ? AND ?)
+				GROUP BY item_id
+			) AS receivings_items ON receivings_items.item_id = items.item_id
+			WHERE items.deleted = 0
+				AND stock_locations.deleted = 0
+				AND items.category = ?
+				AND stock_locations.location_id = 1
+				
+			GROUP BY items.item_id
+			ORDER BY total_sold DESC';
+
+			$query = $this->db->query($sql, [$inputs['fromDate'], $inputs['toDate'],$inputs['fromDate'], $inputs['toDate'],$category]);
+
+			$data['details'] = $query->result_array();
+	
+		
 		//var_dump($data['summary']);
         return $data;
 
