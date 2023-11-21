@@ -66,7 +66,7 @@ if(isset($error))
 
 			$.ajax({
 				method: "POST",
-				url: "<?php echo site_url('reports/ajax_inventory_lens')?>",
+				url: "<?php echo site_url('reports/ajax_inventory_cat_lens')?>",
 				data: { location_id: location_id, fromDate:fromDate,toDate:toDate ,csrf_ospos_v3: csrf_ospos_v3 },
 				dataType: 'json'
 			})
@@ -114,39 +114,39 @@ if(isset($error))
 								}
 
 								$.ajax({
-								url: '<?php echo site_url('reports/ajax_inventory_lens')?>',
-								method: 'get',
-								data: {
-									category: category,
-									fromDate:fromDate,
-									toDate:toDate
-								},
-								dataType: 'json',
-								success: function (data) {
-									console.log(data);
-									// Xây dựng nội dung chi tiết
-									if(data.result == 1)
-									{
-									//var detail_data = msg.data.details_data;
-										var detail_data = data.data.details_data;
-										// Thêm dữ liệu chi tiết vào nội dung
-										// Hiển thị nội dung chi tiết trong dòng đã mở rộng
-										
-										$detail.html('<table></table>').find("table").bootstrapTable({
-											columns: header_details,
-											data: detail_data,
-											sortable: true,
-											showExport: true,
-											exportTypes: ['excel'],
-										});
-										// Lưu trạng thái dòng đã mở rộng
-										expandedRowIndex = index;
+									url: '<?php echo site_url('reports/ajax_inventory_lens')?>',
+									method: 'get',
+									data: {
+										category: category,
+										fromDate:fromDate,
+										toDate:toDate
+									},
+									dataType: 'json',
+									success: function (data) {
+										//console.log(data);
+										// Xây dựng nội dung chi tiết
+										if(data.result == 1)
+										{
+										//var detail_data = msg.data.details_data;
+											var detail_data = data.data.details_data;
+											// Thêm dữ liệu chi tiết vào nội dung
+											// Hiển thị nội dung chi tiết trong dòng đã mở rộng
+											
+											$detail.html('<table></table>').find("table").bootstrapTable({
+												columns: header_details,
+												data: detail_data,
+												sortable: true,
+												showExport: true,
+												exportTypes: ['excel'],
+											});
+											// Lưu trạng thái dòng đã mở rộng
+											expandedRowIndex = index;
+										}
+									},
+									error: function (error) {
+										console.log('Error fetching product details:', error);
 									}
-								},
-								error: function (error) {
-									console.log('Error fetching product details:', error);
-								}
-								});		
+									});		
 								//alert(JSON.stringify(header_details));
 								
 							},
