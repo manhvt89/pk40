@@ -3757,7 +3757,7 @@ class Reports extends Secure_Controller
         $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
         $headers = $this->xss_clean($model->_getDataColumns());
         //var_dump($headers);
-        $report_data = $model->_getData($inputs,$filter);
+        $report_data = $model->__getData($inputs,$filter);
         $data = null;
         if(!$report_data)
         {
