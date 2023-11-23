@@ -7,10 +7,12 @@ class Prescription extends CI_Model
 	*/
 	public function get_all($rows = 0, $limit_from = 0)
 	{
+		$filter = $this->config->item('filter_other'); //define in app.php
 		$tenthuoc = [];//$this->config->item('tenthuoc');
 		$this->db->select('*');
 		$this->db->from('items');
-		$this->db->where('category','Thuốc');
+		$this->db->where_in('category',$filter);
+		$this->db->where('deleted',0);
 		$_aTenThuocs = $this->db->get()->result_array();
 		//var_dump($_aTenThuocs);
 		//["id"]=> string(4) "6290" ["name"]=> string(21) "Bột Cefalexin 250mg" ["price"]=> string(4) "1500" ["dvt"]=> string(4) "Gói" ["hdsd"]=> string(18) "2 gói mỗi ngày" ["price_display"]=> string(7) "1.500đ" }
@@ -51,7 +53,7 @@ class Prescription extends CI_Model
 			$tenthuoc[$key] = $value;
 		}
 		
-		//var_dump($tenthuoc);
+		//var_dump($tenthuoc); die();
 		return $tenthuoc;
 	}
 
