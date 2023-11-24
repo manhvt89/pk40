@@ -605,13 +605,15 @@ function get_accounting_manage_summary($payments, $revenue, $controller)
 		foreach($revenue as $item)
 		{
 			//var_dump($item);
-			if($item['payment_type']=='Tiền mặt' && $payments['pc'] != 0)
+			if($item['payment_type']=='Tiền mặt')
 			{
 				$table .= '<tr><td>' . $item['payment_type'] . ': </td><td>' . to_currency($item['payment_amount'] - $payments['pc']) . '</td></tr>';
 				$total = $total + $item['payment_amount'] - $payments['pc'];
 			} else {
 				$table .= '<tr><td>' . $item['payment_type'] . ': </td><td>' . to_currency($item['payment_amount']) . '</td></tr>';
-				$total = $total + $item['payment_amount'];
+				if($item['payment_type'] == 'Chuyển khoản') {
+					$total = $total + $item['payment_amount'];
+				}
 			}
 		}
 		$table .= '<tr><td>Tổng doanh thu: </td><td>'.to_currency($total).'</td></tr>';
