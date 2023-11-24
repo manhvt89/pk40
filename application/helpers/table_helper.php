@@ -676,7 +676,7 @@ function get_account_data_row($accounting, $controller)
 		'person'=>$accounting->person,
 		//'amount'=>to_currency($accounting->amount - 0)
 	);
-
+	//var_dump($accounting);
 	if($accounting->payment_method == 0)
 	{
 		$row['payment_method'] = 'Tiền mặt';
@@ -684,7 +684,11 @@ function get_account_data_row($accounting, $controller)
 		if($accounting->payment_method == 1)
 		{
 			$row['payment_method'] = 'Ngân hàng';
-		} else {
+		} elseif($accounting->payment_method == 2)
+		{
+			$row['payment_method'] = 'Giảm thêm';
+		}
+		else {
 			$row['payment_method'] = 'Khác';
 		}
 	}

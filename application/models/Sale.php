@@ -741,7 +741,7 @@ class Sale extends CI_Model
 				//var_dump($sales_payments_data); die();
 				$this->db->insert('sales_payments', $sales_payments_data);
 				$payment_id = $this->db->insert_id();
-
+				//var_dump($payment);die();
 				//if($payment['payment_type'] == 'Tiền mặt') { // If tiền mặt then insert accounting
 				if($payment['payment_type'] == $this->lang->line("sales_cash")) { // If tiền mặt then insert accounting
 					
@@ -768,7 +768,7 @@ class Sale extends CI_Model
 						$out_data['sale_id'] = $sale_id;
 						$this->Accounting->save_payout($out_data);
 					}
-				} elseif($this->lang->line("sales_check") == $payment['payment_type'] || $payment['payment_type'] == $this->lang->line("sales_debit")) {
+				} elseif($this->lang->line("sales_check") == $payment['payment_type']){
 					$data_total = array(
 						'creator_personal_id' => $employee_id,
 						'personal_id' => $customer_id, // this is a customer
@@ -779,6 +779,19 @@ class Sale extends CI_Model
 					$data_total['payment_id'] = $payment_id;
 					$data_total['sale_id'] = $sale_id;
 					$data_total['payment_method'] = 1; //Banking;
+					$this->Accounting->save_income($data_total);
+
+				} elseif( $payment['payment_type'] == $this->lang->line("sales_debit")) {
+					$data_total = array(
+						'creator_personal_id' => $employee_id,
+						'personal_id' => $customer_id, // this is a customer
+						'amount' => $payment['payment_amount']
+					);
+					$data_total['payment_type'] = $payment['payment_type'];
+					$data_total['kind'] = $payment['payment_kind'];
+					$data_total['payment_id'] = $payment_id;
+					$data_total['sale_id'] = $sale_id;
+					$data_total['payment_method'] = 2; //Fire (tặng khách hàng);
 					$this->Accounting->save_income($data_total);
 				}
 			}

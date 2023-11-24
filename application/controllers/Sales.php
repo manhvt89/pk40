@@ -557,6 +557,7 @@ class Sales extends Secure_Controller
 					$ctv_id = $this->input->post('ctvs');
 					$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : null;
 					$data['invoice_number'] = $invoice_number;
+					//var_dump($payments);die();
 					if ($_iSaleID == 0) { // Tạo mới
 						$data['sale_id_num'] = $this->Sale->save(
 							$data['cart'],
