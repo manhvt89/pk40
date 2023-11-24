@@ -10,7 +10,7 @@ class Cron extends CI_Controller{
         $this->load->model('Item');
         $this->load->model('cron/Product');
         $this->load->library('sms_lib');
-        $this->url = 'https://tongkho.thiluc2020.com';
+        $this->url = 'https://apicuongdat.thiluc2020.com';
 	}
 
     // Auto tong hop vao bang 1 AM daily daily_total
@@ -798,18 +798,18 @@ class Cron extends CI_Controller{
             $invalidated = $this->Item->item_number_exists($item_number);
             if($invalidated == true) // update
             {
-                if($bCanUpdate)
-                {
-                    echo 'update:'.$item_number.' \n';
-                    fwrite($_flog, 'SP.Update'.PHP_EOL);
-                    $_oItem = array();
-                    $_oItem['unit_price'] = $_oProduct->unit_price;
-                    $_oItem['name'] = $_oProduct->name;
-                    $_oItem['cost_price'] = $_oProduct->cost_price;
+                    if($bCanUpdate) {
+                        echo 'update:' . $item_number . ' \n';
+                        fwrite($_flog, 'SP.Update' . PHP_EOL);
+                        $_oItem = array();
+                        $_oItem['unit_price'] = $_oProduct->unit_price;
+                        $_oItem['name'] = $_oProduct->name;
+                        $_oItem['cost_price'] = $_oProduct->cost_price;
+                    }
                     $_oItem['ref_item_id'] = $_oProduct->item_id;
                     //var_dump($_oItem);
                     $this->Product->update_product($_oItem,$item_number);
-                }
+                
 
             } else{ // create mới
                 if($_oProduct->name != '')
