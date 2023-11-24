@@ -3,6 +3,21 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+    $('#runCronBtn').on('click', function () {
+      // Sử dụng Ajax để gửi yêu cầu chạy cron khi người dùng nhấn nút
+      $.ajax({
+        url: '<?=base_url('items/run_synchro')?>', // Đường dẫn đến tệp xử lý cron
+        method: 'GET',
+        success: function (response) {
+          alert('Đã chạy cron thành công!');
+        },
+        error: function (error) {
+          alert('Đã xảy ra lỗi khi chạy cron.');
+          console.log(error);
+        }
+      });
+    });
+
     <?php if ($this->Employee->has_grant($controller_name.'_generate_barcodes')) {?>
     $('#generate_barcodes').click(function()
     {
@@ -76,9 +91,15 @@ $(document).ready(function()
     </button>
     <?php } ?>
     <?php if ($this->Employee->has_grant($controller_name.'_view')) { ?>
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo $this->lang->line('common_new') ?>' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo $this->lang->line('common_new') ?>' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name . "/view"); ?>'
             title='<?php echo $this->lang->line($controller_name . '_new'); ?>'>
-        <span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new'); ?>
+        <span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name . '_new'); ?>
+    </button>
+    <?php } ?>
+    <?php if ($this->Employee->has_grant($controller_name.'_run_synchro')) { ?>
+    
+    <button class='btn btn-info btn-sm pull-right' id="runCronBtn" title='Đồng bộ sản phẩm'>
+        <span class="glyphicon glyphicon-tag">&nbsp</span>Đồng bộ sản phẩm
     </button>
     <?php } ?>
 </div>

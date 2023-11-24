@@ -14,6 +14,8 @@ class Items extends Secure_Controller
 		parent::__construct('items');
 
 		$this->load->library('item_lib');
+		$this->load->model('cron/Product');
+		$this->url = 'https://apicuongdat.thiluc2020.com';
 	}
 	
 	public function index()
@@ -1579,6 +1581,133 @@ class Items extends Secure_Controller
 	{
 		exit();
 	}
+
+	public function run_synchro()
+	{
+		$bCanUpdate = true;
+        $lfile =  str_replace('/public/','/',FCPATH).'log-lens.txt';
+        //echo $lfile;exit();
+        $_flog=fopen($lfile, 'a');
+        fwrite($_flog, 'Bat dau dong bo theo SP'.PHP_EOL);
+        //echo 'Bat dau dong bo';
+        $input = $this->Product->get_max_ref_item_id();
+        echo "INPUT ".$input;
+        //var_dump($input);die();
+        //$id = 15294;
+        $_aProducts = $this->get_last_products($input);
+        //echo 'manhvt';
+        //var_dump($_aProducts);
+        $i = 0;
+        foreach($_aProducts as $_oProduct)
+        {   //echo '.';
+            $i++;
+            $item_number = $_oProduct->item_number;
+            $invalidated = $this->Item->item_number_exists($item_number);
+            if($invalidated == true) // update
+            {
+                    if($bCanUpdate) {
+                        //echo 'update:' . $item_number . ' \n';
+                        fwrite($_flog, 'SP.Update' . PHP_EOL);
+                        $_oItem = array();
+                        $_oItem['unit_price'] = $_oProduct->unit_price;
+                        $_oItem['name'] = $_oProduct->name;
+                        $_oItem['cost_price'] = $_oProduct->cost_price;
+                    }
+                    $_oItem['ref_item_id'] = $_oProduct->item_id;
+                    //var_dump($_oItem);
+                    $this->Product->update_product($_oItem,$item_number);
+                
+
+            } else{ // create mới
+                if($_oProduct->name != '')
+                {
+                    //echo 'Create: ' .$item_number.' \n';
+                    $item_data = array(
+                        'name'					=> $_oProduct->name,
+                        'description'			=> $_oProduct->description,
+                        'category'				=> $_oProduct->category,
+                        'cost_price'			=> $_oProduct->cost_price,
+                        'unit_price'			=> $_oProduct->unit_price,
+                        'reorder_level'			=> $_oProduct->reorder_level,
+                        'supplier_id'			=> $_oProduct->supplier_id,
+                        'allow_alt_description'	=> $_oProduct->allow_alt_description,
+                        'is_serialized'			=> $_oProduct->is_serialized,
+                        'item_number'           => $_oProduct->item_number,
+                        'ref_item_id'   =>$_oProduct->item_id,
+                        'custom1'				=> '',
+                        'custom2'				=> '',
+                        'custom3'				=> '',
+                        'custom4'				=> '',
+                        'custom5'				=> '',
+                        'custom6'				=> '',
+                        'custom7'				=> '',
+                        'custom8'				=> '',
+                        'custom9'				=> '',
+                        'custom10'				=> ''
+                    );
+                
+                    if( $this->Product->save_item($item_data))
+                    {
+                        fwrite($_flog, 'SP.Add Thanh cong'.PHP_EOL);
+                    } 
+                    else //insert or update item failure
+                    {
+                            $failCodes[$i] = $item_data['item_number'];
+                            $message = "". $item_data['item_number'];
+                            fwrite($_flog, $message.PHP_EOL);
+                            //echo 	$message .PHP_EOL;
+                    }
+                }else {
+                    $message = "Dữ liệu trống";
+                    fwrite($_flog, $message.PHP_EOL);
+                    //echo 	$message .PHP_EOL;
+                }
+
+            }
+        }
+        //echo 'Toal:'.$i;
+		// Phản hồi cho Ajax
+		echo json_encode(['success' => true]);
+	}
+
+	private function get_last_products($id)
+    {
+        //insert data
+        $url = $this->url."/api/item/last_products/$id";
+        
+        //create a new cURL resource
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, 'admin:123456789');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_HTTPGET, 1);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $userData);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS,$query);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $response = curl_exec($ch);
+
+        // Then, after your curl_exec call:
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        $result = json_decode($body);
+        //var_dump($result);
+        curl_close($ch);
+        if(empty($result))
+        {
+            return array();
+        }
+        if($result->status == TRUE)
+        {
+            return $result->data;
+        } else {
+            return array();
+        }
+        
+    }
 
 }
 ?>
