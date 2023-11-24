@@ -1,4 +1,7 @@
 Update
+26/11/2023
+- Fix lỗi Sale khi chọn giảm trừ
+- Fix kết toán (doanh thu ko tính giảm trừ)
 
 29/10/2023
 - Update config/autoload.php
