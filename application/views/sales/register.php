@@ -906,6 +906,23 @@ $(document).ready(function()
 
 	$("#add_before_complete_button").click(function()
 	{
+		var paymentMethod = $("#payment_types").val();
+		var totalAmount = parseFloat($("#hd_amount_due").val());
+		//var paymentAmount = parseFloat($(this).val());
+		var paymentAmount = parseFloat($("#amount_tendered").val());
+		if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount)) {
+			alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
+			$(this).val(totalAmount.toFixed(0));
+			return false;
+		} else if ((paymentMethod == "Giảm thêm") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
+			alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
+			//console.log($(this));
+			//$(this).val(totalAmount.toFixed(0));
+			//console.log(totalAmount.toFixed(0));
+			$(this).focus();
+			return false;
+		}
+
 		var payment_list = $('#payment_contents tr');
 		console.log(payment_list.length);
 		if(payment_list.length != 0)
@@ -964,7 +981,10 @@ $(document).ready(function()
 			return false;
 		} else if ((paymentMethod == "Giảm thêm") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
 			alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
-			$(this).val(totalAmount.toFixed(0));
+			//console.log($(this));
+			//$(this).val(totalAmount.toFixed(0));
+			//console.log(totalAmount.toFixed(0));
+			$(this).focus();
 			return false;
 		} else {
 			$('#add_payment_form').submit();
@@ -995,11 +1015,12 @@ $(document).ready(function()
 				console.log(totalAmount);
 				console.log(paymentAmount);
                 if (((paymentMethod == "Chuyển khoản") && paymentAmount > totalAmount)) {
-                    alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
-                    $(this).val(totalAmount.toFixed(0));
+                    //alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
+                    //$(this).val(totalAmount.toFixed(0));
                 } else if ((paymentMethod == "Giảm thêm") && (paymentAmount > 10000 || paymentAmount > totalAmount)){
-					alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
-					$(this).val(totalAmount.toFixed(0));
+					//alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
+					//$(this).val(0);
+					//return false;
 				}
     });
 
@@ -1030,7 +1051,8 @@ $(document).ready(function()
 				return false;
 			} else if((paymentMethod == "Giảm thêm") && ((paymentAmount > 10000) || (paymentAmount > totalAmount))) {
 				alert("Số tiền thanh toán không thể lớn hơn 10.000 hoặc Giảm thêm.");
-				$(this).val(totalAmount.toFixed(0));
+				$(this).focus();
+				return false;
 			} else {
 				$('#add_payment_form').submit();
 			}
