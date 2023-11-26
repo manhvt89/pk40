@@ -283,23 +283,29 @@ class Item extends CI_Model
 
 	/*
 	Inserts or updates a item
+	Bổ sung created_time;updated_time;
+	khi tạo mới created_time = updated_time = current time
+	khi update; updated_time = current_time
 	*/
 	public function save(&$item_data, $item_id = FALSE)
 	{
+		$time = time();
 		if(!$item_id || !$this->exists($item_id, TRUE))
 		{
+			$item_data['updated_time'] = $time;
+			$item_data['created_time'] = $time;
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
-
+				
 				return TRUE;
 			}
-
+			
 			return FALSE;
 		}
-		
+		$item_data['updated_time'] = $time;
 		$this->db->where('item_id', $item_id);
-
+		
 		return $this->db->update('items', $item_data);
 	}
 

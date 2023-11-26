@@ -1,4 +1,11 @@
 Update
+27/11/2023
+- Update đồng bộ (bổ sung cả master và client
+ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
+ALTER TABLE `ospos_items` ADD `updated_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
+ALTER TABLE `ospos_items` ADD `synched_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
+
+
 26/11/2023
 - Fix lỗi Sale khi chọn giảm trừ
 - Fix kết toán (doanh thu ko tính giảm trừ)

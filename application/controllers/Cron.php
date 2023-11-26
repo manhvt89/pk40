@@ -778,12 +778,13 @@ class Cron extends CI_Controller{
     public function b($bCanUpdate=false)
     {
         echo $bCanUpdate;
+        $time = time();
         $lfile =  str_replace('/public/','/',FCPATH).'log-lens.txt';
         //echo $lfile;exit();
         $_flog=fopen($lfile, 'a');
         fwrite($_flog, 'Bat dau dong bo theo SP'.PHP_EOL);
         echo 'Bat dau dong bo';
-        $input = $this->Product->get_max_ref_item_id();
+        $input = $this->Product->get_max_synched_time();
         echo "INPUT ".$input;
         //var_dump($input);die();
         //$id = 15294;
@@ -805,12 +806,14 @@ class Cron extends CI_Controller{
                         $_oItem['unit_price'] = $_oProduct->unit_price;
                         $_oItem['name'] = $_oProduct->name;
                         $_oItem['cost_price'] = $_oProduct->cost_price;
+                        $_oItem['category'] = $_oProduct->category;
                     }
                     $_oItem['ref_item_id'] = $_oProduct->item_id;
+                    $_oItem['updated_time'] = $time;
+                    $_oItem['synched_time'] = $time;
                     //var_dump($_oItem);
                     $this->Product->update_product($_oItem,$item_number);
                 
-
             } else{ // create mới
                 if($_oProduct->name != '')
                 {
@@ -838,7 +841,9 @@ class Cron extends CI_Controller{
                         'custom9'				=> '',
                         'custom10'				=> ''
                     );
-                
+                    $_oItem['updated_time'] = $time;
+                    $_oItem['created_time'] = $time;
+                    $_oItem['synched_time'] = $time;
                     if( $this->Product->save_item($item_data))
                     {
                         fwrite($_flog, 'SP.Add Thanh cong'.PHP_EOL);
@@ -1042,10 +1047,10 @@ class Cron extends CI_Controller{
         
     }
 
-    private function get_last_products($id)
+    private function get_last_products($time)
     {
         //insert data
-        $url = $this->url."/api/item/last_products/$id";
+        $url = $this->url."/api/item/last_products/$time";
         
         //create a new cURL resource
         $ch = curl_init($url);

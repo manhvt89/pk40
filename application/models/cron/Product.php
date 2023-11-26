@@ -642,5 +642,22 @@ class Product extends CI_Model
 			return 0;
 		}
 	}
+	/**
+	 * Lây thời gian đồng bộ gần đây nhất; 
+	 * thời gian kiểu int11
+	 */
+	public function get_max_synched_time()
+	{
+		$this->db->from('items');
+		$this->db->select_max('synched_time');
+		$ret = $this->db->get()->result();
+		//var_dump($ret);
+		if(!empty($ret))
+		{
+			return $ret[0]->ref_item_id==null? 0 : $ret[0]->ref_item_id;
+		} else {
+			return 0;
+		}
+	}
 }
 ?>
