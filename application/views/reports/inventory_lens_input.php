@@ -54,7 +54,7 @@ if(isset($error))
 	$(document).ready(function()
 	{
 		<?php $this->load->view('partial/daterangepicker'); ?>
-
+		var expandedRowIndex = -1; // Sử dụng để theo dõi dòng nào đã được mở rộng
 		$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
 
 			var csrf_ospos_v3 = csrf_token();
@@ -164,7 +164,7 @@ if(isset($error))
 				});
 
 		});
-		var expandedRowIndex = -1; // Sử dụng để theo dõi dòng nào đã được mở rộng
+		
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 		$("#generate_report").click(function()
 		{

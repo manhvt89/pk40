@@ -211,8 +211,14 @@ class Receivings extends Secure_Controller
 		}
 		if($this->input->post('amount_tendered') != NULL)
 		{
-			$data['amount_tendered'] = $this->input->post('amount_tendered');
-			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
+			$_inputValue = $this->input->post('amount_tendered');
+			$_cleanedValue = str_replace('.', '', $_inputValue);
+			$_cleanedValue = str_replace(',', '.', $_cleanedValue);
+
+			// Chuyển đổi thành số
+			$_numericValue = floatval($_cleanedValue);
+			$data['amount_tendered'] = $_numericValue;
+			$data['amount_change'] = $data['total'] - $data['amount_tendered'];
 		}
 		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -239,9 +245,16 @@ class Receivings extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
-
+		$_aPayments = [
+			'payment_type'=>$data['payment_type'],
+			'payment_kind'=>0,
+			'remain_amount'=>$data['amount_change'],
+			'paid_amount'=>$data['amount_tendered'],
+			'total_amount'=>$data['total']
+		];
+		//var_dump($_aPayments);die();
 		//SAVE receiving to database
-		$data['_receive_id'] = $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location'], $data['purchase_id'],$data['mode']);
+		$data['_receive_id'] = $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $_aPayments, $data['stock_location'], $data['purchase_id'],$data['mode']);
 		$data['receiving_id'] = 'RECV ' .$data['_receive_id'];
 		$data = $this->xss_clean($data);
 
@@ -292,17 +305,20 @@ class Receivings extends Secure_Controller
 			$this->load->view("receivings/receipt", $data);
 		} else {
 			$this->receiving_lib->copy_entire_receiving($receiving_info);
-			$data['_receive_id'] = $receiving_id;
+			$data['_receive_id'] = $receiving_info->receiving_id;
 			$data['cart'] = $this->receiving_lib->get_cart();
 			$data['total'] = $this->receiving_lib->get_total();
+			$data['amount'] = $this->receiving_lib->get_amount();
 			$data['mode'] = $this->receiving_lib->get_mode();
 			$data['receipt_title'] = $this->lang->line('receivings_receipt');
 			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info->receiving_time));
 			$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 			$data['payment_type'] = $receiving_info->payment_type;
 			$data['reference'] = $this->receiving_lib->get_reference();
-			$data['receiving_id'] = 'RECV ' . $receiving_id;
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+			$data['receiving_id'] = $receiving_info->receiving_id;
+			$data['code'] = $receiving_info->code;
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($receiving_info->code);
+			$data['payments'] = $this->Receiving->get_payments($receiving_info->receiving_id)->result_array();
 			$employee_info = $this->Employee->get_info($receiving_info->employee_id);
 			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 			if($data['mode']=='return')
@@ -325,7 +341,10 @@ class Receivings extends Secure_Controller
 					$data['supplier_location'] = '';
 				}
 			}
-
+			//var_dump($data['payments']);
+			$data['paid_total'] = $receiving_info->paid_amount;;
+			
+			$data['remain_amount'] = $receiving_info->remain_amount;
 			$data['print_after_sale'] = false;
 
 			$data = $this->xss_clean($data);
@@ -1028,6 +1047,256 @@ class Receivings extends Secure_Controller
 			header('Cache-Control: max-age=0');
 
 			$writer->save('php://output');	// download file
+		}
+	}
+
+	/**
+	 * Thêm mới ManhVT: hỗ trợ hiển thị danh sách công nợ, cho phép chọn từ ngày đến ngày;
+	 */
+	public function manage()
+	{
+		
+		//$data['table_headers'] = get_receiving_manage_table_headers();
+
+		// filters that will be loaded in the multiselect dropdown
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+									'only_invoices' => $this->lang->line('sales_invoice_filter'));
+		}
+		else
+		{
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'));
+		}
+
+		if ($this->Employee->has_grant('sales_index')) {
+			$data['is_created'] = 1;
+		} else {
+			$data['is_created'] = 0;
+		}
+		
+		$this->load->view('receivings/manage', $data);
+		
+	}
+
+	public function ajax_receivings()
+	{
+		$this->load->model('reports/Detailed_receivings');
+        $model = $this->Detailed_receivings;
+        $location_id = $this->input->post('location_id');
+
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        $location_id = $this->input->post('location_id');
+        $result = 1;
+
+        $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
+        $headers = $this->xss_clean($model->getDataColumns1());
+        if($this->Employee->has_grant('items_unitprice_hide'))
+        {
+            //unset();
+            unset($headers['details']['cost_price']); //cost_price
+            //unset($headers['details']['sub_total']); //cost_price
+        }
+        $report_data = $model->getData1($inputs);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = array();
+            $details_data = array();
+            $i = 1;
+            //var_dump($report_data['summary']);die();
+            foreach($report_data['summary'] as $key => $row)
+            {
+                //var_dump($row);die();
+                
+                $summary_data[] = $this->xss_clean(array(
+                    'receiving_id' => $i,
+                    'supplier_name' => $row['company_name'],
+                    'total_amount' => number_format($row['tong_cong']),
+                    'paid_amount' => number_format($row['da_thanh_toan']),
+                    'remain_amount' => number_format($row['con_lai']),
+					'supplier_uuid' => $row['supplier_uuid']
+                ));
+
+                $i++;
+            }
+
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE),
+                'headers_details' => transform_headers_raw($headers['details'],TRUE),
+                'summary_data' => $summary_data,
+                'report_data' =>$report_data
+            );
+
+        }
+
+
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
+
+	public function search()
+	{
+		$search = $this->input->get('search');
+		$limit  = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		$sort   = $this->input->get('sort');
+		$order  = $this->input->get('order');
+
+		$filters = array('sale_type' => 'all',
+						'location_id' => 'all',
+						'start_date' => $this->input->get('start_date'),
+						'end_date' => $this->input->get('end_date'),
+						'only_cash' => FALSE,
+						'pending'=>FALSE, //added 03.02.2023 - manhvt
+						'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
+						'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
+
+		// check if any filter is set in the multiselect dropdown
+		if($this->input->get('filters') == null)
+		{
+			echo 'Invalid Data';
+			exit();
+		}
+		//var_dump($this->input->get('filters'));
+		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
+		//var_dump($filledup);
+		//die();
+		$filters = array_merge($filters, $filledup);
+
+		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order, $this->logedUser_type, $this->logedUser_id);
+		$total_rows = $this->Sale->get_found_rows($search, $filters, $this->logedUser_type, $this->logedUser_id);
+		//$payments = $this->Sale->get_payments_summary($search, $filters, $this->logedUser_type, $this->logedUser_id);
+		//$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales, $this));
+		$payment_summary = '';
+		$data_rows = array();
+		foreach($sales->result() as $sale)
+		{
+			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
+		}
+
+		if($total_rows > 0)
+		{
+			//$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales, $this));
+		}
+
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary));
+	}
+
+	public function detail($supplier_uuid='')
+	{
+		$data['table_headers'] = get_receiving_manage_table_headers();
+
+		// filters that will be loaded in the multiselect dropdown
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+									'only_invoices' => $this->lang->line('sales_invoice_filter'));
+		}
+		else
+		{
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'));
+		}
+
+		if ($this->Employee->has_grant('sales_index')) {
+			$data['is_created'] = 1;
+		} else {
+			$data['is_created'] = 0;
+		}
+		
+		$this->load->view('receivings/detail', $data);
+	}
+
+	public function ajax_receivings_detail($supplier_uuid='')
+	{
+		$supplier_uuid = $this->input->get('supplier_uuid');
+        $this->load->model('reports/Detailed_receivings');
+        $model = $this->Detailed_receivings;
+        $_sFromDate = $this->input->get('fromDate');
+        $_sToDate = $this->input->get('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        $result = 1;
+        $location_id = 1;
+        $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
+        
+        //var_dump($headers);
+        $report_data = $model->_getDetailData1($inputs,$supplier_uuid);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = array();
+            $details_data = array();
+            $i = 1;
+            
+            foreach($report_data['details'] as $drow)
+            {
+                //var_dump(to_currency($drow['unit_price']));die();
+                  $details_data[] = $this->xss_clean(
+                        [
+                            'stt'=>$i,
+							'receiving_id'=>$drow['receiving_id'],
+                            'code'=>'<a href="'.base_url('receivings/receipt/'.$drow['receiving_uuid']).'">'.$drow['code'].'</a>',
+                            'receiving_time'=>$drow['receiving_time'],
+                            'total_amount'=>number_format($drow['total_amount']), 
+                            'paid_amount'=>number_format($drow['paid_amount']), 
+                            //'cost_price'=>to_currency($drow['cost_price']),
+                            'remain_amount'=>number_format($drow['remain_amount']),  
+                            'payment_type'=>$drow['payment_type'],
+							'receiving_uuid'=>$drow['receiving_uuid']
+                        ]);
+                
+						$i++;
+            }
+            
+            
+            $data = array(
+                'details_data' => $details_data,
+            );
+
+        }
+
+
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
+
+	public function process_payment()
+	{
+		$_sReceivingUUID = $this->input->post('receiving_id');
+		$_fPaymentAmount = $this->input->post('paymentAmount');
+		$_sPaymentMethod = $this->input->post('paymentMethod');
+        $_fRemainAmount = $this->input->post('remainAmount');
+		$_aPayment = [
+			'payment_type'=>$_sPaymentMethod,
+			'receiving_uuid'=>$_sReceivingUUID,
+			'paid_amount'=>$_fPaymentAmount,
+			'remain_amount'=>$_fRemainAmount
+		];
+		if(!is_numeric($_fPaymentAmount) || !is_numeric($_fRemainAmount) || empty($_sReceivingUUID))
+		{
+			$json = ['result'=>-1,'data'=>['Input data is invalid']];
+        	echo json_encode($json);
+		} else {
+			$result = $this->Receiving->payment($_aPayment);
+			$data = array(
+				//'details_data' => $details_data,
+			);
+			$json = array('result' => $result,'data' => $data);
+			echo json_encode($json);
 		}
 	}
 }

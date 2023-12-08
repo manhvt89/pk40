@@ -70,6 +70,8 @@ class Secure_Controller extends CI_Controller
 			'hash' => $this->security->get_csrf_hash()
 		);
 		$data['csrf'] = $csrf;
+		$this->logedUser_type = $this->session->userdata('type');
+		$this->logedUser_id = $this->session->userdata('person_id');
 
 		$this->load->vars($data);
 	}

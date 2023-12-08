@@ -1221,11 +1221,11 @@ class Reports extends Secure_Controller
                         'comment' => $row['comment'],
                         'mode'=>$_sMode,
                         'edit' => anchor(
-                            'receivings/edit/' . $row['receiving_id'],
+                            'receivings/edit/' . $row['receiving_uuid'],
                             '<span class="glyphicon glyphicon-edit"></span>',
                             array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('receivings_update'))
                         ) . ' | '.anchor(
-                            'receivings/receipt/' . $row['receiving_id'],
+                            'receivings/receipt/' . $row['receiving_uuid'],
                             '<span class="glyphicon glyphicon-file"></span>',
                             array('class' => 'print_hide', 'data-btn-submit' => 'Xem chi tiết', 'title' => 'Xem chi tiết phiếu')
                         )
@@ -1245,11 +1245,11 @@ class Reports extends Secure_Controller
                         'comment' => $row['comment'],
                         'mode'=>$_sMode,
                         'edit' => anchor(
-                            'receivings/edit/' . $row['receiving_id'],
+                            'receivings/edit/' . $row['receiving_uuid'],
                             '<span class="glyphicon glyphicon-edit"></span>',
                             array('class' => 'modal-dlg print_hide', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('receivings_update'))
                         ). ' | '. anchor(
-                            'receivings/receipt/' . $row['receiving_id'],
+                            'receivings/receipt/' . $row['receiving_uuid'],
                             '<span class="glyphicon glyphicon-file"></span>',
                             array('class' => 'print_hide', 'data-btn-submit' => 'Xem chi tiết', 'title' => 'Xem chi tiết phiếu')
                         )

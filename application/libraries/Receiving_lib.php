@@ -414,6 +414,19 @@ class Receiving_lib
 	{
 		$this->CI->session->unset_userdata('purchase_id');
 	}
+	/**
+	 * Lây tổng số lượng đơn hàng
+	 */
+	public function get_amount()
+	{
+		$total = 0;
+		foreach($this->get_cart() as $item)
+		{
+			$total = bcadd($total, $item['quantity']);
+		}
+		
+		return $total;
+	}
 }
 
 ?>

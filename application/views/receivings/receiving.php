@@ -22,6 +22,7 @@ if (isset($success))
 <!-- Top register controls -->
 
 	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -56,6 +57,18 @@ if (isset($success))
 					}
 				}
 				?>
+
+				<?php
+								if ($this->Employee->has_grant('receivings_manage')) // Hiển thị danh sách đơn hàng;
+								{
+									?>
+									<li class="pull-right">
+										<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
+											array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
+									</li>
+									<?php
+								}
+								?>
 				
 			</ul>
 		</div>
@@ -140,8 +153,7 @@ if (isset($success))
 						<tr>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
-								<?php echo form_hidden('location', $item['item_location']); ?>
+								<?php echo $item['name']; ?>
 							</td>
 
 							<?php 
@@ -195,38 +207,6 @@ if (isset($success))
 							?>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
-						</tr>
-						<tr>
-							<?php 
-							if($item['allow_alt_description']==1)
-							{
-							?>
-								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-							<?php 
-							} 
-							?>
-							<td colspan='2' style="text-align: left;">
-								<?php
-								if($item['allow_alt_description']==1)
-								{
-									echo form_input(array('name'=>'description', 'class'=>'form-control input-sm', 'value'=>$item['description']));
-								}
-								else
-								{
-									if ($item['description']!='')
-									{
-										echo $item['description'];
-	        							echo form_hidden('description',$item['description']);
-									}
-									else
-									{
-										echo $this->lang->line('sales_no_description');
-										echo form_hidden('description','');
-									}
-								}
-								?>
-							</td>
-							<td colspan='6'></td>
 						</tr>
 					<?php echo form_close(); ?>
 			<?php
@@ -315,7 +295,10 @@ if (isset($success))
 				{
 				?>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_total'); ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency($total); ?></th>
+					<th style="width: 45%; text-align: right;">
+						<input type="hidden" id="hdtxt_total" name="hdtxt_total" value="<?=$total?>"/>
+						<?php echo to_currency($total); ?>
+					</th>
 				<?php 
 				}
 				else
@@ -387,9 +370,9 @@ if (isset($success))
 								</tr>
 
 								<tr>
-									<td><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
+									<td>Số tiền thanh toán</td>
 									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'5')); ?>
+										<?php echo form_input(array('id'=>'amount_tendered','name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'5')); ?>
 									</td>
 								</tr>
 							</table>
@@ -412,6 +395,8 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$('#amount_tendered').number(true,0,',','.');
+
     $("#item").autocomplete(
     {
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
@@ -478,7 +463,34 @@ $(document).ready(function()
 
     $("#finish_receiving_button").click(function()
     {
-   		$('#finish_receiving_form').submit();
+		var totalAmount = parseFloat($("#hdtxt_total").val());
+        //var paymentAmount = parseFloat($("#amount_tendered").val()); // Chuyển đổi thành số
+		var paymentAmount = parseFloat($('#amount_tendered').get()[0].value);
+
+        console.log(totalAmount);
+        console.log(paymentAmount);
+
+        // Kiểm tra nếu không phải là số
+        if (isNaN(paymentAmount)) {
+            alert("Vui lòng nhập một số hợp lệ.");
+			$('#amount_tendered').focus();
+            return false;
+        }
+
+		paymentAmount = parseFloat($("#amount_tendered").val());
+		console.log(totalAmount);
+        console.log(paymentAmount);
+		//return false;
+        // Kiểm tra điều kiện thanh toán
+        if (paymentAmount > totalAmount) {
+            alert("Số tiền thanh toán không thể lớn hơn tổng tiền hàng.");
+			$('#amount_tendered').focus();
+            $("#amount_tendered").val(0);
+            return false;
+        } else {
+            // Nếu mọi thứ đều đúng, submit form
+            $('#finish_receiving_form').submit();
+        }
     });
 
 	$("#lens_receiving_button").click(function()

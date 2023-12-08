@@ -1056,4 +1056,21 @@ function get_ctv_data_row($person)
 
 	return $return;
 }
+
+function get_receiving_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('receiving_id' => $CI->lang->line('common_id'),'halign'=>'center', 'align'=>'right'),
+		array('code' => 'Mã đơn nhập hàng','halign'=>'center', 'align'=>'left'),
+		array('created_time' => 'Ngày nhập hàng','halign'=>'center', 'align'=>'left'),
+		array('total_amount' => 'Tổng tiền hàng','halign'=>'center', 'align'=>'right'),
+		array('paid_amount' => 'Đã thanh toán','halign'=>'center', 'align'=>'right'),
+		array('remain_amount' => 'Công nợ','halign'=>'center', 'align'=>'right'),
+		array('payment_type'=>'Hình thức thanh toán','halign'=>'center', 'align'=>'left')
+	);
+
+	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE),array('payment' => '&nbsp', 'sortable' => FALSE))),TRUE);
+}
 ?>

@@ -1,4 +1,57 @@
 Update
+07/12/2023
+- Bổ sung thêm việc thanh toán cho đơn nhập hàng và quản lý công nợ nhập hàng
+- Cần cấp quyền receivings_manage
+ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
+ALTER TABLE `ospos_items` ADD `updated_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
+
+-- Update công nhợ nhập hàng
+ALTER TABLE `ospos_receivings` ADD `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '{0: Đã thanh toán xong; 1: Chưa hoàn thành}' AFTER `mode`;
+ALTER TABLE `ospos_receivings` ADD `code` varchar(14) NOT NULL DEFAULT 0 COMMENT '{Mã phiếu nhập hàng}' AFTER `mode`;
+ALTER TABLE `ospos_receivings` ADD `receiving_uuid` varchar(36) NOT NULL DEFAULT uuid() COMMENT '{uuid của phiếu nhập hàng}' AFTER `mode`;
+ALTER TABLE `ospos_receivings` ADD `remain_amount` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT '{Số tiền còn nợ}' AFTER `mode`;
+
+ALTER TABLE `ospos_receivings` ADD `paid_amount` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT '{Số tiền đã thanh toán}' AFTER `mode`;
+ALTER TABLE `ospos_receivings` ADD `total_amount` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT '{Tổng đơn}' AFTER `mode`;
+
+ALTER TABLE `ospos_receivings` MODIFY `remain_amount` decimal(15,2);
+ALTER TABLE `ospos_receivings` MODIFY `paid_amount` decimal(15,2);
+ALTER TABLE `ospos_receivings` MODIFY `receiving_uuid` varchar(36) NOT NULL DEFAULT uuid();
+
+DROP TABLE IF EXISTS `ospos_receivings_payments`;
+CREATE TABLE `ospos_receivings_payments` (
+  `receivings_id` int(11) NOT NULL DEFAULT 0,
+  `receivings_payments_uuid` varchar(36) NOT NULL DEFAULT uuid(),
+  `note` varchar(255) NOT NULL DEFAULT '',
+  `payment_type` varchar(40) NOT NULL DEFAULT '',
+  `payment_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `payment_amount` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `payment_id` int(10) NOT NULL AUTO_INCREMENT,
+  `payment_kind` varchar(40) NOT NULL DEFAULT '''''' COMMENT '{Thanh Toán='''';Đặt Trước}',
+  PRIMARY KEY (`payment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+INSERT INTO ospos_receivings_payments (receivings_id, note, payment_type, payment_amount, payment_kind)
+    SELECT
+        receiving_id,
+        'Khởi tạo',
+        'Chuyển khoản',
+        0.00,
+        ''
+    FROM
+        ospos_receivings;
+
+UPDATE ospos_receivings r
+      SET r.total_amount = (
+          SELECT IFNULL(SUM(ri.item_cost_price * ri.quantity_purchased), 0)
+          FROM ospos_receivings_items ri
+          WHERE ri.receiving_id = r.receiving_id
+      )
+      WHERE r.receiving_id IN (
+          SELECT receiving_id FROM ospos_receivings_items
+      );
+
+
+
 27/11/2023
 - Update đồng bộ (bổ sung cả master và client
 ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;

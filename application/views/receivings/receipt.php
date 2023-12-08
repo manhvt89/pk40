@@ -47,7 +47,7 @@ if (isset($error_message)) {
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo 'Mã phiếu'.": ".$receiving_id; ?></div>
+		<div id="sale_id"><?php echo 'Mã phiếu'.": ".$code; ?></div>
 		<?php 
 		if (!empty($reference))
 		{
@@ -61,9 +61,9 @@ if (isset($error_message)) {
 	<table id="receipt_items">
 		<tr>
 			<th style="width:40%;"><?php echo $this->lang->line('items_item'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('common_price'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-			<th style="width:15%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
+			<th style="width:20%;text-align:center;"><?php echo $this->lang->line('common_price'); ?></th>
+			<th style="width:10%;text-align:center;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+			<th style="width:25%;text-align:center;"><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 
 		<?php
@@ -72,10 +72,10 @@ if (isset($error_message)) {
 		?>
 			<tr>
 				<td><?php echo $item['name']; ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
+				<td style="text-align:right;"><?php echo to_currency($item['price']); ?></td>
+				<td style="text-align:right;"><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 				?></td>
-				<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
+				<td style="text-align:right;"><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
 			</tr>
 			<tr>
 				<td ><?php echo $item['serialnumber']; ?></td>
@@ -94,7 +94,9 @@ if (isset($error_message)) {
 		}
 		?>	
 		<tr>
-			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_total'); ?></td>
+			<td style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('receiving_total'); ?></td>
+			<td style='border-top:2px solid #000000;'></td>
+			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo number_format($amount); ?></div></td>
 			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total); ?></div></td>
 		</tr>
 		<?php 
@@ -102,20 +104,39 @@ if (isset($error_message)) {
 		{
 		?>
 			<tr>
-				<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
-				<td><div class="total-value"><?php echo $payment_type; ?></div></td>
+				<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('history_payment'); ?></td>
+				
 			</tr>
-
+			<?php foreach($payments as $payment): ?>
+				<tr>
+					<td style='text-align:left;'></td>
+					<td style=''><?=$payment['payment_time']?></td>
+					<td style=''><div class="total-value"><?=$payment['payment_type']?></div></td>
+					<td style='text-align:right '><div class="total-value"><?php echo to_currency($payment['payment_amount']); ?></div></td>
+				</tr>
+			<?php endforeach; ?>
+			<tr>
+				<td style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('paid_total'); ?></td>
+				<td style='border-top:2px solid #000000;'></td>
+				<td style='border-top:2px solid #000000;'><div class="total-value"></div></td>
+				<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($paid_total); ?></div></td>
+			</tr>
+			<tr>
+				<td style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('remain_amount'); ?></td>
+				<td style='border-top:2px solid #000000;'></td>
+				<td style='border-top:2px solid #000000;'><div class="total-value"></div></td>
+				<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($remain_amount); ?></div></td>
+			</tr>
 			<?php if(isset($amount_change))
 			{
 			?>
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
+					<td colspan="3" style='text-align:right;'>Đã thanh toán</td>
 					<td><div class="total-value"><?php echo to_currency($amount_tendered); ?></div></td>
 				</tr>
 
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></td>
+					<td colspan="3" style='text-align:right;'>Còn lại</td>
 					<td><div class="total-value"><?php echo $amount_change; ?></div></td>
 				</tr>
 			<?php
@@ -127,13 +148,13 @@ if (isset($error_message)) {
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo nl2br($this->config->item('return_policy')); ?>
+		<?php //echo nl2br($this->config->item('return_policy')); ?>
 		<div id="employee"><?php echo 'Người lập phiếu: '.$employee; ?></div>
 	</div>
 
 	<div id='barcode'>
 		<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-		<?php echo $receiving_id; ?>
+		<?php echo $code; ?>
 	</div>
 </div>
 <script type="text/javascript">
