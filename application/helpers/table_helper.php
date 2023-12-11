@@ -111,7 +111,7 @@ function get_sales_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
+	$headers = [
 		array('sale_id' => $CI->lang->line('common_id'),'halign'=>'center', 'align'=>'right'),
 		array('sale_time' => $CI->lang->line('sales_sale_time'),'halign'=>'center', 'align'=>'left'),
 		array('customer_name' => $CI->lang->line('customers_customer'),'halign'=>'center', 'align'=>'left'),
@@ -120,16 +120,23 @@ function get_sales_manage_table_headers()
 		array('change_due' => $CI->lang->line('sales_change_due'),'halign'=>'center', 'align'=>'right'),
 		array('phone_number' => $CI->lang->line('sales_customer_phone'),'halign'=>'center', 'align'=>'left'),
 		array('payment_type'=>'Hình thức thanh toán','halign'=>'center', 'align'=>'left'),
-		array('editnote'=>'Cập nhật','halign'=>'center', 'align'=>'left')
-	);
+		array('note' => 'Ghi chú','halign'=>'center', 'align'=>'left'),
+	];
 	
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
-
-	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE),array('payment' => '&nbsp', 'sortable' => FALSE))),TRUE);
+	$headers = array_merge(
+		$headers, 
+		[
+			array('receipt' => '&nbsp', 'sortable' => FALSE),
+			array('payment' => '&nbsp', 'sortable' => FALSE),
+			array('editnote'=>'&nbsp','halign'=>'center', 'align'=>'left')
+		]
+	);
+	return transform_headers($headers,TRUE);
 }
 
 /*
@@ -350,7 +357,8 @@ function get_sale_data_row($sale)
 		'change_due' => number_format($sale->change_due,0,',','.'),
 		'phone_number' => '***',
 		'payment_type' => $sale->payment_type,
-		'status'=>$sale->status
+		'status'=>$sale->status,
+		'note'=>$sale->comment
 	);
 
 	if($CI->config->item('invoice_enable'))
@@ -377,7 +385,7 @@ function get_sale_data_row($sale)
 		array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 		);*/
 	}
-	$row['editnote'] = anchor($controller_name . "/edit/$sale->sale_uuid", '<span class="glyphicon glyphicon-edit"></span>',array('class' => 'modal-dlg print_hide', 'data-btn-submit' => 'Cập nhật', 'title' => 'Cập nhật ghi chú'));
+	$row['editnote'] = anchor($controller_name . "/edit/$sale->sale_uuid", '<span class="glyphicon glyphicon-pencil"></span>',array('class' => 'modal-dlg print_hide', 'data-btn-submit' => 'Cập nhật', 'title' => 'Cập nhật ghi chú'));
 	return $row;
 }
 

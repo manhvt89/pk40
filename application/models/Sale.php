@@ -162,6 +162,7 @@ class Sale extends CI_Model
 				sales.sale_id AS sale_id,
 				sales.ctv_id AS bacsi_id,
 				sales.status AS status,
+				sales.comment AS comment,
 				sales.sale_uuid AS sale_uuid,
 				DATE(sales.sale_time) AS sale_date,
 				sales.sale_time AS sale_time,
