@@ -23,10 +23,10 @@ $(document).ready(function()
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		uniqueId: 'sales.sale_id',
 		onLoadSuccess: function(response) {
-			if($("#table tbody tr").length > 1) {
-				$("#payment_summary").html(response.payment_summary);
-				//$("#table tbody tr:last td:first").html("");
-			}
+			$('a.rollover').imgPreview({
+				imgCSS: { width: 200 },
+				distanceFromCursor: { top:10, left:-210 }
+			})
 		},
 		queryParams: function() {
 			return $.extend(arguments[0], {

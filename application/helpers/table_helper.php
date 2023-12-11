@@ -119,7 +119,8 @@ function get_sales_manage_table_headers()
 		array('amount_tendered' => $CI->lang->line('sales_amount_tendered'),'halign'=>'center', 'align'=>'right'),
 		array('change_due' => $CI->lang->line('sales_change_due'),'halign'=>'center', 'align'=>'right'),
 		array('phone_number' => $CI->lang->line('sales_customer_phone'),'halign'=>'center', 'align'=>'left'),
-		array('payment_type'=>'Hình thức thanh toán','halign'=>'center', 'align'=>'left')
+		array('payment_type'=>'Hình thức thanh toán','halign'=>'center', 'align'=>'left'),
+		array('editnote'=>'Cập nhật','halign'=>'center', 'align'=>'left')
 	);
 	
 	if($CI->config->item('invoice_enable') == TRUE)
@@ -376,6 +377,7 @@ function get_sale_data_row($sale)
 		array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 		);*/
 	}
+	$row['editnote'] = anchor($controller_name . "/edit/$sale->sale_uuid", '<span class="glyphicon glyphicon-edit"></span>',array('class' => 'modal-dlg print_hide', 'data-btn-submit' => 'Cập nhật', 'title' => 'Cập nhật ghi chú'));
 	return $row;
 }
 

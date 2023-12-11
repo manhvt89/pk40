@@ -475,6 +475,11 @@ class Sale extends CI_Model
 		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
 		//if($success && !empty($payments))
 		$success = 0;
+		$_iNow = time();
+		if($sale_data['status'] == 0) // Trạng thái hoàn thành thì cập nhật trường update bằng tg hoàn thành đơn. 12.12.2023 - manhvt89@gmail.com
+		{
+			$sale_data['updated_at'] = $_iNow;
+		}
 		if(!empty($payments))
 		{
 			if($sale_data['ctv_id'] == 0) // Nếu không có CTV thì không đồng bộ vào bảng history_ctv
@@ -706,6 +711,10 @@ class Sale extends CI_Model
 			'sync'=>$sync,
 			'created_at'=>$now //added 01/07/2023
 		);
+		if($status == 0) // Trạng thái hoàn thành thì cập nhật trường update bằng tg hoàn thành đơn. 12.12.2023 - manhvt89@gmail.com
+		{
+			$sales_data['updated_at'] = $now;
+		}
 		//var_dump($sales_data);die();
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
@@ -1610,8 +1619,8 @@ class Sale extends CI_Model
 	{
 		
 		$success = 0;
-		$customer_id = $sale_data['customer_id'];
-		$employee_id = $sale_data['employee_id'];
+		$customer_id = 0;//$sale_data['customer_id'];
+		$employee_id = 0;//$sale_data['employee_id'];
 		if(empty($payments))
 		{
 			$this->db->where('sale_id', $sale_id);

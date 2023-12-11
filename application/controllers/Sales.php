@@ -1306,6 +1306,7 @@ class Sales extends Secure_Controller
 
 		$data['employees'] = array();
 		$data['ctvs'] = $ctvs;
+		//var_dump($ctvs);
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
@@ -1636,11 +1637,11 @@ class Sales extends Secure_Controller
 
 		$sale_data = array(
 			//'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
-			'employee_id' => $this->input->post('employee_id'),
-			'ctv_id'=>$this->input->post('ctv_id'),
+			//'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
+			//'employee_id' => $this->input->post('employee_id'),
+			//'ctv_id'=>$this->input->post('ctv_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
+			//'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
 		);
 
 		// go through all the payment type input from the form, make sure the form matches the name and iterator number

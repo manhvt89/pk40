@@ -80,13 +80,17 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
+				<?php //echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
+				<?php echo form_input(array('name'=>'employee_id', 'value'=>$employees[$sale_info['employee_id']], 'id'=>'employee_id', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+							
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
 			<?php echo form_label('Cộng tác viên', 'employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('ctv_id', $ctvs, $sale_info['ctv_id'], 'id="ctv_id" class="form-control"');?>
+				<?php //echo form_dropdown('ctv_id', $ctvs, $sale_info['ctv_id'], 'id="ctv_id" class="form-control"');?>
+				<?php echo form_input(array('name'=>'ctv_id', 'value'=>$ctvs[$sale_info['ctv_id']], 'id'=>'ctv_id', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+				
 			</div>
 		</div>
 		
