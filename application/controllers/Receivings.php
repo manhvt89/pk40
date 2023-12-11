@@ -265,12 +265,58 @@ class Receivings extends Secure_Controller
 		else
 		{
 			$this->receiving_lib->clear_all();
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);		
-		}
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);	
+			$receiving_info = $this->Receiving->get_info($data['_receive_id'])->row();
+			$this->receiving_lib->copy_entire_receiving($receiving_info);
+			//$data['_receive_id'] = $receiving_info->receiving_id;
+			$data['cart'] = $this->receiving_lib->get_cart();
+			$data['total'] = $this->receiving_lib->get_total();
+			$data['amount'] = $this->receiving_lib->get_amount();
+			$data['mode'] = $this->receiving_lib->get_mode();
+			$data['receipt_title'] = $this->lang->line('receivings_receipt');
+			$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info->receiving_time));
+			$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
+			$data['payment_type'] = $receiving_info->payment_type;
+			$data['reference'] = $this->receiving_lib->get_reference();
+			$data['receiving_id'] = $receiving_info->receiving_id;
+			$data['code'] = $receiving_info->code;
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($receiving_info->code);
+			$data['payments'] = $this->Receiving->get_payments($receiving_info->receiving_id)->result_array();
+			$employee_info = $this->Employee->get_info($receiving_info->employee_id);
+			$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+			if($data['mode']=='return')
+			{
+				$data['receipt_title'] = 'PHIẾU TRẢ HÀNG';
+			} else {
+				$data['receipt_title'] = $this->lang->line('receivings_receipt');
+			}
+			$supplier_id = $this->receiving_lib->get_supplier();
+			if($supplier_id != -1) {
+				$supplier_info = $this->Supplier->get_info($supplier_id);
+				$data['supplier'] = $supplier_info->company_name;
+				$data['first_name'] = $supplier_info->first_name;
+				$data['last_name'] = $supplier_info->last_name;
+				$data['supplier_email'] = $supplier_info->email;
+				$data['supplier_address'] = $supplier_info->address_1;
+				if(!empty($supplier_info->zip) or !empty($supplier_info->city)) {
+					$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
+				} else {
+					$data['supplier_location'] = '';
+				}
+			}
+			//var_dump($data['payments']);
+			$data['paid_total'] = $receiving_info->paid_amount;;
+			
+			$data['remain_amount'] = $receiving_info->remain_amount;
+			$data['print_after_sale'] = false;
 
+			$data = $this->xss_clean($data);	
+
+		}
+		$this->receiving_lib->clear_all();
 		$this->load->view("receivings/receipt",$data);
 
-		//$this->receiving_lib->clear_all();
+		
 	}
 
 	public function requisition_complete()
