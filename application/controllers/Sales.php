@@ -1294,16 +1294,18 @@ class Sales extends Secure_Controller
 
 	public function edit($uuid)
 	{
-		$sale_info = $this->Sale->get_info_by_uuid($uuid)->row();
+		$_oSaleInfo = $this->Sale->get_info_by_uuid($uuid)->row();
 		//var_dump($sale_info);
 		$sale_id = 0;
-		if(!empty($sale_info))
+		if(!empty($_oSaleInfo))
 		{
-			$sale_id = $sale_info->sale_id;
+			$sale_id = $_oSaleInfo->sale_id;
 		}
+		$ctvs = $this->Ctv->get_list();
 		$data = array();
 
 		$data['employees'] = array();
+		$data['ctvs'] = $ctvs;
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
@@ -1313,6 +1315,7 @@ class Sales extends Secure_Controller
 			
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
 		}
+
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
 		$data['selected_customer_name'] = $sale_info['customer_name'];
@@ -1333,7 +1336,7 @@ class Sales extends Secure_Controller
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
 		$data['payment_options'] = $this->xss_clean($this->Sale->get_payment_options(FALSE));
 		
-		$this->load->view('sales/form', $data);
+		$this->load->view('sales/_form', $data);
 	}
 
 	public function delete($sale_id = -1, $update_inventory = TRUE)
@@ -1407,7 +1410,6 @@ class Sales extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_updated'), 'id' => $sale_id));
 		}
 	}
-
 	public function cancel()
 	{
 		$this->sale_lib->clear_all();
@@ -1617,6 +1619,72 @@ class Sales extends Secure_Controller
 	public function change_ctv()
 	{
  		$this->sale_lib->set_partner_id($this->input->post('ctv_id'));
+	}
+
+	public function ajax_save_info($uuid = '-1')
+	{
+		$_oSaleInfo = $this->Sale->get_info_by_uuid($uuid)->row();
+		//var_dump($sale_info);
+		$sale_id = 0;
+		if(!empty($_oSaleInfo))
+		{
+			$sale_id = $_oSaleInfo->sale_id;
+		}
+		//$newdate = $this->input->post('date');
+
+		//$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+
+		$sale_data = array(
+			//'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
+			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
+			'employee_id' => $this->input->post('employee_id'),
+			'ctv_id'=>$this->input->post('ctv_id'),
+			'comment' => $this->input->post('comment'),
+			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
+		);
+
+		// go through all the payment type input from the form, make sure the form matches the name and iterator number
+		/*
+		$payments = array();
+		$number_of_payments = $this->input->post('number_of_payments');
+		for ($i = 0; $i < $number_of_payments; ++$i)
+		{
+			$payment_amount = $this->input->post('payment_amount_' . $i);
+			$payment_type = $this->input->post('payment_type_' . $i);
+			// remove any 0 payment if by mistake any was introduced at sale time
+			if($payment_amount != 0)
+			{
+				// search for any payment of the same type that was already added, if that's the case add up the new payment amount
+				$key = FALSE;
+				if(!empty($payments))
+				{
+					// search in the multi array the key of the entry containing the current payment_type
+					// NOTE: in PHP5.5 the array_map could be replaced by an array_column
+					$key = array_search($payment_type, array_map(function($v){return $v['payment_type'];}, $payments));
+				}
+
+				// if no previous payment is found add a new one
+				if($key === FALSE)
+				{
+					$payments[] = array('payment_type' => $payment_type, 'payment_amount' => $payment_amount);
+				}
+				else
+				{
+					// add up the new payment amount to an existing payment type
+					$payments[$key]['payment_amount'] += $payment_amount;
+				}
+			}
+		}
+		*/
+
+		if($this->Sale->ajax_save_info($sale_id, $sale_data))
+		{
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_updated'), 'id' => $sale_id));
+		}
+		else
+		{
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_updated'), 'id' => $sale_id));
+		}
 	}
 	
 }

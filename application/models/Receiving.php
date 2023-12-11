@@ -64,6 +64,7 @@ class Receiving extends CI_Model
 		$_iTime = time();
 		$_iMode = 0;
 		$_sCode = 'NH'.$_iTime;
+		$_sTime = date('Y-m-d h:m:s',$_iTime);
 		if(count($items) == 0)
 		{
 			return -1;
@@ -178,7 +179,7 @@ class Receiving extends CI_Model
 			'payment_type'	 => $payment['payment_type'],
 			'payment_amount' => $payment['paid_amount'],
 			'payment_kind'=>$payment['payment_kind'],
-			'payment_time'=>$_iTime
+			'payment_time'=>$_sTime
 		);
 		$this->db->insert('receivings_payments', $_aPaymentData);
 		//Hết
