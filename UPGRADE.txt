@@ -50,6 +50,7 @@ UPDATE ospos_receivings r
           SELECT receiving_id FROM ospos_receivings_items
       );
 
+UPDATE ospos_receivings r SET r.remain_amount = total_amount;
 
 
 27/11/2023
