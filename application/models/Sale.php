@@ -87,8 +87,12 @@ class Sale extends CI_Model
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
-
-		$this->db->where('sales.sale_id', $sale_id);
+		if(strlen($sale_id) > 20)
+		{
+			$this->db->where('sales.sale_uuid', $sale_id);
+		} else {
+			$this->db->where('sales.sale_id', $sale_id);
+		}
 
 		$this->db->group_by('sales.sale_id');
 		$this->db->order_by('sales.sale_time', 'asc');
@@ -162,7 +166,7 @@ class Sale extends CI_Model
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
-				sales.ctv_id AS bacsi_id,
+				sales.ctv_id AS ctv_id,
 				sales.status AS status,
 				sales.comment AS comment,
 				sales.sale_uuid AS sale_uuid,

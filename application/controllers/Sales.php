@@ -1669,10 +1669,9 @@ class Sales extends Secure_Controller
 			$_comission_rate = $ctv_info->comission_rate;
 			$_employee_name = get_fullname($employee_info->first_name, $employee_info->last_name);
 			$_customer_name = get_fullname($customer_info->first_name, $customer_info->last_name);
-			$_comission_amount = ($_comission_rate * $_oSaleInfo->amount_due) / 100;
 			
-			//var_dump($ctv_info);
-			//die();
+			$_comission_amount = ((float)$_comission_rate * (float)$_oSaleInfo->amount_due) / 100;
+			
 			$_comission_rate = $ctv_info->comission_rate;
 			$_option['comission_rate'] = $_comission_rate;
 			$_option['employee_id'] = $_oSaleInfo->employee_id;
