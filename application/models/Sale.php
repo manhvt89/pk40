@@ -55,6 +55,8 @@ class Sale extends CI_Model
 				sales.code as code,
 				sales.ctv_id as ctv_id,
 				sales.sync as sync,
+				sales.updated_at as updated_at,
+				sales.completed_at as completed_at,
 				sales.status as status,
 				sales.sale_uuid as sale_uuid,
 				customer.account_number as account_number,
@@ -479,8 +481,9 @@ class Sale extends CI_Model
 		$_iNow = time();
 		if($sale_data['status'] == 0) // Trạng thái hoàn thành thì cập nhật trường update bằng tg hoàn thành đơn. 12.12.2023 - manhvt89@gmail.com
 		{
-			$sale_data['updated_at'] = $_iNow;
+			$sale_data['completed_at'] = $_iNow;
 		}
+		$sale_data['updated_at'] = $_iNow;
 		if(!empty($payments))
 		{
 			if($sale_data['ctv_id'] == 0) // Nếu không có CTV thì không đồng bộ vào bảng history_ctv
@@ -710,11 +713,14 @@ class Sale extends CI_Model
 			'paid_points'=>$points,
 			'code'=>$code,
 			'sync'=>$sync,
-			'created_at'=>$now //added 01/07/2023
+			'created_at'=>$now, //added 01/07/2023
+			'updated_at'=>$now,
+			'completed_at'=>$now
 		);
 		if($status == 0) // Trạng thái hoàn thành thì cập nhật trường update bằng tg hoàn thành đơn. 12.12.2023 - manhvt89@gmail.com
 		{
 			$sales_data['updated_at'] = $now;
+			$sales_data['completed_at'] = $now;
 		}
 		//var_dump($sales_data);die();
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1616,16 +1622,85 @@ class Sale extends CI_Model
 	 * 12/12/2023
 	 * ManhVT89@gmail.com
 	 */
-	public function ajax_save_info($sale_id, $sale_data, $payments=[])
+	public function ajax_save_info($sale_id, $sale_data, $option ,$payments=[])
 	{
 		
 		$success = 0;
-		$customer_id = 0;//$sale_data['customer_id'];
-		$employee_id = 0;//$sale_data['employee_id'];
+		//$customer_id = 0;//$sale_data['customer_id'];
+		//$employee_id = 0;//$sale_data['employee_id'];
+		$_time = time();
 		if(empty($payments))
 		{
+			$this->db->trans_start();
+
+			if($option['bCanCTVEdit'] == 1)
+			{
+				if($option['iOldCtvID'] != $option['iCtvID'])
+				{
+					$sale_data['ctv_id'] = $option['iCtvID'];
+					$sale_data['sync'] = 1;
+					//0. prepare to do
+					$_oTheCtv = $this->History_ctv->get_the_last_record([
+						'sale_id'=>$sale_id,
+						'ctv_id'=>$option['iOldCtvID']
+					]);
+					if($_oTheCtv != null)
+					{
+						//1. update history_ctv with old ctv ID to 0;
+						$_aTheCtv = [
+							'status' => 1,
+							'payment_amount'=>0,
+							'comission_amount' => 0,
+							'comission_rate' => 0,
+						];
+						$this->db->where('history_ctv_id', $_oTheCtv->history_ctv_id);
+						$success = $this->db->update('history_ctv', $_aTheCtv);
+
+						//Update total_sale of ctv; khấu trừ
+						$_oOldCtvInfo = $this->Employee->get_info($option['iOldCtvID']);
+						$_aOldCtvData = [
+							'total_sale'=>$_oOldCtvInfo->total_sale - $_oTheCtv->payment_amount,
+						];
+						$this->db->where('person_id', $option['iOldCtvID']);
+						$success = $this->db->update('employees', $_aOldCtvData);
+					}
+					//2. Create ne record of history_ctv with ID
+					
+					$_aTheCtv = [
+							'ctv_id' => $option['iCtvID'],
+							'sale_id' => $sale_id,
+							'employee_id' => $option['employee_id'],
+							'customer_id' => $option['customer_id'],
+							'ctv_name' => $option['ctv_name'],
+							'ctv_code' => $option['ctv_code'],
+							'ctv_phone' => $option['ctv_phone'],
+							'sale_code' =>  $option['sale_code'],
+							'employee_name' => $option['employee_name'],
+							'customer_name' => $option['customer_name'],
+							'created_time' => $_time,
+							'payment_time' => $_time,
+							'payment_amount' => $option['payment_amount'],
+							'comission_amount' => $option['comission_amount'],
+							'comission_rate' => $option['comission_rate'],
+							'status' => 0
+					];
+					$this->db->insert('history_ctv', $_aTheCtv);
+					//Update total_sale of ctv; khấu trừ
+					$_oCtvInfo = $this->Employee->get_info($option['iCtvID']);
+					$_aCtvData = [
+						'total_sale'=>$_oCtvInfo->total_sale + $option['payment_amount'],
+					];
+					$this->db->where('person_id', $option['iCtvID']);
+					$success = $this->db->update('employees', $_aCtvData);
+					
+				}
+			}
+			$sale_data['updated_at'] = $_time;
 			$this->db->where('sale_id', $sale_id);
             $success = $this->db->update('sales', $sale_data);
+			
+			$this->db->trans_complete();
+			$success &= $this->db->trans_status();
 		} else {
 			if($sale_data['ctv_id'] == 0) // Nếu không có CTV thì không đồng bộ vào bảng history_ctv
 			{

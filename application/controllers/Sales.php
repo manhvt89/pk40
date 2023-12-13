@@ -1295,6 +1295,8 @@ class Sales extends Secure_Controller
 	public function edit($uuid)
 	{
 		$_oSaleInfo = $this->Sale->get_info_by_uuid($uuid)->row();
+		$_bCanCTVEdit = 0; // Không thể Edit; 1: Có thể edit
+		$_bCanEmployeeEdit = 0; // Không thể Edit; 1: Có thể edit
 		//var_dump($sale_info);
 		$sale_id = 0;
 		if(!empty($_oSaleInfo))
@@ -1323,6 +1325,17 @@ class Sales extends Secure_Controller
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
 
+		if($sale_info['status'] == 1) // Đơn bán hàng chưa hoàn thành, có thể chỉnh sửa
+		{
+			$_bCanCTVEdit = 1;
+		} else {
+			$_iTimestamp = $sale_info['completed_at']; // Nếu đơn hành đã hoàn thành kiểm tra thời gian hoàn thành
+			if (date('Y-m-d', $_iTimestamp) == date('Y-m-d'))
+			{
+				$_bCanCTVEdit = 1;
+			}
+		}
+
 		$data['payments'] = array();
 		foreach($this->Sale->get_sale_payments($sale_id)->result() as $payment)
 		{
@@ -1336,7 +1349,8 @@ class Sales extends Secure_Controller
 		
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
 		$data['payment_options'] = $this->xss_clean($this->Sale->get_payment_options(FALSE));
-		
+		$data['bCanCTVEdit'] = $_bCanCTVEdit;
+		$data['bCanEmployeeEdit'] = $_bCanEmployeeEdit;
 		$this->load->view('sales/_form', $data);
 	}
 
@@ -1625,7 +1639,57 @@ class Sales extends Secure_Controller
 	public function ajax_save_info($uuid = '-1')
 	{
 		$_oSaleInfo = $this->Sale->get_info_by_uuid($uuid)->row();
-		//var_dump($sale_info);
+		$_iOldCtvID = $this->input->post('old_ctv_id');
+		$_iCtvID = $this->input->post('ctv_id');
+		$_bCanCTVEdit = $this->input->post('bCanCTVEdit');
+		$_bCanEmployeeEdit = $this->input->post('bCanEmployeeEdit');
+		$_iEmployeeID = $this->input->post('employee_id');
+		$_sComment = $this->input->post('comment');
+		$_option = [
+			'bCanCTVEdit'=> $_bCanCTVEdit,
+			'iOldCtvID'=>$_iOldCtvID,
+			'iCtvID' =>$_iCtvID,
+			'bCanEmployeeEdit' => $_bCanEmployeeEdit,
+			'iEmployeeID' > $_iEmployeeID
+		];
+		if($_bCanCTVEdit == 1)
+		{
+			$employee_id = $_oSaleInfo->employee_id;
+			$employee_info = $this->Employee->get_info($employee_id);
+			$data['employee'] = get_fullname($employee_info->first_name,$employee_info->last_name);
+			
+			$customer_id = $_oSaleInfo->customer_id;
+			$customer_info = $this->_load_customer_data($customer_id, $data);
+
+			$ctv_info = $this->Employee->get_info($_iCtvID);
+
+			$_ctv_name = get_fullname($ctv_info->first_name, $ctv_info->last_name);
+			$_ctv_code = $ctv_info->code;
+			$_ctv_phone = $ctv_info->phone_number;
+			$_comission_rate = $ctv_info->comission_rate;
+			$_employee_name = get_fullname($employee_info->first_name, $employee_info->last_name);
+			$_customer_name = get_fullname($customer_info->first_name, $customer_info->last_name);
+			$_comission_amount = ($_comission_rate * $_oSaleInfo->amount_due) / 100;
+			
+			//var_dump($ctv_info);
+			//die();
+			$_comission_rate = $ctv_info->comission_rate;
+			$_option['comission_rate'] = $_comission_rate;
+			$_option['employee_id'] = $_oSaleInfo->employee_id;
+			$_option['customer_id'] = $_oSaleInfo->customer_id;
+			$_option['ctv_name'] = $_ctv_name;
+			$_option['ctv_code'] = $_ctv_code;
+			$_option['ctv_phone'] = $_ctv_phone;
+			$_option['sale_code'] =  $_oSaleInfo->code;
+			$_option['employee_name'] = $_employee_name;
+			$_option['customer_name'] = $_customer_name;
+			$_option['comission_amount'] = $_comission_amount;
+			$_option['payment_amount'] = $_oSaleInfo->amount_due;
+		} else {
+			$_option['comission_rate'] = 0;
+		}
+
+			//var_dump($sale_info);
 		$sale_id = 0;
 		if(!empty($_oSaleInfo))
 		{
@@ -1640,7 +1704,7 @@ class Sales extends Secure_Controller
 			//'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
 			//'employee_id' => $this->input->post('employee_id'),
 			//'ctv_id'=>$this->input->post('ctv_id'),
-			'comment' => $this->input->post('comment'),
+			'comment' => $_sComment,
 			//'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
 		);
 
@@ -1678,7 +1742,7 @@ class Sales extends Secure_Controller
 		}
 		*/
 
-		if($this->Sale->ajax_save_info($sale_id, $sale_data))
+		if($this->Sale->ajax_save_info($sale_id, $sale_data,$_option))
 		{
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_updated'), 'id' => $sale_id));
 		}

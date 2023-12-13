@@ -384,6 +384,7 @@ class Accounting extends CI_Model
 		$this->db->from('total as total');
 		$this->db->where('DATE(FROM_UNIXTIME(total.created_time)) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		$this->db->where('type',0); // Thu
+		$this->db->where('payment_method ',0); //Tiền mặt
 
 		$income_amount = $this->db->get()->result_array();
 
@@ -395,6 +396,20 @@ class Accounting extends CI_Model
 			$income = 0;
 		}
 
+		$this->db->select('SUM(amount) AS amount');
+		$this->db->from('total as total');
+		$this->db->where('DATE(FROM_UNIXTIME(total.created_time)) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		$this->db->where('type',0); // Thu
+		$this->db->where('sale_id',0); //thu từ phiếu thu
+
+		$income_amount_nb = $this->db->get()->result_array();
+
+		if($income_amount_nb)
+		{
+			$income_nb = $income_amount_nb[0]['amount'];
+		}else{
+			$income_nb = 0;
+		}
 
 		$this->db->select('SUM(amount) AS amount');
 		$this->db->from('total as total');
@@ -428,8 +443,7 @@ class Accounting extends CI_Model
 		//var_dump($payout_customer);
 		$payout_c = $payout_customer[0]['pc'];
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
-		$payments = array('in' => $income, 'po' => $payout, 'starting' => $starting,'ending'=>$ending,'nb'=>$payout_nb,'pc'=>$payout_c);
-
+		$payments = array('in' => $income, 'in_nb' => $income_nb, 'po' => $payout, 'starting' => $starting,'ending'=>$ending,'nb'=>$payout_nb,'pc'=>$payout_c);
 
 		return $payments;
 	}

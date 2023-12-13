@@ -1363,6 +1363,9 @@ class Cron extends CI_Controller{
 
     }
 
+    /**
+     *  Cài đặt dánh cho chức năng cskh
+     */
     public function sync_reminder(){
 		if(!$this->input->is_cli_request()){
 			//echo "This script can only be accessed via the command line" . PHP_EOL;
@@ -1372,6 +1375,7 @@ class Cron extends CI_Controller{
 
         $tests = $this->Testex->get_info_tests_yeserday();
         //var_dump($test->result());
+        //die();
         $data_rows = array();
         $ids = array();
 
@@ -1391,22 +1395,42 @@ class Cron extends CI_Controller{
         }
         if($data_rows) {
             foreach ($data_rows as $row) {
-                $item['created_date'] = time();
-                $item['test_id'] = $row->test_id;
-                $item['name'] = $row->last_name . ' ' . $row->first_name;
-                $item['tested_date'] = $row->test_time;
-                $item['duration'] = $row->duration;
-                $item['status'] = 0;
-                $item['remain'] = 1;
-                $item['des'] = $row->note;
-                $item['customer_id'] = $row->customer_id;
-                $item['action'] = '';
-                $item['expired_date'] = $row->expired_date;
-                $item['phone'] = $row->phone_number;
-                $the_id = $this->Reminder->save($item);
-                if($the_id)
-                {
-                    echo "Đã đồng bộ thành công " . $the_id . PHP_EOL;
+                if($row->test_id != null) {
+                    $expired_date = 0;
+
+                    switch ($row->duration_dvt) {
+                        case 'Ngày':
+                            $expired_date = $row->test_time + 3600 * 24 * $row->duration;
+                            break;
+                        case 'Tuần':
+                            $expired_date = $row->test_time + 7 * 3600 * 24 * $row->duration;
+                            break;
+                        case 'Tháng':
+                            $expired_date = $row->test_time + 30 * 3600 * 24 * $row->duration;
+                            break;
+                        default:
+                            $expired_date = $row->test_time + 30 * 3600 * 24 * $row->duration;
+                            break;
+                    }
+
+                    $item['created_date'] = time();
+                    $item['test_id'] = $row->test_id;
+                    $item['name'] = $row->last_name . ' ' . $row->first_name;
+                    $item['tested_date'] = $row->test_time;
+                    $item['duration'] = $row->duration;
+                    $item['duration_dvt'] = $row->duration_dvt == null ? 'Tháng' : $row->duration_dvt;
+                    $item['status'] = 0;
+                    $item['remain'] = 1;
+                    $item['des'] = $row->note;
+                    $item['customer_id'] = $row->customer_id;
+                    $item['action'] = '';
+                    $item['expired_date'] = $expired_date;
+                    $item['phone'] = $row->phone_number;
+                    $item['address'] = $row->address_1 == null ? '' : $row->address_1;
+                    $the_id = $this->Reminder->save($item);
+                    if($the_id) {
+                        echo "Đã đồng bộ thành công " . $the_id . PHP_EOL;
+                    }
                 }
             }
 
@@ -1414,8 +1438,6 @@ class Cron extends CI_Controller{
         else{
             echo "Không có bản ghi nào được đồng bộ" . PHP_EOL;
         }
-
-        $reminders = $this->Reminder->get_reminders_sms();
 
 		//$reminder = $this->Model_main->get_days_request_reminders($timestamp);
 
@@ -1576,5 +1598,63 @@ class Cron extends CI_Controller{
         }
         */
 	}
+    /**
+     * Chạy để đồng bộ vào bảng history_ctv với các dơn hàng có sync=0
+     * Khi chỉ khi ctv_id > 0
+     */
+    public function sync_history_ctv()
+    {
+        $_aoSales = $this->History_ctv->get_sync_ctvs(0); // Lây danh sách các đơn hàng có sync = 0;
+        foreach($_aoSales as $_oSale)
+        {
+            if($this->History_ctv->is_synchroed($_oSale))
+            {
+                $this->History_ctv->do_update($_oSale);
+            } else {
+                $_iTime = time();
+                $ctv_info = $this->Employee->get_info($_oSale->ctv_id);
+                $sale_info = $this->Sale->get_info($_oSale->sale_id);
+                
+                $employee_id = $_oSale->employee_id;
+                $employee_info = $this->Employee->get_info($employee_id);
+                $data['employee'] = get_fullname($employee_info->first_name,$employee_info->last_name);
+                
+                $customer_id = $_oSale->customer_id;
+                $customer_info = $this->_load_customer_data($customer_id, $data);
+                //var_dump($ctv_info);
+                //die();
+                $_ctv_name = get_fullname($ctv_info->first_name, $ctv_info->last_name);
+                $_ctv_code = $ctv_info->code;
+                $_ctv_phone = $ctv_info->phone_number;
+                $_comission_rate = $ctv_info->comission_rate;
+
+                $_employee_name = get_fullname($employee_info->first_name, $employee_info->last_name);
+                $_customer_name = get_fullname($customer_info->first_name, $customer_info->last_name);
+                $_comission_amount = ($_comission_rate * $sale_info['amount_due']) / 100;
+                $_aSale = [
+                    'ctv_id' => $_oSale->ctv_id,
+                    'sale_id' => $_oSale->sale_id,
+                    'employee_id' => $_oSale->employee_id,
+                    'customer_id' => $_oSale->customer_id,
+                    'ctv_name' => $_ctv_name,
+                    'ctv_code' => $_ctv_code,
+                    'ctv_phone' => $_ctv_phone,
+                    'sale_code' =>  $_oSale->code,
+                    'employee_name' => $_employee_name,
+                    'customer_name' => $_customer_name,
+                    'created_time' => $_iTime,
+                    'payment_time' => $_iTime,
+                    'payment_amount' => $_oSale->amount_due,
+                    'comission_amount' => $_comission_amount,
+                    'comission_rate' => $_comission_rate,
+                    'status' => 0
+                ];
+                $this->History_ctv->do_synch($_aSale);
+            }
+        }
+
+    } 
+
+
     
 }

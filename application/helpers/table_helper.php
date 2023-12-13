@@ -639,13 +639,15 @@ function get_accounting_manage_summary($payments, $revenue, $controller)
 		$table .= '<tr><td>Tổng doanh thu: </td><td>'.$total.'</td></tr>';
 		$table .= '</table>';
 	}
-	$table .= '</div><div class="step"><p class="step__title">Quỹ tiền</p><table>';
+	$table .= '</div><div class="step"><p class="step__title">Quỹ tiền mặt</p><table>';
 	$table .= '<tr><td><p class="label-dauky">Số dư đầu kỳ (1): </p></td><td><b>'. to_currency($payments['starting']).'</b></td></tr>';
-	$table .= '<tr><td><p class="label-thutrongky">Thu trong kỳ (2): </p></td><td><b>'. to_currency($payments['in']).'</b></td></tr>';
-	$table .= '<tr><td><p class="label-chitrongky">Chi trong kỳ (3)=(4)+(5): </p></td><td><b>'. to_currency($payments['po']-0).'</b></td></tr>';
-	$table .= '<tr><td><p class="label-chikhac">Chi khác (4): </p></td><td><b>'. to_currency($payments['po'] - $payments['nb']).'</b></td></tr>';
-	$table .= '<tr><td><p class="label-chinoibo">Chi nội bộ (5): </p></td><td><b>'. to_currency($payments['nb']-0).'</b></td></tr>';
-	$table .= '<tr><td><p class="label-cuoiky">Cuối trong kỳ (6)=(1)+(2)-(3): </p></td><td><b>'. to_currency($payments['ending']).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-thutrongky">Thu trong kỳ (2)=(3)+(4): </p></td><td><b>'. to_currency($payments['in']).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-chikhac">Thu TM bán hàng (3): </p></td><td><b>'. to_currency($payments['in'] - $payments['in_nb']).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-chinoibo">Thu TM phiếu thu (4): </p></td><td><b>'. to_currency($payments['in_nb']-0).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-chitrongky">Chi trong kỳ (5)=(6)+(7): </p></td><td><b>'. to_currency($payments['po']-0).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-chikhac">Chi khác (6): </p></td><td><b>'. to_currency($payments['po'] - $payments['nb']).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-chinoibo">Chi nội bộ (7): </p></td><td><b>'. to_currency($payments['nb']-0).'</b></td></tr>';
+	$table .= '<tr><td><p class="label-cuoiky">Cuối trong kỳ (8)=(1)+(2)-(5): </p></td><td><b>'. to_currency($payments['ending']).'</b></td></tr>';
 	
 	$table .= '</table></div></div>';
 

@@ -217,133 +217,10 @@ class History_ctv extends CI_Model
 	{
 		$this->db->from('history_ctv');
 		$this->db->where('sale_code', $sale_code);
-
+		$this->db->where('status', 0);
 		return ($this->db->get()->num_rows()==1);
 	}
 
-	public function update($sale_id, $sale_data, $payments, $employee_id,$customer_id,$amount_change,$points=0)
-	{
-		//$this->db->where('sale_id', $sale_id);
-		//$success = $this->db->update('sales', $sale_data);
-
-		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
-		//if($success && !empty($payments))
-		$success = 0;
-		if(!empty($payments))
-		{
-			//Run these queries as a transaction, we want to make sure we do all or nothing
-			$this->db->trans_start();
-
-            $this->db->where('sale_id', $sale_id);
-            $success = $this->db->update('sales', $sale_data);
-            // first delete all payments
-			// $this->db->delete('sales_payments', array('sale_id' => $sale_id));
-			$cus_obj = $this->Customer->get_info($customer_id);
-			// add new payments
-			foreach($payments as $payment)
-			{
-				if($payment['payment_amount'] == 0) //Số tiền bằng 0 thì không thực hiện ghi vào db
-				{
-					continue;
-				}
-				$sales_payments_data = array(
-					'sale_id' => $sale_id,
-					'payment_type' => $payment['payment_type'],
-					'payment_amount' => $payment['payment_amount']
-				);
-
-				$success = $this->db->insert('sales_payments', $sales_payments_data);
-				$payment_id = $this->db->insert_id();
-
-				if($payment['payment_type'] == $this->lang->line("sales_cash")) { // If tiền mặt then insert accounting
-				 
-					$data_total = array(
-						'creator_personal_id' => $employee_id,
-						'personal_id' => $customer_id, // this is a customer
-						'amount' => $payment['payment_amount']
-					);
-					$data_total['payment_type'] = $payment['payment_type'];
-					$data_total['kind'] = $payment['payment_kind'];
-					$data_total['payment_id'] = $payment_id;
-					$data_total['sale_id'] = $sale_id;
-					$this->Accounting->save_income($data_total);
-	
-					if($amount_change > 0) {
-						$out_data = array(
-							'creator_personal_id' => $employee_id,
-							'personal_id' => $customer_id, // this is a customer
-							'amount' => $amount_change
-						);
-						$out_data['payment_type'] = $payment['payment_type'];
-						$out_data['kind'] = 3;
-						$out_data['payment_id'] = $payment_id;
-						$out_data['sale_id'] = $sale_id;
-	
-	
-						$this->Accounting->save_payout($out_data);
-					}
-				} elseif($this->lang->line("sales_check") == $payment['payment_type'] || $payment['payment_type'] == $this->lang->line("sales_debit")) {
-					$data_total = array(
-						'creator_personal_id' => $employee_id,
-						'personal_id' => $customer_id, // this is a customer
-						'amount' => $payment['payment_amount']
-					);
-					$data_total['payment_type'] = $payment['payment_type'];
-					$data_total['kind'] = $payment['payment_kind'];
-					$data_total['payment_id'] = $payment_id;
-					$data_total['sale_id'] = $sale_id;
-					$data_total['payment_method'] = 1; //Banking;
-					$this->Accounting->save_income($data_total);
-				}
-			}
-
-			if($points > 0) // Nếu sử dụng điểm thanh toán
-			{
-				//1. Update ppoint cua kh
-				// Lấy thông tin của khách hàng này
-				//$customer_info = $cus_obj;
-				//var_dump($customer_info);die();
-				$customer_info['points'] = $cus_obj->points - $points;
-				$this->db->where('person_id',$customer_id);
-				$this->db->update('customers',$customer_info);
-
-				//2. insert ospos_history_points
-				//$sale_info = $this->Sale->get_info($sale_id)->row_array();
-				//var_dump($sale_id ); die();
-				$_aHistoryPoint = array(
-					'customer_id' =>$customer_id,
-					'sale_id' => $sale_id,
-					'sale_uuid' => '',
-					'created_date' =>time(),
-					'point' =>$points,
-					'type' => 1,
-					'note' =>'- '.$points . ' TT đơn hàng ID '. $sale_id
-				);
-				// Insert ospos_history_points
-				$this->db->insert('history_points', $_aHistoryPoint);
-
-				$data_total = array(
-					'creator_personal_id' => $employee_id,
-					'personal_id' => $customer_id, // this is a customer
-					'amount' => $points
-				);
-				$data_total['payment_type'] = 'point';
-				$data_total['kind'] = 'point';
-				$data_total['payment_id'] = 0;
-				$data_total['sale_id'] = $sale_id;
-				$data_total['payment_method'] = 2; //use point to payment;
-				$this->Accounting->save_income($data_total);
-				
-			}
-
-			$this->db->trans_complete();
-			
-			$success &= $this->db->trans_status();
-		}
-		
-		return $success;
-	}
-	
 	public function save($history_ctv_data)
 	{
 		$this->db->trans_start(); // start transaction mysql
@@ -351,7 +228,7 @@ class History_ctv extends CI_Model
 		$this->db->insert('history_ctv', $history_ctv_data);
 		$_id = $this->db->insert_id();
 
-		$sale_data['sync'] = 1;
+		$sale_data['sync'] = 3; //Lần sau bỏ qu
 		$this->db->where('sale_id', $history_ctv_data['sale_id']);
         $success = $this->db->update('sales', $sale_data);
 
@@ -387,66 +264,6 @@ class History_ctv extends CI_Model
 		return $result;
 	}
 
-	public function delete($sale_id, $employee_id, $update_inventory = TRUE) 
-	{
-		// start a transaction to assure data integrity
-		$this->db->trans_start();
-
-		// first delete all payments
-		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
-		// then delete all taxes on items
-		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
-
-		if($update_inventory)
-		{
-			// defect, not all item deletions will be undone??
-			// get array with all the items involved in the sale to update the inventory tracking
-			$items = $this->get_sale_items($sale_id)->result_array();
-			foreach($items as $item)
-			{
-				// create query to update inventory tracking
-				$inv_data = array(
-					'trans_date'      => date('Y-m-d H:i:s'),
-					'trans_items'     => $item['item_id'],
-					'trans_user'      => $employee_id,
-					'trans_comment'   => 'Xóa đơn hàng ' . $sale_id,
-					'trans_location'  => $item['item_location'],
-					'trans_inventory' => $item['quantity_purchased']
-				);
-				// update inventory
-				$this->Inventory->insert($inv_data);
-
-				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
-			}
-		}
-
-		// delete all items
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		// delete sale itself
-		$this->db->delete('sales', array('sale_id' => $sale_id));
-
-		// execute transaction
-		$this->db->trans_complete();
-	
-		return $this->db->trans_status();
-	}
-	public function get_sale_items($sale_id)
-	{
-		$this->db->from('sales_items');
-		$this->db->where('sale_id', $sale_id);
-		return $this->db->get();
-	}
-
-	public function get_sale_payments($sale_id)
-	{
-		$this->db->from('sales_payments');
-		$this->db->where('sale_id', $sale_id);
-
-		return $this->db->get();
-	}
-
-	
 	public function get_customer($history_id)
 	{
 		$this->db->from('history_ctv');
@@ -486,12 +303,62 @@ class History_ctv extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_sale_by_code($code)
+
+	public function get_the_last_record($input)
+	{
+		$this->db->select('*');
+
+		// Chọn bảng
+		$this->db->from('history_ctv');
+		$this->db->where('history_ctv.sale_id',$input['sale_id']);
+		$this->db->where('history_ctv.ctv_id',$input['ctv_id']);
+		// Sắp xếp theo cột timestamp (giả sử đây là cột chứa thời gian)
+		$this->db->order_by('created_time', 'DESC');
+
+		// Giới hạn số lượng bản ghi trả về là 1 (bản ghi cuối cùng)
+		$this->db->limit(1);
+
+		// Thực hiện truy vấn và lấy dữ liệu
+		$query = $this->db->get();
+
+		// Kiểm tra xem có kết quả hay không
+		if ($query->num_rows() > 0) {
+			// Lấy bản ghi cuối cùng
+			$result = $query->row();
+
+			// Xử lý dữ liệu ở đây
+			return $result;
+		} else {
+			// Không có bản ghi nào
+			return null;
+		}
+	}
+
+	public function get_sync_ctvs($status=0)
 	{
 		$this->db->from('sales');
-		$this->db->where('code', $code);
-		return $this->db->get()->row();
+		$this->db->where('sales.sync', $status);
+		$this->db->where('sales.ctv_id > ', 0);
+		return $this->db->get();
 	}
-	
+
+	public function is_synchroed($oSale)
+	{
+		return $this->exists_by_code($oSale->code);
+	}
+
+	public function do_update($oSale)
+	{
+		$_aRecord = [
+			'sync'=>3 //Đã đồng bộ, lần tiếp theo bỏ qua
+		];
+		$this->db->where('sales.sale_id', $oSale->sale_id);
+		$this->db->update('sales',$_aRecord);
+	}
+
+	public function do_synch($aSale)
+	{
+		return $this->save($aSale);
+	}
 }
 ?>
