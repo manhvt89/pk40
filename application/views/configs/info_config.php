@@ -46,7 +46,7 @@
 					<?php echo form_textarea(array(
 						'name' => 'address',
 						'id' => 'address',
-						'class' => 'form-control input-sm required',
+						'class' => 'form-control input-sm',
 						'value'=>$this->config->item('address'))); ?>
 				</div>
 			</div>
@@ -147,7 +147,6 @@ $(document).ready(function()
 		rules:
 		{
 			company: "required",
-			address: "required",
 			phone: "required",
     		email: "email",
     		return_policy: "required" 		
@@ -156,7 +155,6 @@ $(document).ready(function()
 		messages: 
 		{
 			company: "<?php echo $this->lang->line('config_company_required'); ?>",
-			address: "<?php echo $this->lang->line('config_address_required'); ?>",
 			phone: "<?php echo $this->lang->line('config_phone_required'); ?>",
 			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			return_policy: "<?php echo $this->lang->line('config_return_policy_required'); ?>"
