@@ -16,13 +16,13 @@ class Test_lib
 
 	public function old_data_test_by_customer($customer_id)
 	{
-		$tests = $this->CI->Testex->get_tests_by_customer($customer_id);
+		$tests = $this->CI->Testex->get_tests_by_customer($customer_id,4);
 		$test_id = $this->get_test_id();
 		$html = "<table width='100%' class='old_data table table-hover ' id='old_data_view'>
                   	<thead>
                   		<tr>
                   			<td>Ngày</td>
-                  			<td>Thông số</td>
+                  			<td>Kết quả</td>
 						</tr>
 					</thead>
 					<tbody>

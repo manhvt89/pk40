@@ -45,7 +45,11 @@
 			return data;
 		}
 	});
-	
+	var header_height = 0;
 	session_sha1 = '<?php echo $this->session->userdata('session_sha1'); ?>';
+	$(document).ready(function(){
+		header_height = $('header').height() + 10;
+		$('#content').css('padding-top', header_height+'px');
+		});
 
 </script>

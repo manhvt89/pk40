@@ -504,6 +504,7 @@
 	</table>
 
 	<!-- Đơn Thuốc -->
+	<?php if($this->config->item('has_prescription') == 1):?>
 	<table class="sales_table_100 s-100" id="prescription">
 		<thead>
 		<tr style="text-align:center">
@@ -526,6 +527,7 @@
 			<input type="text" id="search-input" placeholder="Tìm kiếm thuốc">
 			<ul id="search-results"></ul>
 	</div>
+	<?php endif; ?>
 	<!-- End Đơn Thuốc -->
 	<?php $today = strtotime(date('Y-m-d',time()));
 	      $next_day = $today + 24*60*60;//echo $test_time; ?>
@@ -1064,6 +1066,7 @@
 		<div class='btn btn-sm btn-success pull-right' id='update_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_complete_test'); ?></div>
 	<?php endif; ?>
 	<!-- Đơn Thuốc -->
+	<?php if($this->config->item('has_prescription') == 1):?>
 	<table class="sales_table_100 s-100" id="prescription">		
 		<thead>
 		<tr style="text-align:center">
@@ -1085,6 +1088,7 @@
 			<input type="text" id="search-input" placeholder="Tìm kiếm thuốc">
 			<ul id="search-results"></ul>
 	</div>
+	<?php endif; ?>
 	<!-- End Đơn Thuốc -->
 <?php endif; ?>
 

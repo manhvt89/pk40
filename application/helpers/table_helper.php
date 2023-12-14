@@ -349,7 +349,7 @@ function get_sale_data_row($sale)
 
 	$row = array (
 		'sale_id' => $sale->sale_id,
-		'bacsi_id'=>$sale->bacsi_id,
+		'bacsi_id'=>$sale->ctv_id,
 		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
 		'customer_name' => $sale->customer_name,
 		'amount_due' => number_format($sale->amount_due,0,',','.'),

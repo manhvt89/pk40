@@ -338,6 +338,31 @@
     stroke: #111
 }
 
+.wrapper .fixed-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 0px 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.wrapper .navbar {
+    margin-bottom: 0px;
+}
+
+.wrapper #header {
+    margin: 0;
+    background: #222;
+    text-align: center;
+    color: #fff;
+    font-size: 2em;
+    letter-spacing: 4px;
+    padding: 0;
+}
+
 .prescription_title {
     font-size: 20px;
     font-family: arial;
@@ -1232,5 +1257,14 @@ END for BILL
         font-size: 14px;
         font-family: arial;
     }
-    Ư Ư
+    .fixed-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
 }

@@ -344,17 +344,17 @@
 						var header_summary = msg.data.headers_summary;
 						var summary_data = msg.data.summary_data;
 						var header_details = msg.data.headers_details;
-											// Thêm dữ liệu chi tiết vào nội dung
-											// Hiển thị nội dung chi tiết trong dòng đã mở rộng
-											$_obt = {
-														field: 'payment_button',
-														title: 'Thanh Toán',
-														formatter: paymentFormatter,
-														events: {
-															'click .payment-btn': openPaymentPopup,
-														},
-													};
-											header_details.push($_obt);
+						// Thêm dữ liệu chi tiết vào nội dung
+						// Hiển thị nội dung chi tiết trong dòng đã mở rộng
+						$_obt = {
+									field: 'payment_button',
+									title: 'Thanh Toán',
+									formatter: paymentFormatter,
+									events: {
+										'click .payment-btn': openPaymentPopup,
+									},
+								};
+						header_details.push($_obt);
 
 						var init_dialog = function()
 						{
@@ -410,10 +410,6 @@
 										{
 										//var detail_data = msg.data.details_data;
 											var detail_data = data.data.details_data;
-												
-											
-											
-
 											$detail.html('<table></table>').find("table").bootstrapTable({
 												columns: header_details,
 												data: detail_data,
@@ -539,7 +535,13 @@
 							}
 						});
 						
-						detailTable.find('tbody tr').eq(currentRowIndex).addClass('edited-row');
+						//var element = detailTable.find('tbody tr').eq(currentRowIndex).addClass('edited-row');
+						var element = detailTable.find('tbody tr').eq(currentRowIndex);
+						var color = null;
+						var original = element.css('backgroundColor');
+						element.animate({ backgroundColor: color || '#e1ffdd' }, "slow", "linear")
+							.animate({ backgroundColor: color || '#e1ffdd' }, 5000)
+							.animate({ backgroundColor: original }, "slow", "linear");
 						/*
 						$('#table').bootstrapTable('updateRow', {
 							index: expandedRowIndex,

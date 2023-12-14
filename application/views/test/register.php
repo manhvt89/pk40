@@ -309,6 +309,7 @@ $(document).ready(function()
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
+		console.log('Handle_submit');
 		if(response.success) {
 			if (resource.match(/customers$/))
 			{
@@ -355,11 +356,11 @@ $(document).ready(function()
 		var $deleteButton = $('<button class="delete-button">Xóa</button>');
 		$deleteButton.on('click', function() {
 			$('#done_test_form').keypress(function(e){
-		if (e.keyCode == 13) {
-				e.preventDefault()
-				return false;
-			}
-		});
+				if (e.keyCode == 13) {
+						e.preventDefault()
+						return false;
+					}
+			});
 			var cf = confirm('Bạn chắc muốn xóa');
 			if(cf == true)
 			{

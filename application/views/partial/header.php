@@ -107,46 +107,51 @@
 
 <body>
 	<div class="wrapper">
-		<div class="topbar">
-			<div class="container">
-				<div class="navbar-left">
-					<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
-				</div>
-				
-				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
-					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
-				</div>
-			</div>
-		</div>
-
-		<div class="navbar navbar-default" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a>
-				</div>
-
-				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<?php foreach($allowed_modules as $module): ?>
-						<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
-							<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
-								<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
-								<?php echo $this->lang->line("module_".$module->module_key) ?>
-							</a>
-						</li>
-						<?php endforeach; ?>
-					</ul>
+		<header class="fixed-menu" id="header1">
+			<div class=" topbar">
+				<div class="container">
+					<div class="navbar-left">
+						<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
+					</div>
+					
+					<div class="navbar-right" style="margin:0">
+						<?php echo strip_tags($this->config->item('company')) . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
+						<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
+					</div>
+					<div class="navbar-left" style="margin:0px 25px">
+						<a href="https://docs.google.com/document/d/15-AAz6FNdPSoJUmGpATPykfwYCRMvezyttfjvHXp7yM/edit?usp=sharing" target="_blank"><b style="color: #fff;">Hướng dẫn sử dụng</b></a>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="container">
+			<div class="navbar navbar-default " role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
+					</div>
+
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<?php foreach($allowed_modules as $module): ?>
+							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
+								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
+									<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
+									<?php echo $this->lang->line("module_".$module->module_key) ?>
+								</a>
+							</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="container" id="content">
 			<div class="row">
 	 
