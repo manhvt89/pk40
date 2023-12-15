@@ -23,7 +23,7 @@ class Specific_cosoone extends Report
                 ['sale_date' => 'Ngày tháng'],
                 ['product_name' => 'Tên sản phẩm','footer-formatter'=>'iformatter'],
                 ['quantity' => 'Số lượng xuất','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter'],
-                ['item_cost_price' => 'Giá','align'=>'right', 'formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter'],
+                ['item_cost_price' => 'Giá','align'=>'right', 'formatter'=>'currencyFormatter'],
                 ['total_amount' => 'Thành tiền', 'sorter' => 'number_sorter','align'=>'right','footer-formatter'=>'totalformatter',
                     'formatter'=>'currencyFormatter',
                 'visible'=>'true'],
