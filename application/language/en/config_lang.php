@@ -188,3 +188,7 @@ $lang["config_number_locale_required"] = "Number Locale is a required field";
 $lang["config_number_locale_invalid"] = "The entered locale is invalid. Check the link in the tooltip to find a sensible value";
 $lang["config_number_locale_tooltip"] = "Find a suitable locale through this link";
 $lang["config_theme"] = "Theme";
+$lang["config_product"] = "Sản phẩm";
+$lang["config_product_configuration"] = "Thông tin sản phẩm";
+$lang["config_stock"] = "Kho";
+$lang["config_stock_configuration"] = "Thông tin kho";

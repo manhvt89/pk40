@@ -329,7 +329,30 @@ class Config extends Secure_Controller
 		$data['licenses'] = $this->_licenses();
 		$data['themes'] = $this->_themes();
 		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
+		$_caTab = [
+			'info' =>'info_tab',
+			'general'=>'general_tab',
+			'product'=>'product_tab',
+			'locale'=>'locale_tab',
+			'barcode'=>'barcode_tab',
+			'stock'=>'stock_tab',
+			'ctv'=>'ctv_tab',
+			'receipt'=>'receipt_tab',
+			'invoice'=>'invoice_tab',
+			'email'=>'email_tab',
+			'message'=>'message_tab',
+			'license'=>'license_tab'
+		];
+		$_aTab = [];
+		foreach($_caTab as $key=>$aTab)
+		{
+			if($this->Employee->has_grant('config_'.$aTab))
+			{
+				$_aTab[$key] = $aTab;
+			}
+		}
 
+		$data['aTabs'] = $_aTab;
 		$this->load->view("configs/manage", $data);
 	}
 		
@@ -763,6 +786,61 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($_data);
 		
 		echo json_encode(array('success' => 1, 'message' =>'Đã lưu thành công'));
+	}
+	/**
+	 * Bổ sung function để phân quyền
+	 */
+	public function info_tab()
+	{
+		return true;
+	}
+	public function general_tab()
+	{
+		return true;
+	}
+	public function product_tab()
+	{
+		return true;
+	}
+
+	public function locale_tab()
+	{
+		return true;
+	}
+	public function barcode_tab()
+	{
+		return true;
+	}
+	public function stock_tab()
+	{
+		return true;
+	}
+	public function ctv_tab()
+	{
+		return true;
+	}
+	public function receipt_tab()
+	{
+		return true;
+	}
+
+	public function invoice_tab()
+	{
+		return true;
+	}
+
+	public function email_tab()
+	{
+		return true;
+	}
+
+	public function message_tab()
+	{
+		return true;
+	}
+	public function license_tab()
+	{
+		return true;
 	}
 }
 ?>
