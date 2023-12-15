@@ -1085,4 +1085,152 @@ function get_receiving_manage_table_headers()
 
 	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE),array('payment' => '&nbsp', 'sortable' => FALSE))),TRUE);
 }
+
+function transform_headers_html($array, $readonly = FALSE, $editable = TRUE)
+{
+	$result = array();
+	$html = "";
+
+	if (!$readonly)
+	{
+		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+	}
+
+	if ($editable)
+	{
+		$array[] = array('edit' => '');
+	}
+
+	foreach($array as $element)
+	{
+		reset($element);
+		$_aDefault = [
+			'switchable' => '',
+			'sortable' => '',
+			'checkbox' => FALSE,
+			'class' => '',
+			'sorter' => '',
+			'halign'=>'',
+			'align'=>'', //left, right, center
+			'formatter'=>'',
+			'visible'=>TRUE,
+			'width'=>'',
+			'widthUnit'=>'',
+			'valign'=>'',//top, bottom; midlde
+			'title-tooltip'=>'',
+			'sort-name'=>'',
+			'order'=>'asc', //asc. desc
+			'events'=>'',
+			'escape'=>'',
+			'click-to-select'=>TRUE,
+			'checkbox-enabled'=>TRUE,
+			'checkbox'=>FALSE,
+			'cell-style'=>''
+		];
+		$_result = array('field' => key($element),
+			'title' => current($element),
+			/*
+			'switchable' => isset($element['switchable']) ?
+				$element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
+			'sortable' => isset($element['sortable']) ?
+				$element['sortable'] : current($element) != '',
+			'checkbox' => isset($element['checkbox']) ?
+				$element['checkbox'] : FALSE,
+			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
+				'print_hide' : '',
+			'sorter' => isset($element['sorter']) ?	$element ['sorter'] : '',
+			'halign'=>isset($element['halign']) ? $element ['halign'] : '',
+			'align'=>isset($element['align']) ? $element ['align'] : '',
+			'formatter'=>isset($element['formatter']) ? $element ['formatter'] : '',
+			*/
+		);
+		array_shift($element);
+		foreach($element as $k=>$v)
+		{
+			$_result[$k] = isset($v) ? $v : '';
+		}
+		$_result = array_merge($_aDefault,$_result);
+		
+		$html = $html."<th ";
+		foreach($_result as $k=>$v)
+		{
+			//$_result[$k] = isset($v) ? $v : '';
+			$html = $html . " data-".$k . "='".$v. "'";
+		}
+		$html = $html. "'>" .$_result['title'] ."</th>";
+		
+		//$_result = array_merge($_aDefault,$_result);
+		//$result[] = $_result;
+	}
+	//echo $html;die();
+	return $html;
+}
+
+function transform_headers_raw1($array, $readonly = FALSE, $editable = TRUE)
+{
+	$result = array();
+
+	if (!$readonly)
+	{
+		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+	}
+
+	if ($editable)
+	{
+		$array[] = array('edit' => '');
+	}
+
+	foreach($array as $element)
+	{
+		reset($element);
+		$_aDefault = [
+			'switchable' => '',
+			'sortable' => '',
+			'checkbox' => FALSE,
+			'class' => '',
+			'sorter' => '',
+			'halign'=>'',
+			'align'=>'', //left, right, center
+			'formatter'=>'',
+			'visible'=>TRUE,
+			'width'=>'',
+			'widthUnit'=>'',
+			'valign'=>'',//top, bottom; midlde
+			'title-tooltip'=>'',
+			'sort-name'=>'',
+			'order'=>'asc', //asc. desc
+			'events'=>'',
+			'escape'=>'',
+			'click-to-select'=>TRUE,
+			'checkbox-enabled'=>TRUE,
+			'checkbox'=>FALSE,
+			'cell-style'=>''
+		];
+		$_result = array('field' => key($element),
+			'title' => current($element),
+			/*
+			'switchable' => isset($element['switchable']) ?
+				$element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
+			'sortable' => isset($element['sortable']) ?
+				$element['sortable'] : current($element) != '',
+			'checkbox' => isset($element['checkbox']) ?
+				$element['checkbox'] : FALSE,
+			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
+				'print_hide' : '',
+			'sorter' => isset($element['sorter']) ?	$element ['sorter'] : '',
+			'halign'=>isset($element['halign']) ? $element ['halign'] : '',
+			'align'=>isset($element['align']) ? $element ['align'] : '',
+			'formatter'=>isset($element['formatter']) ? $element ['formatter'] : '',
+			*/
+		);
+		array_shift($element);
+		foreach($element as $k=>$v)
+		{
+			$_result[$k] = isset($v) ? $v : '';
+		}
+		$_result = array_merge($_aDefault,$_result);
+		$result[] = $_result;
+	}
+	return $result;
+}
 ?>

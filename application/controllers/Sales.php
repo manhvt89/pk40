@@ -1236,7 +1236,7 @@ class Sales extends Secure_Controller
 
 	public function receipt($uuid)
 	{
-		$sale_info = $this->Sale->get_info_by_uuid($uuid)->row();
+		$sale_info = $this->Sale->get_info($uuid)->row();
 		//var_dump($sale_info);
 		$sale_id = 0;
 		if(!empty($sale_info))

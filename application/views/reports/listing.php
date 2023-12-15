@@ -26,6 +26,7 @@ if(isset($error))
 				?>
 				<a class="list-group-item" href="<?php echo site_url('reports/partner');?>"><?php echo 'Doanh thu theo CTV'; ?></a>
 				<a class="list-group-item" href="<?php echo site_url('reports/customer_care');?>"><?php echo 'Kết quả chăm sóc khác hàng'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/cosoone');?>"><?php echo 'Xuất nội bộ'; ?></a>
 				<?php  if( $bUser_type == 2): ?>
 				<a class="list-group-item" href="/reports/graphical_summary_sales">Báo cáo hình ảnh</a>
 				<?php endif; ?>

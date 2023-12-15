@@ -413,6 +413,7 @@ class Config extends Secure_Controller
 			'custom8_name' => $this->input->post('custom8_name'),
 			'custom9_name' => $this->input->post('custom9_name'),
 			'custom10_name' => $this->input->post('custom10_name'),
+			'config_partner'=>$this->input->post('config_partner'),
 			'statistics' => $this->input->post('statistics') != NULL,
 		);
 		

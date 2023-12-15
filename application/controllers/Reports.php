@@ -4459,6 +4459,89 @@ class Reports extends Secure_Controller
         $json = array('result'=>$result,'data'=>$data);
         echo json_encode($json);
 	}
+
+    public function cosoone()
+	{
+		$data = array();
+		$data['specific_input_name'] = 'Báo cáo xuất hàng nội bộ';
+		$this->load->model('reports/Specific_cosoone');
+		$model = $this->Specific_cosoone;
+
+        $headers = $this->xss_clean($model->getDataColumns());
+
+        $data['headers'] = transform_headers_html($headers['summary'],true,false);
+		$this->load->view('reports/cosoone_input', $data);
+	}
+
+	public function ajax_cosoone()
+	{
+        $this->load->model('reports/Specific_cosoone');
+		$model = $this->Specific_cosoone;
+
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        
+        $result = 1;
+
+        $inputs = array(
+                'start_date'=>$_sFromDate,
+                'end_date'=>$_sToDate,
+                
+            );
+        $model->create($inputs);
+
+        $headers = $this->xss_clean($model->getDataColumns());
+        if($this->config->item('config_partner') != '')
+        {
+            $report_data = $model->getData($inputs);
+
+            $summary_data = array();
+            $details_data = array();
+
+            $data = null;
+            if(!$report_data)
+            {
+                $result = 0;
+            }else{
+                $summary_data = [];
+                $details_data = [];
+                $i = 1;
+                foreach($report_data['summary'] as $key => $row)
+                {
+                    //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                    $row['id'] = $i;
+                    $summary_data[] = $this->xss_clean($row);
+                    
+                    
+                    $i++;
+                }
+
+                $data = array(
+                    'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+                    'headers_details' => [],
+                    'summary_data' => $summary_data,
+                    'details_data' => $details_data,
+                    'report_data' =>$report_data
+                );
+
+            }
+        } else {
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+                'headers_details' => [],
+                'summary_data' => [],
+                'details_data' => [],
+                'report_data' =>[]
+            );
+        }
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
     
 }
 ?>
