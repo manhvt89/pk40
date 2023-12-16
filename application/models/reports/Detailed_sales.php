@@ -132,7 +132,7 @@ class Detailed_sales extends Report
 	{
         $CI =& get_instance();
         $person_id = $CI->session->userdata('person_id');
-        if($CI->Employee->has_grant('reports_sales-accounting', $person_id)) {
+        if($CI->Employee->has_grant('reports_sales_accounting', $person_id)) {
             $this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
         }else{
             $this->db->select('SUM(total) AS total');
