@@ -5,7 +5,9 @@
 <div id="page_subtitle"><?php echo $subtitle ?></div>
 
 <div id="table_holder">
-	<table id="table"></table>
+	<table id="table" data-export-types="['excel']">
+
+	</table>
 </div>
 
 <div id="report_summary">
@@ -45,7 +47,7 @@
 			striped: true,
 			pagination: true,
 			sortable: true,
-			showColumns: true,
+			showColumns: false,
 			uniqueId: 'id',
 			showExport: true,
 			data: <?php echo json_encode($summary_data); ?>,
