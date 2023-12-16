@@ -808,7 +808,7 @@ $(document).ready(function()
 		source: '<?php echo site_url("customers/suggest"); ?>',
     	minChars: 4,
 		autoFocus: false,
-    	delay: 10,
+    	delay: 600,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#select_customer_form").submit();
