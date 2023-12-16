@@ -1057,6 +1057,9 @@ content: attr(data-th);
 /*
 END for BILL
 */
+    #content {
+        padding-top: 10px !important;
+    }
     .barcode {
         padding-bottom: 20px;
     }
