@@ -1,7 +1,10 @@
 Update
+16/12/2023
+Update
 07/12/2023
 - Bổ sung thêm việc thanh toán cho đơn nhập hàng và quản lý công nợ nhập hàng
 - Cần cấp quyền receivings_manage
+ALTER TABLE `ospos_sales` ADD `completed_at` int(11) NOT NULL DEFAULT 0 AFTER `sync`;
 ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 ALTER TABLE `ospos_items` ADD `updated_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 

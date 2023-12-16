@@ -33,7 +33,15 @@ class Employees extends Persons
 		$data_rows = array();
 		foreach($employees->result() as $person)
 		{
-			$data_rows[] = get_person_data_row($person, $this);
+			if(!$this->Employee->has_grant('employees_is_super_admin'))
+			{
+				if($person->person_id > 1)
+				{
+					$data_rows[] = get_person_data_row($person, $this);
+				}
+			} else {
+				$data_rows[] = get_person_data_row($person, $this);
+			}
 		}
 
 		$data_rows = $this->xss_clean($data_rows);
@@ -219,6 +227,11 @@ class Employees extends Persons
 		{
 			echo json_encode(array('success' => FALSE,'message' => $this->lang->line('employees_cannot_be_deleted')));
 		}
+	}
+
+	public function is_super_admin()
+	{
+
 	}
 }
 ?>
