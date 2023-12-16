@@ -4511,16 +4511,27 @@ class Reports extends Secure_Controller
                 $summary_data = [];
                 $details_data = [];
                 $i = 1;
+                $total_amount = 0;
+                $total_quantity = 0;
                 foreach($report_data['summary'] as $key => $row)
                 {
+                    //var_dump($row);
+                    $total_quantity = $total_quantity + $row['quantity'];
+                    $total_amount = $total_amount + $row['total_amount'];
                     //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
                     $row['id'] = $i;
                     $summary_data[] = $this->xss_clean($row);
-                    
-                    
                     $i++;
                 }
-
+                $footer = [
+                    'id'=>'',
+                    'sale_date'=>'',
+                    'item_cost_price'=>'',
+                    'product_name'=>'<b>Tổng cộng</b>',
+                    'quantity'=>$total_quantity,
+                    'total_amount'=>$total_amount
+                ];
+                $summary_data[] = $footer;
                 $data = array(
                     'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
                     'headers_details' => [],

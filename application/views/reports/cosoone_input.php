@@ -31,7 +31,9 @@ if(isset($error))
 	</div>	
 	<table id="table" 
 			data-export-types="['excel']"
-			data-show-footer="true"
+			data-show-footer="false"
+			data-export-footer="false"
+			data-show-columns="false"
 			>
 		<thead>
 			<tr>
@@ -79,11 +81,11 @@ if(isset($error))
 						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							//columns: header_summary,
+							exportFooter: true,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 							striped: true,
 							pagination: true,
 							sortable: true,
-							showColumns: true,
 							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
@@ -139,12 +141,12 @@ if(isset($error))
 						header_summary[5].formatter = window[header_summary.formatter];
 						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
-							columns: header_summary,
+							//columns: header_summary,
+							exportFooter: true,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 							striped: true,
 							pagination: true,
 							sortable: true,
-							showColumns: true,
 							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
@@ -174,9 +176,14 @@ if(isset($error))
 		{
 			console.log(value);
 			var color = '#' + Math.floor(Math.random() * 6777215).toString(16)
+			$_return = Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 });
+			if($_return == '0')
+			{
+				$_return = '-';
+			}
 			return '<div style="color: ' + color + '">' +
 			'<i class="fa fa-dollar-sign"></i>' +
-			Number(value).toLocaleString('vi-VN', { maximumFractionDigits: 0 }) +
+			$_return +
 			'</div>'
 		}
 
@@ -196,17 +203,17 @@ if(isset($error))
 			}).reduce(function (sum, i) {
 			return sum + i
 			}, 0)
-			result = Number(result).toLocaleString('vi-VN', { maximumFractionDigits: 0 });
+			result = Number(result).toLocaleString('en-US', { maximumFractionDigits: 0 });
 			return result;
 		}
 
 		$('#table').bootstrapTable({
 							//columns: header_summary,
+							exportFooter: true,
 							pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 							striped: true,
 							pagination: true,
 							sortable: true,
-							showColumns: true,
 							uniqueId: 'id',
 							showExport: true,
 							data: [],
