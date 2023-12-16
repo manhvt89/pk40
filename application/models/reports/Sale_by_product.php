@@ -22,10 +22,10 @@ class Sale_by_product extends Report
                 ['id' => '#','align'=>'center'],        
                 ['product_name' => 'Tên sản phẩm','footer-formatter'=>'iformatter'],
 				['item_number' => 'Mã sản phẩm','footer-formatter'=>'iformatter'],
-                ['quantity' => 'Số lượng xuất','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter'],
-                ['total_cost_amount' => 'Thành tiền giá vốn','align'=>'right', 'formatter'=>'currencyFormatter'],
-                ['total_revenue_amount' => 'Doanh thu', 'sorter' => 'number_sorter','align'=>'right','footer-formatter'=>'totalformatter',
-                    'formatter'=>'currencyFormatter',
+                ['quantity' => 'Số lượng xuất','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter','sortable'=>true],
+                ['total_cost_amount' => 'Thành tiền giá vốn','align'=>'right', 'formatter'=>'currencyFormatter','sortable'=>true],
+                ['total_revenue_amount' => 'Doanh thu','align'=>'right','footer-formatter'=>'totalformatter',
+                    'formatter'=>'currencyFormatter', 'sortable'=>true,
                 'visible'=>'true'],
             ]
         );
@@ -43,6 +43,7 @@ class Sale_by_product extends Report
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id');
 		$this->db->where('DATE(sales.sale_time) BETWEEN '. $this->db->escape($inputs['start_date']) .' AND '. $this->db->escape($inputs['end_date']));
 		$this->db->group_by('items.item_id');
+		$this->db->order_by('quantity desc');
 
 		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
