@@ -17,6 +17,9 @@ if(isset($error))
 				<?php 			
 				$person_id = $this->session->userdata('person_id');
 				show_report_if_allowed('detailed', 'sales', $person_id);
+				?>
+				<a class="list-group-item" href="<?php echo site_url('reports/sale_by_product');?>"><?php echo 'Bán hàng theo sản phẩm'; ?></a>
+				<?php
 				show_report_if_allowed('detailed', 'receivings', $person_id);
 				//show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
 				//show_report_if_allowed('specific', 'discount', $person_id, 'reports_discounts');

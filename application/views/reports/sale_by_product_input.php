@@ -15,7 +15,7 @@ if(isset($error))
 	echo form_button(array(
 		'name'=>'generate_report',
 		'id'=>'generate_report',
-		'content'=>$this->lang->line('common_submit'),
+		'content'=>$this->lang->line('generate_report'),
 		'class'=>'btn btn-primary btn-sm')
 	);
 	?>

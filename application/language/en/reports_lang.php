@@ -140,3 +140,4 @@ $lang["reports_more_than_zero"] = "More than zero";
 $lang["reports_no_reports_to_display"] = "Không có sản phẩm nào để hiển thị";
 $lang['reports_sales-accounting'] = 'Kế toán bán hàng';
 $lang['reports_receiving-accounting'] = 'Kế toàn nhập hàng';
+$lang['generate_report'] = "Tạo báo cáo";
