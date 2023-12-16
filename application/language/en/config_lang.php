@@ -195,3 +195,4 @@ $lang["config_stock_configuration"] = "Thông tin kho";
 $lang['config_partner'] = "Cơ sở 2";
 $lang['config_partner3'] = "Cơ sở 3";
 $lang['config_partner4'] = "Cơ sở 4";
+$lang['config_guide'] = "URL hướng dẫn";

@@ -107,7 +107,19 @@
 					</div>
 				</div>
 			</div>
-
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_guide'), 'guide', array('class' => 'control-label col-xs-2')); ?>
+				<div class="col-xs-6">
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-globe"></span></span>
+						<?php echo form_input(array(
+							'name' => 'guide',
+							'id' => 'guide',
+							'class' => 'form-control input-sm',
+							'value'=>$this->config->item('guide'))); ?>
+					</div>
+				</div>
+			</div>
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>

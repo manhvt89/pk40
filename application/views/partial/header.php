@@ -119,7 +119,7 @@
 						<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 					</div>
 					<div class="navbar-left" style="margin:0px 25px">
-						<a href="https://docs.google.com/document/d/15-AAz6FNdPSoJUmGpATPykfwYCRMvezyttfjvHXp7yM/edit?usp=sharing" target="_blank"><b style="color: #fff;">Hướng dẫn sử dụng</b></a>
+						<a href="<?=$this->config->item('guide')==''?'https://docs.google.com/document/d/15-AAz6FNdPSoJUmGpATPykfwYCRMvezyttfjvHXp7yM/edit#heading=h.oja56yjzebgv':$this->config->item('guide')?>" target="_blank"><b style="color: #fff;">Hướng dẫn sử dụng</b></a>
 					</div>
 				</div>
 			</div>

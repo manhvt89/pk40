@@ -368,6 +368,7 @@ class Config extends Secure_Controller
 			'email' => $this->input->post('email'),
 			'fax' => $this->input->post('fax'),
 			'website' => $this->input->post('website'),	
+			'guide' => $this->input->post('guide'),
 			'return_policy' => $this->input->post('return_policy')
 		);
 		
