@@ -138,7 +138,7 @@ if(isset($error))
 
 						};
 						*/
-						header_summary[5].formatter = window[header_summary.formatter];
+						//header_summary[5].formatter = window[header_summary.formatter];
 						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							//columns: header_summary,
