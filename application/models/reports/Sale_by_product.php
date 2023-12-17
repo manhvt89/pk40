@@ -21,7 +21,8 @@ class Sale_by_product extends Report
             'summary' => [
                 ['id' => '#','align'=>'center'],        
                 ['product_name' => 'Tên sản phẩm','footer-formatter'=>'iformatter'],
-				['item_number' => 'Mã sản phẩm','footer-formatter'=>'iformatter'],
+				['item_number' => 'Mã sản phẩm','footer-formatter'=>'iformatter','visible'=>'false'],
+				['category' => 'Danh mục','footer-formatter'=>'iformatter','visible'=>'true'],
                 ['quantity' => 'Số lượng xuất','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter','sortable'=>true],
                 ['total_cost_amount' => 'Thành tiền giá vốn','align'=>'right', 'formatter'=>'currencyFormatter','sortable'=>true],
                 ['total_revenue_amount' => 'Doanh thu','align'=>'right','footer-formatter'=>'totalformatter',
@@ -35,7 +36,7 @@ class Sale_by_product extends Report
 	public function getData(array $inputs)
 	{
         
-        $this->db->select('items.name AS product_name,  SUM(sales_items.quantity_purchased) AS quantity, items.item_number AS item_number,
+        $this->db->select('items.name AS product_name,  SUM(sales_items.quantity_purchased) AS quantity, items.item_number AS item_number,items.category AS category,
                       SUM(sales_items.item_cost_price * sales_items.quantity_purchased) AS total_cost_amount, 
                       SUM(sales_items.item_unit_price * sales_items.quantity_purchased) AS total_revenue_amount');
 		$this->db->from('sales_items AS sales_items');
@@ -43,7 +44,7 @@ class Sale_by_product extends Report
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id');
 		$this->db->where('DATE(sales.sale_time) BETWEEN '. $this->db->escape($inputs['start_date']) .' AND '. $this->db->escape($inputs['end_date']));
 		$this->db->group_by('items.item_id');
-		$this->db->order_by('quantity desc');
+		$this->db->order_by('category desc');
 
 		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
