@@ -4642,6 +4642,95 @@ class Reports extends Secure_Controller
         $json = array('result'=>$result,'data'=>$data);
         echo json_encode($json);
 	}
+
+    public function sale_by_category()
+	{
+		$data = array();
+		$data['report_title'] = 'Báo cáo bán hàng theo sản phẩm';
+		$this->load->model('reports/Sale_by_category');
+		$model = $this->Sale_by_category;
+
+        $headers = $this->xss_clean($model->getDataColumns());
+
+        $data['headers'] = transform_headers_html($headers['summary'],true,false);
+		$this->load->view('reports/sale_by_category_input', $data);
+	}
+
+	public function ajax_sale_by_category()
+	{
+       
+		$this->load->model('reports/Sale_by_category');
+        $model = $this->Sale_by_category;
+    
+        $_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        
+        $result = 1;
+
+        $inputs = array(
+                'start_date'=>$_sFromDate,
+                'end_date'=>$_sToDate,
+                
+            );
+        //$model->create($inputs);
+
+        $headers = $this->xss_clean($model->getDataColumns());
+        
+        $report_data = $model->getData($inputs);
+
+        $summary_data = array();
+        $details_data = array();
+
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = [];
+            $details_data = [];
+            $i = 1;
+            $total_revenue_amount = 0;
+            $total_cost_amount = 0;
+            $total_quantity = 0;
+            foreach($report_data['summary'] as $key => $row)
+            {
+                //var_dump($row);
+                $total_quantity = $total_quantity + $row['quantity'];
+                $total_revenue_amount = $total_revenue_amount + $row['total_revenue_amount'];
+                $total_cost_amount = $total_cost_amount + $row['total_cost_amount'];
+                //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                $row['id'] = $i;
+                $summary_data[] = $this->xss_clean($row);
+                $i++;
+            }
+            $footer = [
+                'id'=>'',
+                'sale_date'=>'',
+                'item_cost_price'=>'',
+                'product_name'=>'<b>Tổng cộng</b>',
+                'quantity'=>$total_quantity,
+                'total_revenue_amount'=>$total_revenue_amount,
+                'total_cost_amount'=>$total_cost_amount
+            ];
+            $summary_data[] = $footer;
+            $data = array(
+                'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+                'headers_details' => [],
+                'summary_data' => $summary_data,
+                'details_data' => $details_data,
+                'report_data' =>$report_data
+            );
+
+        }
+        
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
     
 }
 ?>

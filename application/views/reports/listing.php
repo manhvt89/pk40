@@ -19,6 +19,7 @@ if(isset($error))
 				show_report_if_allowed('detailed', 'sales', $person_id);
 				?>
 				<a class="list-group-item" href="<?php echo site_url('reports/sale_by_product');?>"><?php echo 'Bán hàng theo sản phẩm'; ?></a>
+				<a class="list-group-item" href="<?php echo site_url('reports/sale_by_category');?>"><?php echo 'Bán hàng theo danh mục'; ?></a>
 				<?php
 				show_report_if_allowed('detailed', 'receivings', $person_id);
 				//show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
