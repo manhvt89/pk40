@@ -4710,9 +4710,7 @@ class Reports extends Secure_Controller
             }
             $footer = [
                 'id'=>'',
-                'sale_date'=>'',
-                'item_cost_price'=>'',
-                'product_name'=>'<b>Tổng cộng</b>',
+                'category'=>'<b>Tổng cộng</b>',
                 'quantity'=>$total_quantity,
                 'total_revenue_amount'=>$total_revenue_amount,
                 'total_cost_amount'=>$total_cost_amount
