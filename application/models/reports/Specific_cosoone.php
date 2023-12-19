@@ -27,6 +27,7 @@ class Specific_cosoone extends Report
                 ['total_amount' => 'Thành tiền', 'sorter' => 'number_sorter','align'=>'right','footer-formatter'=>'totalformatter',
                     'formatter'=>'currencyFormatter',
                 'visible'=>'true'],
+                ['comment'=>'Ghi chú']
             ]
         );
     
@@ -37,7 +38,7 @@ class Specific_cosoone extends Report
         $account_number = $this->config->item('config_partner');
         $_oCustomer = $this->Customer->get_info_by_account_number($account_number);
         //var_dump($_oCustomer);
-		$this->db->select('items.name AS product_name, 
+		$this->db->select('items.name AS product_name, sales.comment as comment,
                             sales_items.quantity_purchased AS quantity,
                             sales_items.item_cost_price,
                             ROUND(sales_items.item_cost_price * sales_items.quantity_purchased, 0) AS total_amount, 
