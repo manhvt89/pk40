@@ -591,7 +591,7 @@ class Purchases extends Secure_Controller
 			$worksheet = $spreadsheet->getActiveSheet(0);
 			//var_dump($worksheet);
             $array_data  = [];
-			$highestColumn = 6;
+			$highestColumn = 16;
 			$_blFlag = true;
 			$_iMaxColumn = 0;
 
@@ -606,7 +606,7 @@ class Purchases extends Secure_Controller
 				}
 			}
 			//echo $_iMaxColumn; die();
-			if ($_iMaxColumn == 7) // Chỉ xử  lý định dạng 7 cột; không có barcode tự sinh bacode
+			if ($_iMaxColumn == 16) // Chỉ xử  lý định dạng 7 cột; không có barcode tự sinh bacode
 			{
 				$_iLogedUserID = $this->Employee->get_logged_in_employee_info()->person_id;
 				$_oLogedUser = $this->Employee->get_info($_iLogedUserID);
@@ -636,7 +636,16 @@ class Purchases extends Secure_Controller
 						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['2']), //Giá nhập
 						'quanlity' => $sheet_data[$i]['4'],
 						'custom1' => $sheet_data[$i]['5'],
-						'description' => $sheet_data[$i]['6']
+						'description' => $sheet_data[$i]['6'],
+						'custom2' => $sheet_data[$i]['7'],
+						'custom3' => $sheet_data[$i]['8'],
+						'custom4' => $sheet_data[$i]['9'],
+						'custom5' => $sheet_data[$i]['10'],
+						'custom6' => $sheet_data[$i]['11'],
+						'custom7' => $sheet_data[$i]['12'],
+						'custom8' => $sheet_data[$i]['13'],
+						'custom9' => $sheet_data[$i]['14'],
+						'custom10' => $sheet_data[$i]['15']
 
 					);
 					
@@ -650,7 +659,7 @@ class Purchases extends Secure_Controller
 				$this->purchase_lib->set_check(0); //reset lại biến kiểm tra; cần phải kiểm tra. nhấn nút kiểm tra;
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
 			}
-			elseif($_iMaxColumn == 8) // Xử lý định dạng 6 cột
+			elseif($_iMaxColumn == 17) // Xử lý định dạng 8 cột
 			{
 				for($i = 1; $i < count($sheet_data); $i++) {
 					//$rowData = $sheet->rangeToArray('A' . $i . ':' . $highestColumn . $i,NULL,TRUE,FALSE);
@@ -669,7 +678,16 @@ class Purchases extends Secure_Controller
 						'cost_price'=> extract_price_excel_to_vnd($sheet_data[$i]['3']), //Giá nhập
 						'quanlity' => $_quanlity,
 						'custom1' => $sheet_data[$i]['6'],
-						'description' => $sheet_data[$i]['7']
+						'description' => $sheet_data[$i]['7'],
+						'custom2' => $sheet_data[$i]['8'],
+						'custom3' => $sheet_data[$i]['9'],
+						'custom4' => $sheet_data[$i]['10'],
+						'custom5' => $sheet_data[$i]['11'],
+						'custom6' => $sheet_data[$i]['12'],
+						'custom7' => $sheet_data[$i]['13'],
+						'custom8' => $sheet_data[$i]['14'],
+						'custom9' => $sheet_data[$i]['15'],
+						'custom10' => $sheet_data[$i]['16']
 					);
 					if(!$this->Item->item_number_exists($data['item_number']))
 					{
