@@ -648,7 +648,7 @@ class Purchases extends Secure_Controller
 						'custom10' => $sheet_data[$i]['15']
 
 					);
-					var_dump($data);
+					//var_dump($data);
 					$this->purchase_lib->add_item($data);
 					$array_data[] = $data;
 				}
