@@ -235,7 +235,7 @@ class Purchases extends Secure_Controller
 			$completed = 0;
 			$data = $this->xss_clean($data);
 			//SAVE PO to database
-			var_dump($data['cart']);die();
+			//var_dump($data['cart']);die();
 			$_purchase_id = $this->Purchase->save($data['cart'], $data['quantity'], $supplier_id, $employee_id, $name, $code, $comment, $completed);
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
 		} else { // Chỉnh sửa lại

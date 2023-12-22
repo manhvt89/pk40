@@ -126,7 +126,7 @@ class Purchase extends CI_Model
                         'custom10'				=> empty($item['custom10'])==true?'':$item['custom10']
                     );
 					$item_data['item_number']=$item['item_number'];
-
+					var_dump($item_data);
 					if ($this->Item->save($item_data)) 
 					{
 						$items_taxes_data = NULL;
