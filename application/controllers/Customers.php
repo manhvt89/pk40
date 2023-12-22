@@ -5,6 +5,7 @@ require_once("Persons.php");
 class Customers extends Persons
 {
     public $person_id;
+	public $logedUser_type;
     public function __construct()
 	{
 		parent::__construct('customers');
@@ -395,6 +396,44 @@ class Customers extends Persons
 	public function phonenumber_hide()
 	{
 		exit();
+	}
+
+	public function view_detail($uuid)
+	{
+		$uuid = $this->input->get('uuid');
+		$info = new stdClass();
+		if(strlen($uuid) > 20 )
+		{
+			$info = $this->Customer->get_info_by_uuic($uuid);
+		} else {
+			$info = $this->Customer->get_info($uuid);
+		}
+		foreach(get_object_vars($info) as $property => $value)
+		{
+			$info->$property = $this->xss_clean($value);
+		}
+		$city_ = get_cities_list();
+        $cities = array();
+        foreach ($city_ as $key=>$value)
+        {
+            $cities[$value] = $value;
+        }
+		$data['city'] = $this->config->item('default_city');//'Bình Thuận';
+        /* if($data['city'] == '' || $data['city'] == 'HN')
+        {
+            $data['city'] = 'Bình Thuận';
+        } */
+		if($info->age = '')
+		{
+			$info->age = 30;
+		}
+		//var_dump($info);
+		$info->first_name = get_fullname($info->first_name, $info->last_name);
+		$data['person_info'] = $info;
+        $data['cities'] = $cities;
+		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
+		$this->load->view("customers/detail", $data);
+
 	}
 }
 ?>
