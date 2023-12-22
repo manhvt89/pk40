@@ -336,7 +336,18 @@ class Purchase_lib
 				'item_category' => $item_info->category,
 				'line' => $insertkey,
 				'total' => $this->get_item_total($quantity, $price,0),
-				'status' => 9 //Item từ kho (không cho sửa barcode)
+				'status' => 9, //Item từ kho (không cho sửa barcode)
+				'custom1'=>$item_info->custom1,
+				'description'=>$item_info->description,
+				'custom2'=>$item_info->custom2,
+				'custom3'=>$item_info->custom3,
+				'custom4'=>$item_info->custom4,
+				'custom5'=>$item_info->custom5,
+				'custom6'=>$item_info->custom6,
+				'custom7'=>$item_info->custom7,
+				'custom8'=>$item_info->custom8,
+				'custom9'=>$item_info->custom9,
+				'custom10'=>$item_info->custom10,
 			);
 			//add to existing array
 			$items[$insertkey] = $item;
@@ -456,6 +467,15 @@ class Purchase_lib
 			$_aItem['category'] = $row->item_category;
 			$_aItem['custom1'] = $row->custom1;
 			$_aItem['description'] = $row->description;
+			$_aItem['custom2'] = $row->custom2;
+			$_aItem['custom3'] = $row->custom3;
+			$_aItem['custom4'] = $row->custom4;
+			$_aItem['custom5'] = $row->custom5;
+			$_aItem['custom6'] = $row->custom6;
+			$_aItem['custom7'] = $row->custom7;
+			$_aItem['custom8'] = $row->custom8;
+			$_aItem['custom9'] = $row->custom9;
+			$_aItem['custom10'] = $row->custom10;
 
 			if($row->type == 0 || $row->type == 2)
 			{
