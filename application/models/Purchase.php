@@ -115,15 +115,15 @@ class Purchase extends CI_Model
                         'allow_alt_description'	=> '0',
                         'is_serialized'			=> '0',
                         'custom1'				=> empty($item['custom1'])==true?'':$item['custom1'],
-                        'custom2'				=> '',
-                        'custom3'				=> '',
-                        'custom4'				=> '',
-                        'custom5'				=> '',
-                        'custom6'				=> '',
-                        'custom7'				=> '',
-                        'custom8'				=> '',
-                        'custom9'				=> '',
-                        'custom10'				=> ''
+                        'custom2'				=> empty($item['custom2'])==true?'':$item['custom2'],
+                        'custom3'				=> empty($item['custom3'])==true?'':$item['custom3'],
+                        'custom4'				=> empty($item['custom4'])==true?'':$item['custom4'],
+                        'custom5'				=> empty($item['custom5'])==true?'':$item['custom5'],
+                        'custom6'				=> empty($item['custom6'])==true?'':$item['custom6'],
+                        'custom7'				=> empty($item['custom7'])==true?'':$item['custom7'],
+                        'custom8'				=> empty($item['custom8'])==true?'':$item['custom8'],
+                        'custom9'				=> empty($item['custom9'])==true?'':$item['custom9'],
+                        'custom10'				=> empty($item['custom10'])==true?'':$item['custom10']
                     );
 					$item_data['item_number']=$item['item_number'];
 
