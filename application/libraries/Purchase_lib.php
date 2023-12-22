@@ -177,6 +177,15 @@ class Purchase_lib
 		$quantity = trim($_aItem['quanlity']);
 		$category = trim($_aItem['category']);
 		$custom1 = trim($_aItem['custom1']);
+		$custom2 = trim($_aItem['custom2']);
+		$custom3 = trim($_aItem['custom3']);
+		$custom4 = trim($_aItem['custom4']);
+		$custom5 = trim($_aItem['custom5']);
+		$custom6 = trim($_aItem['custom6']);
+		$custom7 = trim($_aItem['custom7']);
+		$custom8 = trim($_aItem['custom8']);
+		$custom9 = trim($_aItem['custom9']);
+		$custom10 = trim($_aItem['custom10']);
 		$description = trim($_aItem['description']);
 	
 		$status = isset($_aItem['status'])? trim($_aItem['status']):0 ;
@@ -238,7 +247,16 @@ class Purchase_lib
 				'total' => $this->get_item_total($quantity, $cost_price, 0),
 				'status' => $status,
 				'custom1'=>$custom1,
-				'description'=>$description
+				'description'=>$description,
+				'custom2'=>$custom2,
+				'custom3'=>$custom3,
+				'custom4'=>$custom4,
+				'custom5'=>$custom5,
+				'custom6'=>$custom6,
+				'custom7'=>$custom7,
+				'custom8'=>$custom8,
+				'custom9'=>$custom9,
+				'custom10'=>$custom10,
 			);
 
 

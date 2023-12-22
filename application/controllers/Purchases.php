@@ -659,7 +659,7 @@ class Purchases extends Secure_Controller
 				$this->purchase_lib->set_check(0); //reset lại biến kiểm tra; cần phải kiểm tra. nhấn nút kiểm tra;
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
 			}
-			elseif($_iMaxColumn == 17) // Xử lý định dạng 8 cột
+			elseif($_iMaxColumn == 17) // Xử lý định dạng 17 cột
 			{
 				for($i = 1; $i < count($sheet_data); $i++) {
 					//$rowData = $sheet->rangeToArray('A' . $i . ':' . $highestColumn . $i,NULL,TRUE,FALSE);
