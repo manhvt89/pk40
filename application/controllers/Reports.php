@@ -3615,7 +3615,7 @@ class Reports extends Secure_Controller
         $model = $this->Inventory_frame;
         $data = array();
         $data['item_count'] = $model->getItemCountDropdownArray();
-
+        $data['report_title'] = 'Báo cáo kho gọng kính';
         $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
         $stock_locations['all'] = $this->lang->line('reports_all');
         $data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -3935,7 +3935,7 @@ class Reports extends Secure_Controller
         $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
         $stock_locations['all'] = $this->lang->line('reports_all');
         $data['stock_locations'] = array_reverse($stock_locations, TRUE);
-
+        $data['report_title'] = 'Báo cáo kho kính áp tròng';
         $this->load->view('reports/inventory_contact_lens_input', $data);
     }
 
@@ -4043,7 +4043,7 @@ class Reports extends Secure_Controller
         $model = $this->Inventory_sun_glasses;
         $data = array();
         $data['item_count'] = $model->getItemCountDropdownArray();
-
+        $data['report_title'] = 'Báo cáo kính mát';
         $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
         $stock_locations['all'] = $this->lang->line('reports_all');
         $data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -4153,10 +4153,11 @@ class Reports extends Secure_Controller
     public function inventory_thuoc()
     {
         $this->load->model('reports/Inventory_thuoc');
+        
         $model = $this->Inventory_thuoc;
         $data = array();
         $data['item_count'] = $model->getItemCountDropdownArray();
-
+        $data['title_report'] = 'Báo cáo tình hình sử dụng thuốc';
         $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
         $stock_locations['all'] = $this->lang->line('reports_all');
         $data['stock_locations'] = array_reverse($stock_locations, TRUE);

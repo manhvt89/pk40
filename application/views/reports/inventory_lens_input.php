@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
+<div id="page_title" class="text-center"><?php echo $this->lang->line('reports_report_input'); ?></div>
 
 <?php
 if(isset($error))
@@ -12,20 +12,11 @@ if(isset($error))
 <?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php //echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
 		<div id='report_stock_location' class="col-xs-3">
-			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
+			<?php //echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
 		</div>
 	</div>
-
-	<?php
-	echo form_button(array(
-		'name'=>'generate_report',
-		'id'=>'generate_report',
-		'content'=>$this->lang->line('common_submit'),
-		'class'=>'btn btn-primary btn-sm')
-	);
-	?>
 <?php echo form_close(); ?>
 <div id="view_report_lens_category">
 
@@ -58,7 +49,8 @@ if(isset($error))
 		$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
 
 			var csrf_ospos_v3 = csrf_token();
-			var location_id = $('#location_id').val();
+			//var location_id = $('#location_id').val();
+			var location_id = 1;
 			var _strDate = $("#daterangepicker").val();
 			var _aDates = _strDate.split(" - ");			
 			var fromDate = _aDates[0];
@@ -166,10 +158,12 @@ if(isset($error))
 		});
 		
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
-		$("#generate_report").click(function()
+		
+		init = function()
 		{
 			var csrf_ospos_v3 = csrf_token();
-			var location_id = $('#location_id').val();
+			//var location_id = $('#location_id').val();
+			var location_id = 1;
 			var _strDate = $("#daterangepicker").val();
 			var _aDates = _strDate.split(" - ");			
 			var fromDate = _aDates[0];
@@ -185,12 +179,9 @@ if(isset($error))
 				.done(function( msg ) {
 					if(msg.result == 1)
 					{
-
-						
 						var header_summary = msg.data.headers_summary;
 						var summary_data = msg.data.summary_data;
 						var header_details = msg.data.headers_details;
-
 						var init_dialog = function()
 						{
 
@@ -274,7 +265,8 @@ if(isset($error))
 					}
 
 				});
-		});
+		};
+		init();
 
 	});
 </script>
