@@ -11,6 +11,10 @@ class Cron extends CI_Controller{
         $this->load->model('cron/Product');
         $this->load->library('sms_lib');
         $this->url = $this->config->item('api_url');
+        if(empty($this->url))
+        {
+            $this->url = 'https://tongkho.thiluc2020.com';
+        }
 	}
 
     // Auto tong hop vao bang 1 AM daily daily_total
