@@ -701,5 +701,20 @@ class Testex extends CI_Model
 		$this->db->group_by('customer_id');
 		return $this->db->get();
 	}
+
+	public function get_tests_by_uuid($uuid,$limit =0)
+	{
+		$this->db->from('test');
+		$this->db->join('customers','customers.person_id = test.customer_id');
+		$this->db->where('customer_uuid',$uuid);
+		if($limit > 0) {
+			$this->db->limit($limit);
+		}else{
+			$this->db->limit(50);
+		}
+		$this->db->order_by('test_id','desc');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 }
 ?>

@@ -808,7 +808,7 @@ width: 148.5mm;*/
 }
 
 .active {
-    background-color: lightgrey;
+    background-color: rgb(255, 255, 255);
 }
 
 .total {

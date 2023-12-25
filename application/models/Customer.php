@@ -383,5 +383,75 @@ class Customer extends Person
 			return $person_obj;
 		}
 	}
+	/**
+	 * 
+	 * Input: Array[uuid,startDate, endDate]
+	 */
+	public function ajax_saleings(array $inputs)
+	{
+
+		$this->db->select('os.sale_id, os.sale_uuid, os.sale_time AS sale_date, os.code AS ma_don, ROUND(SUM(oi.quantity_purchased),0) as quantity ,ROUND(SUM(oi.quantity_purchased * oi.item_unit_price),0) AS tong_tien, os.comment');
+		$this->db->from('ospos_sales os');
+		$this->db->join('ospos_sales_items oi', 'os.sale_id = oi.sale_id');
+		$this->db->join('ospos_customers oc', 'oc.person_id = os.customer_id');
+		$this->db->where('oc.customer_uuid', $inputs['uuid']);
+		$this->db->where('DATE(os.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		
+		$this->db->group_by('os.sale_id');
+		$this->db->order_by('os.sale_time', 'DESC');
+
+		$data = array();
+		$data['summary'] = $this->db->get()->result_array();
+		$data['details'] = [];
+		//var_dump($data);
+		return $data;
+
+	}
+
+	public function salelings_columns()
+	{
+		return array(
+            'summary' => [
+                ['id' => '#','align'=>'center'],
+                ['sale_date' => 'Ngày tháng'],
+                ['ma_don' => 'Mã đơn','footer-formatter'=>'iformatter'],
+				['quantity' => 'Số lượng','footer-formatter'=>'iformatter', 'align'=>'right'],
+                ['tong_tien' => 'Số lượng xuất','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter'],
+                ['comment'=>'Ghi chú']
+			],
+			'details' => [
+				['stt'=>'STT'],
+				['item_name'=>'Tên sản phẩm'],
+				['quantity'=>'Số lượng','align'=>'right'],
+				['item_unit_price'=>'Giá','align'=>'right'],
+				['tong_tien'=>'Thành tiền','align'=>'right'],
+				//['receiving_uuid'=>'Mã theo dõi','align'=>'left'],
+			]
+        );
+	} 
+
+	public function ajax_saleing_detail(array $inputs)
+	{
+
+		$data['details'] = array();
+		
+		$this->db->select('os.sale_id, os.sale_uuid, os.sale_time AS sale_date,oi.item_name,oi.quantity_purchased as quantity, oi.item_unit_price, oi.item_category ,os.code AS ma_don, ROUND(oi.quantity_purchased * oi.item_unit_price,0) AS tong_tien, os.comment');
+		$this->db->from('ospos_sales os');
+		$this->db->join('ospos_sales_items oi', 'os.sale_id = oi.sale_id');
+		$this->db->where('os.sale_uuid', $inputs['sale_uuid']);
+		$this->db->where('DATE(os.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		
+		$this->db->group_by('os.sale_id');
+		$this->db->order_by('os.sale_time', 'DESC');
+
+		$data = array();
+
+		$data['details'] = $this->db->get()->result_array();
+	
+		
+		//var_dump($data['summary']);
+        return $data;
+
+	}
 }
 ?>

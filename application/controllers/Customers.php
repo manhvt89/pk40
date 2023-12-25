@@ -400,10 +400,10 @@ class Customers extends Persons
 
 	public function view_detail($uuid)
 	{
-		$uuid = $this->input->get('uuid');
+		
 		$info = new stdClass();
 		if(strlen($uuid) > 20 )
-		{
+		{ 
 			$info = $this->Customer->get_info_by_uuic($uuid);
 		} else {
 			$info = $this->Customer->get_info($uuid);
@@ -412,6 +412,7 @@ class Customers extends Persons
 		{
 			$info->$property = $this->xss_clean($value);
 		}
+		
 		$city_ = get_cities_list();
         $cities = array();
         foreach ($city_ as $key=>$value)
@@ -427,13 +428,230 @@ class Customers extends Persons
 		{
 			$info->age = 30;
 		}
+
+		//$uuid = $this->input->post('uuid');
+		$tests = $this->Testex->get_tests_by_uuid($uuid);
+		
+		$data['tests'] = $tests;
+
 		//var_dump($info);
+		$headers = $this->Customer->salelings_columns();
+		$data['headers'] = transform_headers_html($headers['summary'],true,false);
 		$info->first_name = get_fullname($info->first_name, $info->last_name);
 		$data['person_info'] = $info;
         $data['cities'] = $cities;
-		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
+		$data['total'] = $this->xss_clean($this->Customer->get_totals($info->person_id)->total);
 		$this->load->view("customers/detail", $data);
 
+	}
+
+	public function ajax_saleings()
+	{
+		$_sFromDate = $this->input->post('fromDate');
+        $_sToDate = $this->input->post('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        
+        $result = 1;
+
+        $_aInput = [
+				'uuid'=>$this->input->post('uuid'),
+                'start_date'=>$_sFromDate,
+                'end_date'=>$_sToDate,
+                
+            ];
+		$sales = $this->Customer->ajax_saleings($_aInput);
+		$headers = $this->Customer->salelings_columns();
+
+		if(!$sales)
+		{
+			$result = 0;
+			$data = array(
+				'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+				'headers_details' => [],
+				'summary_data' => [],
+				'details_data' => [],
+				'report_data' =>[]
+			);
+		}else{
+			$summary_data = [];
+			$details_data = [];
+			$i = 1;
+			$total_amount = 0;
+			$total_quantity = 0;
+			foreach($sales['summary'] as $key => $row)
+			{
+				//var_dump($row);
+				//$total_quantity = $total_quantity + $row['quantity'];
+				//$total_amount = $total_amount + $row['total_amount'];
+				//$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+				$row['id'] = $i;
+				$summary_data[] = $this->xss_clean($row);
+				$i++;
+			}
+			
+			//$summary_data[] = $footer;
+			$data = array(
+				'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+				'headers_details' => transform_headers_raw($headers['details'],TRUE,false),
+				'summary_data' => $summary_data,
+				'details_data' => $details_data,
+				'report_data' =>$sales
+			);
+		}
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+		
+	}
+	public function ajax_saleings_detail()
+	{
+		$sale_uuid = $this->input->get('sale_uuid');
+        
+        $_sFromDate = $this->input->get('fromDate');
+        $_sToDate = $this->input->get('toDate');
+
+        $_aFromDate = explode('/', $_sFromDate);
+        $_aToDate = explode('/', $_sToDate);
+        $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
+        $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
+        $result = 1;
+
+        $location_id = 1;
+        $inputs = array('sale_uuid'=>$sale_uuid, 'start_date'=>$_sFromDate,'end_date'=>$_sToDate);
+        
+        //var_dump($headers);
+        $report_data = $this->Customer->ajax_saleing_detail($inputs);
+        $data = null;
+        if(!$report_data)
+        {
+            $result = 0;
+        }else{
+            $summary_data = array();
+            $details_data = array();
+            $i = 1;
+            
+            foreach($report_data['details'] as $drow)
+            {
+                //var_dump(to_currency($drow['unit_price']));die();
+                  $details_data[] = $this->xss_clean(
+                        [
+                            'stt'=>$i,
+                            'item_name'=>$drow['item_name'],
+                            'quantity'=>number_format($drow['quantity']), 
+                            'item_unit_price'=>number_format($drow['item_unit_price']), 
+                            //'cost_price'=>to_currency($drow['cost_price']),
+                            'tong_tien'=>number_format($drow['tong_tien']),  
+                
+                        ]);
+                
+						$i++;
+            }
+            
+            
+            $data = array(
+                'details_data' => $details_data,
+            );
+
+        }
+
+
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
+
+	public function ajax_tests()
+	{
+		$uuid = $this->input->post('uuid');
+		$tests = $this->Testex->get_tests_by_uuid($uuid);
+		$result = 1;
+		$headers = [
+			['id' => '#','align'=>'center'],
+			['test_date' => 'Ngày tháng', 'halign'=>'center'],
+			['don_kham' => 'Kết quả','footer-formatter'=>'iformatter', 'halign'=>'center']
+		];
+		$summary_data = [];
+		if(!empty($tests))
+		{
+			$i = 1;
+			foreach($tests as $test)
+			{
+				$reArr = json_decode($test['right_e'],true);
+				$leArr = json_decode($test['left_e'],true);
+
+				$table = "<table class='table table-hover table-striped' width='100%'>
+								<thead>
+									<tr >
+										<th width='25px'>
+									
+										</th>
+										<th width='35px'>
+											SPH
+										</th>
+										<th width='35px'>
+											CYL
+										</th>
+										<th width='35px'>
+											AX
+										</th>
+										<th width='35px'>
+											ADD
+										</th>
+										<th width='35px'>
+											VA
+										</th>
+										<th width='35px'>
+											PD
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><b>MP</b></td>
+										<td>" . $reArr['SPH']. "</td>
+										<td>".$reArr['CYL']."</td>
+										<td>".$reArr['AX']."</td>
+										<td>".$reArr['ADD']."</td>
+										<td>".$reArr['VA']."</td>
+										<td>".$reArr['PD']."</td>
+									</tr>
+									<tr>
+										<td><b>MT</b></td>
+										<td>" . $leArr['SPH']. "</td>
+										<td>".$leArr['CYL']."</td>
+										<td>".$leArr['AX']."</td>
+										<td>".$leArr['ADD']."</td>
+										<td>".$leArr['VA']."</td>
+										<td>".$leArr['PD']."</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td colspan='6'>".nl2br($test['note'])."</td>
+									</tr>
+									
+</tbody>
+						</table>";
+
+				$test['id'] = $i;
+				$test['test_date'] = date('d/m/Y h:m:s',$test['test_time']);
+				$test['don_kham'] = $table;
+				$i++;
+				$summary_data[] = $test;
+			}
+		}
+		$data = array(
+			'headers_summary' => transform_headers_raw($headers,TRUE,false),
+			'summary_data' => $summary_data
+		);
+		$json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+		
+	}
+	public function ajax_tests_detail()
+	{
+		$uuid = $this->input->get('uuid');
 	}
 }
 ?>
