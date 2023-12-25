@@ -77,10 +77,6 @@ if(isset($error))
 						var summary_data = msg.data.summary_data;
 						var header_details = msg.data.headers_details;
 
-						var init_dialog = function()
-						{
-
-						};
 						$('#table').bootstrapTable('destroy');
 						$('#table').bootstrapTable({
 							columns: header_summary,
@@ -98,15 +94,21 @@ if(isset($error))
 							uniqueId: 'id',
 							escape: false,
 							exportTypes: ['excel'],
-							onPageChange: init_dialog,
 							onPostBody: function() {
 								dialog_support.init("a.modal-dlg");
 							},
+							onExpandRow: function (index, row, $detail) {
+								//alert(JSON.stringify(header_details));
+								$detail.html('<table></table>').find("table").bootstrapTable({
+									columns: header_details,
+									data: detail_data[row.id],
+									sortable: true,
+									showExport: true,
+									exportTypes: ['excel'],
+								});
+							}
 							
 						});
-
-						init_dialog();
-
 
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');

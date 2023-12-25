@@ -3944,7 +3944,7 @@ class Reports extends Secure_Controller
         $filter = $this->config->item('filter_contact_lens'); //define in app.php
         $this->load->model('reports/Inventory_contact_lens');
         $model = $this->Inventory_contact_lens;
-        $location_id = $this->input->post('location_id');
+        //$location_id = $this->input->post('location_id');
 
         $_sFromDate = $this->input->post('fromDate');
         $_sToDate = $this->input->post('toDate');
@@ -3953,7 +3953,7 @@ class Reports extends Secure_Controller
         $_aToDate = explode('/', $_sToDate);
         $_sFromDate = $_aFromDate[2] . '/' . $_aFromDate[1] . '/' . $_aFromDate[0];
         $_sToDate = $_aToDate[2] . '/' . $_aToDate[1] . '/' . $_aToDate[0];
-        $location_id = $this->input->post('location_id');
+        $location_id = 1;
         $result = 1;
 
         $inputs = array('location_id'=>$location_id, 'fromDate'=>$_sFromDate,'toDate'=>$_sToDate);
