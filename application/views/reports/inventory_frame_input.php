@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title"><?=$report_title?></div>
+<div id="page_title" class="text-center"><?=$report_title?></div>
 
 <?php
 if(isset($error))

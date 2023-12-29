@@ -3734,7 +3734,7 @@ class Reports extends Secure_Controller
         $stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
         $stock_locations['all'] = $this->lang->line('reports_all');
         $data['stock_locations'] = array_reverse($stock_locations, TRUE);
-
+        $data['report_title'] = "Báo cáo kho mắt kính";
         $this->load->view('reports/inventory_lens_input', $data);
     }
 
