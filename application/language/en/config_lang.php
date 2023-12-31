@@ -219,5 +219,6 @@ $lang['test_display_kxv'] = 'Hiển thị tên khúc xạ viên?'; // Không hi�
 $lang['Location_Barcode'] = 'Tên kho';
 $lang['Slogan_Barcode'] = 'Slogan';
 $lang['Phone_Barcode'] = 'Điện thoại';
-
+$lang['config_qrcode_bill'] = 'Hiển thị QR code trên hóa đơn';
+$lang['config_barcode_bill'] = 'Hiển thị Barcide trên hóa đơn';
 

@@ -282,6 +282,28 @@
 						'value'=>$this->config->item('api_url'))); ?>
 				</div>
 			</div>
+
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_qrcode_bill'), 'qrcode', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'qrcode',
+						'id' => 'qrcode',
+						'value' => '1',
+						'checked'=>$this->config->item('qrcode'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_barcode_bill'), 'barcode', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'barcode',
+						'id' => 'barcode',
+						'value' => '1',
+						'checked'=>$this->config->item('barcode'))); ?>
+				</div>
+			</div>
 			
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>

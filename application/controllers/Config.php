@@ -427,6 +427,9 @@ class Config extends Secure_Controller
 			'config_partner'=>$this->input->post('config_partner'),
 			'default_city'=>$this->input->post('default_city'),
 			'api_url'=>$this->input->post('api_url'),
+			'qrcode'=>$this->input->post('qrcode'),
+			'barcode'=>$this->input->post('barcode'),
+
 			'statistics' => $this->input->post('statistics') != NULL,
 		);
 		
