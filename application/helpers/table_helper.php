@@ -532,7 +532,7 @@ function get_person_data_row($person, $controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	var_dump($person);
+	//var_dump($person);
 	$return = array (
 		'people.person_id' => $person->person_id,
 		'first_name' => anchor($controller_name."/view_detail/$person->customer_uuid", $person->first_name,
