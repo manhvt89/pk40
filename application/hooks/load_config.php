@@ -41,6 +41,47 @@ function load_config()
             $value = explode("\n",$app_config->value);
             $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
         }
+        elseif('Thuoc' == $app_config->key){
+            $value = [];
+            if($app_config->value == null || $app_config->value == '')
+            {
+                $value['template']='';
+            } else {
+                $value['template']=$app_config->value;
+            }
+            $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
+        }
+        elseif('GBarcode' == $app_config->key){
+            $value = [];
+            if($app_config->value == null || $app_config->value == '')
+            {
+                $value['template']='';
+            } else {
+                $value['template']=$app_config->value;
+            }
+            //var_dump($value);die();
+            $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
+        }
+        elseif('G1Barcode' == $app_config->key){
+            $value = [];
+            if($app_config->value == null || $app_config->value == '')
+            {
+                $value['template']='';
+            } else {
+                $value['template']=$app_config->value;
+            }
+            $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
+        }
+        elseif('MBarcode' == $app_config->key){
+            $value = [];
+            if($app_config->value == null || $app_config->value == '')
+            {
+                $value['template']='';
+            } else {
+                $value['template']=$app_config->value;
+            }
+            $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
+        }
         else {
             $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
         }

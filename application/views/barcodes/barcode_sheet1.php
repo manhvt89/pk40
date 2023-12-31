@@ -13,10 +13,16 @@
 
 <body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 
       style="font-size:<?php echo $barcode_config['barcode_font_size']; ?>px">
+	  <?php if(!empty($this->config->item('G1Barcode'))): ?> 
 	  <div class="buttonpr no-print">
 				<button onclick="window.print()" class="bt-print-barcode">Print</button>
 	  </div>
 	  <?php print_barcode($items,$this->config->item('G1Barcode')['template'],$barcode_config);?>
+	  <?php else : ?>
+		<div>
+			Hiện tại chưa thiết lập mẫu in barcode gọng kính. Hãy liên hệ với người hỗ trợ.
+		</div>  
+	<?php endif; ?> 
 </body>
 
 </html>

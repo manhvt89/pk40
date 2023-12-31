@@ -310,6 +310,7 @@ class Config extends Secure_Controller
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$data['support_template'] = $this->barcode_lib->get_list_template_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		
 		$data = $this->xss_clean($data);
@@ -335,6 +336,7 @@ class Config extends Secure_Controller
 			'product'=>'product_tab',
 			'locale'=>'locale_tab',
 			'barcode'=>'barcode_tab',
+			'prescription' =>'prescription_tab',
 			'stock'=>'stock_tab',
 			'ctv'=>'ctv_tab',
 			'receipt'=>'receipt_tab',
@@ -351,6 +353,14 @@ class Config extends Secure_Controller
 				$_aTab[$key] = $aTab;
 			}
 		}
+
+		$city_ = get_cities_list();
+        $cities = array();
+        foreach ($city_ as $key=>$value)
+        {
+            $cities[$value] = $value;
+        }
+		$data['cities'] = $cities;
 
 		$data['aTabs'] = $_aTab;
 		$this->load->view("configs/manage", $data);
@@ -415,6 +425,8 @@ class Config extends Secure_Controller
 			'custom9_name' => $this->input->post('custom9_name'),
 			'custom10_name' => $this->input->post('custom10_name'),
 			'config_partner'=>$this->input->post('config_partner'),
+			'default_city'=>$this->input->post('default_city'),
+			'api_url'=>$this->input->post('api_url'),
 			'statistics' => $this->input->post('statistics') != NULL,
 		);
 		
@@ -424,6 +436,29 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
+	public function save_prescription()
+	{
+
+		$batch_save_data = [
+			'has_prescription'=>$this->input->post('has_prescription'),
+			'test_header'=>$this->input->post('test_header'),
+			'ten_phong_kham'=>$this->input->post('ten_phong_kham'),
+			'lien_he'=>$this->input->post('lien_he'),
+			'hien_thi_VA'=>$this->input->post('hien_thi_VA'),
+			'hien_thi_kinh_cu'=>$this->input->post('hien_thi_kinh_cu'),
+			'loai_mat_kinh'=>$this->input->post('loai_mat_kinh'),
+			'hien_thi_ten_bac_si'=>$this->input->post('hien_thi_ten_bac_si'),
+			'ten_bac_si'=>$this->input->post('ten_bac_si'),
+			'test_display_nurse'=>$this->input->post('test_display_nurse'),
+			'test_display_kxv'=>$this->input->post('test_display_kxv')
+		];
+		
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
+
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+	
 	public function check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
@@ -572,6 +607,15 @@ class Config extends Secure_Controller
     public function save_barcode()
     {
         $batch_save_data = array(
+			/**
+			 * General
+			 */
+			'Phone_Barcode' => $this->input->post('Phone_Barcode'),
+			'Slogan_Barcode' => $this->input->post('Slogan_Barcode'),
+			'Location_Barcode' => $this->input->post('Location_Barcode'),
+			/**
+			 * Gọng
+			 */
 			'barcode_type' => $this->input->post('barcode_type'),
 			'barcode_quality' => $this->input->post('barcode_quality'),
 			'barcode_width' => $this->input->post('barcode_width'),
@@ -586,7 +630,9 @@ class Config extends Secure_Controller
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
 			'barcode_content' => $this->input->post('barcode_content'),
-
+			'GBarcode'=>$this->input->post('GBarcode'),
+			
+		
 			/** Lens */
 			'lens_barcode_type' => $this->input->post('lens_barcode_type'),
 			'lens_barcode_quality' => $this->input->post('lens_barcode_quality'),
@@ -602,6 +648,26 @@ class Config extends Secure_Controller
 			'lens_barcode_page_cellspacing' => $this->input->post('lens_barcode_page_cellspacing'),
 			'lens_barcode_generate_if_empty' => $this->input->post('lens_barcode_generate_if_empty') != NULL,
 			'lens_barcode_content' => $this->input->post('lens_barcode_content'),
+			'MBarcode'=>$this->input->post('MBarcode'),
+			
+			/** Thuoc */
+			't_barcode_type' => $this->input->post('t_barcode_type'),
+			't_barcode_quality' => $this->input->post('t_barcode_quality'),
+			't_barcode_width' => $this->input->post('t_barcode_width'),
+			't_barcode_height' => $this->input->post('t_barcode_height'),
+			't_barcode_font' => $this->input->post('t_barcode_font'),
+			't_barcode_font_size' => $this->input->post('t_barcode_font_size'),
+			't_barcode_first_row' => $this->input->post('t_barcode_first_row'),
+			't_barcode_second_row' => $this->input->post('t_barcode_second_row'),
+			't_barcode_third_row' => $this->input->post('t_barcode_third_row'),
+			't_barcode_num_in_row' => $this->input->post('t_barcode_num_in_row'),
+			't_barcode_page_width' => $this->input->post('t_barcode_page_width'),
+			't_barcode_page_cellspacing' => $this->input->post('t_barcode_page_cellspacing'),
+			't_barcode_generate_if_empty' => $this->input->post('t_barcode_generate_if_empty') != NULL,
+			't_barcode_content' => $this->input->post('t_barcode_content'),
+			'Thuoc'=>$this->input->post('Thuoc'),
+			
+			
 			/** Gong2 */
 			'g2_barcode_type' => $this->input->post('g2_barcode_type'),
 			'g2_barcode_quality' => $this->input->post('g2_barcode_quality'),
@@ -616,7 +682,8 @@ class Config extends Secure_Controller
 			'g2_barcode_page_width' => $this->input->post('g2_barcode_page_width'),
 			'g2_barcode_page_cellspacing' => $this->input->post('g2_barcode_page_cellspacing'),
 			'g2_barcode_generate_if_empty' => $this->input->post('g2_barcode_generate_if_empty') != NULL,
-			'g2_barcode_content' => $this->input->post('g2_barcode_content')
+			'g2_barcode_content' => $this->input->post('g2_barcode_content'),
+			'G1Barcode'=>$this->input->post('G1Barcode')
         );
         
         $result = $this->Appconfig->batch_save($batch_save_data);
@@ -841,6 +908,10 @@ class Config extends Secure_Controller
 		return true;
 	}
 	public function license_tab()
+	{
+		return true;
+	}
+	public function prescription_tab()
 	{
 		return true;
 	}

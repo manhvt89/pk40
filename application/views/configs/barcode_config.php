@@ -3,8 +3,63 @@
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
             <ul id="barcode_error_message_box" class="error_message_box"></ul>
+            
             <div class="config-title">
-                <b>Thiết lập Gọng</b>
+                <b>Thiết lập chung</b>
+            </div>
+
+            <div class="form-group form-group-sm">    
+            <?php echo form_label($this->lang->line('Phone_Barcode'), 'Phone_Barcode', array('class' => 'control-label col-xs-2')); ?>
+                <div class="col-sm-2">
+                    <div class='input-group'>
+                        <?php echo form_input(array(
+                            'name' => 'Phone_Barcode',
+                            'id' => 'Phone_Barcode',
+                            'class' => 'form-control input-sm',
+                            'value'=>$this->config->item('Phone_Barcode'))); ?>
+                        <span class="input-group-addon input-sm"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">    
+            <?php echo form_label($this->lang->line('Slogan_Barcode'), 'Slogan_Barcode', array('class' => 'control-label col-xs-2')); ?>
+                <div class="col-sm-2">
+                    <div class='input-group'>
+                        <?php echo form_input(array(
+                            'name' => 'Slogan_Barcode',
+                            'id' => 'Slogan_Barcode',
+                            'class' => 'form-control input-sm',
+                            'value'=>$this->config->item('Slogan_Barcode'))); ?>
+                        <span class="input-group-addon input-sm"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">    
+            <?php echo form_label($this->lang->line('Location_Barcode'), 'Location_Barcode', array('class' => 'control-label col-xs-2 ')); ?>
+                <div class="col-sm-2">
+                    <div class='input-group'>
+                        <?php echo form_input(array(
+                            'name' => 'Location_Barcode',
+                            'id' => 'Location_Barcode',
+                            'class' => 'form-control input-sm ',
+                            'value'=>$this->config->item('Location_Barcode'))); ?>
+                        <span class="input-group-addon input-sm"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="config-title">
+                <b>Thiết lập In Barcode Gọng kính</b>
+            </div>
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('GBarcode'), 'GBarcode', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+                    <?php echo form_dropdown(
+                            'GBarcode', 
+                            $support_template['Gong'], 
+                            $this->config->item('GBarcode')['template'], 
+                            array('class' => 'form-control input-sm')); ?>
+					
+                </div>
             </div>
 
             <div class="form-group form-group-sm">    
@@ -202,7 +257,18 @@
                 </div>
             </div>
             <div class="config-title">
-                <b>Thiết lập tròng kính</b>
+                <b>Thiết lập Barcode tròng kính</b>
+            </div>
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('MBarcode'), 'MBarcode', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+                    <?php echo form_dropdown(
+                            'MBarcode', 
+                            $support_template['Mat'], 
+                            $this->config->item('MBarcode')['template'], 
+                            array('class' => 'form-control input-sm')); ?>
+					
+                </div>
             </div>
 
             <div class="form-group form-group-sm">    
@@ -397,7 +463,224 @@
             </div>
 
             <div class="config-title">
-                <b>Thiết lập Gọng 2 (Có tem chống hàng giả)</b>
+                <b>Thiết lập Barcode Thuốc</b>
+            </div>
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('Thuoc'), 'Thuoc', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+                    <?php echo form_dropdown(
+                            'Thuoc', 
+                            $support_template['Thuoc'], 
+                            $this->config->item('Thuoc')['template'], 
+                            array('class' => 'form-control input-sm')); ?>
+					
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_type'), 'barcode_type', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_dropdown('t_barcode_type', $support_barcode, $this->config->item('t_barcode_type'), array('class' => 'form-control input-sm')); ?>
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_quality'), 't_barcode_quality', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_input(array(
+						'max' => '100',
+						'min' => '10',
+						'type' => 'number',
+						'name' => 't_barcode_quality',
+						'id' => 't_barcode_quality',
+						'class' => 'form-control input-sm required',
+						'value'=>$this->config->item('t_barcode_quality'))); ?>
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_width'), 't_barcode_width', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-xs-2'>
+                <div class='input-group'>
+                <?php echo form_input(array(
+						'step' => '1',
+						'max' => '150',
+						'min' => '5',
+						'type' => 'number',
+						'name' => 't_barcode_width',
+						'id' => 't_barcode_width',
+						'class' => 'form-control input-sm required',
+						'value'=>$this->config->item('t_barcode_width'))); ?>
+                            <span class="input-group-addon input-sm">mm</span>
+                    </div>
+					
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_height'), 't_barcode_height', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-xs-2'>
+                    <div class='input-group'>
+                        <?php echo form_input(array(
+                                'type' => 'number',
+                                'min' => 10,
+                                'max' => 120,
+                                'name' => 't_barcode_height',
+                                'id' => 't_barcode_height',
+                                'class' => 'form-control input-sm required',
+                                'value'=>$this->config->item('t_barcode_height'))); ?>
+                            <span class="input-group-addon input-sm">mm</span>
+                    </div>
+					
+                </div>
+                
+            </div>
+            
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_font'), 't_barcode_font', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-sm-2'>
+					<?php echo form_dropdown('t_barcode_font', 
+						$this->barcode_lib->listfonts("fonts"),
+						$this->config->item('t_barcode_font'), array('class' => 'form-control input-sm required'));
+						?>
+                </div>
+                <div class="col-sm-2">
+                    <?php echo form_input(array(
+                        'type' => 'number',
+                        'min' => '1',
+                        'max' => '30',
+                        'name' => 't_barcode_font_size',
+                        'id' => 't_barcode_font_size',
+                        'class' => 'form-control input-sm required',
+                        'value'=>$this->config->item('t_barcode_font_size'))); ?>
+                </div>
+            </div>
+            
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_barcode_content'), 't_barcode_content', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-8'>
+                    <label class="radio-inline">
+                        <?php echo form_radio(array(
+                            'name' => 't_barcode_content',
+                            'value' => 'id',
+                            'checked'=>$this->config->item('t_barcode_content') === "id")); ?>
+                        <?php echo $this->lang->line('config_barcode_id'); ?>
+                    </label>
+					<label class="radio-inline">
+                        <?php echo form_radio(array(
+                            'name' => 't_barcode_content',
+                            'value' => 'number',
+                            'checked'=>$this->config->item('t_barcode_content') === "number")); ?>
+                        <?php echo $this->lang->line('config_barcode_number'); ?>
+                    </label>
+					<label class="checkbox-inline">
+                        <?php echo form_checkbox(array(
+                            'name' => 't_barcode_generate_if_empty',
+                            'value' => 't_barcode_generate_if_empty',
+                            'checked'=>$this->config->item('t_barcode_generate_if_empty'))); ?>
+                        <?php echo $this->lang->line('config_barcode_generate_if_empty'); ?>
+                    </label>
+				</div>
+			</div>
+
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_layout'), 't_barcode_layout', array('class' => 'control-label col-xs-2')); ?>
+                <div class="col-sm-10">
+                    <div class="form-group form-group-sm row">
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_first_row').' '; ?></label>
+                        <div class='col-sm-2'>
+                            <?php echo form_dropdown('t_barcode_first_row', array(
+                                'not_show' => $this->lang->line('config_none'),
+                                'name' => $this->lang->line('items_name'),
+                                'category' => $this->lang->line('items_category'),
+                                'cost_price' => $this->lang->line('items_cost_price'),
+                                'unit_price' => $this->lang->line('items_unit_price'),
+                                'company_name' => $this->lang->line('suppliers_company_name')
+                            ),
+                            $this->config->item('t_barcode_first_row'), array('class' => 'form-control input-sm')); ?>
+                        </div>
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_second_row').' '; ?></label>
+                        <div class='col-sm-2'>
+                            <?php echo form_dropdown('t_barcode_second_row', array(
+                                'not_show' => $this->lang->line('config_none'),
+                                'name' => $this->lang->line('items_name'),
+                                'category' => $this->lang->line('items_category'),
+                                'cost_price' => $this->lang->line('items_cost_price'),
+                                'unit_price' => $this->lang->line('items_unit_price'),
+                                'item_code' => $this->lang->line('items_item_number'),
+                                'company_name' => $this->lang->line('suppliers_company_name')
+                            ),
+                            $this->config->item('t_barcode_second_row'), array('class' => 'form-control input-sm')); ?>
+                        </div>
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_third_row').' '; ?></label>
+                        <div class='col-sm-2'>
+                            <?php echo form_dropdown('t_barcode_third_row', array(
+                                'not_show' => $this->lang->line('config_none'),
+                                'name' => $this->lang->line('items_name'),
+                                'category' => $this->lang->line('items_category'),
+                                'cost_price' => $this->lang->line('items_cost_price'),
+                                'unit_price' => $this->lang->line('items_unit_price'),
+                                'item_code' => $this->lang->line('items_item_number'),
+                                'company_name' => $this->lang->line('suppliers_company_name')
+                            ),
+                            $this->config->item('t_barcode_third_row'), array('class' => 'form-control input-sm')); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_barcode_number_in_row'), 't_barcode_num_in_row', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_input(array(
+						'name' => 't_barcode_num_in_row',
+						'id' => 't_barcode_num_in_row',
+						'class' => 'form-control input-sm required',
+						'value'=>$this->config->item('t_barcode_num_in_row'))); ?>
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm">    
+            <?php echo form_label($this->lang->line('config_barcode_page_width'), 't_barcode_page_width', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class="col-sm-2">
+                    <div class='input-group'>
+                        <?php echo form_input(array(
+                            'name' => 't_barcode_page_width',
+                            'id' => 't_barcode_page_width',
+                            'class' => 'form-control input-sm required',
+                            'value'=>$this->config->item('t_barcode_page_width'))); ?>
+                        <span class="input-group-addon input-sm">mm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group form-group-sm">    
+            <?php echo form_label($this->lang->line('config_barcode_page_cellspacing'), 't_barcode_page_cellspacing', array('class' => 'control-label col-xs-2 required')); ?>
+                <div class='col-sm-2'>
+                    <div class="input-group">
+                        <?php echo form_input(array(
+                            'name' => 't_barcode_page_cellspacing',
+                            'id' => 't_barcode_page_cellspacing',
+                            'class' => 'form-control input-sm required',
+                            'value'=>$this->config->item('t_barcode_page_cellspacing'))); ?>
+                        <span class="input-group-addon input-sm">mm</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-title">
+                <b>Thiết lập Barcode Gọng 2 (Có tem chống hàng giả)</b>
+            </div>
+            <div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('G1Barcode'), 'G1Barcode', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+                    <?php echo form_dropdown(
+                            'G1Barcode', 
+                            $support_template['Gong'], 
+                            $this->config->item('G1Barcode')['template'], 
+                            array('class' => 'form-control input-sm')); ?>
+					
+                </div>
             </div>
 
             <div class="form-group form-group-sm">    

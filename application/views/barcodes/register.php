@@ -25,26 +25,32 @@ if (isset($success))
 	<?php echo form_open('items'."/add_barcodes", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<?php if(!empty($this->config->item('G1Barcode'))): ?>
+				<?php if(!empty($this->config->item('G1Barcode')['template'])): ?>
 					<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode1", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode gọng 1',
 									array('class'=>'btn btn-success btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng 1')); ?>
 					</li>
 				<?php endif;?>
-				<?php if(!empty($this->config->item('Thuoc'))): ?>
+				<?php if(!empty($this->config->item('Thuoc')['template'])): ?>
 					<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode2", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode thuốc',
 									array('class'=>'btn btn-success btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode thuốc')); ?>
 					</li>
 				<?php endif;?>
+				<?php
+				
+				if(!empty($this->config->item('GBarcode')['template'])): ?>
 				<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode gọng',
 									array('class'=>'btn btn-info btn-sm','target'=>"_blank", 'id'=>'sales_takings_button', 'title'=>'Tạo barcode gọng')); ?>
 				</li>
+				<?php endif;?>
+				<?php if(!empty($this->config->item('MBarcode')['template'])): ?>
 				<li class="pull-right">
 						<?php echo anchor($controller_name."/barcode_lens", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo barcode mắt',
 									array('class'=>'btn btn-primary btn-sm', 'target'=>"_blank",'id'=>'sales_takings_button', 'title'=>'Tạo barcode mắt')); ?>
 				</li>
+				<?php endif;?>
 				<li class="pull-right">
 						<?php echo anchor($controller_name."/empty", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Tạo mới',
 									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>'Tạo mới')); ?>

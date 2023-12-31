@@ -4,7 +4,7 @@
 
 <?php echo form_open($controller_name."/complete", array('id'=>'done_test_form', 'class'=>'form-horizontal panel panel-default')); ?>
 <?php if($this->test_lib->get_test_id()):?>
-	
+	<?php if($this->config->item('hien_thi_VA')): ?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -71,6 +71,8 @@
 		</tr>
 		</tbody>
 	</table>
+	<?php endif; ?>
+	<?php if($this->config->item('hien_thi_kinh_cu')):?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -212,7 +214,7 @@
 		</tr>
 		</tbody>
 	</table>
-
+	<?php endif; ?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -366,7 +368,7 @@
 			</tr>
 		</tbody>
 	</table>
-
+	<?php if($this->config->item('loai_mat_kinh') ==1): ?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -435,7 +437,7 @@
 			</tr>
 		</tbody>
 	</table>
-
+	<?php endif; ?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -541,6 +543,7 @@
 	<div class='btn btn-sm btn-success pull-right' id='clear_test_button' ><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('test_clear_test'); ?></div>
 
 <?php else: ?>
+	<?php if($this->config->item('hien_thi_VA')): ?>
 	<!-- TL Không kính -->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
@@ -608,7 +611,9 @@
 		</tr>
 		</tbody>
 	</table>
+	<?php endif; ?>
 	<!-- Kính cũ -->
+	<?php if($this->config->item('hien_thi_kinh_cu')):?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -618,7 +623,7 @@
 			<th style="width: 15%;"><?php echo $this->lang->line('test_eyes'); ?></th>
 			<th style="width: 10%;"><?php echo $this->lang->line('test_sph'); ?></th>
 			<th style="width: 10%;"><?php echo $this->lang->line('test_cyl'); ?></th>
-			<th style="dth: 10%;"><?php echo $this->lang->line('test_ax'); ?></th>
+			<th style="width: 10%;"><?php echo $this->lang->line('test_ax'); ?></th>
 			<th style="width: 10%;"><?php echo $this->lang->line('test_add'); ?></th>
 			<th style="width: 10%;"><?php echo $this->lang->line('test_va'); ?></th>
 			<th style="width: 10%;"><?php echo $this->lang->line('test_pd'); ?></th>
@@ -750,6 +755,7 @@
 		</tr>
 		</tbody>
 	</table>
+	<?php endif; ?>
 	<!-- Kính đề  nghị-->					
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
@@ -905,6 +911,7 @@
 		</tbody>
 	</table>
 	<!-- Phân Loại -->
+	<?php if($this->config->item('loai_mat_kinh') ==1): ?>
 	<table class="sales_table_100 s-100" id="register">
 		<thead>
 		<tr>
@@ -972,6 +979,7 @@
 		</tr>
 		</tbody>
 	</table>
+	<?php endif ?>
 	<!-- Thông tin khác-->
 	<table class="sales_table_100 s-100" id="register">
 		<thead>

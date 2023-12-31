@@ -257,6 +257,31 @@
 						'value'=>$this->config->item('config_partner'))); ?>
 				</div>
 			</div>
+
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('default_city'), 'default_city', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+
+					<?php 
+					
+					echo form_dropdown('default_city', 
+										$cities, 
+										$this->config->item('default_city'), 
+										array('class'=>'form-control','id'=>'default_city'));
+					?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('api_url'), 'api_url', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array(
+						'name' => 'api_url',
+						'id' => 'api_url',
+						'class' => 'form-control input-sm',
+						'value'=>$this->config->item('api_url'))); ?>
+				</div>
+			</div>
 			
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>

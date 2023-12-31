@@ -205,7 +205,7 @@ class Barcodes extends Secure_Controller
 		//var_dump($data['cart']); die();
 		//$item_ids = explode(':', $item_ids);
 		$results = $this->printbarcode_lib->get_cart();
-		$config = $this->barcode_lib->get_barcode_config('lens');
+		$config = $this->barcode_lib->get_barcode_config('t');
 		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
 		//var_dump($config);
