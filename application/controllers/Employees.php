@@ -37,10 +37,10 @@ class Employees extends Persons
 			{
 				if($person->person_id > 1)
 				{
-					$data_rows[] = get_person_data_row($person, $this);
+					$data_rows[] = get_employee_data_row($person);
 				}
 			} else {
-				$data_rows[] = get_person_data_row($person, $this);
+				$data_rows[] = get_employee_data_row($person);
 			}
 		}
 

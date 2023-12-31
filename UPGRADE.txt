@@ -127,6 +127,7 @@ ALTER TABLE `ospos_reminders` ADD `address` VARCHAR(255) CHARACTER SET utf8 NOT 
 ALTER TABLE `ospos_reminders` ADD `reminder_uuid` VARCHAR(36) DEFAULT UUID() AFTER `test_id`; 
 ALTER TABLE `ospos_test` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_uuid`;
 ALTER TABLE `ospos_reminders` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_id`;
+
 ALTER TABLE `ospos_reminders` ADD `duration` int(2) DEFAULT 6 AFTER `test_id`;
 ALTER TABLE `ospos_employees` ADD `comission_rate` decimal(5,2) NOT NULL DEFAULT 0 AFTER `log`;
 ALTER TABLE `ospos_employees` ADD `code` VARCHAR(20) NOT NULL DEFAULT '' AFTER `log`;

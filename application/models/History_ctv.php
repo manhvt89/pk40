@@ -234,8 +234,10 @@ class History_ctv extends CI_Model
 
 		//Update total_sale of ctv
 		$_ctv_info = $this->Employee->get_info($history_ctv_data['ctv_id']);
+		//var_dump($_ctv_info);
+		//var_dump($history_ctv_data['payment_amount']);
 		$_ctv_data = [
-			'total_sale'=>$_ctv_info->total_sale + $history_ctv_data['payment_amount'],
+			'total_sale'=>(float) $_ctv_info->total_sale + $history_ctv_data['payment_amount'],
 		];
 		$this->db->where('person_id', $history_ctv_data['ctv_id']);
 		$success = $this->db->update('employees', $_ctv_data);

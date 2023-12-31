@@ -559,6 +559,36 @@ function get_person_data_row($person, $controller)
 	return $return;
 }
 
+function get_employee_data_row($person)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+	//var_dump($person);
+	$return = array (
+		'people.person_id' => $person->person_id,
+		'first_name' => $person->first_name,
+		'last_name' => $person->last_name,
+		//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+		'phone_number' => $person->phone_number,
+		'address_1'=>$person->address_1,
+		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+	));
+
+	if($CI->Employee->has_grant('customers_phonenumber_hide'))
+	{
+		unset($return['phone_number']);
+	}
+	if(!$CI->Employee->has_grant('customers_view'))
+	{
+		unset($return['edit']);
+	}
+
+	return $return;
+}
+
 function get_suppliers_manage_table_headers()
 {
 	$CI =& get_instance();
