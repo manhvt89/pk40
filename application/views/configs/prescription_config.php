@@ -1,8 +1,8 @@
-<?php echo form_open('config/save_prescription/', array('id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_prescription/', array('id' => 'pres_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<ul id="general_error_message_box" class="error_message_box"></ul>
+			<ul id="pres_error_message_box" class="error_message_box"></ul>
 
 
 			<div class="form-group form-group-sm">	
@@ -149,13 +149,9 @@
 $(document).ready(function()
 {
 
-	$("#backup_db").click(function() {
-		window.location='<?php echo site_url('config/backup_db') ?>';
-	});
+	$('#pres_config_form').validate($.extend(form_support.handler, {
 
-	$('#general_config_form').validate($.extend(form_support.handler, {
-
-		errorLabelContainer: "#general_error_message_box",
+		errorLabelContainer: "#pres_error_message_box",
 
 		rules: 
 		{
