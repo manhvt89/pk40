@@ -9,6 +9,7 @@ ALTER TABLE `ospos_sales` ADD `completed_at` int(11) NOT NULL DEFAULT 0 AFTER `s
 ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 ALTER TABLE `ospos_items` ADD `updated_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 
+
 -- Update công nhợ nhập hàng
 ALTER TABLE `ospos_receivings` ADD `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '{0: Đã thanh toán xong; 1: Chưa hoàn thành}' AFTER `mode`;
 ALTER TABLE `ospos_receivings` ADD `code` varchar(14) NOT NULL DEFAULT 0 COMMENT '{Mã phiếu nhập hàng}' AFTER `mode`;
