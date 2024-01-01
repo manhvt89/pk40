@@ -29,6 +29,16 @@
 					</div>
 				</div>
 			</div>
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('pk_address'), 'pk_address', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_textarea(array(
+						'name' => 'pk_address',
+						'id' => 'pk_address',
+						'class' => 'form-control input-sm',
+						'value'=>$this->config->item('pk_address'))); ?>
+				</div>
+			</div>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('lien_he'), 'lien_he', array('class' => 'control-label col-xs-2')); ?>

@@ -19,7 +19,11 @@
 		</tr>
 		<tr>
 			<th colspan="2">
-				Địa chỉ: <?=$this->config->item('address')?>
+				<?php if(trim($this->config->item('pk_address')) != ''): ?>
+					Địa chỉ: <?=$this->config->item('pk_address')?>
+				<?php else : ?>
+					Địa chỉ: <?=$this->config->item('address')?>
+				<?php endif; ?>
 			</th>
 		</tr>
 		<tr>

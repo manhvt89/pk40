@@ -453,7 +453,8 @@ class Config extends Secure_Controller
 			'hien_thi_ten_bac_si'=>$this->input->post('hien_thi_ten_bac_si'),
 			'ten_bac_si'=>$this->input->post('ten_bac_si'),
 			'test_display_nurse'=>$this->input->post('test_display_nurse'),
-			'test_display_kxv'=>$this->input->post('test_display_kxv')
+			'test_display_kxv'=>$this->input->post('test_display_kxv'),
+			'pk_address'=>$this->input->post('pk_address')
 		];
 		
 		$result = $this->Appconfig->batch_save($batch_save_data);
