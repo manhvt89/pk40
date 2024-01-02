@@ -635,6 +635,13 @@ class Config extends Secure_Controller
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
 			'barcode_content' => $this->input->post('barcode_content'),
 			'GBarcode'=>$this->input->post('GBarcode'),
+			'name_store_barcode'=>$this->input->post('name_store_barcode'),
+			'name_store_barcode_font'=>$this->input->post('name_store_barcode_font'),
+			'name_store_barcode_font_size'=>$this->input->post('name_store_barcode_font_size'),
+			'add_store_barcode'=>$this->input->post('add_store_barcode'),
+			'add_store_barcode_font'=>$this->input->post('add_store_barcode_font'),
+			'add_store_barcode_font_size'=>$this->input->post('add_store_barcode_font_size'),
+			'debug_barcode'=>$this->input->post('debug_barcode'),
 			
 		
 			/** Lens */

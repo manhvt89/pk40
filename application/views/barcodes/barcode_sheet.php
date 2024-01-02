@@ -20,20 +20,20 @@
 }
 
 .print-barcode_2 {
-	width: 50mm;
+	width: <?=$barcode_config['barcode_width'] ?>mm;
 	transform: rotate(180deg);
 	padding-bottom: 0px;
 	border-spacing: 1px;
 	margin: 0 auto;
-	height: 18mm;
+	height: <?=$barcode_config['barcode_height']/2 ?>mm;
 	border: red 1px dashed;
 }
 
 .print-barcode_1 {
-	width: 50mm;
+	width: <?=$barcode_config['barcode_width'] ?>mm;
 	/*outline: 1px dashed;*/
 	border-spacing: 1px;
-	height: 18mm;
+	height: <?=$barcode_config['barcode_height']/2 ?>mm;
 	text-align: center;
 	margin: 0 auto;
 	border: red 1px dashed;
@@ -71,9 +71,14 @@ border-spacing: 1px;
 }
 
 .store_name {
-	font-size: <?php echo $barcode_config['barcode_font_size']; ?>px;
-	font-family: <?=$this->barcode_lib->get_font_name($barcode_config['barcode_font']) ?>;
-	padding-top: 1mm;
+	font-size: <?=$store_name_style['size']?>px;
+	font-family: <?=$this->barcode_lib->get_font_name($store_name_style['font'])?> !important;
+	padding-top: 0mm;
+}
+.store_address{
+	font-size: <?=$store_add_style['size']?>px;
+	font-family: <?=$this->barcode_lib->get_font_name($store_add_style['font'])?> !important;
+	padding-top: 0mm;
 }
 
 .barcode-item-name{
@@ -89,22 +94,20 @@ border-spacing: 1px;
 	font-family: <?=$this->barcode_lib->get_font_name($barcode_config['barcode_font'])?>;
 	text-transform: uppercase;
 	font-size: <?php echo ($barcode_config['barcode_font_size'] - 2); ?>px;
-	padding-top:10px;
+	padding-top:5px;
 	padding-left: 0px;
 	font-weight: bold;
 	text-align: center;
 }
 
-.store_address{
-	font-size:8px;
-}
 .barcode-item-item_code{
 	font-family: <?=$this->barcode_lib->get_font_name($barcode_config['barcode_font'])?>;
 	text-transform: uppercase;
 }
 .LibreBarcode128{
-	font-size: 10mm;
+	font-size: <?php echo $barcode_config['barcode_quality']; ?>px;
 	padding-bottom: 1mm;
+	line-height: <?php echo $barcode_config['barcode_quality']; ?>px;
 }
 
 @media print {
@@ -121,9 +124,13 @@ border-spacing: 1px;
 	#register_wrapper {
 		display: none;
 	}
+	<?php 
+	if($barcode_config['debug_barcode'] != 1): ?>
+
 	.print-barcode_1, .print-barcode_2 {
 		border: red 0px solid;
 	}
+	<?php endif; ?>
 }
 </style>
 

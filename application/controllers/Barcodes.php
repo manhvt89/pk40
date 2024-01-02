@@ -110,11 +110,49 @@ class Barcodes extends Secure_Controller
 		//$item_ids = explode(':', $item_ids);
 		$results = $this->printbarcode_lib->get_cart();
 		$config = $this->barcode_lib->get_barcode_config();
-		$config['store_name'] = $this->config->item('company');
-		$config['store_address'] = $this->config->item('address');
+		if(empty(trim($this->config->item('name_store_barcode'))))
+		{
+			$config['store_name'] = $this->config->item('company');
+		} else {
+			$config['store_name'] = $this->config->item('name_store_barcode');
+		}
+		if(empty(trim($this->config->item('add_store_barcode'))))
+		{
+			$config['store_address'] = $this->config->item('address');
+		} else {
+			$config['store_address'] = $this->config->item('add_store_barcode');
+		}
+		
 		$config['location'] = $this->config->item('Location_Barcode');
 		$data['items'] = [];
 		$data['barcode_config'] = $config;
+
+		if(empty($this->config->item('name_store_barcode_font')))
+		{
+			$store_name_style = [
+				'font'=>$this->config->item('barcode_font'),
+				'size'=>$this->config->item('barcode_font_size')
+			];
+		} else {
+			$store_name_style = [
+				'font'=>$this->config->item('name_store_barcode_font'),
+				'size'=>$this->config->item('name_store_barcode_font_size')
+			];
+		}
+		if(empty($this->config->item('add_store_barcode_font')))
+		{
+			$store_add_style = [
+				'font'=>$this->config->item('barcode_font'),
+				'size'=>$this->config->item('barcode_font_size')
+			];
+		} else {
+			$store_add_style = [
+				'font'=>$this->config->item('add_store_barcode_font'),
+				'size'=>$this->config->item('add_store_barcode_font_size')
+			];
+		}
+		$data['store_name_style'] = $store_name_style;
+		$data['store_add_style'] = $store_add_style;
 
 		$data['barcode_config'] = $config;
 		//var_dump($results);

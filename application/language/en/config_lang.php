@@ -222,4 +222,8 @@ $lang['Phone_Barcode'] = 'Điện thoại';
 $lang['config_qrcode_bill'] = 'Hiển thị QR code trên hóa đơn';
 $lang['config_barcode_bill'] = 'Hiển thị Barcide trên hóa đơn';
 $lang['pk_address'] = "Địa chỉ phòng khám";
-
+$lang['name_store_barcode'] = "Tên phòng khám";
+$lang['name_store_barcode_font'] = "Font tên phòng khám";
+$lang['add_store_barcode'] = "Địa chỉ phòng khám";
+$lang['add_store_barcode_font'] = "Font địa chỉ phòng khám";
+$lang['config_debug_barcode'] = "Tìm lỗi Barcode";
