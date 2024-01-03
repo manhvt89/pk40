@@ -53,6 +53,17 @@
 					</div>
 				</div>
 			</div>
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('hien_thi_tieu_de_kq'), 'hien_thi_tieu_de_kq', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'hien_thi_tieu_de_kq',
+						'id' => 'hien_thi_tieu_de_kq',
+						'value' => '1',
+						'checked'=>$this->config->item('hien_thi_tieu_de_kq'))); ?>
+				</div>
+			</div>
+
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('hien_thi_VA'), 'hien_thi_VA', array('class' => 'control-label col-xs-2')); ?>

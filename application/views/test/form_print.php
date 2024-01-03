@@ -34,9 +34,11 @@
 	</thead>
 	<?php endif; ?>
 	<tbody>
+		<?php if($this->config->item('hien_thi_tieu_de_kq') == 1): ?>
 		<tr>
 			<td colspan="2" class="print_title">KẾT QUẢ KHÁM</td>
 		</tr>
+		<?php endif; ?>
 		<tr>
 			<td width="60%">
 				<table>
