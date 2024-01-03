@@ -17,6 +17,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_print_header_receipt'), 'print_header_receipt', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'print_header_receipt',
+						'id' => 'print_header_receipt',
+						'value' => '1',
+						'checked'=>$this->config->item('print_header_receipt'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_receipt_show_taxes'), 'receipt_show_taxes', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(

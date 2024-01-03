@@ -719,7 +719,8 @@ class Config extends Secure_Controller
 			'print_bottom_margin' => $this->input->post('print_bottom_margin'),
 			'print_right_margin' => $this->input->post('print_right_margin'),
 			'receipt_printer'=>$this->input->post('receipt_printer'),
-			'takings_printer'=>$this->input->post('takings_printer')
+			'takings_printer'=>$this->input->post('takings_printer'),
+			'print_header_receipt'=>$this->input->post('print_header_receipt'),
 		);
 
     	$result = $this->Appconfig->batch_save($batch_save_data);

@@ -1,28 +1,29 @@
 <div id="receipt_wrapper">
-	<div id="receipt_header">
-		<?php
-		if ($this->config->item('company_logo') != '') 
-        { 
-        ?>
-			<div id="company_name" class="logo"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
-		<?php
-		}
-		?>
-		<?php if($this->config->item('company_name_display') == 1): ?>
-		<div id="company_name1" class="name" ><?php echo $this->config->item('company'); ?></div>
-		<?php endif; ?>
-		<div id="company_address" class="address" >Địa chỉ: <?php echo nl2br($this->config->item('address')); ?></div>
-		<div id="company_address" class="phone" >Điện thoại: <?php echo $this->config->item('phone'); ?></div>
-		<div id="company_phone" class="phone" >Website: <?php echo $this->config->item('website'); ?></div>
+	<?php if ($this->config->item('print_header_receipt') == 1) :?>
+		<div id="receipt_header">
+			<?php
+			if ($this->config->item('company_logo') != '') 
+			{ 
+			?>
+				<div id="company_name" class="logo"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
+			<?php
+			}
+			?>
+			<?php if($this->config->item('company_name_display') == 1): ?>
+			<div id="company_name1" class="name" ><?php echo $this->config->item('company'); ?></div>
+			<?php endif; ?>
+			<div id="company_address" class="address" >Địa chỉ: <?php echo nl2br($this->config->item('address')); ?></div>
+			<div id="company_address" class="phone" >Điện thoại: <?php echo $this->config->item('phone'); ?></div>
+			<div id="company_phone" class="phone" >Website: <?php echo $this->config->item('website'); ?></div>
 
-		<div class="clearboth"></div>
-		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
-		<div id=""><?php echo $this->lang->line('sales_id').": ".$code; ?></div>
-		<div id="" class="time">Ngày <?php echo $transaction_time ?></div>
-		<div class="clearboth"></div>
+			<div class="clearboth"></div>
+			<div id="sale_receipt"><?php echo $receipt_title; ?></div>
+			<div id=""><?php echo $this->lang->line('sales_id').": ".$code; ?></div>
+			<div id="" class="time">Ngày <?php echo $transaction_time ?></div>
+			<div class="clearboth"></div>
 
-	</div>
-
+		</div>
+	<?php endif; ?>
 	<div id="receipt_general_info">
 
 		<?php

@@ -227,3 +227,4 @@ $lang['name_store_barcode_font'] = "Font tên phòng khám";
 $lang['add_store_barcode'] = "Địa chỉ phòng khám";
 $lang['add_store_barcode_font'] = "Font địa chỉ phòng khám";
 $lang['config_debug_barcode'] = "Tìm lỗi Barcode";
+$lang['config_print_header_receipt'] = "In header hóa đơn";
