@@ -52,10 +52,8 @@
 						<td>Năm sinh: <?php echo $age; ?></td>
 					</tr>
 				</table>
-				
 			</td>
 			<td width="40%" style="text-align: center; vertical-align: middle;">
-				
 				<?php $barcode = $this->barcode_lib->generate_receipt_barcode($customer_account_number); ?>
 				<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br/>
 				<span class="label_barcode"><?=$customer_account_number?></span>

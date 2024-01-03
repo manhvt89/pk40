@@ -376,7 +376,7 @@
 							escape: false,
 							onExpandRow: function (index, row, $detail) {
 								// Khi người dùng mở rộng một dòng (danh mục), tải dữ liệu chi tiết
-								var category = row.supplier_uuid;
+								var sale_uuid = row.sale_uuid;
 								console.log('expandedRowIndex:'+expandedRowIndex);
 								
 								var _strDate = $("#daterangepicker_sales").val();
@@ -390,9 +390,9 @@
 
 								$.ajax({
 									url: '<?php echo site_url('customers/ajax_saleings_detail')?>',
-									method: 'get',
+									method: 'GET',
 									data: {
-										supplier_uuid: category,
+										sale_uuid: sale_uuid,
 										fromDate:fromDate,
 										toDate:toDate
 									},
@@ -507,7 +507,7 @@
 
 								$.ajax({
 									url: '<?php echo site_url('customers/ajax_saleings_detail')?>',
-									method: 'get',
+									method: 'GET',
 									data: {
 										sale_uuid: sale_uuid,
 										fromDate:fromDate,
