@@ -14,56 +14,44 @@
 	<fieldset id="customer_basic_info">
 		
 		<div class="form-group form-group-sm">
-			<?php echo form_label('Họ và tên', 'first_name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label('Họ và tên', 'first_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'first_name',
 						'id'=>'first_name',
 						'class'=>'form-control input-sm',
+						'disabled'=>'',
 						'value'=>$person_info->first_name)
 						);?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">	
-			<?php echo form_label($this->lang->line('common_gender'), 'gender', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
-			<div class="col-xs-4">
-				<label class="radio-inline">
-					<?php echo form_radio(array(
+			<?php echo form_label($this->lang->line('common_gender'), 'gender', !empty($basic_version) ? array('class'=>'control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<div class="col-xs-2">
+				<?php echo form_input(array(
 							'name'=>'gender',
-							'type'=>'radio',
 							'id'=>'gender',
-							'value'=>1,
-							'checked'=>$person_info->gender === '1')
-							); ?> <?php echo $this->lang->line('common_gender_male'); ?>
-				</label>
-				<label class="radio-inline">
-					<?php echo form_radio(array(
-							'name'=>'gender',
-							'type'=>'radio',
-							'id'=>'gender',
-							'value'=>0,
-							'checked'=>$person_info->gender === '0')
-							); ?> <?php echo $this->lang->line('common_gender_female'); ?>
-				</label>
-
+							'class'=>'form-control input-sm',
+							'disabled'=>'',
+							'value'=>$person_info->gender == '1' ? $this->lang->line('common_gender_male'):$this->lang->line('common_gender_female'))
+							);?>
 			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('common_age'), 'age', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
+			<?php echo form_label($this->lang->line('common_age'), 'age', array('class'=>'control-label col-xs-2')); ?>
+			<div class='col-xs-3'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-age"></span></span>
 					<?php echo form_input(array(
 							'name'=>'age',
 							'id'=>'age',
 							'class'=>'form-control input-sm',
+							'disabled'=>'',
 							'value'=>$person_info->age)
 					);?>
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="form-group form-group-sm" style="display: none">
 			<?php echo form_label($this->lang->line('common_email'), 'email', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
@@ -88,16 +76,27 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('common_phone_number'), 'phone_number', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
+			<div class='col-xs-2'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
 					<?php echo form_input(array(
 							'name'=>'phone_number',
 							'id'=>'phone_number',
 							'class'=>'form-control input-sm',
+							'disabled'=>'',
 							'value'=>$person_info->phone_number)
 							);?>
 				</div>
+			</div>
+			<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-2')); ?>
+			<div class='col-xs-3'>
+				<?php echo form_input(array(
+						'name'=>'account_number',
+						'id'=>'account_number',
+						'class'=>'form-control input-sm',
+						'disabled'=>'',
+						'value'=>$person_info->account_number)
+						);?>
 			</div>
 		</div>
 
@@ -108,35 +107,14 @@
 						'name'=>'address_1',
 						'id'=>'address_1',
 						'class'=>'form-control input-sm',
-						'value'=>$person_info->address_1)
+						'disabled'=>'',
+						'value'=>$person_info->address_1 .', '.$city)
 						);?>
 			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('common_city'), 'city', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<?php
-
-					echo form_dropdown('city', $cities, $city, array('class'=>'form-control','id'=>'city')); ?>
-
-			</div>
-		</div>
-				
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_input(array(
-						'name'=>'account_number',
-						'id'=>'account_number',
-						'class'=>'form-control input-sm',
-						'value'=>$person_info->account_number)
-						);?>
-			</div>
-		</div>
-		
+		</div>		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
-			<div class="col-xs-4">
+			<div class="col-xs-2">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
@@ -153,22 +131,21 @@
 					<?php endif; ?>
 				</div>
 			</div>
-		</div>
-		
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-2')); ?>
+			<div class='col-xs-2'>
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'discount_percent',
 							'id'=>'discount_percent',
 							'class'=>'form-control input-sm',
+							'disabled'=>'',
 							'value'=>$person_info->discount_percent)
 							);?>
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>	
 		</div>
+	
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -365,7 +342,7 @@
 							striped: true,
 							pagination: true,
 							sortable: false,
-							showColumns: true,
+							showColumns: false,
 							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
@@ -481,7 +458,7 @@
 							striped: true,
 							pagination: true,
 							sortable: false,
-							showColumns: true,
+							showColumns: false,
 							uniqueId: 'id',
 							showExport: true,
 							data: summary_data,
