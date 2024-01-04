@@ -1,3 +1,5 @@
+04/01/2024
+- update detail customer.
 03/01/2024
 - Update cho phép thiết lập hóa đợn, đơn kính.
 Update
