@@ -325,11 +325,23 @@ class Roles extends Secure_Controller
 		} else {
 			$_aPermissions = array(); // tao mang dua tren _aModule
 			$_oTheModule = $this->Module->get_the_module_by_uuid($uuid);
-
+			//$_sModul
 			$_pers = get_all_permissions_of_the_module($_oTheModule->module_key);
+			//var_dump($_oTheModule->module_key);
+			if(!empty($this->config->item('exclude_actions')[$_oTheModule->module_key]))
+			{
+				$_aExludeModules = MakeExludeModules($this->config->item('exclude_actions')[$_oTheModule->module_key],$_oTheModule->module_key);
+				//var_dump($_aExludeModules);//die();
+				$result = array_filter($_pers, function ($item) use ($_aExludeModules) {
+					return !matchWithWildcards($item, $_aExludeModules);
+				});
+				
+				$_pers = $result;//array_diff($_pers,$_aExludeModules);
+				//var_dump($_pers);die();
+			}
 			$_aoManagedPermissions = $this->Module->get_all_permissions_by_module_key($_oTheModule->module_key)->result();
 			//var_dump($_aoManagedPermissions);
-			if(count($_pers) > 0)
+			if(!empty($_pers))
 			{
 				foreach($_pers as $key=>$value)
 				{

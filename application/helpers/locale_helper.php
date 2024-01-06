@@ -554,6 +554,7 @@ function mb_ucfirst($string, $encoding)
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
+// Lấy tất cả các controllers, các file trong thư mục controller
 function get_all_controllers()
 {
     $CI =& get_instance();
@@ -617,9 +618,7 @@ function get_all_modules()
 
 function extract_fullname($sFullName = '')
 {
-    $_sFullName = trim($sFullName, ' '); // bỏ khoảng trắng trước và sau chuỗi
-    $_sFullName = preg_replace('/\s+/', ' ', $_sFullName); // loại bỏ khoảng trắng thừa trong
-
+    $_sFullName = normalizeFullName($sFullName); // Chuẩn họ và tên người Việt    
     $_aWords = explode(' ',$_sFullName);
     $_sFirstName = array_pop($_aWords);
     $_sLastName = implode(' ',$_aWords);
@@ -635,7 +634,17 @@ function get_fullname($firstname='',$lastname='')
     $_sFullName = trim($_sFullName, ' '); // bỏ khoảng trắng trước và sau chuỗi
     $_sFullName = preg_replace('/\s+/', ' ', $_sFullName); // loại bỏ khoảng trắng thừa trong
 
-    return $_sFullName;
+    return normalizeFullName($_sFullName);
+}
+
+function normalizeFullName($fullName) {
+    // Chuyển đổi chữ đầu của mỗi từ thành chữ hoa
+    $normalized = ucwords(strtolower($fullName));
+    $normalized = trim($normalized, ' '); // bỏ khoảng trắng trước và sau chuỗi
+    // Thay thế các khoảng trắng liên tục bằng một khoảng trắng duy nhất
+    $normalized = preg_replace('/\s+/', ' ', $normalized);
+
+    return $normalized;
 }
 /**
  * Summary of chuan_hoa_array
@@ -959,5 +968,37 @@ function print_barcode_thuoc_3x105($items,$barcode_config)
 	}
     $_sHtml = $_sHtml .'</div>';
     echo $_sHtml;
+}
+
+function has_grant($str)
+{
+    $CI =& get_instance();
+    return $CI->Employee->has_grant($str);
+}
+
+function MakeExludeModules($exludeModule,$moduleName)
+{
+    if(empty($exludeModule))
+    {
+        return [];
+    }
+    $_aTheReturn = [];
+    foreach($exludeModule as $k=>$v)
+    {
+        $_aTheReturn[] = $moduleName.'_'.$v;
+    }
+
+    return $_aTheReturn;
+}
+
+// Hàm callback để kiểm tra phần tử của mảng 1 với mảng 2
+function matchWithWildcards($value, $patterns) {
+    foreach ($patterns as $pattern) {
+        // Sử dụng fnmatch để so sánh với wildcards
+        if (fnmatch($pattern, $value)) {
+            return true;
+        }
+    }
+    return false;
 }
 ?>

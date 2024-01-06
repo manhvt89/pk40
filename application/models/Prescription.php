@@ -8,6 +8,10 @@ class Prescription extends CI_Model
 	public function get_all($rows = 0, $limit_from = 0)
 	{
 		$filter = $this->config->item('filter_other'); //define in app.php
+		if(empty($filter))
+		{
+			return [];
+		}
 		$tenthuoc = [];//$this->config->item('tenthuoc');
 		$this->db->select('*');
 		$this->db->from('items');
@@ -36,6 +40,7 @@ class Prescription extends CI_Model
 		{
 			$_aItem[] = $ten['id'];
 		}
+		//var_dump($_aItem);die();
 		$this->db->select('*');
 		$this->db->from('item_quantities');
 		$this->db->where_in('item_id',$_aItem);
