@@ -122,7 +122,7 @@ if (isset($error_message))
 
 	<div id='barcode'>
 		<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-		<?php echo $purchase_id; ?>
+		<?php echo $code; ?>
 	</div>
 </div>
 <script type="text/javascript">

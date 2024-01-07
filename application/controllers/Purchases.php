@@ -196,17 +196,8 @@ class Purchases extends Secure_Controller
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 
-		//$data['comment'] = $this->purchase_lib->get_comment();
 		$data['reference'] = $this->purchase_lib->get_reference();
-		//$data['payment_type'] = $this->input->post('payment_type');
-		//$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
-		//$data['stock_location'] = $this->purchase_lib->get_stock_source();
-		/* if($this->input->post('amount_tendered') != NULL)
-		{
-		$data['amount_tendered'] = $this->input->post('amount_tendered');
-		$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
-		} */
-
+		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
@@ -226,6 +217,7 @@ class Purchases extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
+		$kind = $this->purchase_lib->get_kind();
 		$_purchase_id = 0;
 		if ($purchase_id == 0) {	// Tạo mới
 			$name = "Đơn nhập ngày " . date('d/m/Y hms', time());
@@ -236,7 +228,7 @@ class Purchases extends Secure_Controller
 			$data = $this->xss_clean($data);
 			//SAVE PO to database
 			//var_dump($data['cart']);die();
-			$_purchase_id = $this->Purchase->save($data['cart'], $data['quantity'], $supplier_id, $employee_id, $name, $code, $comment, $completed);
+			$_purchase_id = $this->Purchase->save($data['cart'], $data['quantity'],$kind ,$supplier_id, $employee_id, $name, $code, $comment, $completed);
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
 		} else { // Chỉnh sửa lại
 			$purchase_info = $this->Purchase->get_info($purchase_id)->row_array();
@@ -261,7 +253,7 @@ class Purchases extends Secure_Controller
 			$purchase_info = $this->Purchase->get_info($_purchase_id)->row_array();
 			//var_dump($purchase_info);
 			$data['purchase_uuid'] = $purchase_info['purchase_uuid'];
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['purchase_id']);
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($code);
 			$data['valid_cart'] = true;
 		}
 		$data['print_after_sale'] = 0;
@@ -301,7 +293,8 @@ class Purchases extends Secure_Controller
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($purchase_info['purchase_time']));
 		
 		$data['purchase_id'] = 'PO ' . $purchase_info['id'];
-		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['purchase_id']);
+		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($purchase_info['code']);
+		$data['code'] = $purchase_info['code'];
 		$employee_info = $this->Employee->get_info($purchase_info['employee_id']);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$data['completed'] = $purchase_info['completed'];
@@ -700,6 +693,7 @@ class Purchases extends Secure_Controller
 				}
 				//var_dump($array_data);
 				$this->purchase_lib->set_check(0); //reset lại biến kiểm tra; cần phải kiểm tra. nhấn nút kiểm tra;
+				$this->purchase_lib->set_kind(1);
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
 
 			} else {

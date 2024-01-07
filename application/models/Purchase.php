@@ -71,7 +71,7 @@ class Purchase extends CI_Model
 		return $this->db->update('purchases', $data);
 	}
 	// Save session to DB; create draff
-	public function save($items,$quantity, $supplier_id, $employee_id, $name, $code ='POxxx' ,$comment = '',$completed = 0)
+	public function save($items,$quantity, $kind, $supplier_id, $employee_id, $name, $code ='POxxx' ,$comment = '',$completed = 0)
 	{
 		if(count($items) == 0)
 		{
@@ -87,7 +87,8 @@ class Purchase extends CI_Model
 			'code' => $code,
 			'completed'=>$completed,
 			'comment' => $comment,
-			'v'=>0
+			'v'=>0,
+			'kind'=>$kind
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing

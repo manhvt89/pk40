@@ -4730,6 +4730,398 @@ class Reports extends Secure_Controller
         $json = array('result'=>$result,'data'=>$data);
         echo json_encode($json);
 	}
+
+    public function ajax_auto_load()
+    {
+        $this->load->model('reports/Inventory_lens');
+        $model = $this->Inventory_lens;
+        $location_id = $this->input->post('location_id');
+        $category = $this->input->post('category');
+        $result = 1;
+
+        if($category == "")
+        {
+            $json = array('result'=>0,'data'=>[]);
+            echo json_encode($json);
+            exit(0);
+        } 
+
+        $inputs = array('location_id'=>$location_id,'category'=>$category);
+
+        $report_data = $model->getData($inputs);
+
+        /*
+        $data['header'] = array(
+            'title'=>'Đơn đặt hàng',
+            'company_name'=>'',
+            'description'=>$category,
+            'brand'=>'',
+            'customer'=>'',
+            'ordered_date'=>date('d/m/Y'),
+            'code'=>'MS đơn đặt hàng',
+            'total'=>'Tổng số lượng (miếng)'
+        );
+        */
+        $map = array(
+            '-'=>0,
+            '0.00'=>1,
+            '0.25'=>2,
+            '0.50'=>3,
+            '0.75'=>4,
+            '1.00'=>5,
+            '1.25'=>6,
+            '1.50'=>7,
+            '1.75'=>8,
+            '2.00'=>9,
+            '2.25'=>10,
+            '2.50'=>11,
+            '2.75'=>12,
+            '3.00'=>13,
+            '3.25'=>14,
+            '3.50'=>15,
+            '3.75'=>16,
+            '4.00'=>17,
+            '4.25'=>18,
+            '4.50'=>19,
+            '4.75'=>20,
+            '5.00'=>21,
+            '5.25'=>22,
+            '5.50'=>23,
+            '5.75'=>24,
+            '6.00'=>25,
+            '6.25'=>26,
+            '6.50'=>27,
+            '6.75'=>28,
+            '7.00'=>29,
+            '7.25'=>30,
+            '7.50'=>31,
+            '7.75'=>32,
+            '8.00'=>33,
+            '8.25'=>34,
+            '8.50'=>35,
+            '8.75'=>36,
+            '9.00'=>37,
+            '9.25'=>38,
+            '9.50'=>39,
+            '9.75'=>40,
+            '10.00'=>41,
+            '10.25'=>42,
+            '10.50'=>43,
+            '10.75'=>44,
+            '11.00'=>45,
+            '11.25'=>46,
+            '11.50'=>47,
+            '11.75'=>48,
+            '12.00'=>49,
+            '12.25'=>50,
+            '12.50'=>51,
+            '12.75'=>52,
+            '13.00'=>53,
+            '13.25'=>54,
+            '13.50'=>55,
+            '13.75'=>56,
+            '14.00'=>57,
+            '14.25'=>58,
+            '14.50'=>59,
+            '14.75'=>60,
+            '15.00'=>61,
+        );
+
+        $re_map = array(
+            '-',
+            '0.00',
+            '0.25',
+            '0.50',
+            '0.75',
+            '1.00',
+            '1.25',
+            '1.50',
+            '1.75',
+            '2.00',
+            '2.25',
+            '2.50',
+            '2.75',
+            '3.00',
+            '3.25',
+            '3.50',
+            '3.75',
+            '4.00',
+            '4.25',
+            '4.50',
+            '4.75',
+            '5.00',
+            '5.25',
+            '5.50',
+            '5.75',
+            '6.00',
+            '6.25',
+            '6.50',
+            '6.75',
+            '7.00',
+            '7.25',
+            '7.50',
+            '7.75',
+            '8.00',
+            '8.25',
+            '8.50',
+            '8.75',
+            '9.00',
+            '9.25',
+            '9.50',
+            '9.75',
+            '10.00',
+            '10.25',
+            '10.50',
+            '10.75',
+            '11.00',
+            '11.25',
+            '11.50',
+            '11.75',
+            '12.00',
+            '12.25',
+            '12.50',
+            '12.75',
+            '13.00',
+            '13.25',
+            '13.50',
+            '13.75',
+            '14.00',
+            '14.25',
+            '14.50',
+            '14.75',
+            '15.00',
+        );
+
+        $grid_data = array();
+        $myopia = array(); //can
+        $hyperopia = array(); //vien
+        foreach ($report_data as $item)
+        {
+            $name = $item['name'];
+            $arr_name = explode(' ',$name);
+
+            if(count($arr_name) > 2) {
+                $ct = strtoupper($arr_name[count($arr_name)-1]);
+                $ct = str_replace('C','',$ct);
+
+                $st = strtoupper($arr_name[count($arr_name)-2]);
+                $st = str_replace('S','',$st);
+                $sph = $st;
+                $cyl = $ct;
+                $cyl = str_replace('-','',$cyl);
+                if(strpos($sph,'-')===0) //Độ cận
+                {
+                    $sph = str_replace('-','',$sph);
+                    if(isset($map[$sph]) && isset($map[$cyl])) {
+                        $s = $map[$sph];
+                        $c = $map[$cyl];
+                        $myopia[$s][$c] = number_format($item['standard_amount'] - $item['quantity']);
+                        if ($myopia[$s][$c] <= 0) {
+                            $myopia[$s][$c] = '';
+                        }
+                    }else{
+                        echo $sph . '|'.$cyl .'-> - ' . $item['item_number'];
+                    }
+                    //$myopia[] = $map[$sph];
+
+                }else{
+                    $sph = str_replace('+','',$sph);
+                    if(isset($map[$sph]) && isset($map[$cyl])) {
+                        $s = $map[$sph];
+                        $c = $map[$cyl];
+
+                        $hyperopia[$s][$c] = number_format($item['standard_amount'] - $item['quantity']);
+                        if ($hyperopia[$s][$c] <= 0) {
+                            $hyperopia[$s][$c] = '';
+                        }
+                    }else{
+                        echo $sph . '|'.$cyl.'-> +' . $item['item_number'];
+                    }
+                }
+            }
+
+        }
+        //var_dump($myopia);die();
+
+        for($i =0;$i < count($re_map);$i++)
+        {
+            for($j =0;$j<26;$j++)
+            {
+                if(!isset($myopia[$i][$j]))
+                {
+                    $myopia[$i][$j] = '';
+                }else{
+
+                }
+                if(!isset($hyperopia[$i][$j]))
+                {
+                    $hyperopia[$i][$j]='';
+                }
+            }
+        }
+        $sub_myopia = array();
+        $sub_hyperopia = array();
+        $sub_group = array();
+        $total = 0;
+        for($i =1;$i<10;$i++)
+        {
+            $sub_myopia[$i] = 0;
+            for($j =1;$j<count($re_map);$j++)
+            {
+
+                if($myopia[$j][$i] !='') {
+                    $sub_myopia[$i] = $sub_myopia[$i] + $myopia[$j][$i];
+                }
+            }
+        }
+        //var_dump($myopia);
+        $sub_group[0] =0;
+        for($i = 1;$i<26;$i++)
+        {
+            for($j=1;$j<10;$j++)
+            {
+                if($myopia[$i][$j] !='') {
+                    $sub_group[0] = $sub_group[0] + $myopia[$i][$j];
+                }
+            }
+        }
+
+        $sub_group[1] =0;
+        for($i = 26;$i<34;$i++)
+        {
+            for($j=1;$j<10;$j++)
+            {
+                if($myopia[$i][$j] !='') {
+                    $sub_group[1] = $sub_group[1] + $myopia[$i][$j];
+                }
+            }
+        }
+        $sub_group[2] =0;
+        for($i = 34;$i<56;$i++)
+        {
+            for($j=1;$j<10;$j++)
+            {
+                if($myopia[$i][$j] !='') {
+                    $sub_group[2] = $sub_group[2] + $myopia[$i][$j];
+                }
+            }
+        }
+
+        $sub_group[3] =0;
+        for($i = 1;$i<26;$i++)
+        {
+            for($j=1;$j<10;$j++)
+            {
+                if($hyperopia[$i][$j] !='') {
+                    $sub_group[3] = $sub_group[3] + $hyperopia[$i][$j];
+                }
+            }
+        }
+
+        $sub_group[4] =0;
+        for($i = 1;$i<42;$i++)
+        {
+            for($j=10;$j<14;$j++)
+            {
+                if($myopia[$i][$j] !='') {
+                    $sub_group[4] = $sub_group[4] + $myopia[$i][$j];
+                }
+            }
+        }
+        $sub_group[5] =0;
+        for($i = 1;$i<42;$i++)
+        {
+            for($j=14;$j<18;$j++)
+            {
+                if($myopia[$i][$j] !='') {
+                    $sub_group[5] = $sub_group[5] + $myopia[$i][$j];
+                }
+            }
+        }
+
+        $sub_group[6] =0; //do nothing
+
+        $sub_group[7] =0;
+        for($i = 2;$i<9;$i++)
+        {
+            for($j=10;$j<18;$j++)
+            {
+                if($hyperopia[$i][$j] !='') {
+                    $sub_group[7] = $sub_group[7] + $hyperopia[$i][$j];
+                }
+            }
+        }
+
+        for($i =1;$i<10;$i++)
+        {
+            $sub_hyperopia[$i] = 0;
+            for($j =1;$j<26;$j++)
+            {
+
+                if($hyperopia[$j][$i] !='') {
+                    $sub_hyperopia[$i] = $sub_hyperopia[$i] + $hyperopia[$j][$i];
+                }
+            }
+        }
+
+        for($i =10;$i<18;$i++)
+        {
+            $sub_hyperopia[$i] = 0;
+            for($j =1;$j<9;$j++)
+            {
+
+                if($hyperopia[$j][$i] !='') {
+                    $sub_hyperopia[$i] = $sub_hyperopia[$i] + $hyperopia[$j][$i];
+                }
+            }
+        }
+        foreach($myopia as $k=>$v)
+        {
+            //$item = $v;
+            ksort($v);
+            $v[0] = $re_map[$k];
+            $myopia[$k] = $v;
+        }
+        ksort($myopia);
+        
+        foreach($hyperopia as $k=>$v)
+        {
+            //$item = $v;
+            ksort($v);
+            $v[0] = $re_map[$k];
+            $hyperopia[$k] = $v;
+        }
+        ksort($hyperopia);
+
+        unset($myopia[0]);
+
+        // Sắp xếp lại mảng
+        $myopia = array_values($myopia);
+
+        unset($hyperopia[0]);
+
+        // Sắp xếp lại mảng
+        $hyperopia = array_values($hyperopia);
+
+        //array_shift($myopia);
+        //array_shift($hyperopia);
+        $total = array_sum($sub_group);
+        //$data['total'] = $total;
+        //$data['map'] = $map;
+        //$data['re_map'] = $re_map;
+        //remove the first row
+        //array_shift($myopia);
+        //array_shift($hyperopia);
+        //var_dump($myopia);
+        
+        $data['myopia'] = $myopia;
+        $data['hyperopia'] = $hyperopia;
+        //$data['sub_myopia'] = $sub_myopia;
+        //$data['sub_hyperopia'] = $sub_hyperopia;
+        //$data['sub_group'] = $sub_group;
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+    }
     
 }
 ?>

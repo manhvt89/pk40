@@ -1,3 +1,9 @@
+06/01/2024
+- Update db
+-- 06/01/2024 update loại purchase {1: bình thường; 2: lens; ....}
+ALTER TABLE `ospos_purchases` ADD `kind` tinyint(1) NOT NULL DEFAULT 1 AFTER `v`;
+
+- Update Roles, roles.php
 04/01/2024
 - update detail customer.
 03/01/2024

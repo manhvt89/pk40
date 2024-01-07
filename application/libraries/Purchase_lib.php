@@ -505,6 +505,7 @@ class Purchase_lib
 		$this->clear_name();
 		$this->clear_check();
 		$this->clear_purchase_id();
+		$this->clear_kind();
 	}
 
 	public function get_item_total($quantity, $price, $discount_percentage)
@@ -584,6 +585,25 @@ class Purchase_lib
 	public function clear_purchase_id()
 	{
 		$this->CI->session->unset_userdata('purchase_id');
+	}
+
+	public function get_kind()
+	{
+		if(!$this->CI->session->userdata('purchase_kind'))
+		{
+			$this->set_purchase_id(1);
+		}
+		return $this->CI->session->userdata('purchase_kind');
+	}
+
+	public function set_kind($kind)
+	{
+		$this->CI->session->set_userdata('purchase_kind', $kind);
+	}
+
+	public function clear_kind()
+	{
+		$this->CI->session->unset_userdata('purchase_kind');
 	}
 }
 

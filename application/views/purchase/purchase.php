@@ -24,33 +24,31 @@ if (isset($success))
 	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-			<?php if($this->Employee->has_grant('purchases_lens')): ?>
-				<li class="pull-right">
-					<div class='btn btn-sm btn-success pull-right' id='lens_receiving_button'><span class="glyphicon">&nbsp</span><?php echo 'Nhập mắt từ bảng'; ?></div>
-				</li>
+				<?php if(has_grant('purchases_lens')): ?>
+					<li class="pull-right">
+						<div class='btn btn-sm btn-success pull-right' id='lens_receiving_button'><span class="glyphicon">&nbsp</span><?php echo 'Nhập mắt từ bảng'; ?></div>
+					</li>
 				<?php endif; ?>
-				<?php if($this->Employee->has_grant('purchases_excel')): ?>
+				<?php if(has_grant('purchases_excel')): ?>
 					<li class="pull-right">
 					<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/excel_import"); ?>'
-            title='<?php echo $this->lang->line('items_import_items_excel'); ?>'>
-        <span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_excel'); ?>
-    </button>
+            			title='<?php echo $this->lang->line('items_import_items_excel'); ?>'>
+        				<span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_excel'); ?>
+    				</button>
 					</li>
 
-					<?php
-				if ($this->Employee->has_grant('purchases_manage')) // Hiển thị danh sách đơn đặt hàng PO;
-				{
-					?>
+				<?php
+					if (has_grant('purchases_manage')) // Hiển thị danh sách đơn đặt hàng PO;
+					{
+				?>
 					<li class="pull-right">
 						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Danh sách PO',
 							array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>'Danh sách PO')); ?>
 					</li>
-					<?php
-				}
+				<?php
+					}
 				?>
-				
 				<?php endif; ?>
-				
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
@@ -90,7 +88,7 @@ if (isset($success))
 		</thead>
 
 		<tbody id="cart_contents">
-			<?php
+		<?php
 			if(count($cart) == 0)
 			{
 			?>
@@ -352,20 +350,9 @@ $(document).ready(function()
     });
 	$("#check_button").click(function()
     {
-    	/*$.ajax({
-                url: '<?php echo site_url("purchases/check_purchase");?>',
-                type: 'POST',
-                dataType: 'json',
-                data: {'csrf_token':csrf_token}
-            }).done(function(ketqua) {
-                alert(ketqua);
-            });
-			*/
 			$.post('<?php echo site_url("purchases/check_purchase");?>', {'csrf_token':csrf_token}, function(ketqua) {
                 window.location.replace("<?php echo site_url("purchases");?>");
             });
-		
-		
     });
 
 	$("#cart_contents input").keypress(function(event)

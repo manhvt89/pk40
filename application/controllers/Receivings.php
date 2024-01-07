@@ -485,7 +485,7 @@ class Receivings extends Secure_Controller
 		$data = array();
 		//echo '123';die();
 		
-        $data['item_count'] = $this->config->item('KindOfLens');
+        $data['item_count'] = $this->config->item('iKindOfLens');
 		//var_dump($data['item_count']);
 		$data['page_title'] = 'NHẬP MẮT KÍNH';
 
@@ -505,7 +505,7 @@ class Receivings extends Secure_Controller
 			$this->load->view("receivings/lens", $data);
 		} else {
 			// Nhập sản phẩm //Mắt
-			$category = $this->input->post('category');
+			$category = $this->config->item('iKindOfLens')[$this->input->post('category')];
 			// Lấy tất cả tròng kính trong danh mục này;
 			$_aALens = $this->Receiving->get_items_by_category($category)->result_array();
 			//var_dump($_aALens);
@@ -518,7 +518,8 @@ class Receivings extends Secure_Controller
 			foreach($_aaMyo  as $key=>$_aSPH)
 			{
 				$key = $key + 1;
-				$sph = $mysphs[$key];
+				//$sph = $mysphs[$key];
+				$sph = $_aSPH[0];
 				foreach($_aSPH as $k=>$value)
 				{
 					if($k > 0)
@@ -532,14 +533,15 @@ class Receivings extends Secure_Controller
 				}
 			}
 
-
+			//var_dump($_aTmp);
 			// For Hyo
 			$_strHyo =  $this->input->post('hhhyo');
 			$_aaHyo = json_decode($_strHyo,true);
 			foreach($_aaHyo  as $key=>$_aSPH)
 			{
 				$key = $key + 1;
-				$sph = $hysphs[$key];
+				//$sph = $hysphs[$key];
+				$sph = $_aSPH[0];
 				foreach($_aSPH as $k=>$value)
 				{
 					if($k > 0)
@@ -557,6 +559,7 @@ class Receivings extends Secure_Controller
 			if(!empty($_aTmp))
 			{
 				$this->receiving_lib->clear_all();
+				$this->purchase_lib->set_kind(2);
 				foreach($_aTmp as $key=>$value)
 				{
 					foreach($_aALens as $k=>$v)
