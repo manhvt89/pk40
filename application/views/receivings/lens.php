@@ -145,6 +145,13 @@
             }
         });
 
+		$("#category").change(function() {
+        // Clear data when a new option is selected
+			clearTableData(myo,hyo);
+
+        // You can add logic to load new data based on the selected option here
+    	});
+
 		console.log(myo.getData());
 
 	});

@@ -242,6 +242,7 @@ class Purchases extends Secure_Controller
 			$data['purchase_id'] = 'POID ' . $_purchase_id;
 		}
 		$data['completed'] = $completed;
+		$data['code'] = $code;
 		$this->purchase_lib->clear_all();
 		if ($data['purchase_id'] == 'POID -1') {
 			$_purchase_id = 0;
