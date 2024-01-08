@@ -205,7 +205,7 @@ $(document).ready(function()
     {	
 		var purchase_uuid = $('#purchase_uuid').val();
 		var csrf_ospos_v3 = csrf_token();
-		$.ajax({
+		/*$.ajax({
 			type: 'POST',
 			url: '<?php echo site_url($controller_name . "/len_export"); ?>',
 			data: { purchase_uuid: purchase_uuid, csrf_ospos_v3:csrf_ospos_v3},
@@ -222,7 +222,10 @@ $(document).ready(function()
 				document.body.removeChild(a);
 				URL.revokeObjectURL(url);
 			}
-		});
+		});*/
+		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/len_export"); ?>');
+		$('#action_form').attr('method', 'get');
+		$('#action_form').submit();
 		
     });
 
