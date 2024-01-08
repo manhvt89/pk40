@@ -195,6 +195,7 @@ $(document).ready(function()
 				URL.revokeObjectURL(url);
 			}
 		});
+		
 		//$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
 		//$('#action_form').attr('method', 'get');
 		//$('#action_form').submit();
