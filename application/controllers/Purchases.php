@@ -1450,7 +1450,7 @@ class Purchases extends Secure_Controller
 		$columnEnd = 'Z';   // Cột kết thúc (thay 'Y' thành cột mong muốn)
 		$purchase_uuid = $this->input->get('purchase_uuid');
 		$data = $this->load_receipt_data($purchase_uuid);
-		var_dump($data);
+		//var_dump($data);
 		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
 		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
         $sheet = $spreadsheet->getActiveSheet();
@@ -1458,7 +1458,7 @@ class Purchases extends Secure_Controller
 		//$_aItems = $this->Purchase->getItems(['category'=>$data['category'],'location_id'=>1]);
 		//var_dump($_aItems);die();
 		$_aaData = transform2Matrix($data['cart']);
-		die();
+		
 		//var_dump($_aaData);die();
 
 		/**
@@ -1734,6 +1734,8 @@ class Purchases extends Secure_Controller
 		$sheet->setCellValue('S'.$index, $employee); 
  
 		$sheet->getPageSetup()->setPrintArea('A1:E'.$index);
+
+		die();
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
         header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
