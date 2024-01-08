@@ -1733,7 +1733,7 @@ class Purchases extends Secure_Controller
 		$sheet->getStyle('S'.$index)->applyFromArray($styleArray);
 		$sheet->setCellValue('S'.$index, $employee); 
  
-		$sheet->getPageSetup()->setPrintArea('A1:E'.$index);
+		$sheet->getPageSetup()->setPrintArea('A1:Z'.$index);
 
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
