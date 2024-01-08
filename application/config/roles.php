@@ -369,9 +369,10 @@ $config['exclude_actions'] = [
         'cancel',
         //'import',
         //'printbarcode',
-        //'export',
+        'export',
         //'barcode_export',
-        'suggest_search'
+        'suggest_search',
+        'len_export'
     ],
     'ctvs'=>[
         '__construct',

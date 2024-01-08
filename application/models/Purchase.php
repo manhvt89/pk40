@@ -555,5 +555,31 @@ class Purchase extends CI_Model
 		return $_iPurchaseID;
 	}
 
+	/**
+	 * Lây sanh sách các mắt kính theo loại
+	 */
+	public function getItems(array $inputs)
+	{	
+        $this->db->select('items.name,items.standard_amount, items.item_number, items.reorder_level, stock_locations.location_name');
+        $this->db->from('items AS items');
+		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
+        $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+        $this->db->where('items.deleted', 0);
+        $this->db->where('stock_locations.deleted', 0);
+
+		if($inputs['category'] != '')
+		{
+			$this->db->where('items.category',$inputs['category']);
+		}
+
+		if($inputs['location_id'] != 'all')
+		{
+			$this->db->where('stock_locations.location_id', $inputs['location_id']);
+		}
+
+        $this->db->order_by('items.name');
+
+		return $this->db->get()->result_array();
+	}
 }
 ?>

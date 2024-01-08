@@ -300,6 +300,7 @@ class Purchases extends Secure_Controller
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$data['completed'] = $purchase_info['completed'];
 		$data['purchase_uuid'] = $purchase_id;
+		$data['category'] = $purchase_info['category'];
 		$data['valid_cart'] = $this->purchase_lib->validate_cart();
 		$supplier_id = $this->purchase_lib->get_supplier();
 		if($supplier_id != -1)
@@ -1436,6 +1437,303 @@ class Purchases extends Secure_Controller
 		// footer
  
 		$sheet->getPageSetup()->setPrintArea('A1:D'.$index);
+        header('Content-Type: application/vnd.ms-excel'); // generate excel file
+        header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');	// download file 
+	}
+
+	public function len_export($purchase_uuid=0)
+	{
+		$columnStart = 'A'; // Cột bắt đầu (thay 'A' thành cột mong muốn)
+		$columnEnd = 'Z';   // Cột kết thúc (thay 'Y' thành cột mong muốn)
+		$purchase_uuid = $this->input->get('purchase_uuid');
+		$data = $this->load_receipt_data($purchase_uuid);
+		//var_dump($data);
+		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
+		$spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+        $sheet = $spreadsheet->getActiveSheet();
+
+		//$_aItems = $this->Purchase->getItems(['category'=>$data['category'],'location_id'=>1]);
+		//var_dump($_aItems);die();
+		$_aaData = transform2Matrix($data['cart']);
+		//var_dump($_aaData);die();
+
+		/**
+		 * Thiết lập độ rộng các cột
+		 */
+		for ($column = $columnStart; $column <= $columnEnd; $column++) {
+			$sheet->getColumnDimension($column)->setWidth(6); // Thiết lập kích thước cột (15 là giả định, bạn có thể thay đổi theo nhu cầu)
+		}
+
+		
+		$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+		$sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+		$sheet->getPageSetup()->setFitToWidth(1);
+		$sheet->getPageSetup()->setFitToHeight(0);
+		//$sheet->getPageSetup()->setPrintArea('A1:E5');
+
+
+
+
+        $writer = new Xlsx($spreadsheet); // instantiate Xlsx
+
+		// Title
+		//$title = $data['receipt_title'];
+		$title = 'PHIẾU NHẬP HÀNG';
+		$date = $data['transaction_time'];
+		$employee = $data['employee'];
+		$supplier = 'Nhà cung cấp: '.$data['supplier'];
+		$supplier_add = $data['supplier_address'];
+		$barcode = $data['barcode'];
+
+		
+                
+                
+
+		$company_name = $this->config->item('company');
+		$company_add = $this->config->item('address');
+		$company_phone = $this->config->item('phone');
+
+		$top_title1="CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+		$top_title2="Độc lập - Tự do - Hạnh Phúc";
+		
+		$index = 2;
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			
+		];
+		$sheet->mergeCells('A'.$index.':H'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_name); 
+
+		$sheet->mergeCells('I'.$index.':Z'.$index);
+		$sheet->getStyle('I'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('I'.$index, $top_title1); 
+
+		$index++;
+		$sheet->mergeCells('A'.$index.':H'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_add); 
+
+		$sheet->mergeCells('I'.$index.':Z'.$index);
+		$sheet->getStyle('I'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('I'.$index, $top_title2);
+		$index++;
+		$sheet->mergeCells('A'.$index.':H'.$index);
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, $company_phone);
+
+		$sheet->mergeCells('C'.$index.':Z'.$index);
+
+	
+
+		$index = $index + 2;
+		$sheet->mergeCells('A'.$index.':Z'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => true,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+				'rotation' => 90,
+				'startColor' => [
+					'argb' => 'FFA0A0A0',
+				],
+				'endColor' => [
+					'argb' => 'FFFFFFFF',
+				],
+			],
+		];
+		
+		$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('A'.$index, strtoupper($title)); 
+		$index++;
+		$sheet->mergeCells('A'.$index.':E'.$index);
+		$sheet->setCellValue('A'.$index, "Ngày ".$date);
+
+		$sheet->mergeCells('F'.$index.':Z'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('F'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('F'.$index, $supplier);
+
+		$index++;
+		$sheet->mergeCells('C'.$index.':Z'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('C'.$index)->applyFromArray($styleArray);
+		//$sheet->setCellValue('C'.$index, $supplier);
+		// Header ---
+		$index++;
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'top' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'left'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'right'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+				'bottom'=>[
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				]
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+				'rotation' => 90,
+				'startColor' => [
+					'argb' => '00A0A0A0',
+				],
+				'endColor' => [
+					'argb' => 'FFFFFFFF',
+				],
+			],
+		];
+
+		$_aCyl = $this->config->item('cyls');
+		
+		$sheet->mergeCells('B'.$index.':Z'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => true,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+				'rotation' => 90,
+				'startColor' => [
+					'argb' => 'FFA0A0A0',
+				],
+				'endColor' => [
+					'argb' => 'FFFFFFFF',
+				],
+			],
+		];
+		
+		
+		//var_dump($_aaData['hyperopia']);die();
+		if(!is_empty_array($_aaData['myopia']))
+		{	
+		
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, strtoupper('SPH')); 
+			$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('B'.$index, strtoupper('CYL(-)')); 
+
+			$index++;
+			$styleRow = $sheet->getStyle("A{$index}:Z{$index}");
+			$styleRow->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+			$formatPositive = '-0.00';
+			$styleRow->getNumberFormat()->setFormatCode($formatPositive);
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->fromArray($_aCyl, null, 'A'.$index);
+			$filename = 'Yeu_cau_Nhap_Hang'.time(); // set filename for excel file to be exported
+			// Body
+			$index++;
+			$_end = $index + count($_aaData['hyperopia']);
+			$styleRow = $sheet->getStyle("A{$index}:A{$_end}");
+			$styleRow->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+			$formatPositive = '-0.00';
+			$styleRow->getNumberFormat()->setFormatCode($formatPositive);
+			$sheet->fromArray($_aaData['myopia'], null, 'A'.$index);
+			$index = $index + count($_aaData['myopia']);
+		}
+
+		if(!is_empty_array($_aaData['hyperopia'])) //+
+		{
+			$sheet->mergeCells('B'.$index.':Z'.$index);
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('A'.$index, strtoupper('SPH')); 
+			$sheet->getStyle('B'.$index)->applyFromArray($styleArray);
+			$sheet->setCellValue('B'.$index, strtoupper('CYL(-)')); 
+
+			$index++;
+			$styleRow = $sheet->getStyle("A{$index}:Z{$index}");
+			$styleRow->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+			$formatPositive = '+0.00';
+			$styleRow->getNumberFormat()->setFormatCode($formatPositive);
+
+			$sheet->getStyle('A'.$index)->applyFromArray($styleArray);
+			$sheet->fromArray($_aCyl, null, 'A'.$index);
+			$filename = 'Yeu_cau_Nhap_Hang'.time(); // set filename for excel file to be exported
+			// Body
+			$index++;
+			$_end = $index + count($_aaData['hyperopia']);
+			$styleRow = $sheet->getStyle("A{$index}:A{$_end}");
+			$styleRow->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+			$formatPositive = '+0.00';
+			$styleRow->getNumberFormat()->setFormatCode($formatPositive);
+			$sheet->fromArray($_aaData['hyperopia'], null, 'A'.$index);
+			$index = $index + count($_aaData['hyperopia']);
+		}
+		//echo '12345';
+		///die();
+		// footer
+		$index++;
+		$index++;
+		$sheet->mergeCells('S'.$index.':W'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('S'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('S'.$index, 'Người lập phiếu'); 
+
+		$index++;
+		$sheet->mergeCells('S'.$index.':W'.$index);
+		$styleArray = [
+			'font' => [
+				'bold' => false,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+		];
+		
+		$sheet->getStyle('S'.$index)->applyFromArray($styleArray);
+		$sheet->setCellValue('S'.$index, $employee); 
+ 
+		$sheet->getPageSetup()->setPrintArea('A1:E'.$index);
+
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
         header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
         header('Cache-Control: max-age=0');

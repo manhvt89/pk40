@@ -31,6 +31,7 @@ if (isset($error_message))
 			<div class='btn btn-sm btn-info pull-right' id='barcode_excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel (in Barcode)</div>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_button'><span class="glyphicon glyphicon-import">&nbsp</span>In Barcode</div>
 			<div class='btn btn-sm btn-info pull-right' id='excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel</div>
+			<div class='btn btn-sm btn-info pull-right' id='len_excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel*</div>
 			<div class='btn btn-sm btn-info pull-right' id='import_button'><span class="glyphicon glyphicon-import">&nbsp</span>Nhập kho</div>		
 		<?php elseif($completed == 6): ?>
 			<div class='btn btn-sm btn-info pull-right' id='barcode_excel_export_button'><span class="glyphicon glyphicon-import">&nbsp</span>Xuất Excel (in Barcode)</div>
@@ -180,6 +181,33 @@ $(document).ready(function()
 			type: 'GET',
 			//url: '<?php echo site_url($controller_name . "/export/purchase_uuid/"); ?>'+purchase_uuid,
 			url: '<?php echo site_url($controller_name . "/export"); ?>',
+			data: { purchase_uuid: purchase_uuid},
+			dataType: 'binary',
+			success: function(data) {
+				var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+				var url = URL.createObjectURL(blob);
+				var a = document.createElement('a');
+				a.href = url;
+				a.download = 'danh_sach.xlsx';
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+				URL.revokeObjectURL(url);
+			}
+		});
+		//$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
+		//$('#action_form').attr('method', 'get');
+		//$('#action_form').submit();
+		
+    });
+
+	$("#len_excel_export_button").click(function()
+    {	
+		var purchase_uuid = $('#purchase_uuid').val();
+		$.ajax({
+			type: 'GET',
+			//url: '<?php echo site_url($controller_name . "/export/purchase_uuid/"); ?>'+purchase_uuid,
+			url: '<?php echo site_url($controller_name . "/len_export"); ?>',
 			data: { purchase_uuid: purchase_uuid},
 			dataType: 'binary',
 			success: function(data) {

@@ -1001,4 +1001,280 @@ function matchWithWildcards($value, $patterns) {
     }
     return false;
 }
+/**
+ * Đầu vào là danh sách các sản phẩm lens,
+ * Đầu ra là mảng 2 chiều [SPH][CYL]
+ */
+function transform2Matrix($items)
+{
+    if(empty($items))
+    {
+        return [];
+    }
+
+    $CI =& get_instance();
+    $report_data = $items;
+    $map = $CI->config->item('map');
+
+    $re_map = $CI->config->item('mysphs');
+
+    $grid_data = array();
+    $myopia = array(); //can
+    $hyperopia = array(); //vien
+    foreach ($report_data as $item)
+    {
+        //var_dump($item);
+        if(empty($item['name']))
+        {
+            $name = $item['item_name'];
+        } else {
+            $name = $item['name'];
+        }
+        $arr_name = explode(' ',$name);
+
+        if(count($arr_name) > 2) {
+            $ct = strtoupper($arr_name[count($arr_name)-1]);
+            $ct = str_replace('C','',$ct);
+
+            $st = strtoupper($arr_name[count($arr_name)-2]);
+            $st = str_replace('S','',$st);
+            $sph = $st;
+            $cyl = $ct;
+            $cyl = str_replace('-','',$cyl);
+            if(strpos($sph,'-')===0) //Độ cận
+            {
+                $sph = str_replace('-','',$sph);
+                if(isset($map[$sph]) && isset($map[$cyl])) {
+                    $s = $map[$sph];
+                    $c = $map[$cyl];
+                    $myopia[$s][$c] = number_format($item['item_quantity']);
+                    if ($myopia[$s][$c] <= 0) {
+                        $myopia[$s][$c] = '';
+                    }
+                }else{
+                    echo $sph . '|'.$cyl .'-> - ' . $item['item_number'];
+                }
+                //$myopia[] = $map[$sph];
+
+            }else{
+                $sph = str_replace('+','',$sph);
+                if(isset($map[$sph]) && isset($map[$cyl])) {
+                    $s = $map[$sph];
+                    $c = $map[$cyl];
+
+                    $hyperopia[$s][$c] = number_format($item['item_quantity']);
+                    if ($hyperopia[$s][$c] <= 0) {
+                        $hyperopia[$s][$c] = '';
+                    }
+                }else{
+                    echo $sph . '|'.$cyl.'-> +' . $item['item_number'];
+                }
+            }
+        }
+
+    }
+    //var_dump($myopia);die();
+
+    for($i =0;$i < count($re_map);$i++)
+    {
+        for($j =0;$j<26;$j++)
+        {
+            if(!isset($myopia[$i][$j]))
+            {
+                $myopia[$i][$j] = '';
+            }else{
+
+            }
+            if(!isset($hyperopia[$i][$j]))
+            {
+                $hyperopia[$i][$j]='';
+            }
+        }
+    }
+    $sub_myopia = array();
+    $sub_hyperopia = array();
+    $sub_group = array();
+    $total = 0;
+    for($i =1;$i<10;$i++)
+    {
+        $sub_myopia[$i] = 0;
+        for($j =1;$j<count($re_map);$j++)
+        {
+
+            if($myopia[$j][$i] !='') {
+                $sub_myopia[$i] = $sub_myopia[$i] + $myopia[$j][$i];
+            }
+        }
+    }
+    //var_dump($myopia);
+    $sub_group[0] =0;
+    for($i = 1;$i<26;$i++)
+    {
+        for($j=1;$j<10;$j++)
+        {
+            if($myopia[$i][$j] !='') {
+                $sub_group[0] = $sub_group[0] + $myopia[$i][$j];
+            }
+        }
+    }
+
+    $sub_group[1] =0;
+    for($i = 26;$i<34;$i++)
+    {
+        for($j=1;$j<10;$j++)
+        {
+            if($myopia[$i][$j] !='') {
+                $sub_group[1] = $sub_group[1] + $myopia[$i][$j];
+            }
+        }
+    }
+    $sub_group[2] =0;
+    for($i = 34;$i<56;$i++)
+    {
+        for($j=1;$j<10;$j++)
+        {
+            if($myopia[$i][$j] !='') {
+                $sub_group[2] = $sub_group[2] + $myopia[$i][$j];
+            }
+        }
+    }
+
+    $sub_group[3] =0;
+    for($i = 1;$i<26;$i++)
+    {
+        for($j=1;$j<10;$j++)
+        {
+            if($hyperopia[$i][$j] !='') {
+                $sub_group[3] = $sub_group[3] + $hyperopia[$i][$j];
+            }
+        }
+    }
+
+    $sub_group[4] =0;
+    for($i = 1;$i<42;$i++)
+    {
+        for($j=10;$j<14;$j++)
+        {
+            if($myopia[$i][$j] !='') {
+                $sub_group[4] = $sub_group[4] + $myopia[$i][$j];
+            }
+        }
+    }
+    $sub_group[5] =0;
+    for($i = 1;$i<42;$i++)
+    {
+        for($j=14;$j<18;$j++)
+        {
+            if($myopia[$i][$j] !='') {
+                $sub_group[5] = $sub_group[5] + $myopia[$i][$j];
+            }
+        }
+    }
+
+    $sub_group[6] =0; //do nothing
+
+    $sub_group[7] =0;
+    for($i = 2;$i<9;$i++)
+    {
+        for($j=10;$j<18;$j++)
+        {
+            if($hyperopia[$i][$j] !='') {
+                $sub_group[7] = $sub_group[7] + $hyperopia[$i][$j];
+            }
+        }
+    }
+
+    for($i =1;$i<10;$i++)
+    {
+        $sub_hyperopia[$i] = 0;
+        for($j =1;$j<26;$j++)
+        {
+
+            if($hyperopia[$j][$i] !='') {
+                $sub_hyperopia[$i] = $sub_hyperopia[$i] + $hyperopia[$j][$i];
+            }
+        }
+    }
+
+    for($i =10;$i<18;$i++)
+    {
+        $sub_hyperopia[$i] = 0;
+        for($j =1;$j<9;$j++)
+        {
+
+            if($hyperopia[$j][$i] !='') {
+                $sub_hyperopia[$i] = $sub_hyperopia[$i] + $hyperopia[$j][$i];
+            }
+        }
+    }
+    foreach($myopia as $k=>$v)
+    {
+        //$item = $v;
+        ksort($v);
+        $v[0] = $re_map[$k];
+        $myopia[$k] = $v;
+    }
+    ksort($myopia);
+    
+    foreach($hyperopia as $k=>$v)
+    {
+        //$item = $v;
+        ksort($v);
+        $v[0] = $re_map[$k];
+        $hyperopia[$k] = $v;
+    }
+    ksort($hyperopia);
+
+    unset($myopia[0]);
+
+    // Sắp xếp lại mảng
+    $myopia = array_values($myopia);
+
+    unset($hyperopia[0]);
+
+    // Sắp xếp lại mảng
+    $hyperopia = array_values($hyperopia);
+
+    //array_shift($myopia);
+    //array_shift($hyperopia);
+    $total = array_sum($sub_group);
+    //$data['total'] = $total;
+    //$data['map'] = $map;
+    //$data['re_map'] = $re_map;
+    //remove the first row
+    //array_shift($myopia);
+    //array_shift($hyperopia);
+    //var_dump($myopia);
+    
+    $data['myopia'] = $myopia;
+    $data['hyperopia'] = $hyperopia;
+
+    return $data;
+}
+/**
+ * Kiểm tra mảng 2 chiều;
+ * Nếu tất các  phần từ nếu có giá trị empty hoặc "" return true;
+ * Loại trừ cột đầu tiên
+ */
+function is_empty_array($items)
+{
+    
+    if(empty($items))
+    {
+        return true;
+    }
+    foreach ($items as $key=>$item)
+    {
+        foreach($item as $k=>$v)
+        {
+            if((trim($v) != '') && ($k > 0))
+            {
+                //echo $v;
+                return false;
+            } 
+
+        }
+    }
+    return true;
+}
 ?>
