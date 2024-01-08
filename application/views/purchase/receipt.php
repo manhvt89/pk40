@@ -205,26 +205,23 @@ $(document).ready(function()
     {	
 		var purchase_uuid = $('#purchase_uuid').val();
 		$.ajax({
-			type: 'GET',
-			//url: '<?php echo site_url($controller_name . "/export/purchase_uuid/"); ?>'+purchase_uuid,
+			type: 'POST',
 			url: '<?php echo site_url($controller_name . "/len_export"); ?>',
 			data: { purchase_uuid: purchase_uuid},
 			dataType: 'binary',
 			success: function(data) {
+				
 				var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 				var url = URL.createObjectURL(blob);
 				var a = document.createElement('a');
 				a.href = url;
-				a.download = 'danh_sach.xlsx';
+				a.download = 'danh_sach2.xlsx';
 				document.body.appendChild(a);
 				a.click();
 				document.body.removeChild(a);
 				URL.revokeObjectURL(url);
 			}
 		});
-		//$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
-		//$('#action_form').attr('method', 'get');
-		//$('#action_form').submit();
 		
     });
 
