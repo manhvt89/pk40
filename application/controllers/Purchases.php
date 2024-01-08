@@ -1448,7 +1448,7 @@ class Purchases extends Secure_Controller
 	{
 		$columnStart = 'A'; // Cột bắt đầu (thay 'A' thành cột mong muốn)
 		$columnEnd = 'Z';   // Cột kết thúc (thay 'Y' thành cột mong muốn)
-		$purchase_uuid = $this->input->post('purchase_uuid');
+		$purchase_uuid = $this->input->get('purchase_uuid');
 		$data = $this->load_receipt_data($purchase_uuid);
 		//var_dump($data);
 		$spreadsheet = new Spreadsheet(); // instantiate Spreadsheet
