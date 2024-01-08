@@ -177,6 +177,7 @@ $(document).ready(function()
 	$("#excel_export_button").click(function()
     {	
 		var purchase_uuid = $('#purchase_uuid').val();
+		/*
 		$.ajax({
 			type: 'GET',
 			//url: '<?php echo site_url($controller_name . "/export/purchase_uuid/"); ?>'+purchase_uuid,
@@ -186,6 +187,7 @@ $(document).ready(function()
 			success: function(data) {
 				var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 				var url = URL.createObjectURL(blob);
+				
 				var a = document.createElement('a');
 				a.href = url;
 				a.download = 'danh_sach.xlsx';
@@ -193,12 +195,14 @@ $(document).ready(function()
 				a.click();
 				document.body.removeChild(a);
 				URL.revokeObjectURL(url);
+			
 			}
 		});
+		*/
 		
-		//$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
-		//$('#action_form').attr('method', 'get');
-		//$('#action_form').submit();
+		$('#action_form').attr('action', '<?php echo site_url($controller_name . "/export"); ?>');
+		$('#action_form').attr('method', 'get');
+		$('#action_form').submit();
 		
     });
 
