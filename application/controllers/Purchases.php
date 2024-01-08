@@ -1735,7 +1735,6 @@ class Purchases extends Secure_Controller
  
 		$sheet->getPageSetup()->setPrintArea('A1:E'.$index);
 
-		die();
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
         header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
