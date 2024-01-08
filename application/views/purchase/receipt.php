@@ -204,10 +204,11 @@ $(document).ready(function()
 	$("#len_excel_export_button").click(function()
     {	
 		var purchase_uuid = $('#purchase_uuid').val();
+		var csrf_ospos_v3 = csrf_token();
 		$.ajax({
 			type: 'POST',
 			url: '<?php echo site_url($controller_name . "/len_export"); ?>',
-			data: { purchase_uuid: purchase_uuid},
+			data: { purchase_uuid: purchase_uuid, csrf_ospos_v3:csrf_ospos_v3},
 			dataType: 'binary',
 			success: function(data) {
 				
