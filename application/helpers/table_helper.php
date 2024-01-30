@@ -48,7 +48,7 @@ function get_reminder_data_row($reminder,$controller)
 			$status = 'Chưa liên hệ';
 			break;
 	}
-	var_dump($reminder);
+	//var_dump($reminder);
 	return array (
 		'no' => $reminder->no,
 		'name' => $reminder->name,
