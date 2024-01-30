@@ -7,6 +7,7 @@ function get_reminder_table_headers()
 	$headers = [
 		array('no' => $CI->lang->line('reminder_no')),
 		array('name' => $CI->lang->line('reminder_name')),
+		array('yob' => 'Năm sinh'),
 		array('tested_date' => $CI->lang->line('reminder_tested_date')),
 		array('duration'=>'Thời gian'),
 		array('des' => $CI->lang->line('reminder_description')),
@@ -47,9 +48,11 @@ function get_reminder_data_row($reminder,$controller)
 			$status = 'Chưa liên hệ';
 			break;
 	}
+	var_dump($reminder);
 	return array (
 		'no' => $reminder->no,
 		'name' => $reminder->name,
+		'yob' => $reminder->yob,
 		'phone' => $reminder->phone,
 		'remain'=>floor($diff/(60*60*24)),
 		'tested_date' => date('d/m/Y',$reminder->tested_date),

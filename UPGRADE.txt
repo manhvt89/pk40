@@ -1,3 +1,11 @@
+31/01/2024
+ALTER TABLE `ospos_reminders` ADD `yob` VARCHAR(10) CHARACTER SET utf8 NOT NULL DEFAULT '0' AFTER `is_sms`;
+
+update `ospos_reminders` SET `yob` = (SELECT `age` FROM `ospos_people` WHERE `person_id` = `customer_id`);
+
+- Thêm tuổi vào reminder
+- Thêm hiển thị tuổi (thiết lập)
+
 06/01/2024
 - Update db
 -- 06/01/2024 update loại purchase {1: bình thường; 2: lens; ....}
