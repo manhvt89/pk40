@@ -429,6 +429,7 @@ class Config extends Secure_Controller
 			'api_url'=>$this->input->post('api_url'),
 			'qrcode'=>$this->input->post('qrcode'),
 			'barcode'=>$this->input->post('barcode'),
+			'display_age'=>$this->input->post('display_age'),
 
 			'statistics' => $this->input->post('statistics') != NULL,
 		);

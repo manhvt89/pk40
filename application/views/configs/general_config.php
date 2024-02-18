@@ -304,7 +304,17 @@
 						'checked'=>$this->config->item('barcode'))); ?>
 				</div>
 			</div>
-			
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_display_age'), 'display_age', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'display_age',
+						'id' => 'display_age',
+						'value' => '1',
+						'checked'=>$this->config->item('display_age'))); ?>
+				</div>
+			</div>
+			display_age
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
