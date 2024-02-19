@@ -580,6 +580,7 @@ class Purchases extends Secure_Controller
                 $reader = new Csv();
             } else {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+				$reader->setReadDataOnly(true);
             }
 
             $spreadsheet = $reader->load($_FILES['file_path']['tmp_name']);
