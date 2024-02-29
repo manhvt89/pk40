@@ -154,6 +154,17 @@
 						'checked'=>$this->config->item('has_prescription'))); ?>
 				</div>
 			</div>
+
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('test_display_customer_phone'), 'test_display_customer_phone', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'test_display_customer_phone',
+						'id' => 'test_display_customer_phone',
+						'value' => '1',
+						'checked'=>$this->config->item('test_display_customer_phone'))); ?>
+				</div>
+			</div>
 			
 
 			<?php echo form_submit(array(

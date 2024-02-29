@@ -49,7 +49,15 @@
 						<td>Địa chỉ: <?php echo $customer_address; ?></td>
 					</tr>
 					<tr>
-						<td>Năm sinh: <?php echo $age; ?></td>
+						<td>
+							<?php if($this->config->item('test_display_customer_phone') == 1): ?>
+							
+								<span>Điện thoại: <?=$customer_phone?></span><span style="padding-left: 30px;"> Năm sinh: <?php echo $age; ?></span>
+							<?php else: ?>
+						
+								Năm sinh: <?php echo $age; ?>
+							<?php endif; ?>
+						</td>
 					</tr>
 				</table>
 			</td>
