@@ -73,6 +73,10 @@ abstract class Report extends CI_Model
 			debug_log($_sales,'_sale');
 			foreach($tmp as $k=>$v)
 			{
+				if($v['category'] == "Gọng T1")
+				{
+					debug_log($_sales[$v['category']],'_sale["'.$v['category'].'"]');
+				}
 				debug_log($_sales[$v['category']],'_sale["'.$v['category'].'"]');
 				if(isset($_sales[$v['category']]))
 				{
