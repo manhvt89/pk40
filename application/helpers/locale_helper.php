@@ -1356,4 +1356,8 @@ function clear_debug_log() {
         file_put_contents( $debug_file, '' );
     }
 }
+
+function to_upper($str){
+    return mb_strtoupper($str, 'UTF-8');
+}
 ?>

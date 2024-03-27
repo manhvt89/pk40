@@ -66,7 +66,7 @@ abstract class Report extends CI_Model
 			$_sales = [];
 			foreach($sales as $_k=>$_v)
 			{
-				$_sales[$_v['item_category']] = $_v['quantity'];
+				$_sales[to_upper($_v['item_category'])] = $_v['quantity'];
 			}
 			debug_log($_sales,'_sale');
 			debug_log($_sales["Gọng T1"],'_sale[Gọng T1]');
@@ -78,9 +78,9 @@ abstract class Report extends CI_Model
 					debug_log($_sales[$v['category']],'_sale["'.$v['category'].'"]');
 				}
 				debug_log($_sales[$v['category']],'_sale["'.$v['category'].'"]');
-				if(isset($_sales[$v['category']]))
+				if(isset($_sales[to_upper($v['category'])]))
 				{
-					$v['sale_quantity'] = $_sales[$v['category']];
+					$v['sale_quantity'] = $_sales[to_upper($v['category'])];
 				} else{
 					$v['sale_quantity'] = 0;
 				}
@@ -100,14 +100,14 @@ abstract class Report extends CI_Model
 			$_receives = array();
 			foreach($receives as $k=>$v)
 			{
-				$_receives[$v['item_category']] = $v['quantity'];
+				$_receives[to_upper($v['item_category'])] = $v['quantity'];
 			}
 
 			foreach($data['summary'] as $k=>$v)
 			{
-				if(isset($_receives[$v['category']]))
+				if(isset($_receives[to_upper($v['category'])]))
 				{
-					$v['receive_quantity'] = $_receives[$v['category']];
+					$v['receive_quantity'] = $_receives[to_upper($v['category'])];
 				} else{
 					$v['receive_quantity'] = 0;
 				}
@@ -146,14 +146,14 @@ abstract class Report extends CI_Model
 			$_sales = array();
 			foreach($sales as $k=>$v)
 			{
-				$_sales[$v['item_category']] = $v['quantity'];
+				$_sales[to_upper($v['item_category'])] = $v['quantity'];
 			}
 			debug_log($_sales,'-sales');
 			foreach($data['summary'] as $k=>$v)
 			{
-				if(isset($_sales[$v['category']]))
+				if(isset($_sales[to_upper($v['category'])]))
 				{
-					$v['b_sale_quantity'] = $_sales[$v['category']];
+					$v['b_sale_quantity'] = $_sales[to_upper($v['category'])];
 				} else{
 					$v['b_sale_quantity'] = 0;
 				}
@@ -173,14 +173,14 @@ abstract class Report extends CI_Model
 			$_receives = array();
 			foreach($receives as $k=>$v)
 			{
-				$_receives[$v['item_category']] = $v['quantity'];
+				$_receives[to_upper($v['item_category'])] = $v['quantity'];
 			}
 
 			foreach($data['summary'] as $k=>$v)
 			{
-				if(isset($_receives[$v['category']]))
+				if(isset($_receives[to_upper($v['category'])]))
 				{
-					$v['b_receive_quantity'] = $_receives[$v['category']];
+					$v['b_receive_quantity'] = $_receives[to_upper($v['category'])];
 				} else{
 					$v['b_receive_quantity'] = 0;
 				}
