@@ -1289,7 +1289,7 @@ function debug_log( $object = null, $name='' ) {
     $debug_file = get_debug_log_filename();
 
     // add timestamp and newline
-    $message = $name.' [' . date( 'Y-m-d H:i:s' ) . '] ';
+    $message = '[' . date( 'Y-m-d H:i:s' ) . '] ';
 
     $trace = debug_backtrace();
     if ( isset( $trace[0]['file'] ) ) {
@@ -1297,7 +1297,7 @@ function debug_log( $object = null, $name='' ) {
         if ( isset( $trace[0]['line'] ) ) {
             $file .= ':' . $trace[0]['line'];
         }
-        $message .= '[' . $file . '] ';
+        $message .= '[' . $file . '] ; Var '.$name . ': ';
     }
 
     $contents = get_contents_from_object( $object );
