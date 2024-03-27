@@ -56,7 +56,7 @@ abstract class Report extends CI_Model
 			foreach($tmp as $k=>$v)
 			{
 				$v['sale_quantity'] = 0;
-				$data['summary'][] = $v;
+				$data['summary'][$k] = $v;
 			}
 			
 		} else {
@@ -73,7 +73,7 @@ abstract class Report extends CI_Model
 				} else{
 					$v['sale_quantity'] = 0;
 				}
-				$data['summary'][] = $v;
+				$data['summary'][$k] = $v;
 			}
 		}
 
@@ -174,7 +174,7 @@ abstract class Report extends CI_Model
 
 		}
 
-
+		//var_dump($data['summary']);
         $data['details'] = array();
 		
         foreach($data['summary'] as $key=>$value)
@@ -208,7 +208,7 @@ abstract class Report extends CI_Model
             	$data['details'][$key] = $query->result_array();
         }
 		
-		//var_dump($data['summary']);
+		var_dump($data['summary']);
         return $data;
 
 	}
@@ -367,7 +367,7 @@ abstract class Report extends CI_Model
 
 		}
 
-		var_dump($data['summary']);
+		
         $data['details'] = array();
 		/*
         foreach($data['summary'] as $key=>$value)
