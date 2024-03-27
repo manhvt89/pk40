@@ -367,7 +367,7 @@ abstract class Report extends CI_Model
 
 		}
 
-
+		var_dump($data['summary']);
         $data['details'] = array();
 		/*
         foreach($data['summary'] as $key=>$value)
