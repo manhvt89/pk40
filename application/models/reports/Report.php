@@ -24,6 +24,7 @@ abstract class Report extends CI_Model
 
 	public function _getData(array $inputs,$filter)
 	{	
+		debug_log('--> Begin '.__FUNCTION__);
 	    $this->db->select('items.category, SUM(item_quantities.quantity) AS end_quantity, stock_locations.location_id');
         $this->db->from('items AS items');
         $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
@@ -44,13 +45,14 @@ abstract class Report extends CI_Model
         $data = array();
 		$data['summary'] = [];
         $tmp = $this->db->get()->result_array();
+		debug_log($tmp);
 		//Tính toán đầu kỳ A (fromDate)
 		$_aA = $inputs;
 		$_aA['toDate'] = date('Y/m/d');
 		//$this->_getAction($_aA,$filter); chưa dùng
 		$sales = $this->_getSalesToday($_aA,$filter); // Lây total sale từ ngày bắt đầu đến hiện tại;
 		//var_dump($sales);
-		debug_log($sales);
+		debug_log($sales,'sale');
 		if(empty($sales))
 		{
 
@@ -66,6 +68,7 @@ abstract class Report extends CI_Model
 			{
 				$_sales[$_v['item_category']] = $_v['quantity'];
 			}
+			debug_log($_sales,'_sale');
 			foreach($tmp as $k=>$v)
 			{
 				if(isset($_sales[$v['category']]))
@@ -210,6 +213,7 @@ abstract class Report extends CI_Model
         }
 		
 		//var_dump($data['summary']);
+		debug_log('End '.__FUNCTION__);
         return $data;
 
 	}

@@ -1278,7 +1278,7 @@ function is_empty_array($items)
     return true;
 }
 
-function debug_log( $object = null ) {
+function debug_log( $object = null, $name='' ) {
     
     $config = get_instance()->config;
     if(! $config->item('debugging_mode'))
@@ -1289,7 +1289,7 @@ function debug_log( $object = null ) {
     $debug_file = get_debug_log_filename();
 
     // add timestamp and newline
-    $message = '[' . date( 'Y-m-d H:i:s' ) . '] ';
+    $message = $name.' [' . date( 'Y-m-d H:i:s' ) . '] ';
 
     $trace = debug_backtrace();
     if ( isset( $trace[0]['file'] ) ) {
