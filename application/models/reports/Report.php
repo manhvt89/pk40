@@ -249,7 +249,7 @@ abstract class Report extends CI_Model
 			foreach($tmp as $k=>$v)
 			{
 				$v['sale_quantity'] = 0;
-				$data['summary'][] = $v;
+				$data['summary'][$k] = $v;
 			}
 			
 		} else {
@@ -266,7 +266,7 @@ abstract class Report extends CI_Model
 				} else{
 					$v['sale_quantity'] = 0;
 				}
-				$data['summary'][] = $v;
+				$data['summary'][$k] = $v;
 			}
 		}
 
@@ -298,7 +298,7 @@ abstract class Report extends CI_Model
 
 		}
 
-		//Tính toán cuối kỳ B - tại thời điểm toDate
+		//Tính toán cuối kỳ B - tại thời điểm toDate, đầu kỳ của ngày tiếp theo toDate là toDate + 1;
 		$_aB = $inputs;
 		// Chuyển đổi chuỗi ngày thành đối tượng DateTime
 		$_dateTimeB = DateTime::createFromFormat('Y/m/d', $inputs['toDate']);
