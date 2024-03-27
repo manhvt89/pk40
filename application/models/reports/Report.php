@@ -49,7 +49,7 @@ abstract class Report extends CI_Model
 		$_aA['toDate'] = date('Y/m/d');
 		//$this->_getAction($_aA,$filter); chưa dùng
 		$sales = $this->_getSalesToday($_aA,$filter); // Lây total sale từ ngày bắt đầu đến hiện tại;
-		//var_dump($sales);
+		var_dump($sales);
 		if(empty($sales))
 		{
 
