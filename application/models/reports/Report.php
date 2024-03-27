@@ -80,7 +80,7 @@ abstract class Report extends CI_Model
 				$data['summary'][$k] = $v;
 			}
 		}
-
+		debug_log($data['summary'],'data[summary]');
 		$receives = $this->_getReceive($_aA,$filter); //Lây total Receive từ fromDate to Today.
 		if(empty($receives))
 		{
@@ -108,7 +108,7 @@ abstract class Report extends CI_Model
 			}
 
 		}
-
+		debug_log($data['summary'],'data[summary]');
 		//Tính toán cuối kỳ B - tại thời điểm toDate
 		$_aB = $inputs;
 		// Chuyển đổi chuỗi ngày thành đối tượng DateTime
@@ -119,15 +119,18 @@ abstract class Report extends CI_Model
 
 		// Lấy ngày tiếp theo dưới dạng chuỗi
 		$nextDayString = $_nextDay->format('Y/m/d');
+		debug_log($nextDayString,'nextDayString');
 		$_aB['fromDate'] = $nextDayString;
 		$_aB['toDate'] = date('Y/m/d');
 		$sales = $this->_getSalesToday($_aB,$filter); // Lây total sale từ ngày toDate bắt đầu đến hiện tại;
 		//var_dump($sales);
+		debug_log($sales,'sales');
 		if(empty($sales))
 		{
 
 			foreach($data['summary'] as $k=>$v)
 			{
+				debug_log($v,'v');
 				$v['b_sale_quantity'] = 0;
 				$data['summary'][$k] = $v;
 			}
@@ -138,6 +141,7 @@ abstract class Report extends CI_Model
 			{
 				$_sales[$v['item_category']] = $v['quantity'];
 			}
+			debug_log($_sales,'-sales');
 			foreach($data['summary'] as $k=>$v)
 			{
 				if(isset($_sales[$v['category']]))
@@ -149,7 +153,7 @@ abstract class Report extends CI_Model
 				$data['summary'][$k] = $v;
 			}
 		}
-
+		debug_log($data['summary'],'data[summary]');
 		$receives = $this->_getReceive($_aB,$filter); //Lây total Receive từ fromDate to Today.
 		if(empty($receives))
 		{
@@ -177,7 +181,7 @@ abstract class Report extends CI_Model
 			}
 
 		}
-
+		debug_log($data['summary'],'data[summary]');
 		//var_dump($data['summary']);
         $data['details'] = array();
 		
