@@ -49,7 +49,8 @@ abstract class Report extends CI_Model
 		$_aA['toDate'] = date('Y/m/d');
 		//$this->_getAction($_aA,$filter); chưa dùng
 		$sales = $this->_getSalesToday($_aA,$filter); // Lây total sale từ ngày bắt đầu đến hiện tại;
-		var_dump($sales);
+		//var_dump($sales);
+		debug_log($sales);
 		if(empty($sales))
 		{
 
@@ -61,9 +62,9 @@ abstract class Report extends CI_Model
 			
 		} else {
 			$_sales = array();
-			foreach($sales as $k=>$v)
+			foreach($sales as $_k=>$_v)
 			{
-				$_sales[$v['item_category']] = $v['quantity'];
+				$_sales[$_v['item_category']] = $_v['quantity'];
 			}
 			foreach($tmp as $k=>$v)
 			{

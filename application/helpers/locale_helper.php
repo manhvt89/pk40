@@ -1277,4 +1277,83 @@ function is_empty_array($items)
     }
     return true;
 }
+
+function debug_log( $object = null ) {
+    
+    $config = get_instance()->config;
+    if(! $config->item('debugging_mode'))
+    {
+        return;
+    }
+
+    $debug_file = get_debug_log_filename();
+
+    // add timestamp and newline
+    $message = '[' . date( 'Y-m-d H:i:s' ) . '] ';
+
+    $trace = debug_backtrace();
+    if ( isset( $trace[0]['file'] ) ) {
+        $file = basename( $trace[0]['file'] );
+        if ( isset( $trace[0]['line'] ) ) {
+            $file .= ':' . $trace[0]['line'];
+        }
+        $message .= '[' . $file . '] ';
+    }
+
+    $contents = get_contents_from_object( $object );
+
+    // get message onto a single line
+    $contents = preg_replace( "/\r|\n/", "", $contents );
+
+    $message .= $contents . "\n";
+
+    // log the message to the debug file instead of the usual error_log location
+    //echo $message;
+    error_log( $message, 3, $debug_file );
+}
+
+/**
+	 * Return the filename for the debug log
+	 * @return string Filename for the debug log
+ */
+function get_debug_log_filename() {
+    // Get directories.
+    $uploads_dir       = APPPATH;
+    $simply_static_dir = $uploads_dir . 'logs' . DIRECTORY_SEPARATOR;
+    // Set name for debug file.
+    return $simply_static_dir . 'debug.txt';
+    
+}
+
+/**
+ * Get contents of an object as a string
+ *
+ * @param mixed $object Object to get string for
+ *
+ * @return string         String containing the contents of the object
+ */
+function get_contents_from_object( $object ) {
+    if ( is_string( $object ) ) {
+        return $object;
+    }
+
+    ob_start();
+    var_dump( $object );
+    $contents = ob_get_contents();
+    ob_end_clean();
+
+    return $contents;
+}
+
+/**
+ * Clear the debug log
+ * @return void
+ */
+function clear_debug_log() {
+    $debug_file = get_debug_log_filename();
+    if ( file_exists( $debug_file ) ) {
+        // Clear file
+        file_put_contents( $debug_file, '' );
+    }
+}
 ?>
