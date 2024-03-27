@@ -1297,7 +1297,12 @@ function debug_log( $object = null, $name='' ) {
         if ( isset( $trace[0]['line'] ) ) {
             $file .= ':' . $trace[0]['line'];
         }
-        $message .= '[' . $file . '] ; Var '.$name . ': ';
+        if($name != '')
+        {
+            $message .= '[' . $file . '] ; Var '.$name . ': ';
+        } else {
+            $message .= '[' . $file . '] ';
+        }
     }
 
     $contents = get_contents_from_object( $object );
