@@ -669,9 +669,10 @@ class Testex extends CI_Model
 		$this->db->join('test AS test', 'test.customer_id = customers_p.person_id', 'left');
 		$this->db->join('people AS people', 'test.customer_id = people.person_id', 'left');
 		//$this->db->where("DATE(FROM_UNIXTIME(test.test_time)) = CURDATE()");
-		$this->db->where('DATE(FROM_UNIXTIME(test.expired_date)) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() - INTERVAL 5 DAY');
+		//$this->db->where('DATE(FROM_UNIXTIME(test.expired_date)) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() - INTERVAL 5 DAY');
+		$this->db->where('test.expired_date <=', date('Y-m-d', strtotime('+10 days')));
 
-		$this->db->where("reminder",1);
+		//$this->db->where("reminder",1);
 		//AND test_time + duration * con >= $pre7day ");
 		$this->db->group_by('customer_id');
 		return $this->db->get();
