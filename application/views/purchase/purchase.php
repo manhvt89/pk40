@@ -275,7 +275,7 @@ $(document).ready(function()
     {
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
     	minChars:0,
-       	delay:10,
+       	delay:600,
        	autoFocus: false,
 		select:	function (a, ui) {
 			$(this).val(ui.item.value);
