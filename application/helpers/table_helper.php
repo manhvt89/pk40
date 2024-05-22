@@ -655,7 +655,7 @@ function get_accounting_manage_summary($payments, $revenue, $controller)
 				$total = $total + $item['payment_amount'] - $payments['pc'];
 			} else {
 				$table .= '<tr><td>' . $item['payment_type'] . ': </td><td>' . to_currency($item['payment_amount']) . '</td></tr>';
-				if($item['payment_type'] == 'Chuyển khoản') {
+				if(($item['payment_type'] == 'Chuyển khoản') || ($item['payment_type'] == $CI->lang->line('sales_credit'))) {
 					$total = $total + $item['payment_amount'];
 				}
 			}
@@ -731,7 +731,7 @@ function get_account_data_row($accounting, $controller)
 	} else {
 		if($accounting->payment_method == 1)
 		{
-			$row['payment_method'] = 'Ngân hàng';
+			$row['payment_method'] = 'Ngân hàng - '.$accounting->payment_type;
 		} elseif($accounting->payment_method == 2)
 		{
 			$row['payment_method'] = 'Giảm thêm';

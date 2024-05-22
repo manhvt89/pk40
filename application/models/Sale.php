@@ -547,7 +547,7 @@ class Sale extends CI_Model
 	
 						$this->Accounting->save_payout($out_data);
 					}
-				} elseif($this->lang->line("sales_check") == $payment['payment_type'] || $payment['payment_type'] == $this->lang->line("sales_debit")) {
+				} elseif($this->lang->line("sales_check") == $payment['payment_type'] || $payment['payment_type'] == $this->lang->line("sales_credit")) {
 					$data_total = array(
 						'creator_personal_id' => $employee_id,
 						'personal_id' => $customer_id, // this is a customer
@@ -558,6 +558,18 @@ class Sale extends CI_Model
 					$data_total['payment_id'] = $payment_id;
 					$data_total['sale_id'] = $sale_id;
 					$data_total['payment_method'] = 1; //Banking;
+					$this->Accounting->save_income($data_total);
+				} elseif( $payment['payment_type'] == $this->lang->line("sales_debit")) {
+					$data_total = array(
+						'creator_personal_id' => $employee_id,
+						'personal_id' => $customer_id, // this is a customer
+						'amount' => $payment['payment_amount']
+					);
+					$data_total['payment_type'] = $payment['payment_type'];
+					$data_total['kind'] = $payment['payment_kind'];
+					$data_total['payment_id'] = $payment_id;
+					$data_total['sale_id'] = $sale_id;
+					$data_total['payment_method'] = 2; //Fire (tặng khách hàng);
 					$this->Accounting->save_income($data_total);
 				}
 			}
@@ -790,7 +802,7 @@ class Sale extends CI_Model
 						$out_data['sale_id'] = $sale_id;
 						$this->Accounting->save_payout($out_data);
 					}
-				} elseif($this->lang->line("sales_check") == $payment['payment_type']){
+				} elseif(($this->lang->line("sales_check") == $payment['payment_type']) || ($this->lang->line("sales_credit") == $payment['payment_type'])){
 					$data_total = array(
 						'creator_personal_id' => $employee_id,
 						'personal_id' => $customer_id, // this is a customer
@@ -1034,7 +1046,7 @@ class Sale extends CI_Model
 		*/
 		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
 		$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-		//$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
+		$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
 		$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
 		if($cfPoint)
 		{
