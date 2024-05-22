@@ -135,7 +135,22 @@
 		<?php
 		}
 		?>
-		<?php $border = (!$this->config->item('receipt_show_taxes') && !($this->config->item('receipt_show_total_discount') && $discount > 0)); ?> 
+		<?php $border = false;//(!$this->config->item('receipt_show_taxes') && !($this->config->item('receipt_show_total_discount') && $discount > 0)); ?> 
+		<?php
+		if (!$this->config->item('receipt_show_total_discount') && $discount > 0)
+		{
+		?> 
+		<tr>
+				<td colspan="4" style='text-align:right;border-top:1px dashed black;'>Tạm tính</td>
+				<td style='text-align:right;border-top:1px dashed black;' data-th="Tạm tính "><?php echo number_format($subtotal); ?></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
+				<td class="total-value" data-th="<?php echo $this->lang->line('sales_discount'); ?>: "><?php echo number_format($discount * 1); ?></td>
+			</tr>
+		<?php 
+		} 
+		?>
 		<tr class="total">
 			<td colspan="4" style="text-align:right;<?php echo $border? 'border-top: 1px dashed black;' :''; ?>"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td style="text-align:right;<?php echo $border? 'border-top: 1px dashed black;' :''; ?>" data-th="<?php echo $this->lang->line('sales_total'); ?> "><?php echo number_format($total); ?></td>
