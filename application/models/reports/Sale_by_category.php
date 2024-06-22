@@ -36,7 +36,7 @@ class Sale_by_category extends Report
         
         $this->db->select('SUM(sales_items.quantity_purchased) AS quantity,items.category AS category,
                       SUM(sales_items.item_cost_price * sales_items.quantity_purchased) AS total_cost_amount, 
-                      SUM(sales_items.item_unit_price * sales_items.quantity_purchased) AS total_revenue_amount');
+                      SUM(((100 - sales_items.discount_percent)/100)*sales_items.item_unit_price * sales_items.quantity_purchased) AS total_revenue_amount');
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id');

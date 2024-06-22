@@ -4647,7 +4647,7 @@ class Reports extends Secure_Controller
     public function sale_by_category()
 	{
 		$data = array();
-		$data['report_title'] = 'Báo cáo bán hàng theo sản phẩm';
+		$data['report_title'] = 'Báo cáo bán hàng theo nhóm sản phẩm';
 		$this->load->model('reports/Sale_by_category');
 		$model = $this->Sale_by_category;
 
@@ -4684,8 +4684,8 @@ class Reports extends Secure_Controller
         
         $report_data = $model->getData($inputs);
 
-        $summary_data = array();
-        $details_data = array();
+        $summary_data = [];
+        $details_data = [];
 
         $data = null;
         if(!$report_data)
