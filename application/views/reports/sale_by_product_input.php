@@ -100,6 +100,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
@@ -161,6 +162,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 
 						//init_dialog();
 
@@ -195,6 +197,7 @@ if(isset($error))
 
 		totalformatter = function(data)
 		{
+			
 			var field = this.field
 			var result;
 			console.log(field);
@@ -205,7 +208,12 @@ if(isset($error))
 			return sum + i
 			}, 0)
 			result = Number(result).toLocaleString('en-US', { maximumFractionDigits: 0 });
-			return result;
+			return '<b>'+result+'</b>';
+		}
+
+		function boldFirstRow() {
+			var $firstRow = $('#table tbody tr').first();
+			$firstRow.addClass('bold-row');
 		}
 
 		$('#table').bootstrapTable({
@@ -229,6 +237,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 		
 
 	});

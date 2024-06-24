@@ -4632,7 +4632,9 @@ class Reports extends Secure_Controller
                 'total_cost_amount'=>$total_cost_amount,
                 'total_ln'=>$total_ln
             ];
-            $summary_data[] = $footer;
+
+            //$summary_data[] = $footer;
+            array_unshift($summary_data,$footer);
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
                 'headers_details' => [],
@@ -4722,7 +4724,8 @@ class Reports extends Secure_Controller
                 'total_cost_amount'=>$total_cost_amount,
                 'total_ln'=>$total_ln
             ];
-            $summary_data[] = $footer;
+            //$summary_data[] = $footer;
+            array_unshift($summary_data,$footer);
             $data = array(
                 'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
                 'headers_details' => [],

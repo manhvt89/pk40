@@ -100,6 +100,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 						//$('#table').bootstrapTable('load',{data: summary_data});
 					}else{
 						$('#view_report_lens_category').html('<strong>Không tìm thấy báo cáo phù hợp, hãy thử lại</strong>');
@@ -161,6 +162,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 
 						//init_dialog();
 
@@ -207,6 +209,10 @@ if(isset($error))
 			result = Number(result).toLocaleString('en-US', { maximumFractionDigits: 0 });
 			return result;
 		}
+		function boldFirstRow() {
+			var $firstRow = $('#table tbody tr').first();
+			$firstRow.addClass('bold-row');
+		}
 
 		$('#table').bootstrapTable({
 							//columns: header_summary,
@@ -229,6 +235,7 @@ if(isset($error))
 							},
 							
 						});
+						boldFirstRow();
 		
 
 	});
