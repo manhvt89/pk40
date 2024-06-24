@@ -28,6 +28,9 @@ class Sale_by_product extends Report
                 ['total_revenue_amount' => 'Doanh thu','align'=>'right','footer-formatter'=>'totalformatter',
                     'formatter'=>'currencyFormatter', 'sortable'=>true,
                 'visible'=>'true'],
+				['total_ln' => 'Lợi nhuận','align'=>'right','footer-formatter'=>'totalformatter',
+				'formatter'=>'currencyFormatter', 'sortable'=>true,
+				'visible'=>'true'],
             ]
         );
     
@@ -38,7 +41,8 @@ class Sale_by_product extends Report
         
         $this->db->select('items.name AS product_name,  SUM(sales_items.quantity_purchased) AS quantity, items.item_number AS item_number,items.category AS category,
                       SUM(sales_items.item_cost_price * sales_items.quantity_purchased) AS total_cost_amount, 
-                      SUM(sales_items.item_unit_price * sales_items.quantity_purchased) AS total_revenue_amount');
+                      SUM(((100 - sales_items.discount_percent)/100)*sales_items.item_unit_price * sales_items.quantity_purchased) AS total_revenue_amount, 
+					  SUM(((100 - sales_items.discount_percent)/100)*sales_items.item_unit_price * sales_items.quantity_purchased) - SUM(sales_items.item_cost_price * sales_items.quantity_purchased) AS total_ln');
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id');

@@ -175,7 +175,8 @@ if(isset($error))
 		currencyFormatter = function (value)
 		{
 			console.log(value);
-			var color = '#' + Math.floor(Math.random() * 6777215).toString(16)
+			//var color = '#' + Math.floor(Math.random() * 6777215).toString(16)
+			var color = '#000000';
 			$_return = Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 });
 			if($_return == '0')
 			{

@@ -4609,6 +4609,7 @@ class Reports extends Secure_Controller
             $total_revenue_amount = 0;
             $total_cost_amount = 0;
             $total_quantity = 0;
+            $total_ln = 0; 
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);
@@ -4619,6 +4620,7 @@ class Reports extends Secure_Controller
                 $row['id'] = $i;
                 $summary_data[] = $this->xss_clean($row);
                 $i++;
+                $total_ln = $total_ln + $row['total_ln']; 
             }
             $footer = [
                 'id'=>'',
@@ -4627,7 +4629,8 @@ class Reports extends Secure_Controller
                 'product_name'=>'<b>Tổng cộng</b>',
                 'quantity'=>$total_quantity,
                 'total_revenue_amount'=>$total_revenue_amount,
-                'total_cost_amount'=>$total_cost_amount
+                'total_cost_amount'=>$total_cost_amount,
+                'total_ln'=>$total_ln
             ];
             $summary_data[] = $footer;
             $data = array(
