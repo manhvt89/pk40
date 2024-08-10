@@ -25,7 +25,7 @@ Update
 07/12/2023
 - Bổ sung thêm việc thanh toán cho đơn nhập hàng và quản lý công nợ nhập hàng
 - Cần cấp quyền receivings_manage
-ALTER TABLE `ospos_sales` ADD `completed_at` int(11) NOT NULL DEFAULT 0 AFTER `sync`;
+#ALTER TABLE `ospos_sales` ADD `completed_at` int(11) NOT NULL DEFAULT 0 AFTER `sync`;
 ALTER TABLE `ospos_items` ADD `created_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 ALTER TABLE `ospos_items` ADD `updated_time` int(11) NOT NULL DEFAULT 0 AFTER `ref_item_id`;
 
@@ -97,7 +97,7 @@ ALTER TABLE `ospos_items` ADD `synched_time` int(11) NOT NULL DEFAULT 0 AFTER `r
 - update cộng tác viên (nhóm CTV)
 
 INSERT INTO `ospos_roles` VALUES (8,'CTV','CTV','CTV','7b498149-5877-1117-a953-040300000000',0,0,0,0,'1');
-ALTER TABLE `ospos_employees` ADD `total_sale` decimal(10,2) NOT NULL DEFAULT 0.00 AFTER `log`;
+#ALTER TABLE `ospos_employees` ADD `total_sale` decimal(10,2) NOT NULL DEFAULT 0.00 AFTER `log`;
 
 DROP TABLE IF EXISTS `ospos_history_ctv`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -149,9 +149,9 @@ ALTER TABLE `ospos_test` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT N
 ALTER TABLE `ospos_reminders` ADD `duration_dvt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' AFTER `test_id`;
 
 ALTER TABLE `ospos_reminders` ADD `duration` int(2) DEFAULT 6 AFTER `test_id`;
-ALTER TABLE `ospos_employees` ADD `comission_rate` decimal(5,2) NOT NULL DEFAULT 0 AFTER `log`;
-ALTER TABLE `ospos_employees` ADD `code` VARCHAR(20) NOT NULL DEFAULT '' AFTER `log`;
-ALTER TABLE `ospos_sales` ADD `sync` tinyint(1) DEFAULT 0 COMMENT '{0: moi tao; 1: Đã sync vào bảng history_ctv}' AFTER `updated_at`;
+#ALTER TABLE `ospos_employees` ADD `comission_rate` decimal(5,2) NOT NULL DEFAULT 0 AFTER `log`;
+#ALTER TABLE `ospos_employees` ADD `code` VARCHAR(20) NOT NULL DEFAULT '' AFTER `log`;
+# ALTER TABLE `ospos_sales` ADD `sync` tinyint(1) DEFAULT 0 COMMENT '{0: moi tao; 1: Đã sync vào bảng history_ctv}' AFTER `updated_at`;
 ALTER TABLE `ospos_purchases` ADD `v` tinyint(3) NOT NULL DEFAULT 0 AFTER `edited_time`;
 ALTER TABLE `ospos_reminders` CHANGE `duration` `duration` INT(2) NULL DEFAULT NULL; 
 
@@ -225,7 +225,7 @@ Roles/mod_edit
 15/08/2023
 - Nâng cấp đơn thuốc phục vụ phòng khám.
 - Chuyển Tuổi sang năm sinh
-ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0'; 
+#ALTER TABLE `ospos_people` CHANGE `age` `age` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0'; 
 
 - Ẩn giá vốn báo cáo gọng/kính mát
 - Thêm năm sinh kết quả khám
