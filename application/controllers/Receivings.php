@@ -1348,5 +1348,10 @@ class Receivings extends Secure_Controller
 			echo json_encode($json);
 		}
 	}
+
+	public function is_input_cost_price()
+	{
+		return true;
+	}
 }
 ?>
