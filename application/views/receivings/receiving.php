@@ -19,7 +19,7 @@ if (isset($success))
 
 <div id="register_wrapper">
 
-<!-- Top register controls -->
+<!-- Top register controls 2-->
 
 	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 	
