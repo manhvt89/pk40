@@ -1003,21 +1003,57 @@ width: 148.5mm;*/
     background-color: coral;
 }
 
-.row #po_wrapper {
-    width: 75%;
-    float: left;
+
+/*
+    BARCODE CSS
+*/
+
+#register_wrapper_barcode {
     font-size: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 7px;
 }
 
-.row #overall_po {
-    width: 24%;
-    float: left;
-    margin-left: .1em;
+
+/* PURCHASE ORDER CSS
+*/
+
+#purchase_order_wrapper_purchase {
+    font-size: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 7px;
+}
+
+#overall_po {
     padding-bottom: 1em;
     padding-top: 1em;
     font-size: 13px;
     text-align: center;
     background-color: #BBB;
+    margin-top: 7px;
+}
+
+
+/* 
+    RECEIVING CSS 
+*/
+
+#register_wrapper_receiving {
+    font-size: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 7px;
+}
+
+#overall_receiving {
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 13px;
+    text-align: center;
+    background-color: #BBB;
+    margin-top: 7px;
 }
 
 

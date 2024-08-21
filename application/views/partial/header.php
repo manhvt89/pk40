@@ -110,16 +110,18 @@
 		<header class="fixed-menu" id="header1">
 			<div class=" topbar">
 				<div class="container">
-					<div class="navbar-left">
-						<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
-					</div>
-					
-					<div class="navbar-right" style="margin:0">
-						<?php echo strip_tags($this->config->item('company')) . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
-						<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
-					</div>
-					<div class="navbar-left" style="margin:0px 25px">
-						<a href="<?=$this->config->item('guide')==''?'https://docs.google.com/document/d/15-AAz6FNdPSoJUmGpATPykfwYCRMvezyttfjvHXp7yM/edit#heading=h.oja56yjzebgv':$this->config->item('guide')?>" target="_blank"><b style="color: #fff;">Hướng dẫn sử dụng</b></a>
+					<div class="row flex-column flex-md-row">
+						<div class="col-12 col-md-2 ">
+							<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
+						</div>
+						
+						<div class="col-12 col-md-2 n">
+							<a href="<?=$this->config->item('guide')==''?'https://docs.google.com/document/d/15-AAz6FNdPSoJUmGpATPykfwYCRMvezyttfjvHXp7yM/edit#heading=h.oja56yjzebgv':$this->config->item('guide')?>" target="_blank"><b style="color: #fff;">Hướng dẫn sử dụng</b></a>
+						</div>
+						<div class="col-12 col-md-8 " style="margin:0; text-align: right;">
+							<?php echo strip_tags($this->config->item('company')) . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
+							<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
+						</div>
 					</div>
 				</div>
 			</div>

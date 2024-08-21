@@ -17,7 +17,7 @@ if (isset($success))
 }
 ?>
 
-<div id="po_wrapper">
+<div id="purchase_order_wrapper_purchase" class="col-12 col-md-8 order-3 order-md-2">
 
 <!-- Top register controls -->
 
@@ -156,7 +156,7 @@ if (isset($success))
 
 <!-- Overall Receiving -->
 
-<div id="overall_po" class="panel panel-default">
+<div id="overall_po" class="col-12 col-md-4 panel panel-default">
 	<div class="panel-body">
 		<?php
 		if(isset($supplier))

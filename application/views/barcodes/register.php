@@ -18,7 +18,7 @@ if (isset($success))
 
 ?>
 
-<div id="register_wrapper">
+<div id="register_wrapper_barcode">
 
 <!-- Top register controls -->
 	
