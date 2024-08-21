@@ -126,9 +126,9 @@
 				</div>
 			</div>
 
-			<div class="navbar navbar-default " role="navigation">
+			<div class="navbar1 navbar-default1 " role="navigation">
 				<div class="container">
-					<div class="navbar-header">
+					<div class="navbar-header_">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
 							<span class="sr-only">Toggle navigation</span>
 							<span class="icon-bar"></span>
@@ -169,4 +169,3 @@
 
 		<div class="container" id="content">
 			<div class="row flex-column flex-md-row">
-
