@@ -426,6 +426,17 @@ $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
 /*
+$config['sess_driver'] = 'memcached';
+$config['sess_cookie_name'] = 'ospos_session';
+$config['sess_expiration'] = 86400;
+$config['sess_save_path'] = '127.0.0.1:11211';
+$config['sess_match_ip'] = FALSE;
+$config['sess_time_to_update'] = 72000;
+$config['sess_regenerate_destroy'] = FALSE;
+$config['sess_secure_cookie'] = TRUE;
+*/
+
+/*
 |--------------------------------------------------------------------------
 | Cookie Related Variables
 |--------------------------------------------------------------------------
