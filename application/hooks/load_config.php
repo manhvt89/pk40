@@ -38,7 +38,9 @@ function load_config()
         }
         elseif('filter_other' == $app_config->key)
         {
+            
             $value = explode("\n",$app_config->value);
+            //var_dump($app_config->key);die();
             $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($value));
         }
         elseif('Thuoc' == $app_config->key){

@@ -6,6 +6,8 @@ class Secure_Controller extends CI_Controller
 	* Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
 	* be set to also check if a user can access a particular module in the system.
 	*/
+	public $module_id = '';
+	public $aPermission = []; // Biến lưu trữ, phân quyền
 	public function __construct($module_id = NULL, $submodule_id = NULL)
 	{
 		parent::__construct();
@@ -17,11 +19,12 @@ class Secure_Controller extends CI_Controller
 		{
 			redirect('login');
 		}
-
+		$module_id = mb_strtolower($module_id);
 		//$this->router->fetch_class();
 		$action = $this->router->fetch_method();
 		//echo $action;
 		$task = $module_id."_".$action;
+		$this->module_id = $module_id;
 		$this->track_page($module_id, $action);
 		//echo $module_id . ' |' . $submodule_id;
 		$_astrManagedActions = $model->get_actions_by_module($module_id); // Cacs action duoc quan ly boi he thong phan quyen. CHỉ kiểm soát các actions này;
@@ -154,6 +157,26 @@ class Secure_Controller extends CI_Controller
 
 		echo $result !== FALSE ? 'true' : 'false';
 	}
+
+	public function __remap($method, $params = array()) {
+        // Kiểm tra môi trường hiện tại có phải là 'production' không
+        if (ENVIRONMENT == 'production') {
+            if (method_exists($this, $method)) {
+                // Nếu method tồn tại, gọi method đó
+                return call_user_func_array(array($this, $method), $params);
+            } else {
+                // Nếu method không tồn tại, chuyển hướng về index
+                return call_user_func_array(array($this, 'index'), $params);
+            }
+        } else {
+            // Nếu không phải môi trường production, xử lý theo cách thông thường
+            if (method_exists($this, $method)) {
+                return call_user_func_array(array($this, $method), $params);
+            } else {
+                show_404(); // Hiển thị trang lỗi 404
+            }
+        }
+    }
 
 
 	// this is the basic set of methods most OSPOS Controllers will implement

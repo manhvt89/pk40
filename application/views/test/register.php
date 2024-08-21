@@ -17,9 +17,8 @@ if (isset($success))
 }
 ?>
 
-<div id="register_wrapper_test">
-<!-- Top register controls -->
-	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+<div id="register_wrapper_tool" class="col-12 col-md-12 order-3 order-md-2">
+<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 	<div class="panel-body form-group">
 			<ul>
 				<?php
@@ -45,6 +44,12 @@ if (isset($success))
 			</ul>
 	</div>
 	<?php echo form_close(); ?>
+</div>
+</div>
+<div class="row flex-column flex-md-row">
+<div id="register_wrapper_test" class="col-12 col-md-7 order-3 order-md-2">
+<!-- Top register controls -->
+	
 	<?php $tabindex = 0; ?>
 <!-- Sale Items List -->
 	<?php if(isset($customer)): ?>
@@ -56,7 +61,7 @@ if (isset($success))
 </div>
 <!-- Overall Test -->
 
-<div id="overall_sale" class="panel panel-default">
+<div id="overall_test" class="col-12 col-md-5 order-1 order-md-1 panel panel-default">
 	<div class="panel-body">
 		<?php
 		if(isset($customer))

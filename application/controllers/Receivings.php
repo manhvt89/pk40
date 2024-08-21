@@ -417,7 +417,8 @@ class Receivings extends Secure_Controller
 		}
 
 		$data['total'] = $this->receiving_lib->get_total();
-		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['items_module_allowed'] = $this->Employee->has_grant('receivings_is_input_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
+		//var_dump($data['items_module_allowed']);die();
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_options'] = $this->Receiving->get_payment_options();
@@ -1347,6 +1348,10 @@ class Receivings extends Secure_Controller
 			$json = array('result' => $result,'data' => $data);
 			echo json_encode($json);
 		}
+	}
+	public function is_input_cost_price()
+	{
+		return true;
 	}
 }
 ?>

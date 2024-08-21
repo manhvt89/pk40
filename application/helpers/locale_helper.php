@@ -970,9 +970,21 @@ function print_barcode_thuoc_3x105($items,$barcode_config)
     echo $_sHtml;
 }
 
-function has_grant($str)
+/**
+ * Summary of has_grant
+ * @param mixed $str cấu trúc {module_id}_{str}
+ * @return mixed
+ */
+function has_grant($str, $module_id='')
 {
     $CI =& get_instance();
+    //echo $CI->module_id; die();
+    if($module_id == '')
+    {
+        $str = $CI->module_id . "_".$str;
+    } else {
+        $str = $module_id . "_".$str;
+    }
     return $CI->Employee->has_grant($str);
 }
 

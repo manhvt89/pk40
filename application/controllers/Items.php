@@ -180,6 +180,7 @@ class Items extends Secure_Controller
 
 	public function view($item_id = -1)
 	{
+		has_grant('manhvt');
 		$person_id = $this->session->userdata('person_id');
 		$data['has_grant'] = $this->Employee->has_grant('items_accounting', $person_id);
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));

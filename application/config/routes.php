@@ -77,5 +77,5 @@ $route['reports/specific_ctvs'] = 'reports/specific_ctvs_input';
 $route['reports/(detail_import_lens)/([^/]+)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4/$5';
 $route['reports/detail_import_lens'] = 'reports/date_input_import_lens';
 
-$route['404_override'] = '';
+$route['404_override'] = 'errors/show_404';
 $route['translate_uri_dashes'] = FALSE;

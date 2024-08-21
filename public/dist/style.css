@@ -621,18 +621,11 @@ td .input-test {
 }
 
 .row #overall_sale {
-    width: 34%;
+    width: 100%;
 }
 
-.row #register_wrapper_test,
 .row #register_wrapper {
-    width: 65%;
-}
-
-#register_wrapper_test {
-    float: left;
-    font-size: 13px;
-    width: 65%;
+    /*width: 65%;*/
 }
 
 #principle_print {
@@ -1027,6 +1020,108 @@ width: 148.5mm;*/
     background-color: #BBB;
 }
 
+
+/*
+* SALE CSS
+*/
+
+#register_wrapper_sale {
+    font-size: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 7px;
+}
+
+#overall_sale_ {
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 13px;
+    text-align: center;
+    background-color: #BBB;
+    margin-top: 7px;
+}
+
+
+/*
+* TEST CSS
+*/
+
+#overall_test {
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 13px;
+    text-align: center;
+    background-color: #BBB;
+    margin-top: 7px;
+}
+
+#register_wrapper_test {
+    font-size: 13px;
+}
+
+#register_wrapper_tool,
+#register_wrapper_test {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+
+/* COUNT CSS
+*/
+
+#count {
+    padding: 0;
+    border-collapse: collapse;
+}
+
+#count th {
+    background-color: #999;
+    padding: 5px;
+    text-align: center;
+    color: #FFF;
+    border: 1px solid#000;
+}
+
+#count td {
+    border: 1px solid#000;
+    padding: 5px;
+}
+
+#count .good {
+    background-color: #EEE;
+    padding: 3px;
+    text-align: center;
+    border: 1px solid#000;
+}
+
+#count .lech {
+    background-color: rgb(245, 71, 32);
+    padding: 3px;
+    text-align: center;
+    border: 1px solid#000;
+    color: #FFF;
+}
+
+
+/* CSS cho màn hình nhỏ hơn 768px (tablet) */
+
+@media (max-width: 768px) {
+    .row {
+        display: flex;
+        flex-direction: column;
+    }
+    /* Điều chỉnh các cột để chúng xếp chồng lên nhau */
+    #register_wrapper_test,
+    #overall_sale,
+    #principle_print {
+        width: 100%;
+        order: 2;
+    }
+    #overall_sale {
+        order: 1;
+    }
+}
+
 @media print {
     /*
 Edit for BILL
@@ -1079,6 +1174,8 @@ content: attr(data-th);
         display: none !important;
     }
     #register_wrapper_test,
+    #register_wrapper_tool,
+    #overall_test,
     #overall_sale {
         display: none !important;
     }

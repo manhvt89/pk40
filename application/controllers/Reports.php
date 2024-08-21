@@ -4053,7 +4053,7 @@ class Reports extends Secure_Controller
 
     public function ajax_inventory_sun_glasses()
     {
-        $filter = $this->config->item('filter'); 
+        $filter = $this->config->item('filter_sun_glasses'); 
         $this->load->model('reports/Inventory_sun_glasses');
         $model = $this->Inventory_sun_glasses;
         $location_id = $this->input->post('location_id');
@@ -4075,6 +4075,7 @@ class Reports extends Secure_Controller
         {
             unset($headers['details'][5]); //remove giá vốn
         }
+        //var_dump($filter);die();
         $report_data = $model->_getData($inputs,$filter);
         $data = null;
         if(!$report_data)

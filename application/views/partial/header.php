@@ -153,5 +153,5 @@
 		</header>
 
 		<div class="container" id="content">
-			<div class="row">
+			<div class="row flex-column flex-md-row">
 	 

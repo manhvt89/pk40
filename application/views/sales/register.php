@@ -17,8 +17,36 @@ if (isset($success))
 }
 
 ?>
+<div id="register_wrapper_tool" class="col-12 col-md-12 order-3 order-md-2">
+	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group">
+			<ul>
+				<li class="pull-right">
+				<?php echo anchor($controller_name."/pending", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Danh sách chờ thanh toán',
+							array('class'=>'btn btn-info btn-sm', 'id'=>'sales_pending_button', 'title'=>'Danh sách chờ thanh toán')); ?>
+					
+				</li>
 
-<div id="register_wrapper">
+				<?php
+				if ($this->Employee->has_grant('sales_manage')) // Hiển thị danh sách đơn hàng;
+				{
+					?>
+					<li class="pull-right">
+						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
+							array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
+					</li>
+					<?php
+				}
+				?>
+			</ul>
+		</div>
+		<?php echo form_close(); ?>
+
+</div>
+
+</div>
+<div class="row flex-column flex-md-row">
+<div id="register_wrapper_sale" class="col-12 col-md-7 order-3 order-md-2">
 
 <!-- Top register controls -->
 	<?php if($sale_id > 0): ?> 
@@ -51,24 +79,6 @@ if (isset($success))
 					<?php
 				}
 				?>
-
-				<li class="pull-right">
-				<?php echo anchor($controller_name."/pending", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Danh sách chờ thanh toán',
-							array('class'=>'btn btn-info btn-sm', 'id'=>'sales_pending_button', 'title'=>'Danh sách chờ thanh toán')); ?>
-					
-				</li>
-
-				<?php
-				if ($this->Employee->has_grant('sales_manage')) // Hiển thị danh sách đơn hàng;
-				{
-					?>
-					<li class="pull-right">
-						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
-							array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
-					</li>
-					<?php
-				}
-				?>
 			</ul>
 		</div>
 		<?php echo form_close(); ?>
@@ -92,23 +102,6 @@ if (isset($success))
 						</li>
 						<li class="pull-left">
 							<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
-						</li>
-					<?php
-					}
-					?>
-
-					<li class="pull-right">
-					<?php echo anchor($controller_name."/pending", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . 'Danh sách chờ thanh toán',
-							array('class'=>'btn btn-info btn-sm', 'id'=>'sales_pending_button', 'title'=>'Danh sách chờ thanh toán')); ?>
-					</li>
-
-					<?php
-					if ($this->Employee->has_grant('sales_manage'))
-					{
-					?>
-						<li class="pull-right">
-							<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
-										array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
 						</li>
 					<?php
 					}
@@ -299,7 +292,7 @@ if (isset($success))
 	<?php endif; ?>
 </div>
 <!-- Overall Sale -->
-<div id="overall_sale" class="panel panel-default">
+<div id="overall_sale_" class="col-12 col-md-5 order-1 order-md-1 panel panel-default">
 	<div class="panel-body">
 		<?php
 		if(isset($customer))

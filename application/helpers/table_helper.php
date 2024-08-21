@@ -1267,4 +1267,116 @@ function transform_headers_raw1($array, $readonly = FALSE, $editable = TRUE)
 	}
 	return $result;
 }
+
+function get_oincs_manage_table_headers()
+{
+	$CI =& get_instance();
+	$person_id = $CI->session->userdata('person_id');
+	
+	$headers = array(
+			array('oincs.oinc_id' => $CI->lang->line('common_id')),
+			//array('doc_entry' => $CI->lang->line('oinc_doc_entry')),
+			array('created_at' => $CI->lang->line('oinc_created_at')),
+			array('doc_num' => $CI->lang->line('oinc_doc_num')),
+			array('zone' => $CI->lang->line('oinc_zone')),
+			
+			array('creator_name' => $CI->lang->line('oinc_creator_name')),
+
+			array('count_at' => $CI->lang->line('oinc_count_at')),
+			
+			array('countor_name' => $CI->lang->line('oinc_counter_name')),
+			
+			array('status' => $CI->lang->line('oinc_status')),
+			//array('mode' => $CI->lang->line('oinc_mode')),
+			//array('oinc_type' => $CI->lang->line('oinc_type'), 'sortable' => FALSE),
+			//array('series' => $CI->lang->line('items_standard_amount'), 'sortable' => FALSE),
+		);
+	//var_dump($headers);
+	return transform_headers($headers);
+}
+
+function get_oinc_data_row($item, $controller)
+{
+	$CI =& get_instance();
+	
+	// remove ', ' from last item
+	$controller_name = strtolower(get_class($CI));
+
+	if ($CI->Employee->has_grant($controller_name.'_inventory')) {
+		$inventory = anchor(
+			$controller_name."/inventory/$item->item_id",
+			'<span class="glyphicon glyphicon-pushpin"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_count'))
+		);
+	} else {
+		$inventory = '';
+	}
+	if ($CI->Employee->has_grant($controller_name.'_count_details')) {
+		$stock = anchor(
+			$controller_name."/count_details/$item->item_id",
+			'<span class="glyphicon glyphicon-list-alt"></span>',
+			array('class' => 'modal-dlg', 'title' => $CI->lang->line($controller_name.'_details_count'))
+		);
+	} else {
+		$stock = '';
+	}
+	if ($CI->Employee->has_grant($controller_name.'_view')) {
+		$edit = anchor(
+			$controller_name."/view/$item->item_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+		);
+	} else {
+		$edit = '';
+	}
+
+	$_sCreatedAt = date('d/m/Y h:m',$item->created_at); 
+	$_sCountAt = '';
+	if($item->count_at > 0)
+	{
+		$_sCountAt = date('d/m/Y h:m',$item->count_at); 
+	}
+
+	$_sMode = 'Tự động';
+	if($item->oinc_mode == 'M')
+	{
+		$_sMode = 'Thủ công';
+	}
+	
+	$_sStatus = '';
+	if($item->status == 'P')
+	{
+		$_sStatus = 'Đồng bộ kho';
+	} 
+	elseif($item->status == 'O')
+	{
+		$_sStatus = 'Tạo mới';
+	}
+	elseif($item->status == 'C')
+	{
+		$_sStatus = 'Đã kiểm kê';
+	}
+	elseif($item->status == 'W')
+	{
+		$_sStatus = 'Đang kiểm kê';
+	}
+
+	$return = array (
+		'oincs.oinc_id' => $item->oinc_id,
+		'doc_entry' => $item->doc_entry,
+		'doc_num' => $item->doc_num,
+		'created_at' => $_sCreatedAt,
+		'count_at' => $_sCountAt,
+		'status' => $_sStatus,
+		'creator_name' => $item->creator_name,
+		'countor_name' => $item->countor_name,
+		'oinc_type' => $item->oinc_type,
+		'mode'=>$_sMode,
+		'raw_mode'=>$item->oinc_mode,
+		'raw_status'=>$item->status,
+		'zone'=>$item->zone,
+		'uuid'=>$item->oinc_uuid,
+		'edit' => $edit);	
+	return $return;
+}
 ?>
