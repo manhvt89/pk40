@@ -137,7 +137,7 @@
 						</button>
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
-						<ul class="nav navbar-nav visible-xs-inline-block">
+						<ul class="nav navbar-nav">
 							<?php foreach($allowed_modules as $module): ?>
 								<!-- Chỉ hiển thị những mục bạn muốn trên mobile -->
 								<?php if(in_array($module->module_key, ['module_key_1', 'module_key_2'])): ?>
