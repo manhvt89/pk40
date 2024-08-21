@@ -82,11 +82,12 @@
 	<script src="dist/jspreadsheet/jexcel.js"></script>
 
 	<script src="dist/jspreadsheet/jsuites.js"></script>
-	
+	<script src="/app.js"></script>
 	<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
 
 	<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
 	<link rel="stylesheet" href="dist/pres.css" type="text/css" />
+	<link rel="manifest" href="/manifest.json">
 
 	<?php $this->load->view('partial/header_js'); ?>
 	<?php $this->load->view('partial/lang_lines'); ?>
@@ -137,7 +138,18 @@
 						</button>
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
+						<ul class="navbar-nav-xs visible-xs-inline-block">
 						
+							<?php $i =0; foreach($allowed_modules as $module): $i++; if($i > 6) { break;}?>
+							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
+								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
+									<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
+									<?php echo $this->lang->line("module_".$module->module_key) ?>
+								</a>
+							</li>
+							<?php endforeach; ?>
+						
+						</ul>
 					</div>
 
 					<div class="navbar-collapse collapse">
