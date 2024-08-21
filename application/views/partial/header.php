@@ -126,9 +126,9 @@
 				</div>
 			</div>
 
-			<div class="navbar1 navbar-default1 " role="navigation">
+			<div class="navbar navbar-default " role="navigation">
 				<div class="container">
-					<div class="navbar-header_">
+					<div class="navbar-header">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
 							<span class="sr-only">Toggle navigation</span>
 							<span class="icon-bar"></span>
@@ -137,18 +137,7 @@
 						</button>
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
-						<ul class="navbar-nav-xs visible-xs-inline-block">
 						
-							<?php $i =0; foreach($allowed_modules as $module): $i++; if($i > 6) { break;}?>
-							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
-								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
-									<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
-									<?php echo $this->lang->line("module_".$module->module_key) ?>
-								</a>
-							</li>
-							<?php endforeach; ?>
-						
-						</ul>
 					</div>
 
 					<div class="navbar-collapse collapse">
