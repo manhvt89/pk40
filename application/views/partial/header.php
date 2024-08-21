@@ -137,18 +137,17 @@
 						</button>
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
-						<ul class="nav navbar-nav">
+						<ul class="nav navbar-nav visible-xs-inline-block">
+						<ul class="nav navbar-nav navbar-right">
 							<?php foreach($allowed_modules as $module): ?>
-								<!-- Chỉ hiển thị những mục bạn muốn trên mobile -->
-								<?php if(in_array($module->module_key, ['module_key_1', 'module_key_2'])): ?>
-									<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
-										<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
-											<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
-											<?php echo $this->lang->line("module_".$module->module_key) ?>
-										</a>
-									</li>
-								<?php endif; ?>
+							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
+								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
+									<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
+									<?php echo $this->lang->line("module_".$module->module_key) ?>
+								</a>
+							</li>
 							<?php endforeach; ?>
+						</ul>
 						</ul>
 					</div>
 
@@ -170,3 +169,4 @@
 
 		<div class="container" id="content">
 			<div class="row flex-column flex-md-row">
+
