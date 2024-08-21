@@ -1139,6 +1139,47 @@ width: 148.5mm;*/
 }
 
 
+/* MENU CSS XS
+*/
+
+
+/* Đảm bảo các mục menu hiển thị theo hàng ngang */
+
+.navbar-nav-xs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar-nav-xs>li {
+    margin-right: 15px;
+    /* Khoảng cách giữa các mục menu */
+}
+
+
+/* Đối với thiết bị di động */
+
+@media (max-width: 767px) {
+    .navbar-nav-xs {
+        flex-direction: row;
+        /* Hiển thị hàng ngang trên thiết bị di động */
+        margin-top: 10px;
+        /* Khoảng cách trên cùng */
+    }
+    .navbar-nav-xs>li {
+        margin-right: 10px;
+        /* Khoảng cách giữa các mục menu trên thiết bị di động */
+    }
+}
+
+
+/* Đối với menu collapse */
+
+.navbar-collapse {
+    flex-grow: 1;
+}
+
+
 /* CSS cho màn hình nhỏ hơn 768px (tablet) */
 
 @media (max-width: 768px) {

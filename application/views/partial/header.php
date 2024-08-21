@@ -137,7 +137,7 @@
 						</button>
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
-						<ul class="nav navbar-nav visible-xs-inline-block">
+						<ul class="nav navbar-nav-xs visible-xs-inline-block">
 						
 							<?php $i =0; foreach($allowed_modules as $module): $i++; if($i > 6) { break;}?>
 							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
