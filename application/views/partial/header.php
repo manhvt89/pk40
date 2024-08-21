@@ -139,7 +139,7 @@
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
 						<ul class="nav navbar-nav visible-xs-inline-block">
 						
-							<?php foreach($allowed_modules as $module): ?>
+							<?php $i =0; foreach($allowed_modules as $module): $i++; if($i > 6) { break;}?>
 							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
 								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
 									<img src="<?php echo base_url().'images/menubar/'.$module->module_key.'.png';?>" border="0" alt="Module Icon" /><br />
