@@ -1514,13 +1514,13 @@ function get_attendance_data_detail_row($item)
 	// Chuyển đổi định dạng sang 'd/m/Y'
 	$_sShift_date = $_dtDate->format('d/m/Y');
 	
-	$_sCheck_out_time = date('H:m',$item->check_out_time); 
+	$_sCheck_out_time = date('H:i',$item->check_out_time); 
 	
 	$_sStatus = '';
 	$_sCommand = '';
 	$_iStyle = 0;
 	$_cStep = '';
-	$_sCheck_in_time = date('H:m',$item->check_in_time); 
+	$_sCheck_in_time = date('H:i',$item->check_in_time); 
 
 	$_sDuration = number_format((($item->check_out_time - $item->check_in_time)/3600),2);
 	if( $item->hourly_wage == 0)
