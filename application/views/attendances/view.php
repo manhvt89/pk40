@@ -157,6 +157,7 @@ function rowStyle(row, index) {
 
 </script>
 <h1>Chấm công tự động <?=date('Y/m/d H:m:s',1724427297)?></h1>
+<div><?php echo "Múi giờ PHP hiện tại: " . date_default_timezone_get() . "\n";?></div>
 <div id="table_holder">
     <table id="table" 
         data-sort-order="desc" 
