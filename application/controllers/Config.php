@@ -430,7 +430,7 @@ class Config extends Secure_Controller
 			'qrcode'=>$this->input->post('qrcode'),
 			'barcode'=>$this->input->post('barcode'),
 			'display_age'=>$this->input->post('display_age'),
-
+			'sallary_per_hour'=>$this->input->post('sallary_per_hour'),
 			'statistics' => $this->input->post('statistics') != NULL,
 		);
 		

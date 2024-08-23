@@ -47,12 +47,18 @@ class Employee extends Person
 	{
 		$this->db->from('employees');	
 		$this->db->join('people', 'people.person_id = employees.person_id');
-		$this->db->where('employees.person_id', $employee_id);
+		if(strlen($employee_id) > 20)
+		{
+			$this->db->where('people.person_uuid', $employee_id);
+		} else {
+			$this->db->where('employees.person_id', $employee_id);
+		}
 		$query = $this->db->get();
 
 		if($query->num_rows() == 1)
 		{
-			return $query->row();
+			$person_obj = $query->row();
+			return $person_obj;
 		}
 		else
 		{
@@ -65,7 +71,7 @@ class Employee extends Person
 			{
 				$person_obj->$field = '';
 			}
-
+			
 			return $person_obj;
 		}
 	}

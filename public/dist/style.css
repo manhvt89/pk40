@@ -600,7 +600,7 @@ td .input-test {
 
 #update_test_button,
 #clear_test_button {
-    margin-top: 0.5em;
+    margin: 0.5em 0.5em 0.5em auto;
 }
 
 .old_data tr td,
@@ -891,17 +891,17 @@ width: 148.5mm;*/
 
 #list_tested_today {
     margin-bottom: 10px;
-    font-size: 11px;
+    font-size: 13px;
     font-family: Arial;
 }
 
 #list_tested_today tr td,
 #list_tested tr th {
-    padding: 2px 8px;
+    padding: 5px 10px;
 }
 
 #list_tested {
-    font-size: 11px;
+    font-size: 13px;
     font-family: Arial;
 }
 
@@ -1093,6 +1093,7 @@ width: 148.5mm;*/
 
 #register_wrapper_test {
     font-size: 13px;
+    margin-bottom: 50px;
 }
 
 #register_wrapper_tool,

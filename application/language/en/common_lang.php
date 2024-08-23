@@ -113,3 +113,11 @@ $lang['oincs_open_status'] = "Mới tạo";
 $lang['oincs_work_status'] = "Đang kiểm kê";
 $lang['oincs_close_status'] = "Kiểm kê xong";
 $lang['oincs_post_status'] = "Đã hiệu chỉnh kho";
+
+/** Chấm công */
+$lang['attendance_employee_name'] = 'Họ và tên';
+$lang['attendance_check_in_time'] = 'Thời gian bắt đầu';
+$lang['attendance_check_out_time'] = 'Thời gian kết thúc';
+$lang['attendance_status'] = 'Trạng thái';
+$lang['module_attendances'] = 'Chấm công';
+$lang['attendances_no_attendances_to_display'] = 'Chưa có tài liệu nào';

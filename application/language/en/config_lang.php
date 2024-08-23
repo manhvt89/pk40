@@ -231,3 +231,4 @@ $lang['config_print_header_receipt'] = "In header hóa đơn";
 $lang['hien_thi_tieu_de_kq'] = "Hiển thị tiêu để KẾT QUẢ KHÁM";
 $lang['config_display_age'] = "Hiển thị tuổi";
 $lang['test_display_customer_phone'] = "Hiển thị số điện thoại bệnh nhân";
+$lang['config_sallary_per_hour'] = 'Lương bán hàng/giờ';

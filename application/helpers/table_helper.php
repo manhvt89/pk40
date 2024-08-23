@@ -536,19 +536,35 @@ function get_person_data_row($person, $controller)
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 	//var_dump($person);
-	$return = array (
-		'people.person_id' => $person->person_id,
-		'first_name' => anchor($controller_name."/view_detail/$person->customer_uuid", $person->first_name,
-		array('class'=>'', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>'')),
-		'last_name' => $person->last_name,
-		//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
-		'phone_number' => $person->phone_number,
-		'address_1'=>$person->address_1,
-		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
-		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-	));
+	if($controller_name == 'customers')
+	{
+		$return = [
+			'people.person_id' => $person->person_id,
+			'first_name' => anchor($controller_name."/view_detail/$person->person_uuid", $person->first_name,
+			array('class'=>'', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>'')),
+			'last_name' => $person->last_name,
+			//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+			'phone_number' => $person->phone_number,
+			'address_1'=>$person->address_1,
+			'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+				array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+			'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		)];
+	} else {
+		$return = [
+			'people.person_id' => $person->person_id,
+			'first_name' => $person->first_name,
+			'last_name' => $person->last_name,
+			//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+			'phone_number' => $person->phone_number,
+			'address_1'=>$person->address_1,
+			'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+				['class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send')]),
+			'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+				['class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update')]
+		)];
+	}
 
 	if($CI->Employee->has_grant('customers_phonenumber_hide'))
 	{
@@ -1377,6 +1393,153 @@ function get_oinc_data_row($item, $controller)
 		'zone'=>$item->zone,
 		'uuid'=>$item->oinc_uuid,
 		'edit' => $edit);	
+	return $return;
+}
+
+function get_attendances_manage_table_headers()
+{
+	$CI =& get_instance();
+	$person_id = $CI->session->userdata('person_id');
+	
+	$headers = array(
+			//array('attendance.attendance_id' => $CI->lang->line('common_id')),
+			//array('doc_entry' => $CI->lang->line('oinc_doc_entry')),
+			//array('created_at' => $CI->lang->line('attendance_created_at')),
+			array('fullname' => $CI->lang->line('attendance_employee_name')),
+			array('check_in_time' => $CI->lang->line('attendance_check_in_time')),			
+			array('check_out_time' => $CI->lang->line('attendance_check_out_time')),
+
+			array('status' => $CI->lang->line('attendance_status')),
+			//array('mode' => $CI->lang->line('oinc_mode')),
+			//array('oinc_type' => $CI->lang->line('oinc_type'), 'sortable' => FALSE),
+			//array('series' => $CI->lang->line('items_standard_amount'), 'sortable' => FALSE),
+		);
+	//var_dump($headers);
+	return transform_headers($headers,TRUE,FALSE);
+}
+
+function get_attendance_data_row($item)
+{
+	$CI =& get_instance();
+	
+	// remove ', ' from last item
+	$controller_name = strtolower(get_class($CI));
+
+	
+	
+	
+		$edit = anchor(
+			$controller_name."/view/$item->attendance_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+		);
+
+		
+		$fullname = $item->last_name . ' '.$item->first_name;
+		$fullname = '<a href="'.$controller_name.'/view_detail/'.$item->person_uuid.'">'.$fullname.'</a>';
+			
+	
+
+
+	$_sCheck_in_time = 'N/A'; 
+	$_sCheck_out_time = 'N/A';
+	if($item->check_out_time > 0)
+	{
+		$_sCheck_out_time = date('d/m/Y h:m:s',$item->check_out_time); 
+	}
+	
+	$_sStatus = '';
+	$_sCommand = '';
+	$_iStyle = 0;
+	$_cStep = '';
+	if($item->check_in_time > 0)
+	{
+		$_sCheck_in_time = date('d/m/Y H:m:s',$item->check_in_time); 
+
+		if($item->check_out_time == 0)
+		{
+			$_sStatus = 'Đang làm';
+			$_iStyle = 2;
+			//$_sCommand = "<a href='". $controller_name."/check_out/".$item->attendance_uuid."'>Check Out</a>";
+			$_sCommand = 'Check Out';
+			$_cStep = 'O'; //Check Out
+		} else {
+			$_sStatus = 'Hoàn thành';
+			$_iStyle = 1;
+			$_cStep = 'C'; // Complete
+		}
+	} 
+	else
+	{
+		$_sStatus = 'Chưa bắt đầu';
+		$_sCheck_in_time = 'N/A';
+		//$_sCommand = "<a href='". $controller_name."/check_in/".$item->employee_id."'>Check In</a>";
+		$_sCommand = 'Check In';
+		$_cStep = 'I';
+	}
+	
+	$return = array (
+		'attendance.attendance_id' => $item->attendance_id,
+		//'doc_entry' => $item->doc_entry,
+		'fullname' => $fullname,
+		'check_in_time' => $_sCheck_in_time,
+		'check_out_time' => $_sCheck_out_time,
+		'status' => $_sStatus,
+		'command'=>$_sCommand,
+		'style'=>$_iStyle,
+		'step'=>$_cStep,
+		'employee_id'=>$item->employee_id,
+		'attendance_uuid'=>$item->attendance_uuid
+		);	
+	return $return;
+}
+
+function get_attendance_data_detail_row($item)
+{
+	$CI =& get_instance();
+	
+	// remove ', ' from last item
+	//$controller_name = strtolower(get_class($CI));
+
+	//var_dump($item);
+	$_sCheck_in_time = 'N/A'; 
+	$_sCheck_out_time = 'N/A';
+	$_sShift_date = '';
+	$_sDuration = '';
+	$_sTotal = '';
+	
+	// Tạo đối tượng DateTime từ chuỗi ngày
+	$_dtDate = DateTime::createFromFormat('Y-m-d', $item->shift_date);
+
+	// Chuyển đổi định dạng sang 'd/m/Y'
+	$_sShift_date = $_dtDate->format('d/m/Y');
+	
+	$_sCheck_out_time = date('H:m',$item->check_out_time); 
+	
+	$_sStatus = '';
+	$_sCommand = '';
+	$_iStyle = 0;
+	$_cStep = '';
+	$_sCheck_in_time = date('H:m',$item->check_in_time); 
+
+	$_sDuration = number_format((($item->check_out_time - $item->check_in_time)/3600),2);
+	if( $item->hourly_wage == 0)
+	{
+		$item->hourly_wage = 15000.00;
+	}
+	$_sTotal = number_format($_sDuration * $item->hourly_wage,0);
+	$return = array (
+		'created_at'=>$_sShift_date,
+		'check_in_time' => $_sCheck_in_time,
+		'check_out_time' => $_sCheck_out_time,
+		'duration' => $_sDuration,
+		'total' => $_sTotal,
+		'command'=>$_sCommand,
+		'style'=>$_iStyle,
+		'step'=>$_cStep,
+		'employee_id'=>$item->employee_id,
+		'attendance_uuid'=>$item->attendance_uuid
+		);	
 	return $return;
 }
 ?>

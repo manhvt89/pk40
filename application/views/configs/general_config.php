@@ -314,7 +314,17 @@
 						'checked'=>$this->config->item('display_age'))); ?>
 				</div>
 			</div>
-			display_age
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_sallary_per_hour'), 'sallary_per_hour', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array(
+						'name' => 'sallary_per_hour',
+						'id' => 'sallary_per_hour',
+						'class' => 'form-control input-sm',
+						'value'=>$this->config->item('sallary_per_hour'))); ?>
+				</div>
+			</div>
+			
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>

@@ -45,6 +45,20 @@
 						</div>
 					</div>	
 				</div>
+				<div class="form-group form-group-sm">
+					<?php echo form_label('Lương/Giờ', 'hourly_wage', array('class' => 'control-label col-xs-3')); ?>
+					<div class='col-xs-8'>
+						<?php echo form_input(
+								[
+									'type'=>'text',
+									'name'=>'hourly_wage',
+									'id'=>'hourly_wage',
+									'class'=>'form-control input-sm',
+									'value'=>$person_info->hourly_wage
+								]
+							);?>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 
@@ -118,14 +132,31 @@
 		</div>
 	</div>
 <?php echo form_close(); ?>
-
+<script src="/dist/autoNumeric.min.js"></script>
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
-	$.validator.setDefaults({ ignore: [] });
+	new AutoNumeric('#hourly_wage', {
+            digitGroupSeparator: '.',  // Dấu phân cách hàng nghìn
+            decimalCharacter: ',',     // Dấu phân cách thập phân
+            decimalPlaces: 0,          // Số chữ số thập phân
+            currencySymbol: ' vnđ',       // Ký hiệu tiền tệ (nếu cần)
+            currencySymbolPlacement: 's', // Đặt ký hiệu tiền tệ trước số ('p' là trước, 's' là sau)
+            minimumValue: '0',         // Giá trị tối thiểu
+            maximumValue: '50000' // Giá trị tối đa
+        });
 
+	$.validator.setDefaults({ ignore: [] });
 	$.validator.addMethod("module", function (value, element) {
+		console.log('validate data :');
+		let input = $('#hourly_wage');
+			const autoNumericInstance = AutoNumeric.getAutoNumericElement('#hourly_wage');
+
+			// Lấy giá trị không có định dạng (số nguyên)
+			const rawValue = autoNumericInstance.getNumber();
+			console.log('Raw Value:', rawValue);
+			input.val(rawValue); // Loại bỏ dấu phẩy
 		var result = $("#permission_list input").is(":checked");
 		$(".module").each(function(index, element)
 		{

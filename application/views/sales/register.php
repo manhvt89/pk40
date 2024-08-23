@@ -441,12 +441,13 @@ if (isset($success))
 			<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
 
 		<?php if(count($tests)): //Hiển thị danh sách khách hàng khám trong ngày; ?>
-			<table id="list_tested_today" class="table table-hover table-striped" style="background-color: #fff;">
+			<div class="form-group">
+			<table id="list_tested_today" class="sales_table_100 table table-hover table-striped" style="background-color: #fff;">
 
 				<tr style="text-align: left; background-color: #e4e4d7">
-					<td>Họ và tên</td>
+					<td><b>Họ và tên</b></td>
 					<td>
-						Số điện thoại
+						<b>Số điện thoại</b>
 					</td>
 					<td>
 
@@ -467,6 +468,7 @@ if (isset($success))
 					</tr>
 				<?php endforeach; ?>
 			</table>
+			</div>
 		<?php endif; ?>
 			<div class="form-group" id="select_customer">
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer'); ?></label>

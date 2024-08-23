@@ -5,7 +5,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libicu-dev \
     libgd-dev \
     openssl \
-    nano
+    nano \
+    libmemcached-dev \
+    && pecl install memcache \
+    && docker-php-ext-enable memcache \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd

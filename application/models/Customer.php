@@ -361,7 +361,7 @@ class Customer extends Person
 	{
 		$this->db->from('customers');
 		$this->db->join('people', 'people.person_id = customers.person_id');
-		$this->db->where('customers.customer_uuid', $sCuuid);
+		$this->db->where('people.person_uuid', $sCuuid);
 		$query = $this->db->get();
 		
 		if($query->num_rows() == 1)

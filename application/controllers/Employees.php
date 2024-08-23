@@ -147,7 +147,7 @@ class Employees extends Persons
 
 		$_firstname = $this->input->post('first_name');
 		$_aName = extract_fullname($_firstname);
-		$person_data = array(
+		$person_data = [
 			'first_name' => mb_convert_case($_aName['firstname'], MB_CASE_TITLE, "UTF-8"),
 			'last_name' => mb_convert_case($_aName['lastname'], MB_CASE_TITLE, "UTF-8"),
 			'gender' => $this->input->post('gender'),
@@ -160,28 +160,29 @@ class Employees extends Persons
 			'zip' => $this->input->post('zip'),
 			'country' => $this->input->post('country'),
 			'comments' => $this->input->post('comments')
-			
-		);
+		];
 		//$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
 		$roles_data = $this->input->post('role') != NULL ? $this->input->post('role') : array();
 		
 		//Password has been changed OR first time password set
 		if($this->input->post('password') != '')
 		{
-			$employee_data = array(
+			$employee_data = [
 				'username' => $this->input->post('username'),
 				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 				'hash_version' => 2,
 				'code' => $this->input->post('code') == ''? 'CTV'.time() : $this->input->post('code'),
-				'comission_rate' => $this->input->post('comission_rate')
-			);
+				'comission_rate' => $this->input->post('comission_rate'),
+				'hourly_wage'=> $this->input->post('hourly_wage')
+			];
 		}
 		else //Password not changed
 		{
 			$employee_data = [
 				'username' => $this->input->post('username'),
 				'code' => $this->input->post('code') == ''? 'CTV'.time() : $this->input->post('code'),
-				'comission_rate' => $this->input->post('comission_rate')
+				'comission_rate' => $this->input->post('comission_rate'),
+				'hourly_wage'=> $this->input->post('hourly_wage')
 			];
 		}
 		
