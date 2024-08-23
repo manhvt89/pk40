@@ -161,7 +161,7 @@ function rowStyle(row, index) {
 <div><?php echo "Thời gian hiện tại (PHP): " . date('Y-m-d H:i:s') . "\n";?></div>
 <?php
     
-    $t = strtotime( date('Y-m-d H:i:s'));
+    $t = time();
     echo "INT: ".$t .'</br>';
     echo date('Y-m-d H:i:s',$t).'</br>';
     $t = 1724427297;
@@ -169,6 +169,8 @@ function rowStyle(row, index) {
     echo date('Y-m-d H:i:s',$t);
 ?>
 <h1>Chấm công tự động <?=date('Y-m-d H:m:s',1724427297)?></h1>
+
+
 <div id="table_holder">
     <table id="table" 
         data-sort-order="desc" 
