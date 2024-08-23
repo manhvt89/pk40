@@ -1445,7 +1445,7 @@ function get_attendance_data_row($item)
 	$_sCheck_out_time = 'N/A';
 	if($item->check_out_time > 0)
 	{
-		$_sCheck_out_time = date('d/m/Y H:m:s',$item->check_out_time); 
+		$_sCheck_out_time = date('d/m/Y H:i:s',$item->check_out_time); 
 	}
 	
 	$_sStatus = '';
@@ -1454,7 +1454,7 @@ function get_attendance_data_row($item)
 	$_cStep = '';
 	if($item->check_in_time > 0)
 	{
-		$_sCheck_in_time = date('d/m/Y H:m:s',$item->check_in_time); 
+		$_sCheck_in_time = date('d/m/Y H:i:s',$item->check_in_time); 
 
 		if($item->check_out_time == 0)
 		{
