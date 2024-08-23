@@ -156,7 +156,7 @@ function rowStyle(row, index) {
   }
 
 </script>
-<h1>Chấm công tự động <?=date_default_timezone_get()?></h1>
+<h1>Chấm công tự động <?=date('Y/m/d H:m:s',1724427297)?></h1>
 <div id="table_holder">
     <table id="table" 
         data-sort-order="desc" 
