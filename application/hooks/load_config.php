@@ -106,11 +106,11 @@ function load_config()
     //Set timezone from config database
     if($CI->config->item('timezone'))
     {
-        date_default_timezone_set($CI->config->item('timezone'));
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
     }
     else
     {
-        date_default_timezone_set('America/New_York');
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
     }
 
     bcscale(max(2, $CI->config->item('currency_decimals') + $CI->config->item('tax_decimals')));

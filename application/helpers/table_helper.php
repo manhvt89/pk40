@@ -1445,7 +1445,7 @@ function get_attendance_data_row($item)
 	$_sCheck_out_time = 'N/A';
 	if($item->check_out_time > 0)
 	{
-		$_sCheck_out_time = date('d/m/Y h:m:s',$item->check_out_time); 
+		$_sCheck_out_time = date('d/m/Y H:m:s',$item->check_out_time); 
 	}
 	
 	$_sStatus = '';
