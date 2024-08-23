@@ -163,7 +163,10 @@ function rowStyle(row, index) {
     
     $t = strtotime( date('Y-m-d H:i:s'));
     echo "INT: ".$t .'</br>';
-    echo date('Y-m-d H:i:s',$t)
+    echo date('Y-m-d H:i:s',$t).'</br>';
+    $t = 1724427297;
+    echo "INT: ".$t .'</br>';
+    echo date('Y-m-d H:i:s',$t);
 ?>
 <div id="table_holder">
     <table id="table" 
