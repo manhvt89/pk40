@@ -170,6 +170,21 @@ function rowStyle(row, index) {
 ?>
 <h1>Chấm công tự động <?=date('Y-m-d H:m:s',1724427297)?></h1>
 
+<div><?php echo "Múi giờ PHP hiện tại: " . date_default_timezone_get() . "\n";?></div>
+    <div><?php echo "Thời gian hiện tại (PHP): " . date('Y-m-d H:i:s') . "\n";?></div>
+    <?php
+        // Thời gian hiện tại
+        $current_time = time(); // Lấy timestamp hiện tại
+        echo "INT (Hiện tại): ".$current_time .'</br>';
+        echo date('Y-m-d H:i:s', $current_time).'</br>';
+        
+        // Timestamp cụ thể
+        $specific_timestamp = 1724427297;
+        echo "INT (Cụ thể): ".$specific_timestamp .'</br>';
+        echo date('Y-m-d H:i:s', $specific_timestamp);
+    ?>
+    <h1>Chấm công tự động <?=date('Y-m-d H:i:s', 1724427297)?></h1>
+
 
 <div id="table_holder">
     <table id="table" 
