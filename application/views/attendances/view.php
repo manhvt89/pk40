@@ -168,7 +168,7 @@ function rowStyle(row, index) {
     echo "INT: ".$t .'</br>';
     echo date('Y-m-d H:i:s',$t);
 ?>
-<h1>Chấm công tự động <?=date('Y-m-d H:m:s',1724427297)?></h1>
+<h1>Chấm công tự động <?=date('Y-m-d H:m:s', 1724427297)?></h1>
 
 <div><?php echo "Múi giờ PHP hiện tại: " . date_default_timezone_get() . "\n";?></div>
     <div><?php echo "Thời gian hiện tại (PHP): " . date('Y-m-d H:i:s') . "\n";?></div>
