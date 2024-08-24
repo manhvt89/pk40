@@ -3,12 +3,14 @@
 
 	<div id="footer">
 		<div class="jumbotron push-spaces">
-			<strong><?php echo $this->lang->line('common_you_are_using_ospos'); ?>
-  			<?php echo $this->config->item('application_version'); ?> - <?php echo substr('$Id: 4f5ad5761503bbc94152cbf16afa76439ca155b8 $', 5, 7); ?></strong>.
-			<?php echo $this->lang->line('common_please_visit_my'); ?>
-			<a href="https://github.com/jekkos/opensourcepos" target="_blank"><?php echo $this->lang->line('common_website'); ?></a>
-			<?php echo $this->lang->line('common_learn_about_project'); ?>
+			<strong>Bạn đang sử dụng phần mềm quản lý phòng khám mắt PK40
+  			version V2.0.1</strong>.
+			Liên hệ <a href="https://zalo.me/0936111617" target="_blank">0936111917</a>
+			</br>
+			Chuyên gia tư vấn An Ninh Thông Tin theo tiêu chuẩn ISO27001, 5S, Quản lý chất lượng, Chuyển đổi số;
 		</div>
+			
 	</div>
+</div>
 </body>
 </html>
