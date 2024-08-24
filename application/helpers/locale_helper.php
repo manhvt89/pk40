@@ -1377,4 +1377,23 @@ function clear_debug_log() {
 function to_upper($str){
     return mb_strtoupper($str, 'UTF-8');
 }
+
+function make_diff_first($array)
+{
+    
+    $_array_first = [];
+    $_array_second = [];
+    foreach($array as $key=>$value)
+    {
+        if(($value['in_whs_quantity'] - $value['quantity']) == 0)
+        {
+            $_array_second[] = $value;
+        } else {
+            $_array_first[] = $value;
+        }
+    }
+    
+    
+    return array_merge($_array_first,$_array_second);
+}
 ?>

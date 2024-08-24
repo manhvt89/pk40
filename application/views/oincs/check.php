@@ -18,7 +18,7 @@ if (isset($success))
 
 ?>
 
-<div id="register_wrapper">
+<div id="register_wrapper_oinc" class="col-12 col-md-8 order-3 order-md-2">
 	<?php $tabindex = 0; //var_dump($edit); ?>
 	<?php echo form_open($controller_name."/#", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
@@ -59,8 +59,9 @@ if (isset($success))
 			<?php
 			}
 			else
-			{				
-				foreach(array_reverse($cart, true) as $line=>$item)
+			{
+				//make_diff_first($cart);				
+				foreach(make_diff_first($cart) as $line=>$item)
 				{					
 			?>
 					<?php echo form_open($controller_name."/#/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
@@ -103,7 +104,7 @@ if (isset($success))
 	</table>
 </div>
 <!-- Overall Count [Right Panel]-->
-<div id="overall_sale" class="panel panel-default">
+<div id="overall_oinc" class="col-12 col-md-4 order-1 order-md-1 panel panel-default">
 	<div class="panel-body">
 	<?php
 	if(($TheOinc['oinc_id'] > 0))

@@ -1140,6 +1140,30 @@ width: 148.5mm;*/
 }
 
 
+/*
+** OINC CSS
+*/
+
+#overall_oinc {
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 13px;
+    text-align: center;
+    background-color: #BBB;
+    margin-top: 7px;
+}
+
+#register_wrapper_oinc {
+    font-size: 13px;
+    margin-bottom: 50px;
+}
+
+#register_wrapper_oinc {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+
 /* MENU CSS XS
 */
 
