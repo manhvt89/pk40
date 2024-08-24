@@ -117,8 +117,8 @@ class Attendances extends Secure_Controller
 		$data['tests'] = $tests;
 
 		//var_dump($info);
-		$headers = $this->Attendance->employee_columns();
-		$data['headers'] = transform_headers_html($headers['summary'],true,false);
+		$_table_header = get_detail_attendance_table_header();
+		$data['headers'] = transform_headers_html($_table_header,true,false);
 		$info->first_name = get_fullname($info->first_name, $info->last_name);
 		$data['person_info'] = $info;
         $data['cities'] = $cities;
@@ -146,40 +146,56 @@ class Attendances extends Secure_Controller
                 
             ];
 		$sales = $this->Attendance->ajax_attendances($_aInput);
-		$headers = $this->Attendance->employee_columns();
+		$_table_header = get_detail_attendance_table_header();
 
 		if(!$sales)
 		{
 			$result = 0;
-			$data = array(
-				'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+			$data = [
+				'headers_summary' => transform_headers_raw($_table_header,TRUE,false),
 				'headers_details' => [],
 				'summary_data' => [],
 				'details_data' => [],
 				'report_data' =>[]
-			);
+			];
 		}else{
 			$summary_data = [];
 			$details_data = [];
 			$i = 1;
-			$total_amount = 0;
-			$total_quantity = 0;
+			$total_hour = 0;
+			$total = 0;
 			foreach($sales['summary'] as $key => $row)
 			{
 				
 				//$row['id'] = $i;
-				$summary_data[] = $this->xss_clean(get_attendance_data_detail_row($row, $this));
+				$summary_data[] = $this->xss_clean(get_attendance_data_detail_row($row));
 				$i++;
+				$total_hour = $total_hour + ($row->check_out_time - $row->check_in_time)/3600;
+				if($row->hourly_wage == 0)
+				{
+					$row->hourly_wage = 15000.00;
+				}
+				$total = $total + $row->hourly_wage*($row->check_out_time - $row->check_in_time)/3600;
 			}
+
+			$_aFooter = [
+				'created_at'=>'Tổng cộng',
+				'check_in_time'=>'',
+				'check_out_time'=>'',
+				'duration'=>$total_hour,
+				'total'=>number_format($total,0)
+			];
+
+			array_unshift($summary_data,$_aFooter);
 			
 			//$summary_data[] = $footer;
-			$data = array(
-				'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
-				'headers_details' => transform_headers_raw($headers['details'],TRUE,false),
+			$data = [
+				'headers_summary' => transform_headers_raw($_table_header,TRUE,false),
+				'headers_details' => [],
 				'summary_data' => $summary_data,
 				'details_data' => $details_data,
 				'report_data' =>$sales
-			);
+			];
 		}
         $json = array('result'=>$result,'data'=>$data);
         echo json_encode($json);

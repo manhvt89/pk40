@@ -1522,12 +1522,12 @@ function get_attendance_data_detail_row($item)
 	$_cStep = '';
 	$_sCheck_in_time = date('H:i',$item->check_in_time); 
 
-	$_sDuration = number_format((($item->check_out_time - $item->check_in_time)/3600),2);
+	$_sDuration = ($item->check_out_time - $item->check_in_time)/3600;
 	if( $item->hourly_wage == 0)
 	{
 		$item->hourly_wage = 15000.00;
 	}
-	$_sTotal = number_format($_sDuration * $item->hourly_wage,0);
+	$_sTotal = $_sDuration * $item->hourly_wage;
 	$return = array (
 		'created_at'=>$_sShift_date,
 		'check_in_time' => $_sCheck_in_time,
@@ -1542,4 +1542,16 @@ function get_attendance_data_detail_row($item)
 		);	
 	return $return;
 }
+function get_detail_attendance_table_header()
+{
+	return [
+			['id' => '#','align'=>'center'],
+			['created_at' => 'Ngày tháng'],
+			['check_in_time' => 'Thời gian bắt đầu','footer-formatter'=>'iformatter'],
+			['check_out_time' => 'Thời gian kết thúc','footer-formatter'=>'iformatter', 'align'=>'right'],
+			['duration' => 'Thời lượng (giờ)','align'=>'right','formatter'=>'durationFormatter','footer-formatter'=>'totalformatter'],
+			['total'=>'TT','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter']
+	];
+	
+} 
 ?>

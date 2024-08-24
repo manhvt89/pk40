@@ -35,8 +35,10 @@ class Attendance extends CI_Model
 
     public function check_in($employee_info)
     {
+		$current_date = date('Y-m-d'); // Today
 		$this->db->where('employee_id', $employee_info->person_id);
     	$this->db->where('check_out_time', 0);  // Chưa check-out
+		$this->db->where('shift_date', $current_date);  // Chưa check-out
     	$open_shift = $this->db->get('attendance')->row();
 
     	if ($open_shift) {
@@ -96,24 +98,15 @@ class Attendance extends CI_Model
 
 	public function employee_columns()
 	{
-		return array(
-            'summary' => [
+		return [
                 ['id' => '#','align'=>'center'],
                 ['created_at' => 'Ngày tháng'],
                 ['check_in_time' => 'Thời gian bắt đầu','footer-formatter'=>'iformatter'],
 				['check_out_time' => 'Thời gian kết thúc','footer-formatter'=>'iformatter', 'align'=>'right'],
-                ['duration' => 'Thời lượng (giờ)','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter'],
-                ['total'=>'TT']
-			],
-			'details' => [
-				['stt'=>'STT'],
-				['item_name'=>'Tên sản phẩm'],
-				['quantity'=>'Số lượng','align'=>'right'],
-				['item_unit_price'=>'Giá','align'=>'right'],
-				['tong_tien'=>'Thành tiền','align'=>'right'],
-				//['receiving_uuid'=>'Mã theo dõi','align'=>'left'],
-			]
-        );
+                ['duration' => 'Thời lượng (giờ)','align'=>'right','formatter'=>'durationFormatter','footer-formatter'=>'totalformatter'],
+                ['total'=>'TT','align'=>'right','formatter'=>'currencyFormatter','footer-formatter'=>'totalformatter']
+		];
+        
 	} 
 
 	public function ajax_attendances(array $inputs)

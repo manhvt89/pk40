@@ -147,7 +147,8 @@
 				data-show-footer="false"
 				data-export-footer="false"
 				data-show-columns="false"
-			> 
+				data-row-style="rowStyle">
+			
 				<thead>
 					<tr>
 					<?=$headers?>
@@ -160,6 +161,7 @@
 		<div id="table_holder_test">
 				<table id="tbl_tests"
 				data-header-style="headerStyle"
+				
 				>
 					
 				</table>
@@ -167,7 +169,7 @@
     </div>
    
 </div>
-
+<script src="/dist/autoNumeric.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function()
 	{
@@ -362,19 +364,56 @@
 		
 		currencyFormatter = function (value)
 		{
-			console.log(value);
-			//var color = '#' + Math.floor(Math.random() * 6777215).toString(16)
-			var color = '#000000';
-			$_return = Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 });
-			if($_return == '0')
-			{
-				$_return = '-';
-			}
-			return '<div style="color: ' + color + '">' +
-			'<i class="fa fa-dollar-sign"></i>' +
-			$_return +
-			'</div>'
+			// Tạo một span chứa giá trị cần định dạng
+			var span = document.createElement('span');
+            span.textContent = value;
+
+            // Khởi tạo AutoNumeric trên span này
+            new AutoNumeric(span, {
+                digitGroupSeparator: ',',  // Dấu phân cách hàng nghìn
+				decimalCharacter: '.',     // Dấu phân cách thập phân
+				decimalPlaces: 0,          // Số chữ số thập phân
+				currencySymbol: ' (vnd)',       // Ký hiệu tiền tệ (nếu cần)
+				currencySymbolPlacement: 's', // Đặt ký hiệu tiền tệ trước số ('p' là trước, 's' là sau)
+            });
+
+            // Trả về HTML của span đã định dạng
+            return span.outerHTML;
 		}
+
+		durationFormatter = function (value)
+		{
+			
+			// Tạo một span chứa giá trị cần định dạng
+			var span = document.createElement('span');
+            span.textContent = value;
+
+            // Khởi tạo AutoNumeric trên span này
+            new AutoNumeric(span, {
+                digitGroupSeparator: ',',  // Dấu phân cách hàng nghìn
+				decimalCharacter: '.',     // Dấu phân cách thập phân
+				decimalPlaces: 2,          // Số chữ số thập phân
+				currencySymbol: ' (giờ)',       // Ký hiệu tiền tệ (nếu cần)
+				currencySymbolPlacement: 's', // Đặt ký hiệu tiền tệ trước số ('p' là trước, 's' là sau)
+            });
+
+            // Trả về HTML của span đã định dạng
+            return span.outerHTML;
+			
+		}
+
+		rowStyle = function (row, index) {
+			console.log(index);
+			if (index === 0) { // Kiểm tra nếu đây là dòng đầu tiên
+				return {
+					classes: 'bg-primary', // CSS class để định dạng
+					css: { "font-weight": "bold", 'color':'#000000' }   // Các thuộc tính CSS khác
+				};
+			}
+			return {};
+	}
+
+		
 
 		headerStyle = function (column) 
 		{
@@ -392,7 +431,11 @@
 			}[column.field]
 		}
 
+		
+
 	});
+	
+	
 </script>
 <style>
 	#paymentModal {
