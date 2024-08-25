@@ -3,7 +3,7 @@
 </div>
 	<footer id="footer">
 		<div class="jumbotron push-spaces">
-			<strong>Bạn đang sử dụng phần mềm quản lý phòng khám mắt PK40
+			<strong>Bạn đang sử dụng phần mềm quản lý phòng khám chuyên khoa mắt PK40
   			version V2.0.1</strong>.
 			Liên hệ Ông Vũ Thành Mạnh <a href="https://zalo.me/0936111617" target="_blank">0936111917</a>
 			</br>

@@ -1162,13 +1162,71 @@ width: 148.5mm;*/
     }
     
     .navbar-nav-xs>li {
-        margin-right: 15px;
+        margin-right: 5px;
         /* Khoảng cách giữa các mục menu */
     }
     
     .navbar-nav-xs img {
         max-width: 24px;
         /* Kích thước hình ảnh menu */
+    }
+    
+    .navbar-header {
+        display: flex;
+        align-items: center;
+        /* Đảm bảo các mục nằm cùng dòng với nút hamburger */
+    }
+    
+    .navbar-nav-xs {
+        margin-left: auto;
+        /* Đẩy menu sang bên phải */
+        display: flex;
+        /* Hiển thị menu ngang */
+        align-items: center;
+        /* Canh giữa theo chiều dọc */
+    }
+    
+    .navbar-nav-xs li {
+        display: inline-block;
+        /* Đảm bảo các mục nằm ngang */
+        margin-left: 5px;
+        /* Khoảng cách giữa các mục */
+    }
+    
+    .navbar-toggle {
+        margin-right: 10px;
+        /* Khoảng cách giữa nút hamburger và menu */
+    }
+    
+    .navbar-nav-xs>li>a {
+        position: relative;
+        display: block;
+        padding: 2px 5px;
+        color: #FFFFFF;
+    }
+    
+    .navbar-nav-xs .active {
+        background-color: transparent;
+        color: #000000;
+    }
+    
+    .navbar-nav-xs .active a {
+        background-color: #178ACC;
+        /* Màu nền khi active */
+        color: white;
+        /* Màu chữ khi active */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Bóng sâu hơn khi active */
+        /* Bóng sâu hơn khi active */
+        /* Đổ bóng */
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-nav-xs a:hover {
+        background-color: #178ACC;
+        /* Màu nền khi hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Bóng khi hover */
     }
     /* Ẩn menu trên thiết bị máy tính */
     
@@ -1209,6 +1267,16 @@ width: 148.5mm;*/
     
     .wrapper {
         flex: 1;
+    }
+    /*/ FOOTER */
+    
+    footer .jumbotron {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: inherit;
+        background-color: #eeeeee;
+        font-size: 12px;
     }
     
     footer {
