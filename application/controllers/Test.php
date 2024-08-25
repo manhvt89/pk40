@@ -56,7 +56,7 @@ class Test extends Secure_Controller
 		}
     }
 	public function index()
-	{	$this->output->enable_profiler(TRUE);
+	{	//$this->output->enable_profiler(TRUE);
 		//test_create
         $person_id = $this->session->userdata('person_id');
        // echo str_replace('S','', strtoupper('s-0.00'));
@@ -388,7 +388,11 @@ class Test extends Secure_Controller
 
 		$customer_info = $this->_load_customer_data($this->test_lib->get_customer(), $data, TRUE);
 		$data['duration_dvts'] = $this->config->item('duration_dvts');
-        $pres_names_q = $this->Prescription->get_all();
+		$pres_names_q = [];
+		if($this->config->item('has_prescription') == 1)
+		{
+        	$pres_names_q = $this->Prescription->get_all();
+		}
 		
 		$pres_names = [];
 		$pres_a = [];
@@ -397,12 +401,12 @@ class Test extends Secure_Controller
 			$pres_names[$pres['name']] = $pres['name'];
 			$pres_a[$pres['name']] = $pres;
 		}
-		$data['tests'] = array(); //edit by manhvt27.05.2023
+		$data['tests'] = []; //edit by manhvt27.05.2023
 		$data['pres_names'] = $pres_names;
 		$data['pres_a'] = $pres_a;
 		$data['json_pres_a'] = json_encode($pres_names_q);
 
-		$data['json_prescription_list'] = json_encode(array());
+		$data['json_prescription_list'] = json_encode([]);
 		$data['duration_dvt'] = 'Tháng';
 		if(isset($data['test_id'])) // view detail test
         {
