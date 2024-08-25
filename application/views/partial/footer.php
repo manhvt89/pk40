@@ -1,7 +1,7 @@
 		</div>
 	</div>
-
-	<div id="footer">
+</div>
+	<footer id="footer">
 		<div class="jumbotron push-spaces">
 			<strong>Bạn đang sử dụng phần mềm quản lý phòng khám mắt PK40
   			version V2.0.1</strong>.
@@ -10,7 +10,7 @@
 			Chuyên gia tư vấn An Ninh Thông Tin theo tiêu chuẩn ISO27001, 5S, Quản lý chất lượng, Chuyển đổi số;
 		</div>
 			
-	</div>
-</div>
+	</footer>
+
 </body>
 </html>
