@@ -7,11 +7,11 @@ class Test extends Secure_Controller
 	public function __construct()
 	{
 		parent::__construct('test');
-		$this->load->library('sale_lib');
+		//$this->load->library('sale_lib');
 		$this->load->library('test_lib');
 		$this->load->library('barcode_lib');
-		$this->load->library('email_lib');
-		$this->load->library('barcode_lib');
+		//$this->load->library('email_lib');
+		//$this->load->library('barcode_lib');
 		$this->logedUser_type = $this->session->userdata('type');
 		$this->logedUser_id = $this->session->userdata('person_id');
 		if($this->Employee->has_grant('test_step_one'))
@@ -56,7 +56,7 @@ class Test extends Secure_Controller
 		}
     }
 	public function index()
-	{
+	{	$this->output->enable_profiler(TRUE);
 		//test_create
         $person_id = $this->session->userdata('person_id');
        // echo str_replace('S','', strtoupper('s-0.00'));
@@ -380,7 +380,9 @@ class Test extends Secure_Controller
 	private function _reload($data = array())
 	{
 
-        $data['test_id'] = $this->test_lib->get_test_id();
+        
+
+		$data['test_id'] = $this->test_lib->get_test_id();
 	    $data['cart'] = $this->test_lib->get_cart();
 		//$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 
@@ -388,8 +390,8 @@ class Test extends Secure_Controller
 		$data['duration_dvts'] = $this->config->item('duration_dvts');
         $pres_names_q = $this->Prescription->get_all();
 		
-		$pres_names[""] = array();
-		$pres_a = array();
+		$pres_names = [];
+		$pres_a = [];
 		foreach($pres_names_q as $pres)
 		{
 			$pres_names[$pres['name']] = $pres['name'];
