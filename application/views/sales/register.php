@@ -577,7 +577,7 @@ if (isset($success))
 					{
 					?>
 						<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
-							<table class="sales_table_100">
+							<table class="sales_table_100 manhvt2">
 								<tr>
 									<td><?php echo $this->lang->line('sales_ctv');?></td>
 									<td>
@@ -749,6 +749,9 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$('.selectpicker').selectpicker({
+        width: '100%'
+    });
 	
 	$('#amount_tendered').number(true,0,',','.');
 	$('.decimal').number(true,0,',','.');

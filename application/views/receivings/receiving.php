@@ -395,6 +395,10 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$('.selectpicker').selectpicker({
+        width: '100%'
+    });
+	
 	$('#amount_tendered').number(true,0,',','.');
 
     $("#item").autocomplete(
