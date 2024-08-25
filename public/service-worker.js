@@ -3,7 +3,7 @@ const DATA_CACHE_NAME = 'pk40-data-cache-v21';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open('pk40-cache-v2').then((cache) => {
+        caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll([
                 '/',
             ]);
@@ -16,7 +16,7 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(
             caches.match(event.request).then((response) => {
                 return response || fetch(event.request).then((fetchResponse) => {
-                    return caches.open('pk40-cache-v2').then((cache) => {
+                    return caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, fetchResponse.clone());
                         return fetchResponse;
                     });
