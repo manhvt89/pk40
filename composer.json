@@ -1,28 +1,28 @@
 {
-    "name": "opensourcepos/opensourcepos",
-    "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
-    "version": "3.0.2",
+    "name": "manhvt89/pk40",
+    "description": "Pk40 là ứng dụng giúp phòng khám chuyển đổi số, cải tiến công tác chuyên môn phòng khám, tiến tới giảm lãng phí",
+    "version": "2.0.0",
     "license": "MIT",
     "authors": [{
-            "name": "jekkos"
+            "name": "manhvt89"
         },
         {
-            "name": "FrancescoUK"
+            "name": "Vũ Thành Mạnh"
         }
     ],
     "type": "project",
     "keywords": [
-        "point-of-sale",
-        "POS"
+        "Phòng khám", "Phòng khám mắt", "Phòng khám da liễu"
     ],
-    "homepage": "https://github.com/jekkos/opensourcepos",
+    "homepage": "https://github.com/manhvt89/pk40",
     "require": {
-        "php": ">=5.5",
-        "codeigniter/framework": "^3.1.2",
+        "php": ">=7.4",
+        "codeigniter/framework": "3.1.2",
         "ins0/google-measurement-php-client": "dev-master#2b3aef2375837339f5b2bfe88e76994481f86264",
-        "dompdf/dompdf": "^0.7.0",
-        "phpoffice/phpspreadsheet": "^1.26",
-        "hbgl/php-code-128-encoder": "^0.2.6"
+        "dompdf/dompdf": "0.7.0",
+        "phpoffice/phpspreadsheet": "1.26",
+        "hbgl/php-code-128-encoder": "0.2.6",
+        "google/apiclient": "^2.16"
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*"
