@@ -84,10 +84,10 @@ class Tts extends CI_Controller {
         
 
         $text = $this->input->post('text');
-        if (!file_exists(APPPATH . 'cert/atvtts-493afee22be3.json')) {
+        if (!file_exists(APPPATH . 'cert/atvtts-4491432b8ba4.json')) {
             die('Credential file not found.');
         }
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . APPPATH . 'cert/atvtts-493afee22be3.json');
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . APPPATH . 'cert/atvtts-4491432b8ba4.json');
 
         
             // Khởi tạo client với thông tin xác thực
