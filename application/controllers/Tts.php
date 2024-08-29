@@ -88,7 +88,7 @@ class Tts extends CI_Controller {
         if (!file_exists($this->config->item('cert'))) {
             echo 'Lỗi e'; die();
         }
-        echo 'RUN'; die();
+       
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $this->config->item('cert'));
 
         try {
