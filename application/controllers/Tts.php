@@ -90,9 +90,11 @@ class Tts extends CI_Controller {
         }
        
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $this->config->item('cert'));
-        echo '234'; die();
+        echo '234'; 
 
-        //echo getenv('GOOGLE_APPLICATION_CREDENTIALS');die();
+        echo getenv('GOOGLE_APPLICATION_CREDENTIALS');
+        
+        die();
 
     
 
