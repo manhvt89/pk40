@@ -53,10 +53,10 @@
    
             console.log(row);
             console.log(index);
-            if(row.name == '')
+            if(row.call_name == '')
             {
             } else {
-            text = row.name;
+            text = row.call_name;
             }
             const response = await fetch('<?= base_url('tts/synthesize') ?>', {
                         method: 'POST',
