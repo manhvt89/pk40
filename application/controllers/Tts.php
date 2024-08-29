@@ -89,20 +89,23 @@ class Tts extends CI_Controller {
             echo 'Lỗi e'; die();
         }
 
-        echo $this->config->item('cert');
+        //echo $this->config->item('cert');
        
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $this->config->item('cert'));
-        echo '|ABC|';
+       // putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $this->config->item('cert'));
+       // echo '|ABC|';
 
-        echo getenv('GOOGLE_APPLICATION_CREDENTIALS');
+       // echo getenv('GOOGLE_APPLICATION_CREDENTIALS');
         
-        die();
+       // die();
 
     
 
         try {
             // Khởi tạo client với thông tin xác thực
-            $client = new TextToSpeechClient();
+            //$client = new TextToSpeechClient();
+            $client = new TextToSpeechClient([
+                'credentials' => $this->config->item('cert')
+            ]);
     
             $input_text = (new SynthesisInput())->setText($text);
             $voice = (new VoiceSelectionParams())
