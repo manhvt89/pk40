@@ -84,12 +84,13 @@ class Tts extends CI_Controller {
         
 
         $text = $this->input->post('text');
-        if (!file_exists(APPPATH . 'cert/atvtts-4491432b8ba4.json')) {
-            die('Credential file not found.');
+        if (!file_exists($this->config->item('cert'))) {
+            echo 'Lỗi e'; die();
         }
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . APPPATH . 'cert/atvtts-4491432b8ba4.json');
+        //echo 'Run'; die();
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $this->config->item('cert'));
 
-        
+        try {
             // Khởi tạo client với thông tin xác thực
             $client = new TextToSpeechClient();
     
@@ -98,7 +99,7 @@ class Tts extends CI_Controller {
                 ->setLanguageCode('vi-VN')
                 ->setName('vi-VN-Standard-A');
             $audioConfig = (new AudioConfig())->setAudioEncoding(AudioEncoding::MP3);
-        try {
+        
             $response = $client->synthesizeSpeech($input_text, $voice, $audioConfig);
     
             $audioContent = $response->getAudioContent();
