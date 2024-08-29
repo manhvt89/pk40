@@ -545,14 +545,14 @@ function convert_number_to_words($number) {
 
     return mb_ucfirst($string,'UTF-8');
 }
-function mb_ucfirst($string, $encoding)
+/*function mb_ucfirst($string, $encoding)
 {
     $string = mb_convert_case($string, MB_CASE_LOWER, 'UTF-8');
     $strlen = mb_strlen($string, $encoding);
     $firstChar = mb_substr($string, 0, 1, $encoding);
     $then = mb_substr($string, 1, $strlen - 1, $encoding);
     return mb_strtoupper($firstChar, $encoding) . $then;
-}
+}*/
 
 // Lấy tất cả các controllers, các file trong thư mục controller
 function get_all_controllers()

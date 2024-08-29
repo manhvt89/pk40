@@ -173,13 +173,14 @@ function get_test_data_row($test, $controller,$sale_display=0)
 	$CI =& get_instance();
 	$controller_name = $CI->uri->segment(1);
 	//var_dump($test);
-	$row = array (
+	$row = [
 		'test_id' => $test->test_id,
 		'test_time' => date("d/m/Y h:m:s",$test->test_time),
 		//'customer_name' => '<a href="test/detail_test/'.$test->customer_id.'">'.$test->last_name . ' ' . $test->first_name.'</a>',
 		'customer_name' => '<a href="test/detail_test/'.$test->account_number.'">'.$test->last_name . ' ' . $test->first_name.'</a>',
-		'note' => $test->note
-	);
+		'note' => $test->note,
+		'read2speatch'=>'Xin mời bệnh nhân '.$test->last_name . ' ' . $test->first_name,
+	];
 	$re_arr = json_decode($test->right_e);
 	$le_arr = json_decode($test->left_e);
 	$re = '<table id="right-e">

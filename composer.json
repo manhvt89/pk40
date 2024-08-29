@@ -22,7 +22,8 @@
         "dompdf/dompdf": "0.7.0",
         "phpoffice/phpspreadsheet": "1.26",
         "hbgl/php-code-128-encoder": "0.2.6",
-        "google/apiclient": "^2.16"
+        "google/apiclient": "^2.14",
+        "google/cloud-text-to-speech": "^1.8"
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*"
