@@ -84,7 +84,7 @@ class Tts extends CI_Controller {
         
 
         $text = $this->input->post('text');
-        echo $this->config->item('cert');die();
+        //echo $this->config->item('cert');die();
         if (!file_exists($this->config->item('cert'))) {
             echo 'Lỗi e'; die();
         }
