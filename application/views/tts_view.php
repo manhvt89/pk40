@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Tích Hợp Google Cloud Text-to-Speech</title>
+    <title>Tích Hợp AI cho tự động hóa gọi Tên theo thứ tự ưu tiên - ManhVT - 0936111917 </title>
    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
