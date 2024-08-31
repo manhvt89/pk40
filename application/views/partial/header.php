@@ -83,7 +83,7 @@
 	<script src="dist/jspreadsheet/jexcel.js"></script>
 
 	<script src="dist/jspreadsheet/jsuites.js"></script>
-	<script src="/app.js"></script>
+	
 	<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
 
 	<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
@@ -91,6 +91,7 @@
 	<link rel="manifest" href="/manifest.json">
 
 	<?php $this->load->view('partial/header_js'); ?>
+	<script src="/app.js"></script>
 	<?php $this->load->view('partial/lang_lines'); ?>
 
 	<style type="text/css">

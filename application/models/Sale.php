@@ -933,10 +933,7 @@ class Sale extends CI_Model
 				}
 			}
 		}
-		//echo $suspended_sale_id;
-		if($suspended_sale_id) {
-			$this->Sale_suspended->locksuspend($suspended_sale_id);
-		}
+		
 		$this->db->trans_complete();
 
 		if($this->db->trans_status() === FALSE)

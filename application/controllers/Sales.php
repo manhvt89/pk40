@@ -1001,7 +1001,6 @@ class Sales extends Secure_Controller
 	{
 		$text = $this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
 		$text = $this->_substitute_variable($text, '$CO', $this->Sale , 'get_invoice_count');
-		$text = $this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
 		$text = strftime($text);
 		$text = $this->_substitute_customer($text, $customer_info);
 
@@ -1442,7 +1441,7 @@ class Sales extends Secure_Controller
 	}
 
 	public function suspend()
-	{	
+	{	/*
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -1475,24 +1474,28 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 
 		$this->_reload($data);
+		*/
 	}
 	
 	public function suspended()
-	{	
+	{	/*
 		$data = array();
 		$data['suspended_sales'] = $this->xss_clean($this->Sale_suspended->get_all()->result_array());
 
 		$this->load->view('sales/suspended', $data);
+		*/
 	}
 	
 	public function unsuspend()
 	{
+		/*
 		$suspended_sale_id = $this->input->post('suspended_sale_id');
 		$this->sale_lib->clear_all();
 		$this->sale_lib->copy_entire_suspended_sale($suspended_sale_id);
 		$this->sale_lib->set_suspend_id($suspended_sale_id);
 		$this->Sale_suspended->unsuspended($suspended_sale_id); //update status 1: it is using
 		$this->_reload();
+		*/
 	}
 
 	public function editsale($uuid='')
@@ -1522,6 +1525,7 @@ class Sales extends Secure_Controller
 
 	private function _load_order_data($sale_id)
 	{
+		/*
 		$this->sale_lib->clear_all();
 		$sale_info = $this->Sale_suspended->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_suspended_sale($sale_id);
@@ -1557,6 +1561,7 @@ class Sales extends Secure_Controller
 		$data['print_after_sale'] = FALSE;
 
 		return $this->xss_clean($data);
+		*/
 	}
 
 

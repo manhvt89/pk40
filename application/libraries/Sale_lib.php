@@ -728,6 +728,7 @@ class Sale_lib
 	
 	public function copy_entire_suspended_sale($sale_id)
 	{
+		/*
 		$this->empty_cart();
 		$this->remove_customer();
 
@@ -745,6 +746,7 @@ class Sale_lib
 		$this->set_invoice_number($suspended_sale_info->invoice_number);
 		$this->clear_suspend_id();
 		$this->set_suspend_id($sale_id);
+		*/
 	}
 
 	public function clear_all()

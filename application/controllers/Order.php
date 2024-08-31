@@ -830,7 +830,7 @@ class Order extends Secure_Controller
 	{
 		$text = $this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
 		$text = $this->_substitute_variable($text, '$CO', $this->Sale , 'get_invoice_count');
-		$text = $this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
+		//$text = $this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
 		$text = strftime($text);
 		$text = $this->_substitute_customer($text, $customer_info);
 
@@ -1152,59 +1152,6 @@ class Order extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function suspend()
-	{	
-		$cart = $this->order_lib->get_cart();
-		$payments = $this->order_lib->get_payments();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$customer_id = $this->order_lib->get_customer();
-		$customer_info = $this->Customer->get_info($customer_id);
-		$invoice_number = $this->_is_custom_invoice_number($customer_info) ? $this->order_lib->get_invoice_number() : NULL;
-		$comment = $this->order_lib->get_comment();
-
-		//SAVE sale to database
-		$data = array();
-		$sale_id = $this->order_lib->get_suspend_id();
-
-		//if(isset($sale_id))
-		//{
-			//update
-
-		//}else{
-
-			// thêm mới
-			if($this->Sale_suspended->save($cart, $customer_id, $employee_id, $comment, $invoice_number, $payments) == '-1')
-			{
-				$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
-			}
-			else
-			{
-				$data['success'] = $this->lang->line('sales_successfully_suspended_sale');
-			}
-		//}
-
-		$this->order_lib->clear_all();
-
-		$this->_reload($data);
-	}
-	
-	public function suspended()
-	{	
-		$data = array();
-		$data['suspended_sales'] = $this->xss_clean($this->Sale_suspended->get_all()->result_array());
-		$this->load->view('orders/suspended', $data);
-	}
-	
-	public function unsuspend()
-	{
-		$suspended_sale_id = $this->input->post('suspended_sale_id');
-		$this->order_lib->clear_all();
-		$this->order_lib->copy_entire_suspended_sale($suspended_sale_id);
-		$this->order_lib->set_suspend_id($suspended_sale_id);
-		$this->Sale_suspended->unsuspended($suspended_sale_id); //update status 1: it is using
-		$this->_reload();
-	}
-
 	public function editsale($sale_id)
 	{
 		$this->order_lib->clear_all();
@@ -1223,41 +1170,7 @@ class Order extends Secure_Controller
 
 	private function _load_order_data($sale_id)
 	{
-		$this->order_lib->clear_all();
-		$sale_info = $this->Sale_suspended->get_info($sale_id)->row_array();
-		$this->order_lib->copy_entire_suspended_sale($sale_id);
-		$data = array();
-		$data['cart'] = $this->order_lib->get_cart();
-		$data['payments'] = $this->order_lib->get_payments();
-		$data['subtotal'] = $this->order_lib->get_subtotal();
-		$data['discounted_subtotal'] = $this->order_lib->get_subtotal(TRUE);
-		$data['tax_exclusive_subtotal'] = $this->order_lib->get_subtotal(TRUE, TRUE);
-		$data['taxes'] = $this->order_lib->get_taxes();
-		$data['total'] = $this->order_lib->get_total();
-		$data['discount'] = $this->order_lib->get_discount();
-		$data['receipt_title'] = $this->lang->line('sales_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
-		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['amount_change'] = $this->order_lib->get_amount_due() * -1;
-		$data['amount_due'] = $this->order_lib->get_amount_due();
-		$employee_info = $this->Employee->get_logged_in_employee_info();
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-		$this->_load_customer_data($this->order_lib->get_customer(), $data);
-
-		$data['sale_id_num'] = $sale_id;
-		$data['sale_id'] = 'POS ' . $sale_id;
-		$data['comments'] = $sale_info['comment'];
-		$data['invoice_number'] = $sale_info['invoice_number'];
-		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone'),
-			$this->config->item('account_number')
-		));
-		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-		$data['print_after_sale'] = FALSE;
-
-		return $this->xss_clean($data);
+		
 	}
 
 

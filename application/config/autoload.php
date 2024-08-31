@@ -79,7 +79,7 @@ $autoload['libraries'] = array('database', 'form_validation', 'session', 'user_a
 |	$autoload['drivers'] = array('cache' => 'cch');
 |
 */
-$autoload['drivers'] = array();
+$autoload['drivers'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -117,7 +117,7 @@ $autoload['config'] = array('app','roles');
 | "codeigniter_lang.php" would be referenced as array('codeigniter');
 |
 */
-$autoload['language'] = array();
+$autoload['language'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,32 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Appconfig', 'Person', 'Customer', 'Employee', 'Module', 'Item', 'Item_taxes', 'Sale', 'Sale_suspended', 'Supplier', 'Inventory', 'Receiving', 'Giftcard', 'Item_kit', 'Item_kit_items', 'Stock_location', 'Item_quantity','Testex','Accounting','Customer_infoex','Reminder','Messages','SmsSale','Ctv','Orders','Purchase','Prescription','History_ctv','Oinc');
+$autoload['model'] = [
+    'Appconfig', 
+    'Person', 
+    'Customer', 
+    'Employee', 
+    'Module', 
+    'Item', 
+    'Item_taxes', 
+    'Sale',  
+    'Supplier', 
+    'Inventory', 
+    'Receiving', 
+    'Giftcard', 
+    'Item_kit', 
+    'Item_kit_items', 
+    'Stock_location', 
+    'Item_quantity',
+    'Testex',
+    'Accounting',
+    'Customer_infoex',
+    'Reminder',
+    'Messages',
+    'SmsSale',
+    'Ctv',
+    'Orders',
+    'Purchase',
+    'Prescription',
+    'History_ctv',
+    'Oinc'];

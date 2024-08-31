@@ -601,25 +601,6 @@ class Test_lib
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 	}
 	
-	public function copy_entire_suspended_sale($sale_id)
-	{
-		$this->empty_cart();
-		$this->remove_customer();
-
-		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber);
-		}
-		foreach($this->CI->Sale_suspended->get_sale_payments($sale_id)->result() as $row)
-		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
-		$suspended_sale_info = $this->CI->Sale_suspended->get_info($sale_id)->row();
-		$this->set_customer($suspended_sale_info->person_id);
-		$this->set_comment($suspended_sale_info->comment);
-		$this->set_invoice_number($suspended_sale_info->invoice_number);
-	}
-
 	public function clear_all()
 	{
 		$this->set_invoice_number_enabled(FALSE);

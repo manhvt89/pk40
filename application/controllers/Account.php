@@ -665,6 +665,8 @@ class Account extends Secure_Controller
 
 	public function suspend()
 	{
+		// do nothing
+		/*
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -687,18 +689,22 @@ class Account extends Secure_Controller
 		$this->sale_lib->clear_all();
 
 		$this->_reload($data);
+		*/
 	}
 
 	public function suspended()
 	{
+		/*
 		$data = array();
 		$data['suspended_sales'] = $this->xss_clean($this->Sale_suspended->get_all()->result_array());
 
 		$this->load->view('sales/suspended', $data);
+		*/
 	}
 
 	public function unsuspend()
 	{
+		/*
 		$sale_id = $this->input->post('suspended_sale_id');
 
 		$this->sale_lib->clear_all();
@@ -706,6 +712,7 @@ class Account extends Secure_Controller
 		$this->Sale_suspended->delete($sale_id);
 
 		$this->_reload();
+		*/
 	}
 
 	public function check_invoice_number()

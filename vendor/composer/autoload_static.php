@@ -22,6 +22,10 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         array (
             'phpseclib3\\' => 11,
         ),
+        'a' => 
+        array (
+            'app\\models\\api\\' => 15,
+        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -101,6 +105,10 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         'phpseclib3\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'app\\models\\api\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/models/api',
         ),
         'ZipStream\\' => 
         array (
