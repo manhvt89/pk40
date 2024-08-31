@@ -73,7 +73,7 @@
                 audioElement.src = audioUrl;
                 audioElement.play();
             } else {
-                console.error('Có lỗi xảy ra khi gọi API Text-to-Speech');
+                console.error('Có lỗi xảy ra khi gọi API');
             }
             } 
         async function readText() {

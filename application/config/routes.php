@@ -79,3 +79,13 @@ $route['reports/detail_import_lens'] = 'reports/date_input_import_lens';
 
 $route['404_override'] = 'errors/show_404';
 $route['translate_uri_dashes'] = FALSE;
+
+/** API router */
+$route['api/products/(:num)/(:num)'] = 'api/products/index/$1/$2';
+$route['api/item/last_products/(:any)'] = 'api/products/products/$1';
+$route['api/item/products_category/(:any)'] = 'api/products/productscategory/$1';
+$route['api/item/product/(:any)'] = 'api/products/the_product/$1';
+$route['api/item/item'] = 'api/products/item';
+$route['api/item/the_lens_categories'] = 'api/products/the_lens_categories';
+$route['api/auth/token/(:any)'] = 'api/users/token/$1';
+$route['api/auth/token'] = 'api/users/token';
