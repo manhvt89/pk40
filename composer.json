@@ -27,5 +27,10 @@
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\models\\api\\": "application/models/api/"
+        }
     }
 }

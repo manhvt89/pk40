@@ -518,6 +518,7 @@ $config['csrf_exclude_uris'] = [
     'purchases/do_excel_import'];
 */
 $config['csrf_exclude_uris'] = [
+    'api/oincs/list_oincs',
     'api/products',
     'api/inventories',
     'tts/synthesize',

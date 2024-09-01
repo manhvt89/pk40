@@ -217,7 +217,11 @@ class Oincs extends Secure_Controller
 
 		$this->load->view('items/form_count_details', $data);
 	}
-
+	/**
+	 * Luu phiếu kiểm kê
+	 * @param mixed $item_id
+	 * @return never
+	 */
 	public function save($item_id = -1)
 	{
 		
@@ -771,25 +775,30 @@ class Oincs extends Secure_Controller
 			}
 		}
 	}
-
+	/**
+	 * Kiểm kê
+	 * @param mixed $uuid
+	 * @return void
+	 */
 	public function count($uuid='')
 	{
 		
 		$_oTheOinc = $this->Oinc->get_info($uuid);
-		if($_oTheOinc->status == 'P' || $_oTheOinc->status == 'C')
+		if($_oTheOinc->status == 'P' || $_oTheOinc->status == 'C') // không làm gì
 		{
-			redirect('oincs/check'.$uuid);
+			redirect('oincs/check'.$uuid); 
+			exit();
 		}
 	
 		if($_oTheOinc->oinc_id > 0)
 		{
-			$_iOincID = $this->count_lib->get_oinc_id();
+			$_iOincID = $this->count_lib->get_oinc_id(); // Lấy trong session
 			
-			if($_iOincID != $_oTheOinc->oinc_id)
+			if($_iOincID != $_oTheOinc->oinc_id) // kiểm tra nếu session khác với hiện tại clear session
 			{
 				
 				$this->count_lib->clearAll(); // Clean all session khi chuyển sang tài liệu mới
-				$this->update_memory($_oTheOinc);
+				$this->update_memory($_oTheOinc); //load tài liệu hiện tại
 			}
 
 			// Update tài liệu mới vào session
@@ -797,7 +806,7 @@ class Oincs extends Secure_Controller
 			$data['oinc_uuid'] = $this->count_lib->get_oinc_uuid();
 			$data['TheOinc'] = $this->get_memory();
 
-			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id);
+			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id); //
 
 			$data['cart'] = $this->count_lib->get_cart();
 
@@ -882,16 +891,11 @@ class Oincs extends Secure_Controller
 	public function add()
 	{
 		$data = [];
-		
 		// check if any discount is assigned to the selected customer
 		$mode = $this->count_lib->get_mode();
 		//var_dump($this->sale_lib->get_ctv());die();
 		$quantity =  1;
-
 		$item_id_or_number = $this->input->post('item');
-
-		
-
 		if(!$this->count_lib->add_item($item_id_or_number, $quantity))
 		{
 			$data['error'] = $this->lang->line('oincs_unable_to_add_item');
@@ -900,7 +904,6 @@ class Oincs extends Secure_Controller
 		{
 			$data['warning'] = '';
 		}
-		
 		$this->_reload($data);
 	}
 

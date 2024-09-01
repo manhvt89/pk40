@@ -15,8 +15,8 @@ class Products extends MY_REST_Controller {
         // Construct the parent class
         parent::__construct();
         $this->load->model('api/product','product');
-        //Áp dùng bảo mật Bearer
-        //echo '123';
+        //$this->product = new \app\models\api\Product();
+        
     }
 
     public function index_post()

@@ -1,4 +1,5 @@
 <?php
+namespace App\Models\Api;
 class User extends CI_Model
 {
 	/*

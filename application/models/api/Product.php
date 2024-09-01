@@ -1,6 +1,10 @@
 <?php
-class Product extends CI_Model
+//namespace app\models\api;
+class Product extends \ CI_Model
 {
+	public function __construct() {
+        parent::__construct();
+    }
 	/*
 	Determines if a given item_id is an item
 	*/
