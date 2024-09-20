@@ -24,12 +24,12 @@ if (isset($success))
 	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<?php if(has_grant('purchases_lens')): ?>
+				<?php if(has_grant('lens')): ?>
 					<li class="pull-right">
 						<div class='btn btn-sm btn-success pull-right' id='lens_receiving_button'><span class="glyphicon">&nbsp</span><?php echo 'Nhập mắt từ bảng'; ?></div>
 					</li>
 				<?php endif; ?>
-				<?php if(has_grant('purchases_excel')): ?>
+				<?php if(has_grant('excel')): ?>
 					<li class="pull-right">
 					<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/excel_import"); ?>'
             			title='<?php echo $this->lang->line('items_import_items_excel'); ?>'>
@@ -38,7 +38,7 @@ if (isset($success))
 					</li>
 
 				<?php
-					if (has_grant('purchases_manage')) // Hiển thị danh sách đơn đặt hàng PO;
+					if (has_grant('manage')) // Hiển thị danh sách đơn đặt hàng PO;
 					{
 				?>
 					<li class="pull-right">
