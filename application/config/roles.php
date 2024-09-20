@@ -1,4 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+$config['permissions_zone'] = [
+    'customers'=>[],
+    'roles'=>[],
+    'barcodes'=>[],
+    'items'=>[],
+    'item_kits'=>[]
+];
 $config['exclude_actions'] = [
     'customers'=>[
                     '__construct',
@@ -385,6 +392,40 @@ $config['exclude_actions'] = [
         'suggest*',
         'get_row',
     ],
+    'oincs'=>[
+        '__construct',
+        'get_instance',
+        'check_account_number',
+        'numeric',
+        'numeric_zero',
+        'check_numeric',
+        'search',
+        'suggest*',
+        'get_row',
+    ],
+    'attendances'=>[
+        '__construct',
+        'get_instance',
+        'check_account_number',
+        'numeric',
+        'numeric_zero',
+        'check_numeric',
+        'search',
+        'suggest*',
+        'get_row',
+    ],
+    'tts'=>[
+        '__construct',
+        'get_instance',
+        'check_account_number',
+        'numeric',
+        'numeric_zero',
+        'check_numeric',
+        'search',
+        'suggest*',
+        'get_row',
+    ],
+    
               
 
 ];

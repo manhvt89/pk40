@@ -1577,11 +1577,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	// Added by ManhVT to support field permissions
-	public function unitprice_hide()
-	{
-		exit();
-	}
+	
 
 	public function run_synchro()
 	{
@@ -1717,6 +1713,35 @@ class Items extends Secure_Controller
         }
         
     }
+
+	/**
+	 * Phân quyền
+	 * Bắt đầu is_{action}
+	 * has_grant(is_action, module)
+	 */
+	 /**
+	  * Tạo mới
+	  * @return bool
+	  */
+	 public function is_create_new()
+	 {
+		return true;
+	 }
+
+	 /**
+	  * Edit
+	  * @return bool
+	  */
+	 public function is_edit_item()
+	 {
+		return true;
+	 }
+
+	 // Added by ManhVT to support field permissions
+	public function unitprice_hide()
+	{
+		exit();
+	}
 
 }
 ?>

@@ -323,12 +323,13 @@ class Roles extends Secure_Controller
 			$data['theModule'] = new stdClass;
 			$data['Permissions'] = array();
 		} else {
-			$_aPermissions = array(); // tao mang dua tren _aModule
+			$_aPermissions = []; // tao mang dua tren _aModule
 			$_oTheModule = $this->Module->get_the_module_by_uuid($uuid);
 			//$_sModul
 			$_pers = get_all_permissions_of_the_module($_oTheModule->module_key);
+			//var_dump($_pers);
 			//var_dump($_oTheModule->module_key);
-			if(!empty($this->config->item('exclude_actions')[$_oTheModule->module_key]))
+			if(!empty($this->config->item('exclude_actions')[$_oTheModule->module_key])) //Nếu tồn tại
 			{
 				$_aExludeModules = MakeExludeModules($this->config->item('exclude_actions')[$_oTheModule->module_key],$_oTheModule->module_key);
 				//var_dump($_aExludeModules);//die();
@@ -337,7 +338,7 @@ class Roles extends Secure_Controller
 				});
 				
 				$_pers = $result;//array_diff($_pers,$_aExludeModules);
-				//var_dump($_pers);die();
+				var_dump($_pers);die();
 			}
 			$_aoManagedPermissions = $this->Module->get_all_permissions_by_module_key($_oTheModule->module_key)->result();
 			//var_dump($_aoManagedPermissions);
