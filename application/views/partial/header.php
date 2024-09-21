@@ -83,7 +83,7 @@
 	<script src="dist/jspreadsheet/jexcel.js"></script>
 
 	<script src="dist/jspreadsheet/jsuites.js"></script>
-	
+	<script type="text/javascript" src="js/utils.js"></script>
 	<link rel="stylesheet" href="dist/jspreadsheet/jexcel.css" type="text/css" />
 
 	<link rel="stylesheet" href="dist/jspreadsheet/jsuites.css" type="text/css" />
