@@ -61,7 +61,7 @@ $(document).ready(function() {
 				uuid: poUUId,
 				[csrfName]: csrfHash},
             success: function(response) {
-				console.log(response.success);
+				console.log(response);
                 if (response.success) {
                     // Chuyển hướng về trang nhập kho sau khi lưu thành công
                     window.location.href = redirect_url;

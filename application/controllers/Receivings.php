@@ -1369,6 +1369,7 @@ class Receivings extends Secure_Controller
 	{
 		$purchase_uuid = $this->input->post('uuid');
 		$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
+		//var_dump($purchase_info);
 
 		if(!empty($purchase_info))
 		{
@@ -1385,7 +1386,14 @@ class Receivings extends Secure_Controller
 				}
 				$this->receiving_lib->add_item($item['item_id'],$item_quantity,1);
 			}
-			echo json_encode(['success' => true]);
+
+			$supplier_id = $this->Purchase->get_supplier($purchase_info['id'])->person_id;
+			//var_dump( $supplier_id);die();
+			if($this->Supplier->exists($supplier_id))
+			{
+				$this->receiving_lib->set_supplier($supplier_id);
+			}
+			echo json_encode(['success' => true,'data'=>$supplier_id]);
 	
 		} else {
 			echo json_encode(['success' => false]);
