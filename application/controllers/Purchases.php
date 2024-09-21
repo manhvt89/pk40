@@ -187,7 +187,7 @@ class Purchases extends Secure_Controller
 		$purchase_id = $this->input->post('purchase_id');
 		//$comment = $this->input->post('comment');
 		//$data['print_after_sale'] = $this->input->post('recv_print_after_sale');
-		$data = array();
+		$data = [];
 		
 		$data['cart'] = $this->purchase_lib->get_cart();
 		//var_dump($data['cart']);die();
@@ -218,9 +218,13 @@ class Purchases extends Secure_Controller
 			}
 		}
 		$kind = $this->purchase_lib->get_kind();
+		if($kind == NULL)
+		{
+			$kind = 1;
+		}
 		$_purchase_id = 0;
 		if ($purchase_id == 0) {	// Tạo mới
-			$name = "Đơn nhập ngày " . date('d/m/Y hms', time());
+			$name = "Đơn nhập ngày " . date('d/m/Y His', time());
 			$comment = '';
 			$data['reference'] = '';
 			$code = 'PO' . time();

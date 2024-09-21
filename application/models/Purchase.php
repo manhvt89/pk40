@@ -593,7 +593,9 @@ class Purchase extends CI_Model
 				purchases.*	');
 
 		$this->db->from('purchases as purchases');
+		$this->db->where('curent', 1);
 		$this->db->where('purchases.completed', $type);
+		$this->db->order_by('id', 'desc');
 		return $this->db->get()->result();
 	}
 

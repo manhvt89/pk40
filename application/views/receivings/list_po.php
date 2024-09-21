@@ -43,8 +43,8 @@
             <?php foreach($aPO as $item): $i++; ?>
             <tr>
                 <td><?=$i ?></td>
-                <td><?=$item->name ?></td>
-                <td><?=$item->purchase_time ?></td>
+                <td><?=$item->code ?></td>
+                <td><?=date('d/m/Y H:i:s',strtotime($item->purchase_time)) ?></td>
                 <td>
                     <button 
 						class="btn-select-po" 
