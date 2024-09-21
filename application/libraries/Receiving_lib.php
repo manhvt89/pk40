@@ -370,6 +370,7 @@ class Receiving_lib
 		$this->remove_supplier();
 		$this->clear_comment();
 		$this->clear_reference();
+		$this->clear_purchase_id();
 	}
 
 	public function get_item_total($quantity, $price, $discount_percentage)

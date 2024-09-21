@@ -19,6 +19,7 @@ class Receivings extends Secure_Controller
 
 	public function index()
 	{
+		//var_dump($this->receiving_lib->get_purchase_id()); die();
 		$this->_reload();
 	}
 

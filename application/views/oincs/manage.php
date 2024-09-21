@@ -112,7 +112,6 @@ function CheckFormatter(value, row, index) {
         console.log(value);
         if(row.raw_status == 'O')
         {
-            
             return '';
         } 
         else if(row.raw_status == 'C')

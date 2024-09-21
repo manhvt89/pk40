@@ -338,7 +338,7 @@ class Roles extends Secure_Controller
 				});
 				
 				$_pers = $result;//array_diff($_pers,$_aExludeModules);
-				var_dump($_pers);die();
+				//var_dump($_pers);die();
 			}
 			$_aoManagedPermissions = $this->Module->get_all_permissions_by_module_key($_oTheModule->module_key)->result();
 			//var_dump($_aoManagedPermissions);

@@ -231,7 +231,7 @@ class Oincs extends Secure_Controller
 		$_oTheUser = $this->session->userdata('theUser');
 	
 		$_sMode = $this->input->post('mode');
-		$_aCagories = $this->input->post('items');
+		$_aCategories = $this->input->post('items');
 		
 		$_aItem_data = [];
 		$_aaItem_data = [];
@@ -247,8 +247,9 @@ class Oincs extends Secure_Controller
 		$_aItem_data['countor_id'] = 'O';
 		$_aItem_data['countor_name'] = '';
 
-		if(!empty($_aCagories))
+		if(!empty($_aCategories))
 		{
+			/*
 			foreach($_aCagories as $item){
 				$_aItem_data['oinc_type'] = '';
 				if($item == 'lens')
@@ -338,6 +339,28 @@ class Oincs extends Secure_Controller
 				}
 				
 				
+			} */
+			foreach ($_aCategories as $item) {
+				switch ($item) {
+					case 'lens':
+						$_aaItem_data = array_merge($_aaItem_data, generateItemData('L', 'CL', 'iKindOfLens', $_iTime));
+						break;
+					case 'frame':
+						$_aaItem_data = array_merge($_aaItem_data, generateItemData('F', 'CF', 'filter', $_iTime));
+						break;
+					case 'medicine':
+						$_aaItem_data = array_merge($_aaItem_data, generateItemData('M', 'CM', 'filter_other', $_iTime));
+						break;
+					case 'contact_lens':
+						$_aaItem_data = array_merge($_aaItem_data, generateItemData('C', 'CC', 'filter_contact_lens', $_iTime));
+						break;
+					case 'sun_glasses':
+						$_aaItem_data = array_merge($_aaItem_data, generateItemData('S', 'CS', 'filter_sun_glasses', $_iTime));
+						break;
+					default:
+						$_aItem_data['oinc_type'] = 'D';
+						break;
+				}
 			}
 		}
 		//var_dump($_aaItem_data);
@@ -360,6 +383,26 @@ class Oincs extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => ''));
 		}
 	}
+
+	// Hàm tạo thông tin doc_entry và doc_num
+	private function generateItemData($type, $prefix, $configKey, $time) {
+		$items = [];
+		$categories = $this->config->item($configKey);
+		if (!empty($categories)) {
+			foreach ($categories as $k => $v) {
+				$items[] = [
+					'oinc_type' => $type,
+					'doc_entry' => $prefix . $type . $time . '-' . $k,
+					'doc_num' => $type . '-' . date('Y-m-d-h-m-s', $time) . '-' . $k,
+					'zone' => $v
+				];
+			}
+		}
+		return $items;
+	}
+
+
+	/** ---------------- */
 	
 	public function check_item_number()
 	{
