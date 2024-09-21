@@ -1,4 +1,23 @@
 <style>
+	#loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Nền tối mờ */
+        z-index: 9999; /* Đảm bảo overlay luôn nằm trên cùng */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .loadingMessage {
+        font-size: 20px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 5px;
+    }
     @media (min-width: 768px) {
         .modal-dlg .modal-dialog {
             width: 800px;
@@ -6,6 +25,10 @@
     }
 </style>
 
+<!-- Overlay để chặn thao tác và hiển thị thông báo -->
+<div id="loadingOverlay" style="display: none;">
+    <div class="loadingMessage">Đang load PO...</div>
+</div>
 <div id="note_message"><?php echo $this->lang->line('receivings_note_message'); ?></div>
 
 <table id="list_po_modal" class="list_po_modal" style="width: 100%;">
@@ -52,6 +75,8 @@ $(document).ready(function() {
 		
 		var csrfName = '<?=$this->security->get_csrf_token_name() ?>';
 		var csrfHash = '<?=$this->security->get_csrf_hash(); ?>';
+
+		$('#loadingOverlay').show();
         // Gửi request để lưu PO vào session
         $.ajax({
             url: url,  // URL tới controller xử lý lưu PO vào session
@@ -67,10 +92,12 @@ $(document).ready(function() {
                     window.location.href = redirect_url;
                 } else {
                     alert('Có lỗi xảy ra khi lưu PO. Vui lòng thử lại.');
+					$('#loadingOverlay').hide();
                 }
             },
             error: function() {
                 alert('Lỗi kết nối, vui lòng kiểm tra lại.');
+				$('#loadingOverlay').hide();
             }
         });
     });
