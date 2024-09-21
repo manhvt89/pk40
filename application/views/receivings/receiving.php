@@ -59,16 +59,24 @@ if (isset($success))
 				?>
 
 				<?php
-								if ($this->Employee->has_grant('receivings_manage')) // Hiển thị danh sách đơn hàng;
-								{
-									?>
-									<li class="pull-right">
-										<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
-											array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
-									</li>
-									<?php
-								}
-								?>
+					if ($this->Employee->has_grant('receivings_manage')) // Hiển thị danh sách đơn hàng;
+					{
+						?>
+						<li class="pull-right">
+							<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
+								array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
+						</li>
+						<?php
+					}
+					?>
+					<?php if(true) //(has_grant('is_show_view')) 
+					{ ?>
+						<button class='btn btn-info btn-sm pull-right modal-dlg' data-backdrop="static" data-btn-close='<?php echo $this->lang->line('receiving_btn_close') ?>' data-href='<?php echo site_url($controller_name . "/view"); ?>'
+								title='<?php echo $this->lang->line($controller_name . '_from_PO'); ?>'>
+							<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name . '_from_PO'); ?>
+						</button>
+    				<?php 
+					} ?>
 				
 			</ul>
 		</div>

@@ -92,6 +92,12 @@
 				event.preventDefault(); // Ngăn form không submit
 			}
 		});
+
+		// Sự kiện khi nhấn nút Hủy hoạt động
+        $('#cancel').on('click', function() {
+            // Đóng modal khi nhấn nút Hủy
+            $('.modal').modal('hide');
+        });
 	});
 </script>
 

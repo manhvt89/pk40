@@ -343,19 +343,19 @@ class Oincs extends Secure_Controller
 			foreach ($_aCategories as $item) {
 				switch ($item) {
 					case 'lens':
-						$_aaItem_data = array_merge($_aaItem_data, generateItemData('L', 'CL', 'iKindOfLens', $_iTime));
+						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('L', 'CL', 'iKindOfLens', $_iTime));
 						break;
 					case 'frame':
-						$_aaItem_data = array_merge($_aaItem_data, generateItemData('F', 'CF', 'filter', $_iTime));
+						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('F', 'CF', 'filter', $_iTime));
 						break;
 					case 'medicine':
-						$_aaItem_data = array_merge($_aaItem_data, generateItemData('M', 'CM', 'filter_other', $_iTime));
+						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('M', 'CM', 'filter_other', $_iTime));
 						break;
 					case 'contact_lens':
-						$_aaItem_data = array_merge($_aaItem_data, generateItemData('C', 'CC', 'filter_contact_lens', $_iTime));
+						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('C', 'CC', 'filter_contact_lens', $_iTime));
 						break;
 					case 'sun_glasses':
-						$_aaItem_data = array_merge($_aaItem_data, generateItemData('S', 'CS', 'filter_sun_glasses', $_iTime));
+						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('S', 'CS', 'filter_sun_glasses', $_iTime));
 						break;
 					default:
 						$_aItem_data['oinc_type'] = 'D';

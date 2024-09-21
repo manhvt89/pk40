@@ -1350,6 +1350,51 @@ class Receivings extends Secure_Controller
 			echo json_encode($json);
 		}
 	}
+
+	public function view($item_id = -1)
+	{
+		
+		$_aoPO = $this->Purchase->getCompletedListPOes();
+		if(empty($_aoPO))
+		{
+			$data['aPO'] = [];
+		} else {
+			$data['aPO'] = $_aoPO;
+		}
+
+		$this->load->view('receivings/list_po', $data);
+	}
+
+	public function loadPO()
+	{
+		$purchase_uuid = $this->input->post('uuid');
+		$purchase_info = $this->Purchase->get_info_uuid($purchase_uuid)->row_array();
+
+		if(!empty($purchase_info))
+		{
+			$this->receiving_lib->clear_all(); // clear session
+			//$purchase_info['completed'] = 2; // Đã gửi, đang chờ phê duyệt
+			$_aThePurchase = $this->Purchase->the_purchase($purchase_info['id']);
+			$this->receiving_lib->set_purchase_id($purchase_info['id']);
+			foreach($_aThePurchase['items'] as $item)
+			{
+				if(is_numeric($item['item_quantity'])){
+					$item_quantity = (int) $item['item_quantity'];
+				} else {
+					$item_quantity = 0;
+				}
+				$this->receiving_lib->add_item($item['item_id'],$item_quantity,1);
+			}
+			echo json_encode(['success' => true]);
+	
+		} else {
+			echo json_encode(['success' => false]);
+		}
+	}
+
+	/**
+	 * Phân Quyền  -------------------
+	 */
 	public function is_input_cost_price()
 	{
 		return true;

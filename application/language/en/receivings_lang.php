@@ -54,3 +54,6 @@ $lang["receiving_total"] = "Tổng cộng";
 $lang["history_payment"] = "Danh sách thanh toán";
 $lang["paid_total"] = "Tổng đã thanh toán";
 $lang["remain_amount"] = "Còn lại phải thanh toán";
+$lang["receivings_from_PO"] = "Nhập từ PO";
+$lang['receivings_note_message'] = 'Chọn PO dưới đây để nhập kho';
+$lang['receiving_btn_close'] = 'Đóng';

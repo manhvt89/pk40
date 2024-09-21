@@ -581,5 +581,27 @@ class Purchase extends CI_Model
 
 		return $this->db->get()->result_array();
 	}
+
+	/**
+	 * Lấy danh sách PO theo trạng thái
+	 * @return void
+	 */
+	public function getListPOes($type=3)
+	{
+		$this->db->select('
+				purchases.id AS purchase_id,
+				purchases.*	');
+
+		$this->db->from('purchases as purchases');
+		$this->db->where('purchases.completed', $type);
+		return $this->db->get()->result();
+	}
+
+	public function getCompletedListPOes()
+	{
+		return $this->getListPOes(3);
+	}
+
+
 }
 ?>

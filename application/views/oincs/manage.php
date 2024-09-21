@@ -144,7 +144,7 @@ function redirectToCheckForm(event, value, row, index) {
     </button>
     <?php } ?>
     <?php if ($this->Employee->has_grant($controller_name.'_is_show_view')) { ?>
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo $this->lang->line('oincs_btn_cancel') ?>' data-btn-submit='<?php echo $this->lang->line('oincs_create_new') ?>' data-href='<?php echo site_url($controller_name . "/view"); ?>'
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-cancel='<?php echo $this->lang->line('oincs_btn_cancel') ?>' data-btn-submit='<?php echo $this->lang->line('oincs_create_new') ?>' data-href='<?php echo site_url($controller_name . "/view"); ?>'
             title='<?php echo $this->lang->line($controller_name . '_new'); ?>'>
         <span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name . '_new'); ?>
     </button>
