@@ -11,6 +11,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+/*
 // Bạn có thể thêm các tính năng khác ở đây
 const dbName = 'ospos_db';
 const dbVersion = 1;
@@ -30,34 +31,31 @@ request.onsuccess = function(event) {
 
 request.onupgradeneeded = function(event) {
     const db = event.target.result;
-    /* Tao object store Items
-    if (!db.objectStoreNames.contains('items')) {
-    	db.createObjectStore('items', { keyPath: 'item_id' });
-    }
-    */
+
     // Tao object store inventory
     if (!db.objectStoreNames.contains('inventory')) {
-    	db.createObjectStore('inventory', { keyPath: 'trans_id' });
+        db.createObjectStore('inventory', { keyPath: 'trans_id' });
     }
     // Tao object store oincs
     if (!db.objectStoreNames.contains('oincs')) {
-    	db.createObjectStore('oincs', { keyPath: 'oinc_id' });
+        db.createObjectStore('oincs', { keyPath: 'oinc_id' });
     }
-    
+
     // Tao object store oincs
     if (!db.objectStoreNames.contains('inc1')) {
-    	const objectStore = db.createObjectStore('inc1', { keyPath: 'inc1_id' });
-    	objectStore.createIndex('oinc_id', 'oinc_id', { unique: false });
-    	objectStore.createIndex('item_number', 'item_number', { unique: false });
+        const objectStore = db.createObjectStore('inc1', { keyPath: 'inc1_id' });
+        objectStore.createIndex('oinc_id', 'oinc_id', { unique: false });
+        objectStore.createIndex('item_number', 'item_number', { unique: false });
     }
-    
+
     // tao object cho bang items
-  if (!db.objectStoreNames.contains('items')) {
-    const objectStore = db.createObjectStore('items', { keyPath: 'item_id' });
-    objectStore.createIndex('item_number', 'item_number', { unique: true }); // phuc vu tim kiem bang may scan
-  }
-    
-    
+    if (!db.objectStoreNames.contains('items')) {
+        const objectStore = db.createObjectStore('items', { keyPath: 'item_id' });
+        objectStore.createIndex('item_number', 'item_number', { unique: true }); // phuc vu tim kiem bang may scan
+        objectStore.createIndex('name', 'name', { unique: false });
+    }
+
+
 };
 
 async function syncData(page = 1, limit = 5000) {
@@ -71,7 +69,7 @@ async function syncData(page = 1, limit = 5000) {
     formData.append('page', page);
     formData.append('limit', limit);
     formData.append('csrf_ospos_v3', csrf_ospos_v3);
-    console.log('Bắt đầu thực hiện: page '+page);
+    console.log('Bắt đầu thực hiện: page ' + page);
     try {
         // Sử dụng fetch với phương thức POST để gửi tham số qua body
         const response = await fetch(url, {
@@ -96,7 +94,7 @@ async function syncData(page = 1, limit = 5000) {
 
             // Tiếp tục đồng bộ dữ liệu với trang tiếp theo
             console.log('Đồng bộ hoàn tất. OD: ' + page);
-            return syncData(page+1, limit); // Đệ quy nhưng cần chú ý giới hạn số lần gọi
+            return syncData(page + 1, limit); // Đệ quy nhưng cần chú ý giới hạn số lần gọi
         } else {
             console.log('Đồng bộ hoàn tất.');
             localStorage.setItem('syncError', 'C');
@@ -135,7 +133,7 @@ function saveInventoryToDB(inventoryItems) {
     });
 }
 
-async function syncInventory(page=1, limit = 5000) {
+async function syncInventory(page = 1, limit = 5000) {
     const urlInventory = `http://localhost:8888/api/inventories`;
     const csrf_ospos_v3 = csrf_token();
 
@@ -167,7 +165,7 @@ async function syncInventory(page=1, limit = 5000) {
             await saveInventoryToDB(_aInventory);
 
             console.log('Đồng bộ inventory hoàn tất. page: ' + page);
-            await syncInventory(page+1, limit); // Đệ quy tiếp tục đồng bộ inventory
+            await syncInventory(page + 1, limit); // Đệ quy tiếp tục đồng bộ inventory
         } else {
             console.log('Đồng bộ inventory hoàn tất.');
             localStorage.setItem('syncErrorInventory', 'C');
@@ -177,9 +175,12 @@ async function syncInventory(page=1, limit = 5000) {
         localStorage.setItem('syncErrorInventory', page);
     }
 }
-/*
-** Xu ly tai lieu kiem ke
 */
+/*
+ ** Xu ly tai lieu kiem ke
+ */
+/*
+
 function saveOincsToDB(Items) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(['oincs'], 'readwrite');
@@ -194,7 +195,7 @@ function saveOincsToDB(Items) {
     });
 }
 
-async function syncOincs(page=1, limit = 5000) {
+async function syncOincs(page = 1, limit = 5000) {
     const url = `http://localhost:8888/api/oincs/list_oincs`;
     const csrf_ospos_v3 = csrf_token();
 
@@ -226,7 +227,7 @@ async function syncOincs(page=1, limit = 5000) {
             await saveOincsToDB(_aItems);
 
             console.log('Đồng bộ inventory hoàn tất. page: ' + page);
-            await syncOincs(page+1, limit); // Đệ quy tiếp tục đồng bộ inventory
+            await syncOincs(page + 1, limit); // Đệ quy tiếp tục đồng bộ inventory
         } else {
             console.log('Đồng bộ inventory hoàn tất.');
             localStorage.setItem('syncErrorOinc', 'C');
@@ -236,10 +237,12 @@ async function syncOincs(page=1, limit = 5000) {
         localStorage.setItem('syncErrorOinc', page);
     }
 }
-
-/*
-** Xu ly tai lieu kiem ke chi tiet
 */
+/*
+ ** Xu ly tai lieu kiem ke chi tiet
+ */
+/*
+
 function saveInc1ToDB(Items) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(['inc1'], 'readwrite');
@@ -254,7 +257,7 @@ function saveInc1ToDB(Items) {
     });
 }
 
-async function syncInc1(page=1, limit = 5000) {
+async function syncInc1(page = 1, limit = 5000) {
     const url = `http://localhost:8888/api/oincs/list_inc1s`;
     const csrf_ospos_v3 = csrf_token();
 
@@ -286,7 +289,7 @@ async function syncInc1(page=1, limit = 5000) {
             await saveInc1ToDB(_aItems);
 
             console.log('Đồng bộ inventory hoàn tất. page: ' + page);
-            await syncInc1(page+1, limit); // Đệ quy tiếp tục đồng bộ inventory
+            await syncInc1(page + 1, limit); // Đệ quy tiếp tục đồng bộ inventory
         } else {
             console.log('Đồng bộ inventory hoàn tất.');
             localStorage.setItem('syncErrorInc1', 'C');
@@ -305,38 +308,36 @@ let syncError = localStorage.getItem('syncError') || 1;
 let syncErrorOinc = localStorage.getItem('syncErrorOinc') || 1;
 let syncErrorInc1 = localStorage.getItem('syncErrorInc1') || 1;
 // Load dữ liệu khởi tạo ban đầu về local;
-if(syncError == 'C')
-{
-  console.log('Đã hoàn thành, không load dữ liệu về');
+if (syncError == 'C') {
+    console.log('Đã hoàn thành, không load dữ liệu về');
 } else {
-  console.log('Bắt đầu thực hiện trang: '+ syncError);
-  syncData(Number(syncError), 1000);
+    console.log('Bắt đầu thực hiện trang: ' + syncError);
+    syncData(Number(syncError), 1000);
 }
-if(syncErrorInventory == 'C')
-{
-  console.log('Đã hoàn thành, không load dữ chi tiết kho  về');
+if (syncErrorInventory == 'C') {
+    console.log('Đã hoàn thành, không load dữ chi tiết kho  về');
 } else {
-    console.log('Bắt đầu thực hiện trang: '+ syncErrorInventory);
+    console.log('Bắt đầu thực hiện trang: ' + syncErrorInventory);
     syncInventory(Number(syncErrorInventory), 5000);
 }
 
-if(syncErrorOinc == 'C')
-{
-     console.log('Đã hoàn thành, không load dữ liệu kiểm kê');
+if (syncErrorOinc == 'C') {
+    console.log('Đã hoàn thành, không load dữ liệu kiểm kê');
 } else {
-    console.log('Bắt đầu thực hiện trang: '+ syncErrorOinc);
+    console.log('Bắt đầu thực hiện trang: ' + syncErrorOinc);
     syncOincs(Number(syncErrorOinc), 5000);
 }
 
-if(syncErrorInc1 == 'C')
-{
-	console.log('Đã hoàn thành, không load dữ liệu chi tiết kiểm kê');
+if (syncErrorInc1 == 'C') {
+    console.log('Đã hoàn thành, không load dữ liệu chi tiết kiểm kê');
 } else {
-    console.log('Bắt đầu thực hiện trang: '+ syncErrorInc1);
+    console.log('Bắt đầu thực hiện trang: ' + syncErrorInc1);
     syncInc1(Number(syncErrorInc1), 5000);
 }
-
+*/
 /* Kết thúc load dữ liệu ban đầu*/
+/*
+
 function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(dbName, dbVersion);
@@ -360,8 +361,8 @@ function openDatabase() {
 }
 
 async function fetchItemsFromIndexedDB(offset = 0, limit = 10) {
-  await openDatabase();
-  return new Promise((resolve, reject) => {
+    await openDatabase();
+    return new Promise((resolve, reject) => {
         if (!db) {
             return reject(new Error('Database not initialized'));
         }
@@ -440,4 +441,4 @@ async function getTotalItemsCount() {
             reject(new Error('Error fetching total count from IndexedDB: ' + event.target.errorCode));
         };
     });
-}
+}*/
