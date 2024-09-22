@@ -71,7 +71,7 @@ if (isset($success))
 					?>
 					<?php if(true) //(has_grant('is_show_view')) 
 					{ ?>
-						<button class='btn btn-info btn-sm pull-right modal-dlg' data-backdrop="static" data-btn-close='<?php echo $this->lang->line('receiving_btn_close') ?>' data-href='<?php echo site_url($controller_name . "/view"); ?>'
+						<button class='btn btn-info btn-sm pull-right modal-dlg' data-backdrop="static" data-href='<?php echo site_url($controller_name . "/view"); ?>'
 								title='<?php echo $this->lang->line($controller_name . '_from_PO'); ?>'>
 							<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name . '_from_PO'); ?>
 						</button>
