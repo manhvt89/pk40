@@ -55,8 +55,8 @@
             if (!buttons.length) {
                 buttons.push({
                     id: 'close',
-                    label: lang.line('common_close'),
-                    cssClass: 'btn-primary',
+                    label: '<span class="glyphicon glyphicon-remove"></span>&nbsp;' + lang.line('common_close'), // Thêm icon close
+                    cssClass: 'btn-warning',
                     action: function(dialog_ref) {
                         dialog_ref.close();
                     }
