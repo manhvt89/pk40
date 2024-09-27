@@ -70,7 +70,7 @@ $(document).ready(function()
     }
     .customer_number,
     .phone {
-        font-size: 16px;
+        font-size: 14px;
     }
     #receipt_items {
         font-size: 16px;

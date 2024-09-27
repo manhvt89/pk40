@@ -1,3 +1,5 @@
+// ManhVT - 19/09/2024
+/* Support Modal Dialog style */
 (function(modal_support, $) {
 
     var btn_id, dialog_ref;
@@ -51,7 +53,7 @@
                     });
                 }
             });
-
+            // Không có nút nào thì mặc định có nút đóng (Close)
             if (!buttons.length) {
                 buttons.push({
                     id: 'close',

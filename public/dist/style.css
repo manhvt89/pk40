@@ -732,7 +732,7 @@ width: 148.5mm;*/
     
     .name {
         width: 100%;
-        float: left;
+        /*float: left;*/
         font-size: 240%;
         text-align: left;
         line-height: 110%;
@@ -743,14 +743,14 @@ width: 148.5mm;*/
     .phone {
         width: 100%;
         text-align: left;
-        font-size: 16px;
+        font-size: 14px;
     }
     
     .order_address,
     .order_phone {
         width: 100%;
         text-align: left;
-        font-size: 16px;
+        font-size: 14px;
     }
     
     #sale_id {
@@ -1253,6 +1253,15 @@ width: 148.5mm;*/
         #overall_sale {
             order: 1;
         }
+        .flex-row {
+            flex-direction: row;
+        }
+        .col-6 {
+            width: 50%;
+        }
+        .col-12 {
+            width: 100%;
+        }
     }
     
     html,
@@ -1268,6 +1277,8 @@ width: 148.5mm;*/
     
     .wrapper {
         flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     /*/ FOOTER */
     
@@ -1541,4 +1552,24 @@ content: attr(data-th);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
+    }
+    /* Định nghĩa cho lớp d-flex để sử dụng Flexbox */
+    
+    .d-flex {
+        display: flex;
+    }
+    /* Căn chỉnh các phần tử với khoảng cách giữa chúng */
+    
+    .justify-content-between {
+        justify-content: space-between;
+    }
+    /* Cho phép các phần tử con xuống dòng khi không đủ chỗ */
+    
+    .flex-wrap {
+        flex-wrap: wrap;
+    }
+    /* Căn chỉnh văn bản bên phải */
+    
+    .text-right {
+        text-align: right;
     }

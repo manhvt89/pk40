@@ -13,9 +13,10 @@
 			<div id="company_name1" class="name" ><?php echo $this->config->item('company'); ?></div>
 			<?php endif; ?>
 			<div id="company_address" class="address" >Địa chỉ: <?php echo nl2br($this->config->item('address')); ?></div>
-			<div id="company_address" class="phone" >Điện thoại: <?php echo $this->config->item('phone'); ?></div>
-			<div id="company_phone" class="phone" >Website: <?php echo $this->config->item('website'); ?></div>
-
+			<div id="company_phone" class="phone" >Điện thoại: <?php echo $this->config->item('phone'); ?></div>
+			<?php if($this->config->item('website') != ''):?>
+			<div id="company_website" class="website" >Website: <?php echo $this->config->item('website'); ?></div>
+			<?php endif; ?>
 			<div class="clearboth"></div>
 			<div id="sale_receipt"><?php echo $receipt_title; ?></div>
 			<div id=""><?php echo $this->lang->line('sales_id').": ".$code; ?></div>
