@@ -1,16 +1,37 @@
-FROM php:7.4-apache AS ospos_v2
+FROM php:7.4-apache AS ospos_v22
 LABEL maintainer="jekkos"
 
+#ENV TMPDIR=/var/tmp
+
+#RUN mkdir -p /var/tmp/apt_tmp && \
+#    apt-get update && \
+#    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+#    libicu-dev \
+#    libgd-dev \
+#    openssl \
+#    nano \
+#    libmemcached-dev && \
+#    pecl install memcache && \
+#    docker-php-ext-enable memcache && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/*
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libicu-dev \
     libgd-dev \
     openssl \
-    nano \
-    libmemcached-dev \
-    && pecl install memcache \
-    && docker-php-ext-enable memcache \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    nano
+RUN apt-get install -y libzip-dev zip && docker-php-ext-install zip
+
+##RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+##    libicu-dev \
+##    libgd-dev \
+##    openssl \
+##    nano \
+##    libmemcached-dev \
+##    && pecl install memcache \
+##    && docker-php-ext-enable memcache \
+##    && apt-get clean \
+##    && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd
@@ -37,7 +58,7 @@ RUN chmod -R 750 /app/public/uploads /app/application/logs && chown -R www-data:
 
 ##CMD ["/app/vendor/phpunit/phpunit/phpunit"]
 
-FROM ospos_v2 AS ospos_v2_dev
+FROM ospos_v22 AS ospos_v22_dev
 
 RUN mkdir -p /app/bower_components && ln -s /app/bower_components /var/www/html/bower_components
 #RUN yes | pecl install xdebug \

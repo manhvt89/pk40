@@ -16,8 +16,8 @@ services:
     ospos:
         build:
             context: .
-            target: pk_v2_dev
-        container_name: pk_v2_dev
+            target: ospos_v22_dev
+        container_name: pk_v22_dev
         restart: always
         depends_on:
           - mysql
