@@ -18,7 +18,7 @@ if (isset($success))
 
 ?>
 <div id="register_wrapper_tool" class="col-12 col-md-12 order-3 order-md-2">
-	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form_header', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-right">
@@ -43,7 +43,6 @@ if (isset($success))
 		<?php echo form_close(); ?>
 
 </div>
-
 </div>
 <div class="row flex-column flex-md-row">
 <div id="register_wrapper_sale" class="col-12 col-md-7 order-3 order-md-2">

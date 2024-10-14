@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pk40-cache-v22'; // Cập nhật phiên bản cache
-const DATA_CACHE_NAME = 'pk40-data-cache-v22';
+const CACHE_NAME = 'pk40-cache-v221'; // Cập nhật phiên bản cache
+const DATA_CACHE_NAME = 'pk40-data-cache-v221';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

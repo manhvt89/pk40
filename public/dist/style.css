@@ -1573,3 +1573,23 @@ content: attr(data-th);
     .text-right {
         text-align: right;
     }
+    
+    #mode_form_header {
+        background-color: #DDD;
+        margin: 0;
+    }
+    
+    #mode_form_header ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    #mode_form_header ul li {
+        margin-left: 1em;
+    }
+    
+    #mode_form_header .panel-body {
+        padding: .7em;
+        margin: 0;
+    }
