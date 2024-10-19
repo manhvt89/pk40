@@ -1002,7 +1002,7 @@ $(document).ready(function()
         }
 		console.log(paymentMethod);
 	});
-	$("#payment_types").val("Tiền mặt");
+	//$("#payment_types").val("Tiền mặt");
 	$("#amount_tendered").val(0);
 	// Kiểm tra và cập nhật số tiền thanh toán nếu vượt quá tổng tiền hàng
 	$("#amount_tendered").change(function() {
