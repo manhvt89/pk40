@@ -307,7 +307,7 @@
 			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
 					success: function(response) {
-						var stay_open = dialog_support.clicked_id() != 'submit';
+						var stay_open = modal_support.clicked_id() != 'submit';
 						if (stay_open)
 						{
 							// set action of item_form to url without item id, so a new one can be created
@@ -320,7 +320,7 @@
 						}
 						else
 						{
-							dialog_support.hide();
+							modal_support.hide();
 						}
 						table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
 					},
