@@ -1552,6 +1552,11 @@ content: attr(data-th);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
+        .manhvt2 tr td:first-child {
+            width: 180px;
+            white-space: nowrap;
+            /* Ngăn xuống dòng */
+        }
     }
     /* Định nghĩa cho lớp d-flex để sử dụng Flexbox */
     
