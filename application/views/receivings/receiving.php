@@ -111,13 +111,16 @@ if (isset($success))
 				</li>
 				<li class="pull-right">
 					<?php if($this->Employee->has_grant('items_view')){ ?>
-					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg'
-						data-btn-new='<?php echo $this->lang->line('common_new') ?>'
+					<button id='new_item_button' 
+						class='btn btn-info btn-sm pull-right modal-dlg'
+						data-btn-cancel='<?php echo $this->lang->line('common_close') ?>'
 						data-btn-submit='<?php echo $this->lang->line('common_submit') ?>'
 						data-href='<?php echo site_url("items/view"); ?>'
 						title='<?php echo $this->lang->line('sales_new_item'); ?>'>
 						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line('sales_new_item'); ?>
 					</button>
+
+					
 					<?php } ?>
 				</li>
 			</ul>
