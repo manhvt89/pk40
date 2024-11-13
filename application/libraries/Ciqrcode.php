@@ -27,7 +27,7 @@ class Ciqrcode {
         return base64_encode($result->getString());
     }
 
-    public function createQrPayment($data, $size = 300) {
+    public function createQrPayment($data) {
         $_sData = '';
         // Tạo mã QR từ dữ liệu
         // Ví dụ sử dụng
@@ -35,6 +35,7 @@ class Ciqrcode {
         $config = $this->loadConfig();
 
         //var_dump($config);die();
+        $size = $config['qr_payment_size'];
 
         $_sData = $this->buildPayload($data, $config);
         //echo $_sData;die();

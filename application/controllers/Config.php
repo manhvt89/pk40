@@ -355,7 +355,7 @@ class Config extends Secure_Controller
 		}
 
 		$city_ = get_cities_list();
-        $cities = array();
+        $cities = [];
         foreach ($city_ as $key=>$value)
         {
             $cities[$value] = $value;
