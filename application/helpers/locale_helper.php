@@ -1378,22 +1378,107 @@ function to_upper($str){
     return mb_strtoupper($str, 'UTF-8');
 }
 
-function make_diff_first($array)
-{
-    
-    $_array_first = [];
-    $_array_second = [];
-    foreach($array as $key=>$value)
+if (!function_exists('make_diff_first')) {
+    function make_diff_first($array)
     {
-        if(($value['in_whs_quantity'] - $value['quantity']) == 0)
-        {
-            $_array_second[] = $value;
-        } else {
-            $_array_first[] = $value;
+        $sorted_array = [];
+
+        foreach ($array as $value) {
+            // Kiểm tra điều kiện và thêm vào đầu hoặc cuối mảng
+            if (($value['in_whs_quantity'] - $value['quantity']) != 0) {
+                array_unshift($sorted_array, $value); // Thêm vào đầu mảng
+            } else {
+                $sorted_array[] = $value; // Thêm vào cuối mảng
+            }
         }
+
+        return $sorted_array;
     }
-    
-    
-    return array_merge($_array_first,$_array_second);
 }
+
+// application/helpers/form_helper.php
+// Tạo input trong config
+/**
+ * Hỗ trợ 2 loại input: text và textarea
+ */
+if (!function_exists('form_field')) {
+    function form_field($label, $name, $value = '', $type = 'text', $required = false, $options = [])
+    {
+        $requiredClass = $required ? ' required' : '';
+        $labelClass = isset($options['label_class']) ? $options['label_class'] : 'control-label col-xs-2';
+        $inputClass = isset($options['input_class']) ? $options['input_class'] : 'form-control input-sm';
+        $icon = isset($options['icon']) ? $options['icon'] : null;
+        $suffix = isset($options['suffix']) ? $options['suffix'] : null;
+        $field = "<div class='form-group form-group-sm'>";
+        $field .= form_label($label, $name, ['class' => $labelClass . $requiredClass]);
+        
+        $field .= "<div class='col-xs-6'>";
+        if ($icon) {
+            $field .= "<div class='input-group'><span class='input-group-addon input-sm'><span class='glyphicon glyphicon-$icon'></span></span>";
+        }
+        
+        if ($type === 'textarea') {
+            $field .= form_textarea([
+                'name' => $name,
+                'id' => $name,
+                'class' => $inputClass . $requiredClass,
+                'value' => $value
+            ]);
+        } else {
+            $field .= form_input([
+                'name' => $name,
+                'id' => $name,
+                'type' => $type,
+                'class' => $inputClass . $requiredClass,
+                'value' => $value
+            ]);
+            if ($suffix) {
+                $field .= "<span class='input-group-addon input-sm'>$suffix</span>";
+            }
+        }
+        
+        if ($icon) {
+            $field .= "</div>"; // Đóng thẻ input-group nếu có icon
+        }
+
+        // Thêm hậu tố nếu có
+       
+        
+        $field .= "</div></div>";
+        
+        return $field;
+    }
+}
+
+/**
+ *  Hố trợ việc tạo checkbox từ một mảng
+ * $items: danh dách danh mục
+ * $item_id_prefix: tiền tố ID of checkbox
+ * $class: class of checkbox
+ */
+
+ function checkbox_from_array($items,$checkbox_name='m_is_lens',$item_id_prefix='m_is_lens_',$class='control-label col-xs-3')
+ {
+    if(!is_array($items)) return '';
+    foreach($items as $item): 
+        $i = 1;
+?>
+		<div class="form-group form-group-sm">
+		<div class='col-xs-3 right'>
+			<?php echo form_checkbox(array(
+								'name'=>$checkbox_name.'[]',
+								'id'=>$item_id_prefix.$i,
+								'value'=>$item,
+								'checked'=>0)
+								);?>
+			</div>
+<?php 
+        echo form_label($item, $item_id_prefix.$i, ['class'=>$class]); 
+?>
+		    
+		</div>
+	<?php $i++; endforeach; 
+ }
+
+
 ?>

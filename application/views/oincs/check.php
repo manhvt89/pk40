@@ -35,10 +35,8 @@ if (isset($success))
 	<table class="sales_table_100 add-new" id="count">
 		<thead>
 			<tr>
-				
 				<th style="width: 15%;"><?php echo $this->lang->line('oincs_item_number'); ?></th>
 				<th style="width: 35%;"><?php echo $this->lang->line('oincs_item_name'); ?></th>
-				
 				<th style="width: 10%;"><?php echo $this->lang->line('oinc_zone'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('oincs_quantity'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('oincs_in_whs_quantity'); ?></th>

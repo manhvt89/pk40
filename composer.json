@@ -23,7 +23,8 @@
         "phpoffice/phpspreadsheet": "1.26",
         "hbgl/php-code-128-encoder": "0.2.6",
         "google/apiclient": "^2.14",
-        "google/cloud-text-to-speech": "^1.8"
+        "google/cloud-text-to-speech": "^1.8",
+        "endroid/qr-code": "^4.6"
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*"

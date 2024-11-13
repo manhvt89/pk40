@@ -66,32 +66,94 @@ if (isset($success))
 			<?php
 			}
 			else
-			{				
-				foreach(array_reverse($cart, true) as $line=>$item)
-				{					
+			{	
+				if($TheOinc['status'] == 'B')
+				{
+					$items = $cart;
+					//var_dump($items);
+					foreach($items as $key=>$item)
+					{  
+						$line = $item['line'];
 			?>
-					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
-						<tr>
-							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
-							<td><?php echo $item['item_number']; ?><?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
-							<td style="align: center;">
-								<?php echo $item['name']; ?>								
-							</td>
-							<td>
-								<?php							
-									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm quantity', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex));
-								?>
-							</td>
-							<td>
-								<?php							
-									echo $item['item_category'];
-								?>
-							</td>
-							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
-						</tr>
-				
-					<?php echo form_close(); ?>
-			<?php
+						<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+						<?php 
+						if($item['is_difference_quantity']==true)
+						{
+						?>
+							<tr class="good">
+								<td><?php //echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+								<td><?php echo $item['item_number']; ?><?php //echo form_hidden('edit_hidden_ctv', '0'); ?></td>
+								<td style="align: center;">
+									<?php echo $item['name']; ?>								
+								</td>
+								<td>
+									<?php							
+										echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm quantity', 'disabled'=>'disabled','value'=>to_quantity_decimals($item['quantity'])));
+									?>
+								</td>
+								<td>
+									<?php							
+										echo $item['item_category'];
+									?>
+								</td>
+								<td><span class="glyphicon glyphicon-refresh"></span></td>
+							</tr>
+
+						<?php 
+						} else {
+
+			?>
+							<tr class="lech">
+								<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+								<td><?php echo $item['item_number']; ?><?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
+								<td style="align: center;">
+									<?php echo $item['name']; ?>								
+								</td>
+								<td>
+									<?php							
+										echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm quantity', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex));
+									?>
+								</td>
+								<td>
+									<?php							
+										echo $item['item_category'];
+									?>
+								</td>
+								<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							</tr>
+					
+						<?php echo form_close(); ?>
+			<?php 		} ?>
+			<?php 			
+					}
+
+				} else { 		
+					foreach(array_reverse($cart, true) as $line=>$item)
+					{					
+			?>
+						<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+							<tr>
+								<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+								<td><?php echo $item['item_number']; ?><?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
+								<td style="align: center;">
+									<?php echo $item['name']; ?>								
+								</td>
+								<td>
+									<?php							
+										echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm quantity', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex));
+									?>
+								</td>
+								<td>
+									<?php							
+										echo $item['item_category'];
+									?>
+								</td>
+								<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							</tr>
+					
+						<?php echo form_close(); ?>
+				<?php
+					}
 				}
 			}
 			?>
@@ -136,17 +198,23 @@ if (isset($success))
 	{
 	?>
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
-				<div class="form-group" id="buttons_sale">
+				
 					<?php echo form_input(array('name'=>'hidden_form', 'id'=>'hidden_form', 'class'=>'form-control input-sm', 'value'=>'1', 'type'=>'hidden')); ?>
-					<!-- <div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div> -->
+					
 					<?php echo form_input(array('name'=>'hidden_ctv', 'id'=>'hidden_ctv', 'class'=>'form-control input-sm', 'value'=>'', 'type'=>'hidden')); ?>
 
 					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
-				</div>
+				
 			<?php echo form_close(); ?>
-			<div class='btn btn-sm btn-warning pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('oincs_complete_count'); ?></div>
-			<div class='btn btn-sm btn-success pull-right' id='save_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('oincs_save_count'); ?></div>
+			<?php if($TheOinc['status'] != 'B'): ?>
+				<div class='btn btn-sm btn-success pull-right' id='check_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-check">&nbsp</span><?php echo $this->lang->line('oincs_check_count'); ?></div>
+				<div class='btn btn-sm btn-success pull-right' id='save_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('oincs_save_count'); ?></div>
 			
+			<?php else : ?>
+				<div class='btn btn-sm btn-warning pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('oincs_complete_count'); ?></div>
+				<div class='btn btn-sm btn-success pull-right' id='check_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-check">&nbsp</span><?php echo $this->lang->line('oincs_check_count'); ?></div>
+				
+			<?php endif; ?>
 		<?php
 		}
 		?>
@@ -213,6 +281,14 @@ $(document).ready(function()
 		
 		$('#hidden_ctv').val(1);
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name . "/do_save"); ?>');
+		$('#buttons_form').submit();
+    });
+
+	$("#check_button").click(function()
+    {
+		
+		$('#hidden_ctv').val(1);
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name . "/do_check"); ?>');
 		$('#buttons_form').submit();
     });
 

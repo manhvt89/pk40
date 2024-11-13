@@ -50,8 +50,11 @@ return array(
     'GPBMetadata\\Google\\Api\\' => array($vendorDir . '/google/common-protos/metadata/Api'),
     'GPBMetadata\\ApiCore\\' => array($vendorDir . '/google/gax/metadata/ApiCore'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
+    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
     'Dompdf\\' => array($vendorDir . '/dompdf/dompdf/src'),
+    'DASPRiD\\Enum\\' => array($vendorDir . '/dasprid/enum/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'Com\\Tecnick\\Color\\' => array($vendorDir . '/tecnickcom/tc-lib-color/src'),
     'Com\\Tecnick\\Barcode\\' => array($vendorDir . '/tecnickcom/tc-lib-barcode/src'),
+    'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
 );

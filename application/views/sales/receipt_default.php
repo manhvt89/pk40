@@ -235,8 +235,8 @@
 		<?php if($footer_string != ''): //Khoong hien thi phieu tam ung ?>
 	<div class="qrcode" style="text-align: center;">
 			<span><?php echo $footer_string ?></span><br/>
-			<img src='data:image/png;base64,<?php echo $qrcode_string; ?>' />
-			<?php //echo $url_string; ?>
+			<img src='data:image/png;base64,<?php echo $qrcode_string; ?>' /><br/>
+			<b>Chủ TK: <?php echo $qr_payment_accountname; ?></b>
 	</div>
 		<?php endif;?>
 	<?php endif; ?>

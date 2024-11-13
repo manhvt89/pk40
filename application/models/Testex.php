@@ -14,6 +14,39 @@ class Testex extends CI_Model
 	/*
 	 Get the sales data for the takings (sales/manage) view
 	*/
+
+	public function get_reminders_()
+	{
+		$this->db->select("
+			test.test_id,
+			test.test_time,
+			test.note,
+			test.code,
+			customers_p.person_id,
+			customers_p.customer_name,
+			people.first_name,
+			people.last_name
+		");
+
+		$this->db->from('customers AS customers_p');
+
+		// Subquery to get max(test_id) for each customer
+		$this->db->join("(SELECT t1.*
+						FROM test AS t1
+						WHERE t1.test_id = (SELECT MAX(t2.test_id)
+											FROM test AS t2
+											WHERE t2.customer_id = t1.customer_id)
+						) AS test", 'test.customer_id = customers_p.person_id', 'left');
+		
+		$this->db->join('people AS people', 'people.person_id = customers_p.person_id', 'left');
+
+		$this->db->where("expired_date >= UNIX_TIMESTAMP(CURDATE())");
+		$this->db->where("expired_date < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)");
+		$this->db->where("reminder", 1);
+
+		return $this->db->get();
+	}
+
 	public function get_reminders()
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query

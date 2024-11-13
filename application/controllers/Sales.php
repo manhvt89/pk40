@@ -623,39 +623,18 @@ class Sales extends Secure_Controller
 						** QRCode vào đơn hàng
 						*/
 						$_bIsBarcode = true;
-						$_bIsQRcode = false; // Phieeuj tam ung ko co qrcode
+						$_bIsQRcode = true; // Phieeuj tam ung ko co qrcode
 
 						if ($_bIsQRcode == true) {
-							$qr_url_data = base_url('/verify/confirm/').$sale_info['sale_uuid'];
-							$hex_data   = bin2hex($qr_url_data);
-							$save_name  = $hex_data.'.png';
+							//$qrContent = base_url('/verify/confirm/').$sale_info['sale_uuid'];
+							// Các thông tin cần tạo QR code
+							$qrData['amount'] = number_format($data['total'],0);
+							$qrData['message'] = 'M'.$data['sale_id_num'];
+							$data1['qr_payment_accountname'] = $this->config->item('qr_payment_accountname');
 
-							/* QR Code File Directory Initialize */
-							$dir = 'assets/media/qrcode/';
-							if (!file_exists($dir)) {
-								mkdir($dir, 0775, true);
-							}
-
-							/* QR Configuration  */
-							$config['cacheable']    = true;
-							$config['imagedir']     = $dir;
-							$config['quality']      = true;
-							$config['size']         = '1024';
-							$config['black']        = array(255,255,255);
-							$config['white']        = array(255,255,255);
-							$this->ciqrcode->initialize($config);
-
-							/* QR Data  */
-							$params['data']     = $qr_url_data;
-							$params['level']    = 'L';
-							$params['size']     = 10;
-							$params['savename'] = FCPATH.$config['imagedir']. $save_name;
-
-							//$this->ciqrcode->generate($params);
-
-							$data1['qrcode_string'] = $this->ciqrcode->generate($params);
-							$data1['url_string'] = $qr_url_data;
-							$data1['footer_string'] = 'Quét mã QR để nhận quà';
+							$data1['qrcode_string'] = $this->ciqrcode->createQrPayment($qrData);
+							$data1['url_string'] = '';
+							$data1['footer_string'] = 'Quét mã QR để thanh toán';
 							$data1['sale_uuid'] = $sale_info['sale_uuid'];
 						} else {
 							$data1['footer_string'] = '';
@@ -819,6 +798,7 @@ class Sales extends Secure_Controller
 				$data1 = $this->_load_sale_data($data['sale_id_num']);
 
 				if ($this->sale_lib->is_invoice_number_enabled()) {
+					//echo '123';die();
 					$this->load->view('sales/invoice', $data1);
 				} else {
 
@@ -841,36 +821,16 @@ class Sales extends Secure_Controller
 					}
 					if($_bIsQRcode == TRUE)
 					{
-						$qr_url_data = base_url('/verify/confirm/').$sale_info['sale_uuid'];
-						$hex_data   = bin2hex($qr_url_data);
-						$save_name  = $hex_data.'.png';
+						//$qrContent = base_url('/verify/confirm/').$sale_info['sale_uuid'];
 
-						/* QR Code File Directory Initialize */
-						$dir = 'assets/media/qrcode/';
-						if (!file_exists($dir)) {
-							mkdir($dir, 0775, true);
-						}
+						// Các thông tin cần tạo QR code
+						$qrData['amount'] = number_format($data1['total'],0);
+						$qrData['message'] = 'M'.$sale_id;
+						$data1['qr_payment_accountname'] = $this->config->item('qr_payment_accountname');
 
-						/* QR Configuration  */
-						$config['cacheable']    = true;
-						$config['imagedir']     = $dir;
-						$config['quality']      = true;
-						$config['size']         = '1024';
-						$config['black']        = array(255,255,255);
-						$config['white']        = array(255,255,255);
-						$this->ciqrcode->initialize($config);
-				
-						/* QR Data  */
-						$params['data']     = $qr_url_data;
-						$params['level']    = 'L';
-						$params['size']     = 10;
-						$params['savename'] = FCPATH.$config['imagedir']. $save_name;
-						
-						//$this->ciqrcode->generate($params);
-					
-						$data1['qrcode_string'] = $this->ciqrcode->generate($params);
-						$data1['url_string'] = $qr_url_data;
-						$data1['footer_string'] = 'Quét mã QR để nhận quà';
+						$data1['qrcode_string'] = $this->ciqrcode->createQrPayment($qrData);
+						$data1['url_string'] = '';
+						$data1['footer_string'] = 'Quét mã QR để thanh toán';
 						$data1['sale_uuid'] = $sale_info['sale_uuid'];
 					} else {
 						$data1['footer_string'] = '';
@@ -1250,36 +1210,16 @@ class Sales extends Secure_Controller
 		//$data['qrcode'] = $dir. $save_name;
 		if($this->config->item('qrcode') == 1)
 		{
-			$qr_url_data = base_url('/verify/confirm/').$sale_info->sale_uuid;
-			$hex_data   = bin2hex($qr_url_data);
-			$save_name  = $hex_data.'.png';
-
-			/* QR Code File Directory Initialize */
-			$dir = 'assets/media/qrcode/';
-			if (!file_exists($dir)) {
-				mkdir($dir, 0775, true);
-			}
-
-			/* QR Configuration  */
-			$config['cacheable']    = true;
-			$config['imagedir']     = $dir;
-			$config['quality']      = true;
-			$config['size']         = '1024';
-			$config['black']        = array(255,255,255);
-			$config['white']        = array(255,255,255);
-			$this->ciqrcode->initialize($config);
-	
-			/* QR Data  */
-			$params['data']     = $qr_url_data;
-			$params['level']    = 'L';
-			$params['size']     = 10;
-			$params['savename'] = FCPATH.$config['imagedir']. $save_name;
 			
-			//$this->ciqrcode->generate($params);
-		
-			$data['qrcode_string'] = $this->ciqrcode->generate($params);
-			$data['url_string'] = $qr_url_data;
-			$data['footer_string'] = 'Quét mã QR để nhận quà';
+			//QRCODE
+			//echo number_format($data['total'],0); die();
+			$qrData['amount'] = number_format($data['total'],0);
+			$qrData['message'] = 'M'.$sale_id;
+			$data['qr_payment_accountname'] = $this->config->item('qr_payment_accountname');
+
+			$data['qrcode_string'] = $this->ciqrcode->createQrPayment($qrData);
+			$data['url_string'] = '';
+			$data['footer_string'] = 'Quét mã QR để thanh toán';
 		} else {
 			$data['footer_string'] = '';
 			$data['qrcode_string'] = '';

@@ -162,6 +162,13 @@ class Oincs extends Secure_Controller
 		//$person_id = $this->session->userdata('person_id');
 		$data = [];
 		$_iTime = time();
+		$data['lens'] = $this->config->item('iKindOfLens');
+		$data['contact_lens'] = $this->config->item('filter_contact_lens');
+		$data['frame'] = $this->config->item('filter');
+		$data['sun_glasses'] = $this->config->item('filter_sun_glasses');
+		
+		$data['medicines'] = $this->config->item('filter_other'); 
+		//var_dump($data['medicines']);die();
 		/*$_oObj_info = $this->Item->get_info($obj_id);
 		foreach(get_object_vars($_oObj_info) as $property => $value)
 		{
@@ -247,119 +254,158 @@ class Oincs extends Secure_Controller
 		$_aItem_data['countor_id'] = 'O';
 		$_aItem_data['countor_name'] = '';
 
-		if(!empty($_aCategories))
+		if($_sMode == 'A')
 		{
-			/*
-			foreach($_aCagories as $item){
-				$_aItem_data['oinc_type'] = '';
-				if($item == 'lens')
-				{
-					$_aItem_data['oinc_type'] = 'L';
-					// Load danh sách chủng loại mắt;
-					$_aCats = $this->config->item('iKindOfLens');
-					if(!empty($_aCats))
+			if(!empty($_aCategories))
+			{
+				/*
+				foreach($_aCagories as $item){
+					$_aItem_data['oinc_type'] = '';
+					if($item == 'lens')
 					{
-						foreach($_aCats as $k=>$v)
+						$_aItem_data['oinc_type'] = 'L';
+						// Load danh sách chủng loại mắt;
+						$_aCats = $this->config->item('iKindOfLens');
+						if(!empty($_aCats))
 						{
-							$_aItem_data['doc_entry'] = 'CL'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
-							$_aItem_data['doc_num'] = 'L-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
-							$_aItem_data['zone'] = $v;
-							$_aaItem_data[] = $_aItem_data;
+							foreach($_aCats as $k=>$v)
+							{
+								$_aItem_data['doc_entry'] = 'CL'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
+								$_aItem_data['doc_num'] = 'L-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
+								$_aItem_data['zone'] = $v;
+								$_aaItem_data[] = $_aItem_data;
+							}
 						}
+						
+					} 
+					elseif($item == 'frame')
+					{
+						$_aItem_data['oinc_type'] = 'F';
+						// Load sanh sách chủng loại gọng
+						$_aCats = $this->config->item('filter');
+						if(!empty($_aCats))
+						{
+							foreach($_aCats as $k=>$v)
+							{
+								$_aItem_data['doc_entry'] = 'CF'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
+								$_aItem_data['doc_num'] = 'F-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
+								$_aItem_data['zone'] = $v;
+								$_aaItem_data[] = $_aItem_data;
+							}
+						}
+					}
+					elseif($item == 'medicine')
+					{
+						$_aItem_data['oinc_type'] = 'M';
+						//Load danh sách chủng loại thuốc
+						$_aCats = $this->config->item('filter_other');
+						if(!empty($_aCats))
+						{
+							foreach($_aCats as $k=>$v)
+							{
+								$_aItem_data['doc_entry'] = 'CM'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
+								$_aItem_data['doc_num'] = 'M-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
+								$_aItem_data['zone'] = $v;
+								$_aaItem_data[] = $_aItem_data;
+							}
+						}
+					}
+					elseif($item == 'contact_lens')
+					{
+						$_aItem_data['oinc_type'] = 'C';
+						//Load danh sách chủng loại áp tròng
+						$_aCats = $this->config->item('filter_contact_lens');
+						if(!empty($_aCats))
+						{
+							foreach($_aCats as $k=>$v)
+							{
+								$_aItem_data['doc_entry'] = 'CC'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
+								$_aItem_data['doc_num'] = 'C-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
+								$_aItem_data['zone'] = $v;
+								$_aaItem_data[] = $_aItem_data;
+							}
+						}
+					} 
+					elseif($item == 'sun_glasses')
+					{
+						$_aItem_data['oinc_type'] = 'S';
+						//Load danh sách chủng loại áp tròng
+						$_aCats = $this->config->item('filter_sun_glasses');
+						if(!empty($_aCats))
+						{
+							foreach($_aCats as $k=>$v)
+							{
+								$_aItem_data['doc_entry'] = 'CS'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
+								$_aItem_data['doc_num'] = 'S-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
+								$_aItem_data['zone'] = $v;
+								$_aaItem_data[] = $_aItem_data;
+							}
+						}
+					}
+					else {
+						$_aItem_data['oinc_type'] = 'D';
+						///var_dump($this->config->item('filter'));
 					}
 					
-				} 
-				elseif($item == 'frame')
-				{
-					$_aItem_data['oinc_type'] = 'F';
-					// Load sanh sách chủng loại gọng
-					$_aCats = $this->config->item('filter');
-					if(!empty($_aCats))
-					{
-						foreach($_aCats as $k=>$v)
-						{
-							$_aItem_data['doc_entry'] = 'CF'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
-							$_aItem_data['doc_num'] = 'F-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
-							$_aItem_data['zone'] = $v;
-							$_aaItem_data[] = $_aItem_data;
-						}
+					
+				} */
+				foreach ($_aCategories as $item) {
+					switch ($item) {
+						case 'lens':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('L', 'CL', 'iKindOfLens', $_iTime,$_aItem_data));
+							break;
+						case 'frame':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('F', 'CF', 'filter', $_iTime,$_aItem_data));
+							break;
+						case 'medicine':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('M', 'CM', 'filter_other', $_iTime,$_aItem_data));
+							break;
+						case 'contact_lens':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('C', 'CC', 'filter_contact_lens', $_iTime, $_aItem_data));
+							break;
+						case 'sun_glasses':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('S', 'CS', 'filter_sun_glasses', $_iTime, $_aItem_data));
+							break;
+						default:
+							$_aItem_data['oinc_type'] = 'D';
+							break;
 					}
 				}
-				elseif($item == 'medicine')
+			}
+		} else {
+			
+			$_sInputName = $this->input->post('category_select');
+			//echo $_sInputName;
+			if($_sInputName == '') 
+			{
+				exit();
+			} else {
+				$_items = $this->input->post('m_'.$_sInputName.'[]');
+				//var_dump($_items); die();
+				if(is_array($_items))
 				{
-					$_aItem_data['oinc_type'] = 'M';
-					//Load danh sách chủng loại thuốc
-					$_aCats = $this->config->item('filter_other');
-					if(!empty($_aCats))
-					{
-						foreach($_aCats as $k=>$v)
-						{
-							$_aItem_data['doc_entry'] = 'CM'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
-							$_aItem_data['doc_num'] = 'M-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
-							$_aItem_data['zone'] = $v;
-							$_aaItem_data[] = $_aItem_data;
-						}
+					switch ($_sInputName) {
+						case 'lens':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('L', 'CL', $_items, $_iTime,$_aItem_data));
+							break;
+						case 'frame':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('F', 'CF', $_items, $_iTime,$_aItem_data));
+							break;
+						case 'medicines':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('M', 'CM', $_items, $_iTime,$_aItem_data));
+							break;
+						case 'contact_lens':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('C', 'CC', $_items, $_iTime, $_aItem_data));
+							break;
+						case 'sun_glasses':
+							$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('S', 'CS', $_items, $_iTime, $_aItem_data));
+							break;
+						default:
+							$_aItem_data['oinc_type'] = 'D';
+							break;
 					}
-				}
-				elseif($item == 'contact_lens')
-				{
-					$_aItem_data['oinc_type'] = 'C';
-					//Load danh sách chủng loại áp tròng
-					$_aCats = $this->config->item('filter_contact_lens');
-					if(!empty($_aCats))
-					{
-						foreach($_aCats as $k=>$v)
-						{
-							$_aItem_data['doc_entry'] = 'CC'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
-							$_aItem_data['doc_num'] = 'C-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
-							$_aItem_data['zone'] = $v;
-							$_aaItem_data[] = $_aItem_data;
-						}
-					}
-				} 
-				elseif($item == 'sun_glasses')
-				{
-					$_aItem_data['oinc_type'] = 'S';
-					//Load danh sách chủng loại áp tròng
-					$_aCats = $this->config->item('filter_sun_glasses');
-					if(!empty($_aCats))
-					{
-						foreach($_aCats as $k=>$v)
-						{
-							$_aItem_data['doc_entry'] = 'CS'.$_aItem_data['oinc_type'].$_iTime.'-'.$k;
-							$_aItem_data['doc_num'] = 'S-'.date('Y-m-d-h-m-s',$_iTime).'-'.$k;
-							$_aItem_data['zone'] = $v;
-							$_aaItem_data[] = $_aItem_data;
-						}
-					}
-				}
-				else {
-					$_aItem_data['oinc_type'] = 'D';
-					///var_dump($this->config->item('filter'));
-				}
-				
-				
-			} */
-			foreach ($_aCategories as $item) {
-				switch ($item) {
-					case 'lens':
-						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('L', 'CL', 'iKindOfLens', $_iTime));
-						break;
-					case 'frame':
-						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('F', 'CF', 'filter', $_iTime));
-						break;
-					case 'medicine':
-						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('M', 'CM', 'filter_other', $_iTime));
-						break;
-					case 'contact_lens':
-						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('C', 'CC', 'filter_contact_lens', $_iTime));
-						break;
-					case 'sun_glasses':
-						$_aaItem_data = array_merge($_aaItem_data, $this->generateItemData('S', 'CS', 'filter_sun_glasses', $_iTime));
-						break;
-					default:
-						$_aItem_data['oinc_type'] = 'D';
-						break;
+				} else {
+					exit();
 				}
 			}
 		}
@@ -385,17 +431,22 @@ class Oincs extends Secure_Controller
 	}
 
 	// Hàm tạo thông tin doc_entry và doc_num
-	private function generateItemData($type, $prefix, $configKey, $time) {
+	private function generateItemData($type, $prefix, $configKey, $time, $Item) {
 		$items = [];
-		$categories = $this->config->item($configKey);
+		if(is_array($configKey))
+		{
+			$categories = $configKey;
+		} else {
+			$categories = $this->config->item($configKey);
+		}
 		if (!empty($categories)) {
 			foreach ($categories as $k => $v) {
-				$items[] = [
+				$items[] = array_merge($Item,[
 					'oinc_type' => $type,
 					'doc_entry' => $prefix . $type . $time . '-' . $k,
 					'doc_num' => $type . '-' . date('Y-m-d-h-m-s', $time) . '-' . $k,
 					'zone' => $v
-				];
+				]);
 			}
 		}
 		return $items;
@@ -823,8 +874,11 @@ class Oincs extends Secure_Controller
 	 * @param mixed $uuid
 	 * @return void
 	 */
-	public function count($uuid='')
+	public function count($uuid='',$re='')
 	{
+		//echo '$uuid'.$uuid;
+		//echo '$re'.$re;
+		//die();
 		
 		$_oTheOinc = $this->Oinc->get_info($uuid);
 		if($_oTheOinc->status == 'P' || $_oTheOinc->status == 'C') // không làm gì
@@ -832,7 +886,8 @@ class Oincs extends Secure_Controller
 			redirect('oincs/check'.$uuid); 
 			exit();
 		}
-	
+
+		$this->count_lib->set_oinc_uuid($uuid); // thiết lập UUID
 		if($_oTheOinc->oinc_id > 0)
 		{
 			$_iOincID = $this->count_lib->get_oinc_id(); // Lấy trong session
@@ -850,21 +905,18 @@ class Oincs extends Secure_Controller
 			$data['TheOinc'] = $this->get_memory();
 
 			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id); //
+			//var_dump($this->count_lib->get_cart());
+			//if($re == 'B')
+			//{
+				$data['cart'] = make_diff_first($this->count_lib->get_cart());
+				//var_dump($data['cart']);
+			//} else {
+			//	$data['cart'] = $this->count_lib->get_cart();
+			//}
 
-			$data['cart'] = $this->count_lib->get_cart();
-
+			//$data['cart'] = $this->count_lib->get_cart();
+			//var_dump($data['cart']);die();
 			$data['quantity'] = $this->count_lib->get_quantity();
-			//$data['points'] = $this->count_lib->get_points();
-			//$data['subtotal'] = $this->count_lib->get_subtotal(TRUE);
-			//$data['discount'] = $this->count_lib->get_discount();
-			//$data['total'] = $this->count_lib->get_total();
-			
-			//$data['items_module_allowed'] = $this->Employee->has_grant('sales_price_edit');
-			//$data['payments_cover_total'] = $this->count_lib->get_amount_due() <= 0;
-			//$data['edit'] = $this->count_lib->get_edit();
-			//var_dump($this->sale_lib->get_customer());
-			
-			//$data = $this->xss_clean($data);
 
 			$this->load->view("oincs/register", $data);
 		} else {
@@ -950,7 +1002,7 @@ class Oincs extends Secure_Controller
 		$this->_reload($data);
 	}
 
-	private function _reload($data = array(),$screen = '')
+	private function _reload($data = [],$screen = '')
 	{		
 		
 		$uuid = $this->count_lib->get_oinc_uuid();
@@ -967,26 +1019,17 @@ class Oincs extends Secure_Controller
 				$this->update_memory($_oTheOinc);
 			}
 
-			// Update tài liệu mới vào session
+			//Get session vào $data chuẩn bị hiển thị
 			$data['oinc_id'] = $this->count_lib->get_oinc_id();
 			$data['oinc_uuid'] = $this->count_lib->get_oinc_uuid();
 			$data['TheOinc'] = $this->get_memory();
 
-			$data['cart'] = $this->count_lib->get_cart();
+			//$data['cart'] = $this->count_lib->get_cart();
+			$data['cart'] = make_diff_first($this->count_lib->get_cart());
+			
 
 			$data['quantity'] = $this->count_lib->get_quantity();
-			//$data['points'] = $this->count_lib->get_points();
-			//$data['subtotal'] = $this->count_lib->get_subtotal(TRUE);
-			//$data['discount'] = $this->count_lib->get_discount();
-			//$data['total'] = $this->count_lib->get_total();
 			
-			//$data['items_module_allowed'] = $this->Employee->has_grant('sales_price_edit');
-			//$data['payments_cover_total'] = $this->count_lib->get_amount_due() <= 0;
-			//$data['edit'] = $this->count_lib->get_edit();
-			//var_dump($this->sale_lib->get_customer());
-			
-			//$data = $this->xss_clean($data);
-
 			if($screen == 'check')
 			{ 
 				$this->load->view("oincs/check", $data);
@@ -1021,12 +1064,12 @@ class Oincs extends Secure_Controller
 		$this->count_lib->set_state_id(0);
 
 		$_sStatus =$this->count_lib->get_status();
-		if($_sStatus == 'O' || $_sStatus == 'W')
+		//if($_sStatus == 'O' || $_sStatus == 'W' || $_sStatus == 'B')
+		if($_sStatus == 'B') // CHi hoàn thành khi nhân viên đã kiểm tra;
 		{ 
-
 			if($this->input->post('hidden_form')) {
 				if ($oinc_id > 0) {
-					//update - payment, and sale status from 1 to 0
+					
 					$_iTime = time();
 					$_aOinc = [
 						'oinc_id'=>$oinc_id,
@@ -1152,7 +1195,7 @@ class Oincs extends Secure_Controller
 			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id);
 
 			$data['cart'] = $this->count_lib->get_cart();
-
+			
 			$data['quantity'] = $this->count_lib->get_quantity();
 
 
@@ -1260,7 +1303,7 @@ class Oincs extends Secure_Controller
 		$this->count_lib->set_state_id(0);
 
 		$_sStatus =$this->count_lib->get_status();
-		if($_sStatus == 'O' || $_sStatus == 'W')
+		if($_sStatus == 'O' || $_sStatus == 'W' || $_sStatus == 'B')
 		{ 
 
 			if($this->input->post('hidden_form')) {
@@ -1329,6 +1372,135 @@ class Oincs extends Secure_Controller
 			$data['error'] = 'Bạn không thực hiện được lệnh này, do tài liệu này đang được xem xét';
 			$this->_reload($data);
 		}
+	}
+
+	public function do_check()
+	{
+		
+		$data = [];
+		
+		
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_info = $this->Employee->get_info($employee_id);
+		$data['employee'] = get_fullname($employee_info->first_name,$employee_info->last_name);
+		
+		$oinc_id = $this->count_lib->get_oinc_id();
+		$data['status'] = 0;
+		//Thiết lập trạng thái
+		$this->count_lib->set_state_code(0);
+		$this->count_lib->set_state_id(0);
+		$data['cart'] = $this->count_lib->get_cart();
+		$_sStatus =$this->count_lib->get_status();
+		if($_sStatus == 'O' || $_sStatus == 'W' || $_sStatus == 'B')
+		{ 
+			if($this->input->post('hidden_form')) {
+				if ($oinc_id > 0) {
+					//update - payment, and sale status from 1 to 0
+					$_iTime = time();
+					$_aOinc = [
+						'oinc_id'=>$oinc_id,
+						'count_at'=>$_iTime,
+						'countor_id'=>$employee_id,
+						'countor_name'=>$data['employee'],
+						'status'=>'B' // Đã thực hiện kiểm kê, chưa update lên hệ thống KHO
+					];
+
+					//var_dump($data['cart']);die();
+					if(count($data['cart']) > 0)
+					{
+						$_aaItem = [];
+						foreach($data['cart'] as $item)
+						{
+							$_aItem = [
+								'oinc_id'=>$oinc_id,
+								'line_num'=>$item['line'],
+								'item_id'=>$item['item_id'],
+								'item_name'=>$item['name'],
+								'item_number'=> $item['item_number'],
+								'item_category' =>$item['item_category'],
+								'whs_code'=>1,
+								'counted_quantity'=>$item['quantity'],
+								'in_whs_quantity'=>$item['in_whs_quantity'],
+								'difference_quantity'=>$item['in_whs_quantity'] - $item['quantity'],
+								'created_at'=>$_iTime
+
+							];
+							$_aaItem[] = $_aItem;
+						}
+						//var_dump($_aaItem);die();
+						// step 1: Lưu bản kiểm kê (lưu session to mysql)
+						$rs = $this->Oinc->save_doc($_aOinc,$_aaItem);
+						if($rs)
+						{
+							
+						// step 2: So sanh kiem ke
+						
+							//$this->count_lib->clearAll(); // clean session of count
+							$this->count_lib->set_status('B');
+							$this->count_lib->set_state_code(1); //Thành công
+							$this->count_lib->set_state_id($oinc_id);
+							$this->count_lib->load_doc_to_cart($oinc_id); // Load danh items của tài liệu
+
+							$data['cart'] = $this->count_lib->get_cart();
+							//$_oTheOinc = $this->Oinc->get_info($this->count_lib->get_oinc_uuid());
+							$data['TheOinc'] = $this->get_memory();
+
+						// step 3: hiển thị kế t quả so sánh	
+							redirect(site_url('oincs/count/'.$this->count_lib->get_oinc_uuid().'/B')); // Refresh this page
+							exit();
+						} else {
+							$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F54';
+							$this->_reload($data);
+						}
+					} else {
+						$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F53';
+						$this->_reload($data);
+					}
+					
+				} else {
+					$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F52';
+					$this->_reload($data);
+				}
+					//$this->sale_lib->clear_all(); //CLEAR ALL DATA CART in SESSION
+			}else{
+				$data['error'] = 'Bạn không được Refresh lại web hoặc nhấn F51';
+				$this->_reload($data);
+			}
+		} else {
+			$data['error'] = 'Bạn không thực hiện được lệnh này, do tài liệu này đang được xem xét';
+			$this->_reload($data);
+		}
+
+		
+
+		/*
+		
+		$_oTheOinc = $this->Oinc->get_info($uuid);
+	
+		if($_oTheOinc->oinc_id > 0)
+		{
+			
+				
+			$this->count_lib->clearAll(); // Clean all session khi chuyển sang tài liệu mới
+			$this->update_memory($_oTheOinc);
+			
+
+			// Update tài liệu mới vào session
+			$data['oinc_id'] = $this->count_lib->get_oinc_id();
+			$data['oinc_uuid'] = $this->count_lib->get_oinc_uuid();
+			$data['TheOinc'] = $this->get_memory();
+
+			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id);
+
+			$data['cart'] = $this->count_lib->get_cart();
+
+			$data['quantity'] = $this->count_lib->get_quantity();
+
+
+			$this->load->view("oincs/check", $data);
+		} else {
+
+		}*/
 	}
 	/**
 	 * BEGIN PHÂN QUYỀN *

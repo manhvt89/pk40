@@ -371,7 +371,7 @@ class Config extends Secure_Controller
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
 
-		$batch_save_data = array(
+		$batch_save_data = [
 			'company' => $this->input->post('company'),
 			'address' => $this->input->post('address'),
 			'phone' => $this->input->post('phone'),
@@ -379,8 +379,13 @@ class Config extends Secure_Controller
 			'fax' => $this->input->post('fax'),
 			'website' => $this->input->post('website'),	
 			'guide' => $this->input->post('guide'),
-			'return_policy' => $this->input->post('return_policy')
-		);
+			'return_policy' => $this->input->post('return_policy'),
+			'qr_payment_size'=> $this->input->post('qr_payment_size'),
+			'qr_payment_bankaccount'=>$this->input->post('qr_payment_bankaccount'),
+			'qr_payment_accountname'=>$this->input->post('qr_payment_accountname'),
+			'qr_payment_bankname'=>$this->input->post('qr_payment_bankname'),
+			'qr_payment_bank_code'=>$this->input->post('qr_payment_bank_code')
+		];
 		
 		if (!empty($upload_data['orig_name']))
 		{

@@ -82,7 +82,7 @@ function viewFormatter(value, row, index) {
             
             return '<button class="btn btn-warning view-recipe-btn btn-sm">Bắt đầu</button>';
         } 
-        else if(row.raw_status == 'W')
+        else if(row.raw_status == 'W' || row.raw_status == 'B')
         {
             return '<button class="btn btn-info view-recipe-btn btn-sm">Sửa</button>';
         }

@@ -89,15 +89,24 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
+        ),
         'D' => 
         array (
             'Dompdf\\' => 7,
+            'DASPRiD\\Enum\\' => 13,
         ),
         'C' => 
         array (
             'Complex\\' => 8,
             'Com\\Tecnick\\Color\\' => 18,
             'Com\\Tecnick\\Barcode\\' => 20,
+        ),
+        'B' => 
+        array (
+            'BaconQrCode\\' => 12,
         ),
     );
 
@@ -279,9 +288,17 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
+        ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
         ),
         'Complex\\' => 
         array (
@@ -294,6 +311,10 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
         'Com\\Tecnick\\Barcode\\' => 
         array (
             0 => __DIR__ . '/..' . '/tecnickcom/tc-lib-barcode/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
     );
 

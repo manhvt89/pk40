@@ -632,8 +632,9 @@ class Count_lib
 					'item_category'=>$item_info->category,
 					'is_serialized' => $item_info->is_serialized,
                     'quantity' => $quantity,
-					'in_whs_quantity'=>$this->cal_in_whs_quantity($item_id,$this->get_whs_code())
-					
+					'in_whs_quantity'=>$this->cal_in_whs_quantity($item_id,$this->get_whs_code()),
+					'is_difference_quantity'=>false,
+					'difference_quantity'=>0
                 ]
             ];
 			//add to existing array
@@ -822,26 +823,23 @@ class Count_lib
 	{
 		$this->empty_cart();
 		$items = [];
-		foreach($this->CI->Oinc->get_oinc_items($oinc_id)->result() as $row)
-		{
-			//$this->add_item($row->item_id, $row->counted_quantity);
-			$item = [
-				$row->line_num => [
-                    'item_id' => $row->item_id,
-                    'line' => $row->line_num,
-                    'name' => $row->item_name,
-                    'item_number' => $row->item_number,
-					'item_category'=>$row->item_category,
-					'is_serialized' => $row->is_serialized,
-                    'quantity' => $row->counted_quantity,
-					'in_whs_quantity'=>$row->in_whs_quantity
-                ]
-            ];
-			//add to existing array
-			$items += $item;
+		
+		foreach ($this->CI->Oinc->get_oinc_items($oinc_id)->result() as $row) {
+			$items[$row->line_num] = [
+				'item_id' => $row->item_id,
+				'line' => $row->line_num,
+				'name' => $row->item_name,
+				'item_number' => $row->item_number,
+				'item_category' => $row->item_category,
+				'is_serialized' => $row->is_serialized,
+				'quantity' => $row->counted_quantity,
+				'in_whs_quantity' => $row->in_whs_quantity,
+				'difference_quantity' => $row->difference_quantity,
+				'is_difference_quantity' => $row->counted_quantity == $row->in_whs_quantity
+			];
 		}
-		$this->set_cart($items);
 
+		$this->set_cart($items);
 	}
 
 	public function edit_item($line, $quantity)
@@ -866,7 +864,6 @@ class Count_lib
 		$this->calculate_quantity();
 	}
 
-	
 }
 
 ?>

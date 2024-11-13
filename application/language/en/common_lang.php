@@ -103,7 +103,7 @@ $lang['oincs_quantity'] = "K.lg kiểm kê";
 $lang['oincs_update'] = "Cập nhật";
 $lang['oincs_no_items_in_cart'] = "Chưa có sản phẩm nào";
 $lang['oincs_unable_to_add_item'] = 'Không thể thêm sản phẩm này để kiểm kê, vui lòng kiểm tra lại';
-$lang['oincs_complete_count'] = 'Hoàn thành kiểm kê';
+$lang['oincs_complete_count'] = 'Hoàn thành';
 $lang['oincs_in_whs_quantity'] = 'K.lg hệ thống';
 $lang['oincs_diffirent_quantity'] = 'K.lg lệch';
 $lang['oincs_post_count'] = 'Điều chỉnh kho';
@@ -113,6 +113,8 @@ $lang['oincs_open_status'] = "Mới tạo";
 $lang['oincs_work_status'] = "Đang kiểm kê";
 $lang['oincs_close_status'] = "Kiểm kê xong";
 $lang['oincs_post_status'] = "Đã hiệu chỉnh kho";
+$lang['oincs_select_category'] = 'Hãy chọn loại muốn kiểm kê';
+$lang['oincs_check_count'] = "Kiểm tra";
 
 /** Chấm công */
 $lang['attendance_employee_name'] = 'Họ và tên';
@@ -121,3 +123,4 @@ $lang['attendance_check_out_time'] = 'Thời gian kết thúc';
 $lang['attendance_status'] = 'Trạng thái';
 $lang['module_attendances'] = 'Chấm công';
 $lang['attendances_no_attendances_to_display'] = 'Chưa có tài liệu nào';
+
