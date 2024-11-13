@@ -128,8 +128,11 @@ if (isset($success))
 					}
 
 				} else { 		
-					foreach(array_reverse($cart, true) as $line=>$item)
-					{					
+					//var_dump($cart);
+					foreach(array_reverse($cart, true) as $key=>$item)
+					{	
+						$line = $item['line'];
+									
 			?>
 						<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 							<tr>

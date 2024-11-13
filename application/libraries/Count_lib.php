@@ -623,8 +623,8 @@ class Count_lib
 
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
-            $item = [
-				$insertkey => [
+			//echo $insertkey; die();
+            $items[$insertkey] = [
                     'item_id' => $item_id,
                     'line' => $insertkey,
                     'name' => $item_info->name,
@@ -635,10 +635,7 @@ class Count_lib
 					'in_whs_quantity'=>$this->cal_in_whs_quantity($item_id,$this->get_whs_code()),
 					'is_difference_quantity'=>false,
 					'difference_quantity'=>0
-                ]
-            ];
-			//add to existing array
-			$items += $item;
+			];
 		}
         else
         {
