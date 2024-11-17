@@ -122,8 +122,9 @@ if (isset($success))
 								<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 							</tr>
 					
-						<?php echo form_close(); ?>
+						
 			<?php 		} ?>
+				<?php echo form_close(); ?>
 			<?php 			
 					}
 
@@ -196,10 +197,12 @@ if (isset($success))
 	<?php }	?>
 		
 	<?php
+	
 		// Only show this part if there are Items already in the sale.
 	if(count($cart) > 0)
-	{
+	{ 
 	?>
+		<div id="formarrea">
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				
 					<?php echo form_input(array('name'=>'hidden_form', 'id'=>'hidden_form', 'class'=>'form-control input-sm', 'value'=>'1', 'type'=>'hidden')); ?>
@@ -208,8 +211,8 @@ if (isset($success))
 
 					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				
-			<?php echo form_close(); ?>
-			<?php if($TheOinc['status'] != 'B'): ?>
+			
+			<?php  if($TheOinc['status'] != 'B'): ?>
 				<div class='btn btn-sm btn-success pull-right' id='check_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-check">&nbsp</span><?php echo $this->lang->line('oincs_check_count'); ?></div>
 				<div class='btn btn-sm btn-success pull-right' id='save_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('oincs_save_count'); ?></div>
 			
@@ -218,6 +221,8 @@ if (isset($success))
 				<div class='btn btn-sm btn-success pull-right' id='check_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-check">&nbsp</span><?php echo $this->lang->line('oincs_check_count'); ?></div>
 				
 			<?php endif; ?>
+			<?php echo form_close(); ?>
+		</div>	
 		<?php
 		}
 		?>
@@ -289,8 +294,7 @@ $(document).ready(function()
 
 	$("#check_button").click(function()
     {
-		
-		$('#hidden_ctv').val(1);
+		console.log('ManhVT Clicked');
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name . "/do_check"); ?>');
 		$('#buttons_form').submit();
     });

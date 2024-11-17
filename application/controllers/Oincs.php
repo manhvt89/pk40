@@ -908,8 +908,8 @@ class Oincs extends Secure_Controller
 			//var_dump($this->count_lib->get_cart());
 			//if($re == 'B')
 			//{
-				$data['cart'] = make_diff_first($this->count_lib->get_cart());
-				//var_dump($data['cart']);
+			$data['cart'] = make_diff_first($this->count_lib->get_cart());
+			//var_dump($data['cart']);die();
 			//} else {
 			//	$data['cart'] = $this->count_lib->get_cart();
 			//}
@@ -917,7 +917,7 @@ class Oincs extends Secure_Controller
 			//$data['cart'] = $this->count_lib->get_cart();
 			//var_dump($data['cart']);die();
 			$data['quantity'] = $this->count_lib->get_quantity();
-
+				
 			$this->load->view("oincs/register", $data);
 		} else {
 			//echo '123';
@@ -1026,7 +1026,7 @@ class Oincs extends Secure_Controller
 
 			//$data['cart'] = $this->count_lib->get_cart();
 			$data['cart'] = make_diff_first($this->count_lib->get_cart());
-			
+			//var_dump($data['cart']);die();
 
 			$data['quantity'] = $this->count_lib->get_quantity();
 			
@@ -1376,10 +1376,8 @@ class Oincs extends Secure_Controller
 
 	public function do_check()
 	{
-		
+		//echo '123';
 		$data = [];
-		
-		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = get_fullname($employee_info->first_name,$employee_info->last_name);

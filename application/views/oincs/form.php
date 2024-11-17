@@ -5,11 +5,33 @@
 				text-align: left;
 				margin-bottom: 0;
 				padding-top: 0px;
+				height: 25px;
+    			line-height: 25px;
+				padding-left: 5px;
 			}
 
 			#subcategory .right {
 				text-align: right;
 			}
+
+			.form-horizontal .form-group-sm .control-label {
+				padding-top: 3px;
+			}
+			#category_select_group .control-label {
+				padding-top: 8px;
+				
+			}
+
+			#subcategory .form-group {
+				margin-bottom: 5px;
+			}
+			#subcategory input {
+				margin-right: -15px;
+			}
+		}
+
+		#mode_manual{
+			margin-left: 10px;
 		}
         
 </style>
@@ -97,7 +119,7 @@
 		<!-- Dropdown danh mục chính, chỉ hiển thị khi chọn "Thủ công" -->
 		<div class="form-group form-group-sm" id="category_select_group" style="display:none;">
 			<?php echo form_label('Danh mục', 'category_select', array('class'=>'control-label col-xs-3')); ?>
-			<div class="col-xs-3">
+			<div class="col-xs-6">
 				<select id="category_select" name="category_select" class="form-control">
 					<option value=""><?php echo $this->lang->line('oincs_select_category'); ?></option>
 					<option value="lens">Mắt kính</option>
