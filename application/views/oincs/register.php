@@ -41,7 +41,7 @@ if (isset($success))
 
 <!-- Sale Items List -->
 	
-	<table class="sales_table_100 add-new" id="register">
+	<table class="sales_table_100 add-new" id="count">
 		<thead>
 			<tr>
 				<th style="width: 5%;"><?php echo $this->lang->line('common_delete'); ?></th>
