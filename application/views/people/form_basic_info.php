@@ -35,20 +35,38 @@
 
 	</div>
 </div>
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('common_age'), 'age', array('class'=>'control-label col-xs-3')); ?>
-	<div class='col-xs-8'>
-		<div class="input-group">
-			<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-age"></span></span>
-			<?php echo form_input(array(
-					'name'=>'age',
-					'id'=>'age',
-					'class'=>'form-control input-sm',
-					'value'=>$person_info->age)
-			);?>
+<?php if($this->config->item('dob_type') == 'only_year'): ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('common_age'), 'age', array('class'=>'control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group">
+				<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-age"></span></span>
+				<?php echo form_input(array(
+						'name'=>'age',
+						'id'=>'age',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->age)
+				);?>
+			</div>
 		</div>
 	</div>
-</div>
+<?php else : ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('common_dob'), 'age', array('class'=>'control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group">
+				<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-age"></span></span>
+				<?php echo form_input(array(
+						'name'=>'age',
+						'id'=>'age',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->age)
+				);?>
+			</div>
+		</div>
+	</div>
+	
+<?php endif;?>
 
 <div class="form-group form-group-sm" style="display: none">
 	<?php echo form_label($this->lang->line('common_email'), 'email', array('class'=>'control-label col-xs-3')); ?>
@@ -147,6 +165,7 @@
 				'value'=>'Việt Nam')
 				);?>
 
+<?php if(!empty($this->config->item('customer_is_facebook'))):?>
 <div class="form-group form-group-sm">
 	<?php echo form_label($this->lang->line('common_facebook_url'), 'facebook_url', array('class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
@@ -161,6 +180,8 @@
 		</div>
 	</div>
 </div>
+<?php endif; ?>
+<?php if(!empty($this->config->item('customer_is_comments'))):?>
 
 <div class="form-group form-group-sm">	
 	<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label col-xs-3')); ?>
@@ -173,3 +194,6 @@
 				);?>
 	</div>
 </div>
+<?php else: ?>
+	<?php echo form_hidden('comments', ''); ?>
+<?php endif; ?>

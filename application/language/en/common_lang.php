@@ -124,3 +124,10 @@ $lang['attendance_status'] = 'Trạng thái';
 $lang['module_attendances'] = 'Chấm công';
 $lang['attendances_no_attendances_to_display'] = 'Chưa có tài liệu nào';
 
+/** Config */
+
+/**
+ * 
+ */
+$lang['common_dob'] ="Ngày sinh";
+

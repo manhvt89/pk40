@@ -1480,5 +1480,46 @@ if (!function_exists('form_field')) {
 	<?php $i++; endforeach; 
  }
 
+/**
+ * Hỗ trợ check_box config
+ */
+ if (!function_exists('checkbox_config')) {
+    function checkbox_config($label, $name, $value = '', $checked = 'checked', $required = false, $options = [])
+    {
+        $requiredClass = $required ? ' required' : '';
+        $labelClass = isset($options['label_class']) ? $options['label_class'] : 'control-label col-xs-2';
+        $inputClass = isset($options['input_class']) ? $options['input_class'] : 'form-control input-sm';
+        $icon = isset($options['icon']) ? $options['icon'] : null;
+        $suffix = isset($options['suffix']) ? $options['suffix'] : null;
+
+        $field = "<div class='form-group form-group-sm'>";
+        $field .= form_label($label, $name, ['class' => $labelClass . $requiredClass]);
+        
+        $field .= "<div class='col-xs-6'>";
+        if ($icon) {
+            $field .= "<div class='input-group'><span class='input-group-addon input-sm'><span class='glyphicon glyphicon-$icon'></span></span>";
+        }
+
+        $value = $name;
+
+		$field .= form_checkbox([
+						'name' => $name,
+						'id' => $name,
+						'value' => $value,
+                        'checked'=> $checked]);
+		
+        if ($icon) {
+            $field .= "</div>"; // Đóng thẻ input-group nếu có icon
+        }
+
+        // Thêm hậu tố nếu có
+       
+        
+        $field .= "</div></div>";
+        
+        return $field;
+    }
+}
+
 
 ?>

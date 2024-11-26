@@ -237,3 +237,14 @@ $lang['config_qr_payment_bankaccount'] = 'Số tài khoản';
 $lang['config_qr_payment_accountname'] = 'Tên người thụ hưởng';
 $lang['config_qr_payment_bankname'] = 'Tên ngân hàng';
 $lang['config_qr_payment_bank_code'] = 'Mã ngân hàng';
+
+/** customer tab*/
+$lang['config_customer'] = "Khách hàng";
+$lang['config_dob_type'] = 'Loại Ngày sinh';
+$lang['only_year'] = 'Chỉ năm';
+$lang['full_dob'] = 'ngày/tháng/năm';
+$lang['customer_is_facebook'] = "Cho phép nhập url facebook";
+$lang['customer_is_comments'] = 'Cho phép nhập lưu ý';
+$lang['customer_is_company_name']='Cho phép tên công ty';
+$lang['customer_is_total'] = 'Cho phép hiển thị tổng tiền';
+$lang['customer_is_discount_percent'] = 'Cho phép nhập giảm giá %';

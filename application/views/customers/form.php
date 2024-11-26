@@ -6,6 +6,7 @@
 	<fieldset id="customer_basic_info">
 		<?php $this->load->view("people/form_basic_info"); ?>
 
+		<?php if(!empty($this->config->item('customer_is_company_name'))):?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
@@ -16,6 +17,7 @@
 						);?>
 			</div>
 		</div>
+		<?php endif; ?>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
@@ -28,7 +30,7 @@
 						);?>
 			</div>
 		</div>
-		
+		<?php if(!empty($this->config->item('customer_is_total'))):?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
 			<div class="col-xs-4">
@@ -49,7 +51,9 @@
 				</div>
 			</div>
 		</div>
-		
+		<?php endif; ?>
+
+		<?php if(!empty($this->config->item('customer_is_discount_percent'))):?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>
@@ -64,6 +68,7 @@
 				</div>
 			</div>	
 		</div>
+		<?php endif; ?>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
@@ -79,6 +84,12 @@
 //validation and submit handling
 $(document).ready(function()
 {
+	<?php if($this->config->item('dob_type') == 'only_year'): ?>
+		$('#age').mask('0000');
+	<?php else: ?>
+		$('#age').mask('00/00/0000');
+	<?php endif; ?>
+
 	if(typeof $('#dlg_form').attr('data-value') != 'undefined') {
 		$('#phone_number').val($('#dlg_form').attr('data-value'));
 	}else{

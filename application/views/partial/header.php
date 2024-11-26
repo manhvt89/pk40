@@ -108,6 +108,7 @@
 
 	<?php $this->load->view('partial/header_js'); ?>
 	<script src="/app.js"></script>
+	<script src="dist/jquery.mask.min.js"> </script>
 	<?php $this->load->view('partial/lang_lines'); ?>
 
 	<style type="text/css">

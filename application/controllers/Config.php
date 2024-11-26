@@ -305,6 +305,14 @@ class Config extends Secure_Controller
 
 		return $themes;
 	}
+
+	private function _dob_types()
+	{
+		return [
+			'only_year'=>$this->lang->line('only_year'),
+			'full_dob'=>$this->lang->line('full_dob')
+		];
+	}
 	
 	public function index()
 	{
@@ -329,10 +337,14 @@ class Config extends Secure_Controller
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
 		$data['themes'] = $this->_themes();
+
+		$data['dob_types'] = $this->_dob_types();
+
 		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
 		$_caTab = [
 			'info' =>'info_tab',
 			'general'=>'general_tab',
+			'customer'=>'customer_tab',
 			'product'=>'product_tab',
 			'locale'=>'locale_tab',
 			'barcode'=>'barcode_tab',
@@ -876,6 +888,23 @@ class Config extends Secure_Controller
 		
 		echo json_encode(array('success' => 1, 'message' =>'Đã lưu thành công'));
 	}
+
+	public function save_customer()
+	{
+		$_data = array(
+			'dob_type'=>$this->input->post('dob_type'), // Chỉ năm hoặc  ngay/thang/năm_sinh
+			'customer_is_facebook'=>$this->input->post('customer_is_facebook'),
+			'customer_is_comments'=>$this->input->post('customer_is_comments'),
+			'customer_is_company_name'=>$this->input->post('customer_is_company_name'),
+			'customer_is_total'=>$this->input->post('customer_is_total'),
+			'customer_is_discount_percent'=>$this->input->post('customer_is_discount_percent')
+		);
+
+		$result = $this->Appconfig->batch_save($_data);
+		
+		echo json_encode(array('success' => 1, 'message' =>'Đã lưu thành công'));
+	}
+
 	/**
 	 * Bổ sung function để phân quyền
 	 */
@@ -932,6 +961,11 @@ class Config extends Secure_Controller
 		return true;
 	}
 	public function prescription_tab()
+	{
+		return true;
+	}
+
+	public function customer_tab()
 	{
 		return true;
 	}
