@@ -3,7 +3,10 @@
 function load_config()
 {
     $CI =& get_instance();
-
+    /** Thiết lập giá trị mặc định nếu có */
+    $CI->config->set_item('dob_type', 'only_year');
+    
+    
     //var_dump($CI->session->userdata('person_id'));
     foreach($CI->Appconfig->get_all()->result() as $app_config)
     {	

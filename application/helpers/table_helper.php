@@ -510,14 +510,15 @@ function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('people.person_id' => $CI->lang->line('common_id')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
+	$headers = [
+		['people.person_id' => $CI->lang->line('common_id')],
+		['last_name' => $CI->lang->line('common_last_name')],
+		['first_name' => $CI->lang->line('common_first_name')],
 		//array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number')),
-		array('address_1' => $CI->lang->line('common_address_1'))
-	);
+		['age' => $CI->lang->line('common_dob')],
+		['phone_number' => $CI->lang->line('common_phone_number')],
+		['address_1' => $CI->lang->line('common_address_1')]
+	];
 
 	
 	if($CI->Employee->has_grant('customers_phonenumber_hide'))
@@ -544,6 +545,7 @@ function get_person_data_row($person, $controller)
 			'first_name' => anchor($controller_name."/view_detail/$person->person_uuid", $person->first_name,
 			array('class'=>'', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>'')),
 			'last_name' => $person->last_name,
+			'age' => $person->age,
 			//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 			'phone_number' => $person->phone_number,
 			'address_1'=>$person->address_1,
@@ -557,6 +559,7 @@ function get_person_data_row($person, $controller)
 			'people.person_id' => $person->person_id,
 			'first_name' => $person->first_name,
 			'last_name' => $person->last_name,
+			'age' => $person->age,
 			//'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 			'phone_number' => $person->phone_number,
 			'address_1'=>$person->address_1,
