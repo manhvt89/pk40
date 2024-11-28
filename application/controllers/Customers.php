@@ -95,12 +95,14 @@ class Customers extends Persons
         } */
 		if($info->age == '')
 		{
+			/*
 			if($this->config->item('dob_type') == 'only_year')
 			{
 				$info->age = '1970';
 			} else {
 				$info->age = '01/01/1970';
 			}
+			*/
 		}
 		//var_dump($info);
 		$info->first_name = get_fullname($info->first_name, $info->last_name);
