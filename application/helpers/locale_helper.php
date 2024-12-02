@@ -1520,6 +1520,38 @@ if (!function_exists('form_field')) {
         return $field;
     }
 }
+/**
+ * Chuẩn hóa chuỗi, ký tự đầu tiên của từ viết hoa
+ */
+if (!function_exists('capitalize')) {
+    function capitalize($string)
+        {
+            return mb_convert_case($string, MB_CASE_TITLE, "UTF-8");
+        }
+}
 
+// Chuyển đổi ngày từ định dạng dd/mm/yyyy sang yyyy/mm/dd
+if (!function_exists('convert_date_format')) {
+    function convert_date_format($date)
+    {
+        $dateParts = explode('/', $date);
+        return isset($dateParts[2], $dateParts[1], $dateParts[0]) ? "{$dateParts[2]}/{$dateParts[1]}/{$dateParts[0]}" : $date;
+    }
+}
+// Hàm helper để loại bỏ trùng lặp theo key
+if (!function_exists('array_unique_by_key')) {
+    function array_unique_by_key($array, $key)
+    {
+        $temp = [];
+        $unique = [];
+        foreach ($array as $item) {
+            if (!isset($temp[$item[$key]])) {
+                $temp[$item[$key]] = true;
+                $unique[] = $item;
+            }
+        }
+        return $unique;
+    }
+}
 
 ?>

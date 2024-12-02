@@ -187,14 +187,12 @@ class Customer extends Person
  	/*
 	Get search suggestions to find customers
 	*/
-	public function get_search_suggestions($search, $unique = TRUE, $limit = 25)
+	public function get_search_suggestions_($search, $unique = TRUE, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');
 		$this->db->group_start();		
-			//$this->db->like('first_name', $search);
-			//$this->db->or_like('last_name', $search); 
 			
 		if(ctype_digit($search))
 		{
@@ -218,8 +216,6 @@ class Customer extends Person
 					//$this->db->where('MATCH (last_name, first_name) AGAINST ("'.$search.'")',NULL,FALSE);
 				}
 			}
-			//$this->db->like('CONCAT(last_name, " ", first_name)', $search);
-			//$this->db->or_like('account_number', $search);
 		}
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
@@ -263,21 +259,84 @@ class Customer extends Person
 			}
 		}
 		
-		//only return $limit suggestions
-		//if(count($suggestions > $limit))
-		/* $query = $this->db->last_query();
-		$explain_sql = 'EXPLAIN '.$query;
-		$explain = $this->db->query($explain_sql);
-		$explain_result = $explain->result_array();
-		echo $query;
-		var_dump($explain_result); */
-		//if($suggestions > $limit)
 		if(count($suggestions) > $limit)
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
+	}
+
+	public function get_search_suggestions($search, $unique = TRUE, $limit = 25)
+	{
+		$suggestions = [];
+		$this->db->from('customers');
+		$this->db->join('people', 'customers.person_id = people.person_id');
+		$this->db->group_start();
+
+		// Điều kiện tìm kiếm
+		if (ctype_digit($search)) {
+			$this->db->like('phone_number', $search, 'after');
+		} elseif (preg_match('/^C\d+$/', $search) || preg_match('/^VH\d+$/', $search)) {
+			$this->db->where('account_number', $search);
+		} else {
+			$this->db->like('first_name', $search)
+					->or_like('last_name', $search)
+					->or_like('CONCAT(last_name, " ", first_name)', $search);
+		}
+
+		$this->db->group_end();
+		$this->db->where('deleted', 0);
+		$this->db->order_by('last_name', 'asc');
+		$this->db->limit($limit);
+
+		// Lấy kết quả chính
+		$query = $this->db->get();
+		$suggestions = $this->format_suggestions($query);
+
+		// Thêm kết quả mở rộng nếu không yêu cầu duy nhất
+		if (!$unique) {
+			$fields = ['email', 'phone_number', 'account_number'];
+			foreach ($fields as $field) {
+				$this->db->from('customers');
+				$this->db->join('people', 'customers.person_id = people.person_id');
+				$this->db->where('deleted', 0);
+				$this->db->like($field, $search);
+				$this->db->order_by($field, 'asc');
+				
+				$query = $this->db->get();
+				$suggestions = array_merge($suggestions, $this->format_suggestions($query, $field));
+			}
+		}
+
+		// Giới hạn kết quả
+		return array_slice($suggestions, 0, $limit);
+	}
+
+	/**
+	 * Hàm hỗ trợ định dạng kết quả
+	 */
+	private function format_suggestions($query, $field = 'full_name')
+	{
+		$results = [];
+		foreach ($query->result() as $row) {
+			$row->address_1 = capitalize($row->address_1);
+			if ($field === 'email') {
+				$label = $row->email;
+			} elseif ($field === 'phone_number') {
+				$label = $row->phone_number;
+			} elseif ($field === 'account_number') {
+				$label = $row->account_number;
+			} else {
+				$label = "{$row->last_name} {$row->first_name} - {$row->phone_number} - {$row->address_1}";
+			}
+			
+			$results[] = [
+				'value' => $row->person_id,
+				'label' => $label,
+			];
+		}
+		return $results;
 	}
 
  	/*

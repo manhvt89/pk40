@@ -360,7 +360,7 @@ class Test extends Secure_Controller
             $data['age'] = $customer_info->age;
 			$data['last_name'] = $customer_info->last_name;
 			$data['customer_email'] = $customer_info->email;
-			$data['customer_address'] = $customer_info->address_1;
+			$data['customer_address'] = capitalize($customer_info->address_1);
 			$data['customer_phone'] = $customer_info->phone_number;
 			$data['customer_old_data'] = $this->test_lib->old_data_test_by_customer($customer_id);
 
@@ -369,7 +369,7 @@ class Test extends Secure_Controller
 
 			$data['customer_info'] = implode("\n", array(
 				$data['customer'],
-				$data['customer_address'],
+				capitalize($data['customer_address']),
 				$data['customer_account_number']
 			));
             if($this->test_lib->get_test_id() > 0) {
@@ -384,8 +384,6 @@ class Test extends Secure_Controller
 
 	private function _reload($data = array())
 	{
-
-        
 
 		$data['test_id'] = $this->test_lib->get_test_id();
 	    $data['cart'] = $this->test_lib->get_cart();
@@ -449,8 +447,6 @@ class Test extends Secure_Controller
 				$data['old_toltal'] = $test['old_toltal'] != "" ? explode(';', $test['old_toltal']) : $data['toltal'];
 				$data['reason'] = $test['reason'];
             }
-
-			
 
         }else{
 			if($this->Employee->has_grant('test_step_one'))

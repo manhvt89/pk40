@@ -294,7 +294,7 @@ if (isset($success))
 <div id="overall_sale_" class="col-12 col-md-5 order-1 order-md-1 panel panel-default">
 	<div class="panel-body">
 		<?php
-		if(isset($customer))
+		if(isset($customer) && $customer != '')
 		{
 		?>
 			<table class="sales_table_100">

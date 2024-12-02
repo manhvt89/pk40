@@ -655,7 +655,7 @@ class Sales extends Secure_Controller
 	public function complete()
 	{
 
-		$data = array();
+		$data = [];
 
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['subtotal'] = $this->sale_lib->get_subtotal();
@@ -668,7 +668,7 @@ class Sales extends Secure_Controller
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['comments'] = $this->sale_lib->get_comment();
+		$data['comments'] = $this->sale_lib->get_comment() ?: '';
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$amount_change = $this->sale_lib->get_amount_due() * -1;
@@ -976,7 +976,7 @@ class Sales extends Secure_Controller
 		return $this->sale_lib->get_invoice_number();
 	}
 
-	private function _load_customer_data($customer_id, &$data, $totals = FALSE)
+	private function _load_customer_data_($customer_id, &$data, $totals = FALSE)
 	{	
 		$customer_info = array();
 		
@@ -994,7 +994,7 @@ class Sales extends Secure_Controller
 				$data['first_name'] = $customer_info->first_name;
 				$data['last_name'] = $customer_info->last_name;
 				$data['customer_email'] = $customer_info->email;
-				$data['customer_address'] = $customer_info->address_1;
+				$data['customer_address'] = capitalize($customer_info->address_1);
 				$data['phone_number'] = $customer_info->phone_number;
 				//$data['points'] = $customer_info->points; get from session
 				$data['points'] = $this->sale_lib->get_points();
@@ -1036,7 +1036,62 @@ class Sales extends Secure_Controller
 		return $customer_info;
 	}
 
-	private function _load_sale_data($sale_id)
+	private function _load_customer_data($customer_id, &$data, $totals = FALSE)
+	{
+		// Lấy thông tin khách hàng
+		$customer_info = ($customer_id != -1) ? $this->sale_lib->get_obj_customer() : null;
+		if (empty($customer_info) && $customer_id != -1) {
+			$customer_info = $this->Customer->get_info($customer_id);
+		}
+
+		// Thiết lập dữ liệu mặc định
+		$default_data = [
+			'customer' => '',
+			'account_number' => '',
+			'first_name' => '',
+			'last_name' => '',
+			'customer_email' => '',
+			'customer_address' => '',
+			'phone_number' => '',
+			'points' => $this->sale_lib->get_points(),
+			'customer_location' => '',
+			'customer_account_number' => '',
+			'customer_discount_percent' => '',
+		];
+		$data = array_merge($data, $default_data);
+		// Nếu có thông tin khách hàng, cập nhật dữ liệu
+		if (!empty($customer_info)) {
+			$data = array_merge($data, [
+				'customer' => "{$customer_info->last_name} {$customer_info->first_name}",
+				'account_number' => $customer_info->account_number,
+				'first_name' => $customer_info->first_name,
+				'last_name' => $customer_info->last_name,
+				'customer_email' => $customer_info->email,
+				'customer_address' => capitalize($customer_info->address_1),
+				'phone_number' => $customer_info->phone_number,
+				'customer_location' => trim("{$customer_info->zip} {$customer_info->city}"),
+				'customer_account_number' => $customer_info->account_number,
+				'customer_discount_percent' => $customer_info->discount_percent,
+			]);
+		} 
+
+		// Tính toán tổng nếu cần
+		if ($totals) {
+			$data['customer_total'] = $this->sale_lib->get_customer_total();
+		}
+
+		// Thông tin khách hàng dạng chuỗi
+		$data['customer_info'] = implode("\n", array_filter([
+			$data['customer'],
+			$data['customer_address'],
+			$data['customer_location'],
+			$data['customer_account_number']
+		]));
+
+		return $customer_info;
+	}
+
+	private function _load_sale_data_($sale_id)
 	{
 		$this->sale_lib->clear_all(); //empty carts
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
@@ -1113,10 +1168,87 @@ class Sales extends Secure_Controller
 
 		}
 		$this->sale_lib->clear_all(); //empty carts
+		
 		return $this->xss_clean($data);
 	}
 
-	private function _reload($data = array())
+	private function _load_sale_data($sale_id)
+	{
+		$this->sale_lib->clear_all(); // Empty carts
+
+		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+
+		// Dữ liệu mặc định
+		$default_data = [
+			'cart' => '',
+			'payments' => '',
+			'subtotal' => '',
+			'discounted_subtotal' => '',
+			'tax_exclusive_subtotal' => '',
+			'taxes' => '',
+			'total' => '',
+			'discount' => '',
+			'receipt_title' => '',
+			'status' => 1,
+			'transaction_time' => '',
+			'transaction_date' => '',
+			'show_stock_locations' => $this->Stock_location->show_locations('sales'),
+			'amount_change' => '',
+			'amount_due' => '',
+			'employee' => '',
+			'sale_id_num' => $sale_id,
+			'code' => '',
+			'sale_id' => 'POS ' . $sale_id,
+			'comments' => '',
+			'invoice_number' => '',
+			'sale_uuid' => '',
+			'company_info' => implode("\n", [
+				capitalize($this->config->item('address')),
+				$this->config->item('phone'),
+				$this->config->item('account_number')
+			]),
+			'barcode' => $this->barcode_lib->generate_receipt_barcode(''),
+			'print_after_sale' => false,
+		];
+
+		// Nếu có thông tin bán hàng, ghi đè giá trị
+		if ($sale_info) {
+
+			$this->sale_lib->copy_entire_sale($sale_id);
+
+			$default_data = array_merge($default_data, [
+				'cart' => $this->sale_lib->get_cart(),
+				'payments' => $this->sale_lib->get_payments(),
+				'subtotal' => $this->sale_lib->get_subtotal(),
+				'discounted_subtotal' => $this->sale_lib->get_subtotal(true),
+				'tax_exclusive_subtotal' => $this->sale_lib->get_subtotal(true, true),
+				'taxes' => $this->sale_lib->get_taxes(),
+				'total' => $this->sale_lib->get_total(),
+				'discount' => $this->sale_lib->get_discount(),
+				'receipt_title' => $this->lang->line('sales_receipt'),
+				'transaction_time' => date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])),
+				'transaction_date' => date($this->config->item('dateformat'), strtotime($sale_info['sale_time'])),
+				'amount_change' => $this->sale_lib->get_amount_due() * -1,
+				'amount_due' => $this->sale_lib->get_amount_due(),
+				'code' => $sale_info['code'],
+				'comments' => $sale_info['comment'],
+				'invoice_number' => $sale_info['invoice_number'],
+				'sale_uuid' => $sale_info['sale_uuid'],
+				'barcode' => $this->barcode_lib->generate_receipt_barcode($sale_info['code']),
+			]);
+		}
+
+		// Thêm thông tin nhân viên
+		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
+		$default_data['employee'] = $employee_info->last_name . ' ' . $employee_info->first_name;
+
+		// Tải thông tin khách hàng
+		$this->_load_customer_data($this->sale_lib->get_customer(), $default_data);
+
+		$this->sale_lib->clear_all(); // Empty carts
+		return $this->xss_clean($default_data);
+	}
+	private function _reload_($data = array())
 	{		
 		if($this->sale_lib->get_ctv() == null) { // Chỉ khi chưa có trong session thì mới đọc trong csdl;
 			$ctvs = $this->Ctv->get_list();
@@ -1193,6 +1325,82 @@ class Sales extends Secure_Controller
 		$this->load->view("sales/register", $data);
 	}
 
+	private function _reload($data = [])
+	{
+		// Kiểm tra và thiết lập CTV nếu cần
+		if ($this->sale_lib->get_ctv() == null) {
+			$this->sale_lib->set_ctv($this->Ctv->get_list());
+		}
+	
+		// Thiết lập dữ liệu từ sale_lib
+		$_customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, true);
+		$data = array_merge($data, [
+			'sale_id' => $this->sale_lib->get_sale_id(),
+			'cart' => $this->sale_lib->get_cart(),
+			'quantity' => $this->sale_lib->get_quantity(),
+			'points' => $this->sale_lib->get_points(),
+			'modes' => [
+				'sale' => $this->lang->line('sales_sale'),
+				'return' => $this->lang->line('sales_return'),
+				'payment' => 'Thanh toán'
+			],
+			'mode' => $this->sale_lib->get_mode(),
+			'stock_locations' => $this->Stock_location->get_allowed_locations('sales'),
+			'stock_location' => $this->sale_lib->get_sale_location(),
+			'subtotal' => $this->sale_lib->get_subtotal(true),
+			'tax_exclusive_subtotal' => $this->sale_lib->get_subtotal(true, true),
+			'taxes' => $this->sale_lib->get_taxes(),
+			'discount' => $this->sale_lib->get_discount(),
+			'total' => $this->sale_lib->get_total(),
+			'comment' => $this->sale_lib->get_comment(),
+			'email_receipt' => $this->sale_lib->get_email_receipt(),
+			'payments_total' => $this->sale_lib->get_payments_total(),
+			'amount_due' => $this->sale_lib->get_amount_due(),
+			'payments' => $this->sale_lib->get_payments(),
+			'payment_options' => $this->Sale->get_payment_options(),
+			'partner_id' => $this->sale_lib->get_partner_id(),
+			'test_id' => $this->sale_lib->get_test_id(),
+			'items_module_allowed' => $this->Employee->has_grant('sales_price_edit'),
+			'ctvs' => $this->sale_lib->get_ctv(),
+			'tests' => array(),
+			'detail_tests' => array(),
+			'edit' => $this->sale_lib->get_edit(),
+			'invoice_number' => $this->_substitute_invoice_number($_customer_info),
+			'invoice_number_enabled' => $this->sale_lib->is_invoice_number_enabled(),
+			'print_after_sale' => $this->sale_lib->is_print_after_sale(),
+			'payments_cover_total' => $this->sale_lib->get_amount_due() <= 0
+		]);
+		
+		// Kiểm tra khách hàng
+		if ($this->sale_lib->get_customer() > 0) {
+			$data['detail_tests'] = $this->Testex->get_tests_by_customer($this->sale_lib->get_customer(), 1);
+		} else {
+			$data['tests'] = $this->_get_tests_for_today();
+		}
+	
+		// Chuẩn hóa dữ liệu
+		$data = $this->xss_clean($data);
+	
+		// Tải view
+		$this->load->view("sales/register", $data);
+	
+	}
+
+	// Hàm riêng để tải danh sách bài kiểm tra
+	private function _get_tests_for_today()
+	{
+		$filters = [
+			'type' => 'all',
+			'location_id' => 'all',
+			'start_date' => date('Y-m-d'),
+			'end_date' => date('Y-m-d')
+		];
+		$tests = $this->Testex->search('', $filters, 500, 0, 'test_time', 'desc')->result_array();
+		return array_unique_by_key($tests, 'customer_id');
+	}
+
+	
+
 	public function receipt($uuid)
 	{
 		$sale_info = $this->Sale->get_info($uuid)->row();
@@ -1204,10 +1412,6 @@ class Sales extends Secure_Controller
 		}
 		$data = $this->_load_sale_data($sale_id);
 	
-		
-		//$this->ciqrcode->generate();
-		//die();
-		//$data['qrcode'] = $dir. $save_name;
 		if($this->config->item('qrcode') == 1)
 		{
 			

@@ -17,16 +17,19 @@ class Customers extends Persons
 	*/
 	public function index()
 	{
+		/*
 		if($this->logedUser_type != 2)
 		{
-			$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
-			$this->load->view('people/manage', $data);
-			
+			*/
+		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
+		$this->load->view('people/manage', $data);
+		/*	
 		} else { // Bác sĩ type = 2 laf bac si;
 			$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
 
 				$this->load->view('people/manage', $data);
 		}
+		*/
 	}
 	
 	/*
@@ -35,24 +38,51 @@ class Customers extends Persons
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->input->get('search', TRUE) ?? '';
 
-		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Customer->get_found_rows($search);
+        $limit  = $this->input->get('limit', TRUE) ?? 10;
 
-		$data_rows = array();
-		foreach($customers->result() as $person)
-		{
-			$data_rows[] = get_person_data_row($person, $this);
-		}
+        $offset = $this->input->get('offset', TRUE) ?? 0;
 
-		$data_rows = $this->xss_clean($data_rows);
+        $sort   = $this->input->get('sort', TRUE) ?? '';
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+        $order  = $this->input->get('order', TRUE) ?? 'asc';
+
+		try {
+
+            $customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
+
+            $total_rows = $this->Customer->get_found_rows($search);
+
+            $data_rows = [];
+
+            foreach ($customers->result() as $person) {
+
+                $data_rows[] = get_person_data_row($person, $this);
+
+            }
+
+            echo json_encode([
+
+                'total' => $total_rows,
+
+                'rows' => $this->xss_clean($data_rows),
+
+            ]);
+
+        } catch (Exception $e) {
+
+            echo json_encode([
+
+                'total' => 0,
+
+                'rows' => [],
+
+                'error' => $e->getMessage(),
+
+            ]);
+
+        }
 	}
 	
 	/*
@@ -60,16 +90,36 @@ class Customers extends Persons
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
-		echo json_encode($suggestions);
+		//$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
+		//echo json_encode($suggestions);
+		$this->find(); //GET
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), TRUE));
+		//$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), TRUE));
 
-		echo json_encode($suggestions);
+		//echo json_encode($suggestions);
+		$this->find(true); //POST
 	}
+
+	/**
+	 * $is_search = TRUE post
+	 * FALSE get
+	 */
+
+	public function find($is_search = FALSE)
+
+    {
+
+        $term = $is_search ? $this->input->post('term', TRUE) : $this->input->get('term', TRUE);
+
+        $suggestions = $this->Customer->get_search_suggestions($term, TRUE);
+
+        echo json_encode($this->xss_clean($suggestions));
+
+    }
+
 	
 	/*
 	    Loads the customer edit form
@@ -83,27 +133,14 @@ class Customers extends Persons
 			$info->$property = $this->xss_clean($value);
 		}
 		$city_ = get_cities_list();
-        $cities = array();
+        $cities = [];
         foreach ($city_ as $key=>$value)
         {
             $cities[$value] = $value;
         }
 		$data['city'] = $this->config->item('default_city');//'Bình Thuận';
-        /* if($data['city'] == '' || $data['city'] == 'HN')
-        {
-            $data['city'] = 'Bình Thuận';
-        } */
-		if($info->age == '')
-		{
-			/*
-			if($this->config->item('dob_type') == 'only_year')
-			{
-				$info->age = '1970';
-			} else {
-				$info->age = '01/01/1970';
-			}
-			*/
-		}
+        
+		
 		//var_dump($info);
 		$info->first_name = get_fullname($info->first_name, $info->last_name);
 		$data['person_info'] = $info;
@@ -117,67 +154,70 @@ class Customers extends Persons
 	*/
 	public function save($customer_id = -1)
 	{
-		$_firstname = $this->input->post('first_name');
-		$_aName = extract_fullname($_firstname);
-		$person_data = array(
-			'first_name' => mb_convert_case($_aName['firstname'], MB_CASE_TITLE, "UTF-8"),
-			'last_name' => mb_convert_case($_aName['lastname'], MB_CASE_TITLE, "UTF-8"),
-			'gender' => $this->input->post('gender'),
-			'email' => $this->input->post('email'),
-			'phone_number' => $this->input->post('phone_number'),
-			'address_1' => $this->input->post('address_1'),
-			'address_2' => $this->input->post('address_2'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state'),
-			'zip' => $this->input->post('zip'),
-			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments'),
-            'age'=>$this->input->post('age')==''?0:$this->input->post('age'),
-            'facebook'=>$this->input->post('facebook')
-		);
-		//var_dump($this->input->post('age'));
-        if($customer_id > 0)
-        {
+		// Gom input lại để dễ bảo trì
+		$input = $this->input->post();
+		
+		// Xử lý tên
+		$_aName = extract_fullname($input['first_name']);
+		$person_data = [
+			'first_name'    => capitalize($_aName['firstname']),
+			'last_name'     => capitalize($_aName['lastname']),
+			'gender'        => $input['gender'] ?? 1,
+			'email'         => $input['email'] ?? '',
+			'phone_number'  => $input['phone_number'] ?? '',
+			'address_1'     => capitalize($input['address_1'] ?? ''),
+			'address_2'     => capitalize($input['address_2'] ?? ''),
+			'city'          => $input['city'] ?? '',
+			'state'         => $input['state'] ?? '',
+			'zip'           => $input['zip'] ?? '',
+			'country'       => $input['country'] ?? '',
+			'comments'      => $input['comments'] ?? '',
+			'age'           => $input['age'] ?? 'NA',
+			'facebook'      => $input['facebook'] ?? '',
+		];
 
-            $customer_data = array(
+		// Xử lý dữ liệu khách hàng
+		$customer_data = [
+			'company_name'      => $input['company_name'] ?? '',
+			'discount_percent'  => $input['discount_percent'] ?? 0.00,
+			'taxable'           => isset($input['taxable']),
+		];
 
-                'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
-                'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
-                'taxable' => $this->input->post('taxable') != NULL
-            );
-        }else {
-            $customer_data = array(
-                'account_number' => 'C' . time(),
-                'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
-                'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
-                'taxable' => $this->input->post('taxable') != NULL
-            );
-        }
-
-		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
-		{
-			$person_data = $this->xss_clean($person_data);
-			$customer_data = $this->xss_clean($customer_data);
-			
-			//New customer
-			if($customer_id == -1)
-			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_adding').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_data['person_id']));
-			}
-			else //Existing customer
-			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_updating').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_id));
-			}
+		// Chỉ thêm account_number nếu là khách hàng mới
+		if ($customer_id === -1) {
+			$customer_data['account_number'] = 'C' . time();
 		}
-		else//failure
-		{
-			$person_data = $this->xss_clean($person_data);
 
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_error_adding_updating').' '.
-							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+		// Lưu dữ liệu
+		if ($this->Customer->save_customer($person_data, $customer_data, $customer_id)) {
+			$this->output_success($person_data, $customer_data, $customer_id);
+		} else {
+			$this->output_failure($person_data);
 		}
+	}
+
+	// Hàm output thành công
+	private function output_success($person_data, $customer_data, $customer_id)
+	{
+		$message = $customer_id == -1
+			? $this->lang->line('customers_successful_adding') . ' ' . $person_data['first_name'] . ' ' . $person_data['last_name']
+			: $this->lang->line('customers_successful_updating') . ' ' . $person_data['first_name'] . ' ' . $person_data['last_name'];
+
+		echo json_encode([
+			'success' => TRUE,
+			'message' => $message,
+			'id' => $customer_id == -1 ? $customer_data['person_id'] : $customer_id
+		]);
+	}
+
+	// Hàm output thất bại
+	private function output_failure($person_data)
+	{
+		echo json_encode([
+			'success' => FALSE,
+			'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $person_data['first_name'] . ' ' . $person_data['last_name'],
+			'id' => -1
+		]);
 	}
 	
 	public function check_account_number()
@@ -191,7 +231,7 @@ class Customers extends Persons
 	This deletes customers from the customers table
 	Require permissions: customer_delete
 	*/
-	public function delete()
+	public function delete_()
 	{
 		$customers_to_delete = $this->xss_clean($this->input->post('ids'));
 
@@ -205,6 +245,36 @@ class Customers extends Persons
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_cannot_be_deleted')));
 		}
 	}
+
+	public function delete()
+	{
+		// Lấy danh sách các customer_id từ input và xử lý bảo mật
+		$customers_to_delete = $this->xss_clean($this->input->post('ids'));
+
+		// Kiểm tra xem có bất kỳ ID nào được chọn không
+		if (empty($customers_to_delete)) {
+			echo json_encode([
+				'success' => FALSE,
+				'message' => $this->lang->line('customers_no_ids_selected')
+			]);
+			return;
+		}
+
+		// Tiến hành xóa
+		$delete_success = $this->Customer->delete_list($customers_to_delete);
+
+		// Tạo thông điệp kết quả dựa trên việc xóa thành công hay không
+		$message = $delete_success
+			? $this->lang->line('customers_successful_deleted') . ' ' . count($customers_to_delete) . ' ' . $this->lang->line('customers_one_or_multiple')
+			: $this->lang->line('customers_cannot_be_deleted');
+
+		// Trả về phản hồi dưới dạng JSON
+		echo json_encode([
+			'success' => $delete_success,
+			'message' => $message
+		]);
+	}
+
 
 	/*
 	Customers import from excel spreadsheet
@@ -229,6 +299,7 @@ class Customers extends Persons
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
+			return;
 		}
 		else
 		{
@@ -238,7 +309,7 @@ class Customers extends Persons
 				fgetcsv($handle);
 				$i = 1;
 
-				$failCodes = array();
+				$failCodes = [];
 
 				while(($data = fgetcsv($handle)) !== FALSE) 
 				{
@@ -252,16 +323,16 @@ class Customers extends Persons
                         $firstname = $names[count($names) - 1];
                         unset($names[count($names) - 1]);
                         $lastname = join(' ', $names);
-                        $firstname = mb_convert_case($firstname, MB_CASE_TITLE, "UTF-8");
-                        $lastname = mb_convert_case($lastname, MB_CASE_TITLE, "UTF-8");
+                        $firstname = capitalize($firstname);
+                        $lastname = capitalize($lastname);
 
-					    $person_data = array(
+					    $person_data = [
 							'first_name'	=> $firstname,
 							'last_name'		=> $lastname,
 							'gender'		=> 0,
 							'email'			=> $data[10],
 							'phone_number'	=> $data[8],
-							'address_1'		=> $data[7],
+							'address_1'		=> capitalize($data[7]),
 							'address_2'		=> '',
 							'city'			=> 'HN',
 							'state'			=> 'HN',
@@ -269,13 +340,13 @@ class Customers extends Persons
 							'country'		=> 'VN',
 							'comments'		=> '',
                             'age'           => 0
-						);
+						];
 						
-						$customer_data = array(
+						$customer_data = [
 							'company_name'		=> '',
 							'discount_percent'	=> 0,
 							'taxable'			=> 1
-						);
+						];
 						
 						$account_number = $data[1];
 						$invalidated = FALSE;
@@ -315,6 +386,8 @@ class Customers extends Persons
 			}
 		}
 	}
+
+	
     // import của hệ thống mới
 	public function do_excel_import_bk()
     {
@@ -421,7 +494,7 @@ class Customers extends Persons
 		}
 		
 		$city_ = get_cities_list();
-        $cities = array();
+        $cities = [];
         foreach ($city_ as $key=>$value)
         {
             $cities[$value] = $value;
@@ -452,7 +525,7 @@ class Customers extends Persons
 
 	}
 
-	public function ajax_saleings()
+	public function ajax_saleings_()
 	{
 		$_sFromDate = $this->input->post('fromDate');
         $_sToDate = $this->input->post('toDate');
@@ -513,6 +586,74 @@ class Customers extends Persons
         echo json_encode($json);
 		
 	}
+
+	public function ajax_saleings()
+	{
+		// Lấy dữ liệu từ POST và xử lý định dạng ngày
+		$_sFromDate = $this->input->post('fromDate');
+		$_sToDate = $this->input->post('toDate');
+
+		// Đảm bảo ngày tháng có định dạng đúng
+		if ($_sFromDate && $_sToDate) {
+			$_sFromDate = convert_date_format($_sFromDate);
+			$_sToDate = convert_date_format($_sToDate);
+		}
+
+		// Khởi tạo kết quả mặc định
+		$result = 1;
+
+		// Dữ liệu đầu vào cho truy vấn
+		$_aInput = [
+			'uuid' => $this->input->post('uuid'),
+			'start_date' => $_sFromDate,
+			'end_date' => $_sToDate
+		];
+
+		// Gọi phương thức lấy dữ liệu bán hàng
+		$sales = $this->Customer->ajax_saleings($_aInput);
+		$headers = $this->Customer->salelings_columns();
+
+		if (!$sales) {
+			$result = 0;
+			$data = [
+				'headers_summary' => transform_headers_raw($headers['summary'], TRUE, false),
+				'headers_details' => [],
+				'summary_data' => [],
+				'details_data' => [],
+				'report_data' => []
+			];
+		} else {
+			// Xử lý dữ liệu summary
+			$summary_data = [];
+			$details_data = [];
+			$i = 1;
+
+			foreach ($sales['summary'] as $row) {
+				$row['id'] = $i++;
+				$summary_data[] = $this->xss_clean($row);
+			}
+
+			// Tạo dữ liệu trả về
+			$data = [
+				'headers_summary' => transform_headers_raw($headers['summary'], TRUE, false),
+				'headers_details' => transform_headers_raw($headers['details'], TRUE, false),
+				'summary_data' => $summary_data,
+				'details_data' => $details_data,
+				'report_data' => $sales
+			];
+		}
+
+		// Trả về kết quả JSON
+		echo json_encode(['result' => $result, 'data' => $data]);
+	}
+
+	// Chuyển đổi ngày từ định dạng dd/mm/yyyy sang yyyy/mm/dd
+	private function convert_date_format($date)
+	{
+		$dateParts = explode('/', $date);
+		return isset($dateParts[2], $dateParts[1], $dateParts[0]) ? "{$dateParts[2]}/{$dateParts[1]}/{$dateParts[0]}" : $date;
+	}
+
 	public function ajax_saleings_detail()
 	{
 		$sale_uuid = $this->input->get('sale_uuid');

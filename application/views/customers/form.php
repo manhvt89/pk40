@@ -26,6 +26,7 @@
 						'name'=>'account_number',
 						'id'=>'account_number',
 						'class'=>'form-control input-sm',
+						'disabled'=>'',
 						'value'=>$person_info->account_number)
 						);?>
 			</div>
