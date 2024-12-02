@@ -257,14 +257,18 @@
 		$('#cost_price').number(true,0,',','.');
 		$("#new").click(function() {
 			stay_open = true;
+			console.log('#new clicked');
 			$("#item_form").submit();
+			
 		});
 
 		$("#submit").click(function() {
 			stay_open = false;
+			console.log('submit clicked');
 		});
 
 		var no_op = function(event, data, formatted){};
+
 		$("#category").autocomplete({
 			source: "<?php echo site_url('items/suggest_category');?>",
 			delay:10,
@@ -305,9 +309,12 @@
 
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
+				console.log('submitHandler');
+				//console.log(stay_open);
 				$(form).ajaxSubmit({
 					success: function(response) {
-						var stay_open = modal_support.clicked_id() != 'submit';
+						var stay_open = dialog_support.clicked_id() != 'submit';
+						console.log(dialog_support.clicked_id());
 						if (stay_open)
 						{
 							// set action of item_form to url without item id, so a new one can be created
@@ -320,7 +327,7 @@
 						}
 						else
 						{
-							modal_support.hide();
+							dialog_support.hide();
 						}
 						table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
 					},

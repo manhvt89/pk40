@@ -30,9 +30,11 @@ class Items extends Secure_Controller
 		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
 
 		// filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
-			'low_inventory' => $this->lang->line('items_low_inventory_items'),
-			'is_deleted' => $this->lang->line('items_is_deleted'));
+		$data['filters'] = [
+				'empty_upc' => $this->lang->line('items_empty_upc_items'),
+				'low_inventory' => $this->lang->line('items_low_inventory_items'),
+				'is_deleted' => $this->lang->line('items_is_deleted')
+			];
 
 		$data['hide_unitprice'] = $this->Employee->has_grant('items_unitprice_hide');
 		$this->load->view('items/manage', $data);
@@ -52,30 +54,38 @@ class Items extends Secure_Controller
         //$search = str_replace(' ','%',$search);
 		$this->item_lib->set_item_location($this->input->get('stock_location'));
 
-		$filters = array('start_date' => $this->input->get('start_date'),
-						'end_date' => $this->input->get('end_date'),
-						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => FALSE,
-						'low_inventory' => FALSE, 
-						'is_serialized' => FALSE,
-						'no_description' => FALSE,
-						'search_custom' => FALSE,
-						'is_deleted' => FALSE);
-		
+		$filters = [
+					'start_date' => $this->input->get('start_date'),
+					'end_date' => $this->input->get('end_date'),
+					'stock_location_id' => $this->item_lib->get_item_location(),
+					'empty_upc' => FALSE,
+					'low_inventory' => FALSE, 
+					'is_serialized' => FALSE,
+					'no_description' => FALSE,
+					'search_custom' => FALSE,
+					'is_deleted' => FALSE
+				];
+
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
+
 		$filters = array_merge($filters, $filledup);
 
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
+
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 
-		$data_rows = array();
+		$data_rows = [];
+
 		foreach($items->result() as $item)
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item, $this));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode([
+				'total' => $total_rows, 
+				'rows' => $data_rows]
+			);
 	}
 	
 	public function pic_thumb($pic_id=null)
@@ -116,26 +126,41 @@ class Items extends Secure_Controller
 	*/
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),
-			array('search_custom' => $this->input->post('search_custom'), 'is_deleted' => $this->input->post('is_deleted') != NULL), FALSE));
+		$suggestions = $this->xss_clean(
+			$this->Item->get_search_suggestions(
+				$this->input->post_get('term'),
+				[
+					'search_custom' => $this->input->post('search_custom'), 
+					'is_deleted' => $this->input->post('is_deleted') != NULL], 
+				FALSE
+			)
+		);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),
-			array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
+		$suggestions = $this->xss_clean(
+			$this->Item->get_search_suggestions(
+					$this->input->post_get('term'),
+					['search_custom' => FALSE, 'is_deleted' => FALSE], 
+					TRUE
+			)
+		);
 
 		echo json_encode($suggestions);
 	}
 
+	
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
 	public function suggest_category()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_category_suggestions($this->input->get('term')));
+		$suggestions = $this->xss_clean(
+			$this->Item->get_category_suggestions($this->input->get('term'))
+		);
 
 		echo json_encode($suggestions);
 	}
@@ -162,30 +187,36 @@ class Items extends Secure_Controller
 
 	public function get_row($item_ids='')
 	{
-		if($item_ids == '')
+		if(empty($item_ids))
 		{
-			echo 'Invalid Data';
-			exit();
-		}
-		$item_infos = $this->Item->get_multiple_info(explode(":", $item_ids), $this->item_lib->get_item_location());
+			echo json_encode(["0"=>[]]);
+			return;
+		} 
+		$_aItemIds = explode(":", $item_ids);
+		$item_infos = $this->Item->get_multiple_info($_aItemIds, $this->item_lib->get_item_location());
 
-		$result = array();
-		foreach($item_infos->result() as $item_info)
-		{
-			$result[$item_info->item_id] = $this->xss_clean(get_item_data_row($item_info, $this));
+		$result = [];
+		if ($item_infos->num_rows() > 0) {
+			foreach($item_infos->result() as $item_info)
+			{
+				$result[$item_info->item_id] = $this->xss_clean(get_item_data_row($item_info, $this));
+			}
+			echo json_encode($result);
+			return;
 		}
-
-		echo json_encode($result);
+		echo json_encode(["0"=>[]]);
+		return;
 	}
 
 	public function view($item_id = -1)
 	{
 		has_grant('manhvt');
 		$person_id = $this->session->userdata('person_id');
-		$data['has_grant'] = $this->Employee->has_grant('items_accounting', $person_id);
+		//$data['has_grant'] = $this->Employee->has_grant('items_accounting', $person_id);
+		$data['has_grant'] = has_grant('accounting', 'items');
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
-		$data['default_tax_1_rate'] = '';
-		$data['default_tax_2_rate'] = '';
+		$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate') ?: 0;
+		$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate') ?: 0;
 
 		$item_info = $this->Item->get_info($item_id);
 		foreach(get_object_vars($item_info) as $property => $value)
@@ -195,9 +226,6 @@ class Items extends Secure_Controller
 
 		if($item_id == -1)
 		{
-			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
-			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
-			
 			$item_info->receiving_quantity = 0;
 			$item_info->reorder_level = 0;
 			$item_info->standard_amount = 0;
@@ -205,12 +233,17 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 
-		$suppliers = array('' => $this->lang->line('items_none'));
+		$suppliers = [
+				'' => $this->lang->line('items_none')
+			];
+
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
 			$suppliers[$this->xss_clean($row['person_id'])] = $this->xss_clean($row['company_name']);
 		}
+
 		$data['suppliers'] = $suppliers;
+		
 		$data['selected_supplier'] = $item_info->supplier_id;
 
 		$data['logo_exists'] = $item_info->pic_id != '';
@@ -244,7 +277,7 @@ class Items extends Secure_Controller
 		}
 		$data['item_info'] = $item_info;
 
-        $data['stock_locations'] = array();
+        $data['stock_locations'] = [];
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($stock_locations as $location)
         {
@@ -267,7 +300,7 @@ class Items extends Secure_Controller
 		}
 		$data['item_info'] = $item_info;
 
-        $data['stock_locations'] = array();
+        $data['stock_locations'] = [];
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($stock_locations as $location)
         {
@@ -379,8 +412,7 @@ class Items extends Secure_Controller
 
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
-		$person_id = $this->session->userdata('person_id');
-		$data['has_grant'] = $this->Employee->has_grant('items_accounting', $person_id);
+		$data['has_grant'] = $this->Employee->has_grant('items_accounting');
 		$data['suppliers'] = $suppliers;
 		$data['allow_alt_description_choices'] = array(
 			'' => $this->lang->line('items_do_nothing'), 
@@ -403,12 +435,12 @@ class Items extends Secure_Controller
 		//Save item data
 		$person_id = $this->session->userdata('person_id');
 		$has_grant = $this->Employee->has_grant('items_accounting', $person_id);
-		$item_data = array(
+		$item_data = [
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),
 			'category' => $this->input->post('category'),
-			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
-			'item_number' => $this->input->post('item_number') == '' ? NULL : $this->input->post('item_number'),
+			'supplier_id' => $this->input->post('supplier_id') ?? '',
+			'item_number' => $this->input->post('item_number') ?? '',
 			'unit_price' => parse_decimals($this->input->post('unit_price')),
 			'reorder_level' => parse_decimals($this->input->post('reorder_level')),
 			'receiving_quantity' => parse_decimals($this->input->post('receiving_quantity')),
@@ -416,17 +448,17 @@ class Items extends Secure_Controller
 			'allow_alt_description' => $this->input->post('allow_alt_description') != NULL,
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
 			'deleted' => $this->input->post('is_deleted') != NULL,
-			'custom1' => $this->input->post('custom1') == NULL ? '' : $this->input->post('custom1'),
-			'custom2' => $this->input->post('custom2') == NULL ? '' : $this->input->post('custom2'),
-			'custom3' => $this->input->post('custom3') == NULL ? '' : $this->input->post('custom3'),
-			'custom4' => $this->input->post('custom4') == NULL ? '' : $this->input->post('custom4'),
-			'custom5' => $this->input->post('custom5') == NULL ? '' : $this->input->post('custom5'),
-			'custom6' => $this->input->post('custom6') == NULL ? '' : $this->input->post('custom6'),
-			'custom7' => $this->input->post('custom7') == NULL ? '' : $this->input->post('custom7'),
-			'custom8' => $this->input->post('custom8') == NULL ? '' : $this->input->post('custom8'),
-			'custom9' => $this->input->post('custom9') == NULL ? '' : $this->input->post('custom9'),
-			'custom10' => $this->input->post('custom10') == NULL ? '' : $this->input->post('custom10')
-		);
+			'custom1' => $this->input->post('custom1') ?? '',
+			'custom2' => $this->input->post('custom2') ?? '',
+			'custom3' => $this->input->post('custom3') ?? '',
+			'custom4' => $this->input->post('custom4') ?? '',
+			'custom5' => $this->input->post('custom5') ?? '',
+			'custom6' => $this->input->post('custom6') ?? '',
+			'custom7' => $this->input->post('custom7') ?? '',
+			'custom8' => $this->input->post('custom8') ?? '',
+			'custom9' => $this->input->post('custom9') ?? '',
+			'custom10' => $this->input->post('custom10') ?? ''
+		];
 		if($has_grant) {
 			$item_data['cost_price'] = parse_decimals($this->input->post('cost_price'));
 		}
