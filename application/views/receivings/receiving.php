@@ -469,8 +469,8 @@ $(document).ready(function()
 		}
     });
 
-	//dialog_support.init("a.modal-dlg, button.modal-dlg");
-	modal_support.init("a.modal-dlg, button.modal-dlg");
+	dialog_support.init("a.modal-dlg, button.modal-dlg");
+	//modal_support.init("a.modal-dlg, button.modal-dlg");
 
 	$('#supplier').blur(function()
     {
