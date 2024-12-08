@@ -1234,6 +1234,7 @@ class Sales extends Secure_Controller
 				'comments' => $sale_info['comment'],
 				'invoice_number' => $sale_info['invoice_number'],
 				'sale_uuid' => $sale_info['sale_uuid'],
+				'status' => $sale_info['status'],
 				'barcode' => $this->barcode_lib->generate_receipt_barcode($sale_info['code']),
 			]);
 		}
