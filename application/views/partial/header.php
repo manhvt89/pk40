@@ -162,7 +162,12 @@
 						<!-- <a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">ESS</a> -->
 						<!-- Những mục bạn muốn hiển thị ra ngoài menu collapse -->
 						<ul class="navbar-nav-xs">
-						
+							<li class="">
+								<a href="<?php echo site_url("home");?>" title="Trang chủ" class="menu-icon">
+									<img src="<?php echo base_url().'images/menubar/home.png';?>" border="0" alt="Module Icon" /><br />
+									Trang chủ
+								</a>
+							</li>
 							<?php $i =0; foreach($allowed_modules as $module): $i++; if($i > 6) { break;}?>
 							<li class="<?php echo $module->module_key == $this->uri->segment(1)? 'active': ''; ?>">
 								<a href="<?php echo site_url("$module->module_key");?>" title="<?php echo $this->lang->line("module_".$module->module_key);?>" class="menu-icon">
