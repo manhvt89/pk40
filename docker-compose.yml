@@ -7,6 +7,8 @@ volumes:
         driver: local
     mysql:
         driver: local
+    sessions:
+        driver: local
 
 networks:
     app_net:
@@ -31,6 +33,7 @@ services:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
           - ./conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini
+          - sessions:/var/lib/php/sessions
         environment:
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
@@ -56,3 +59,11 @@ services:
           - MYSQL_DATABASE=ospos
           - MYSQL_USER=admin
           - MYSQL_PASSWORD=pointofsale
+    memcached:
+        image: memcached:1.6
+        container_name: memcached_pk_v22
+        restart: always
+        networks:
+          - app_net
+        ports:
+          - "11211:11211"
