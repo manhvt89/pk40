@@ -26,3 +26,4 @@ git-svn-diff.py
 bower_components/
 application/cert/
 components/
+application/config/config.php
