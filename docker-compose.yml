@@ -61,7 +61,7 @@ services:
           - MYSQL_PASSWORD=pointofsale
     memcached:
         image: memcached:1.6
-        container_name: memcached_pk_v22
+        container_name: memcached
         restart: always
         networks:
           - app_net
