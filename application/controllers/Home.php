@@ -31,6 +31,7 @@ class Home extends Secure_Controller
 		$input_this_month = get_date_range('this_month');
 		$input_this_month['location_id'] = 1;
 		$input_this_month['sale_type'] = 'sales';
+		$input_this_month['end_date'] = $input_today['end_date'];
 		
 		//$this->load->model('reports/Reports_detailed_sales');
 		//$model = $this->Reports_detailed_sales;
@@ -61,7 +62,7 @@ class Home extends Secure_Controller
 				$thisWeek = $this_week_total['total'];
 			}
 		}
-
+		
 		$this_month_total = $model->getSummaryData($input_this_month);
 		if(!empty($this_month_total))
 		{
@@ -70,7 +71,7 @@ class Home extends Secure_Controller
 				$thisMonth = $this_month_total['total'];
 			}
 		}
-		
+		var_dump($input_this_month);
 		$data['today'] = number_format($today,0,'.',',');
 		$data['thisWeek'] = number_format($thisWeek,0,'.',',');
 		$data['thisMonth'] = number_format($thisMonth,0,'.',',');
