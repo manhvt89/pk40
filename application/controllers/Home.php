@@ -96,6 +96,39 @@ class Home extends Secure_Controller
 		$data['labels'] = json_encode($labels);
 		$data['revenues'] = json_encode($revenues);
 
+		
+		$report_data = $model->getData($input_today);
+
+		$summary_data = [];
+        //$person_id = $this->session->userdata('person_id');
+        $reports_accounting = 1;//$this->Employee->has_grant('reports_sales-accounting', $person_id);
+        //var_dump($report_data['details']);
+        foreach($report_data['summary'] as $key => $row)
+		{
+			$summary_data[] = $this->xss_clean(array(
+				'id' => $row['sale_id'],
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee_name' => $row['employee_name'],
+				'customer_name' => $row['customer_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment'],
+				'edit' => anchor('sales/edit/'.$row['sale_uuid'], '<span class="glyphicon glyphicon-pencil"></span>',
+					//array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
+                    array('class' => 'modal-dlg print_hide', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
+				)
+			));
+		}
+
+		$data['summary_data'] = $summary_data;
+		
+		$data['reports_accounting'] = $reports_accounting;
+		
 		$this->load->view('home',$data);
 	}
 
