@@ -74,7 +74,7 @@ class Home extends Secure_Controller
 		$data['today'] = number_format($today,0,'.',',');
 		$data['thisWeek'] = number_format($thisWeek,0,'.',',');
 		$data['thisMonth'] = number_format($thisMonth,0,'.',',');
-		//var_dump($data);die();
+		var_dump($data);die();
 
 		// Lấy số ngày của tháng hiện tại
 		$year = date('Y'); // Năm hiện tại
