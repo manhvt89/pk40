@@ -35,12 +35,19 @@ RUN apt-get install -y libzip-dev zip && docker-php-ext-install zip
 
 RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd
+
+RUN apt-get update && apt-get install -y \
+    libmemcached-dev \
+    zlib1g-dev \
+    && pecl install memcached --with-libmemcached-dir=/usr \
+    && docker-php-ext-enable memcached
+
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
 COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod -R 750 /app/public/uploads /app/application/logs && chown -R www-data:www-data /app/public /app/application
+RUN chmod -R 750 /app/public/uploads && chown -R www-data:www-data /app/public /app/application
 
 
 ##FROM ospos AS ospos_test
