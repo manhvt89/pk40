@@ -1554,4 +1554,32 @@ if (!function_exists('array_unique_by_key')) {
     }
 }
 
+if (!function_exists('get_date_range')) {
+    function get_date_range($type = 'today') {
+        $start_date = $end_date = '';
+        $format = 'Y/m/d'; // Định dạng Năm/tháng/ngày
+
+        switch ($type) {
+            case 'today':
+                $start_date = $end_date = date($format);
+                break;
+
+            case 'this_week':
+                $start_date = date($format, strtotime('monday this week'));
+                $end_date = date($format, strtotime('sunday this week'));
+                break;
+
+            case 'this_month':
+                $start_date = date($format, strtotime('first day of this month'));
+                $end_date = date($format, strtotime('last day of this month'));
+                break;
+
+            default:
+                throw new Exception("Invalid type provided. Use 'today', 'this_week', or 'this_month'.");
+        }
+
+        return ['start_date' => $start_date, 'end_date' => $end_date];
+    }
+}
+
 ?>

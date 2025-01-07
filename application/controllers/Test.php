@@ -517,9 +517,9 @@ class Test extends Secure_Controller
     }
 	public function edit($sale_id)
 	{
-		$data = array();
+		$data = [];
 
-		$data['employees'] = array();
+		$data['employees'] = [];
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)

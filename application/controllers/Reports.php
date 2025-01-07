@@ -1014,7 +1014,11 @@ class Reports extends Secure_Controller
 
 	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+		$inputs = [
+            'start_date' => $start_date, 
+            'end_date' => $end_date, 
+            'sale_type' => $sale_type, 
+            'location_id' => $location_id];
 		
 		//$this->load->model('reports/Reports_detailed_sales');
 		//$model = $this->Reports_detailed_sales;
