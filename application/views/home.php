@@ -80,45 +80,27 @@
           <th>Tên khách hàng</th>
           <th>Ngày đặt</th>
           <th>Tổng giá trị</th>
-          <th>Trạng thái</th>
+          <th>Người bán</th>
         </tr>
       </thead>
       <tbody>
+      <?php if(!empty($summary_sales)):?>
+      <?php foreach($summary_sales as $sale): ?>  
         <tr>
-          <td>#12345</td>
-          <td>Nguyễn Văn A</td>
-          <td>2025-01-04</td>
-          <td>$300</td>
-          <td>Đã giao</td>
+          <td>#<?=$sale['id']?></td>
+          <td><?=$sale['customer_name']?></td>
+          <td><?=$sale['sale_date']?></td>
+          <td><?=$sale['total']?></td>
+          <td><?=$sale['employee_name']?></td>
         </tr>
+      <?php endforeach; ?>
+      <?php else: ?>
         <tr>
-          <td>#12346</td>
-          <td>Trần Thị B</td>
-          <td>2025-01-04</td>
-          <td>$450</td>
-          <td>Chưa giao</td>
+          <td colspan="5">
+            Chưa có đơn hàng
+          </td>
         </tr>
-        <tr>
-          <td>#12347</td>
-          <td>Phạm Minh C</td>
-          <td>2025-01-04</td>
-          <td>$200</td>
-          <td>Đã giao</td>
-        </tr>
-        <tr>
-          <td>#12348</td>
-          <td>Nguyễn Thị D</td>
-          <td>2025-01-04</td>
-          <td>$350</td>
-          <td>Chưa giao</td>
-        </tr>
-        <tr>
-          <td>#12349</td>
-          <td>Trương Văn E</td>
-          <td>2025-01-04</td>
-          <td>$600</td>
-          <td>Đã giao</td>
-        </tr>
+      <?php endif;?>
       </tbody>
     </table>
   </div>

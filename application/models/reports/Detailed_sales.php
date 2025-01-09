@@ -159,5 +159,42 @@ class Detailed_sales extends Report
 
 		return $this->db->get()->row_array();
 	}
+
+    public function getSales(array $inputs)
+	{
+		$this->db->select('sale_id, sale_uuid, kind, sale_time, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->from('sales_items_temp');
+
+		if($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
+
+		if($inputs['sale_type'] == 'sales')
+        {
+            $this->db->where('quantity_purchased > 0');
+        }
+        elseif($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }
+
+        if(!empty($inputs['code']))
+        {
+            $this->db->where('sale_id >=', $inputs['code']);
+        }
+
+        if($this->bLoggedIn_type == 2)
+        {
+            $this->db->where('ctv_id=', $this->iLoggedIn_Id);
+        }
+
+		$this->db->group_by('sale_id');
+		$this->db->order_by('sale_date');
+
+		$data = [];
+		$data['sales'] = $this->db->get()->result_array();
+		return $data;
+	}
 }
 ?>

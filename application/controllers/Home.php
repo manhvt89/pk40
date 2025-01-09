@@ -86,35 +86,39 @@ class Home extends Secure_Controller
         $labels = range(1, $days_in_month); // Ngày trong tháng
 		$revenues = [];
 
-		$this->load->model('reports/Summary_sales');
-		$Summary_sales = $this->Summary_sales;
+		//$this->load->model('reports/Summary_sales');
+		//$Summary_sales = $this->Summary_sales;
 
-		$report_data = $Summary_sales->getData($input_this_month);
-		foreach($report_data as $row)
-		{
-			$revenues[] = $row['total'];
-		}
-		$data['labels'] = json_encode($labels);
-		$data['revenues'] = json_encode($revenues);
+		//$report_data = $Summary_sales->getData($input_this_month);
+		//foreach($report_data as $row)
+		//{
+		//	$revenues[] = $row['total'];
+		//}
+		
 
 		
-		$report_data = $model->getData($input_today);
+		$report_sales = $model->getSales($input_today);
 
 		$summary_data = [];
         //$person_id = $this->session->userdata('person_id');
         $reports_accounting = 1;//$this->Employee->has_grant('reports_sales-accounting', $person_id);
         //var_dump($report_data['details']);
-        foreach($report_data['summary'] as $key => $row)
+        foreach($report_sales['sales'] as $key => $row)
 		{
-			$summary_data[] = $this->xss_clean(array(
+			$_strDate = $row['sale_date'];
+			$dateObject = new DateTime($_strDate); // Tạo đối tượng DateTime
+			$formattedDate = $dateObject->format('d-m-Y'); // Chuyển đổi sang định dạng ngày-tháng-năm
+			$_strDay = $dateObject->format('d'); // Lấy ngày
+			$summary_data[$_strDay] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
-				'sale_date' => $row['sale_date'],
+				'sale_date' => $formattedDate,
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency($row['tax']),
 				'total' => to_currency($row['total']),
+				'dtotal' => $row['total'],
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
@@ -125,8 +129,20 @@ class Home extends Secure_Controller
 				)
 			));
 		}
+		$day = date('d'); // Gets the day of the month (01 to 31)
+		for($i=1;$i <=$day; $i++) // Set từ ngày đầu tháng đến ngày hiện tại về 0
+		{
+			$revenues[(int)$i] = 0;
+		}
 
-		$data['summary_data'] = $summary_data;
+		foreach($summary_data as $key=>$row)
+		{
+			$revenues[(int)$key] = $row['dtotal'];
+		}
+
+		$data['labels'] = json_encode($labels);
+		$data['revenues'] = json_encode(array_values($revenues));
+		$data['summary_sales'] = $summary_data;
 		
 		$data['reports_accounting'] = $reports_accounting;
 		
