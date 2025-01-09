@@ -86,14 +86,21 @@ class Home extends Secure_Controller
         $labels = range(1, $days_in_month); // Ngày trong tháng
 		$revenues = [];
 
-		//$this->load->model('reports/Summary_sales');
-		//$Summary_sales = $this->Summary_sales;
+		$this->load->model('reports/Summary_sales');
+		$Summary_sales = $this->Summary_sales;
 
-		//$report_data = $Summary_sales->getData($input_this_month);
-		//foreach($report_data as $row)
-		//{
-		//	$revenues[] = $row['total'];
-		//}
+		$report_data = $Summary_sales->getData($input_this_month);
+		$_aReportData = [];
+		//var_dump($report_data);die();
+		foreach($report_data as $row)
+		{
+			//	$revenues[] = $row['total'];
+			$_strDate = $row['sale_date'];
+			$dateObject = new DateTime($_strDate); // Tạo đối tượng DateTime
+			$formattedDate = $dateObject->format('d-m-Y'); // Chuyển đổi sang định dạng ngày-tháng-năm
+			$_strDay = $dateObject->format('d'); // Lấy ngày
+			$_aReportData[(int)$_strDay] = $row['total'];
+		}
 		
 
 		
@@ -135,9 +142,9 @@ class Home extends Secure_Controller
 			$revenues[(int)$i] = 0;
 		}
 
-		foreach($summary_data as $key=>$row)
+		foreach($_aReportData as $key=>$value)
 		{
-			$revenues[(int)$key] = $row['dtotal'];
+			$revenues[(int)$key] = $value;
 		}
 
 		$data['labels'] = json_encode($labels);
