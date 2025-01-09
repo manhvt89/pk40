@@ -62,20 +62,17 @@ class Secure_Controller extends CI_Controller
 		//var_dump($data['allowed_modules']);
 
 		// load up global data visible to all the loaded views
-		//$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		
-		//var_dump ($data['allowed_modules']);
 		$data['user_info'] = $logged_in_employee_info;
 		$data['controller_name'] = $module_id;
 
-		$csrf = array(
+		$csrf = [
 			'name' => $this->security->get_csrf_token_name(),
 			'hash' => $this->security->get_csrf_hash()
-		);
+		];
 		$data['csrf'] = $csrf;
 		$this->logedUser_type = $this->session->userdata('type');
 		$this->logedUser_id = $this->session->userdata('person_id');
-
 		$this->load->vars($data);
 	}
 	
