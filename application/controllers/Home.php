@@ -21,7 +21,7 @@ class Home extends Secure_Controller
 		*/
 
 		$input_today = get_date_range('today');
-		$input_today['location_id'] = 1;
+		$input_today['location_id'] = 'all';
 		$input_today['sale_type'] = 'sales';
 
 		$input_this_week = get_date_range('this_week');
@@ -55,7 +55,7 @@ class Home extends Secure_Controller
 		}
 
 		$report_sales = $model->getSales($input_today);
-
+		//var_dump($report_sales);die();
 		$model->delete_temp_table();
 		$model->create($input_this_week);
 		$this_week_total = $model->getSummaryData($input_this_week);
@@ -121,8 +121,7 @@ class Home extends Secure_Controller
 			$_strDate = $row['sale_date'];
 			$dateObject = new DateTime($_strDate); // Tạo đối tượng DateTime
 			$formattedDate = $dateObject->format('d-m-Y'); // Chuyển đổi sang định dạng ngày-tháng-năm
-			$_strDay = $dateObject->format('d'); // Lấy ngày
-			$summary_data[$_strDay] = $this->xss_clean(array(
+			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'sale_date' => $formattedDate,
 				'quantity' => to_quantity_decimals($row['items_purchased']),
