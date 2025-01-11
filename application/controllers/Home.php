@@ -120,7 +120,7 @@ class Home extends Secure_Controller
 		{
 			$_strDate = $row['sale_date'];
 			$dateObject = new DateTime($_strDate); // Tạo đối tượng DateTime
-			$formattedDate = $dateObject->format('d-m-Y'); // Chuyển đổi sang định dạng ngày-tháng-năm
+			$formattedDate = $dateObject->format('d-m-Y h:m'); // Chuyển đổi sang định dạng ngày-tháng-năm
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'sale_date' => $formattedDate,
