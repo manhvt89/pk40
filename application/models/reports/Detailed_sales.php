@@ -190,7 +190,7 @@ class Detailed_sales extends Report
         }
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date');
+		$this->db->order_by('sale_id','DESC');
 
 		$data = [];
 		$data['sales'] = $this->db->get()->result_array();
