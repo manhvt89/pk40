@@ -118,7 +118,8 @@ class Home extends Secure_Controller
         //var_dump($report_data['details']);
         foreach($report_sales['sales'] as $key => $row)
 		{
-			$_strDate = $row['sale_date'];
+			$_strDate = $row['sale_time'];
+			//var_dump($_strDate);die();
 			$dateObject = new DateTime($_strDate); // Tạo đối tượng DateTime
 			$formattedDate = $dateObject->format('d-m-Y H:i'); // Chuyển đổi sang định dạng ngày-tháng-năm
 			$summary_data[] = $this->xss_clean(array(
