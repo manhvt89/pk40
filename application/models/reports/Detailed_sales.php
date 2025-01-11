@@ -197,6 +197,42 @@ class Detailed_sales extends Report
 		return $data;
 	}
 
+    public function getTotalSales(array $inputs)
+    {
+        $this->db->select('COUNT(DISTINCT sale_id) AS total_orders');
+        $this->db->from('sales_items_temp');
+
+        if($inputs['location_id'] != 'all')
+        {
+            $this->db->where('item_location', $inputs['location_id']);
+        }
+
+        if($inputs['sale_type'] == 'sales')
+        {
+            $this->db->where('quantity_purchased > 0');
+        }
+        elseif($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }
+
+        if(!empty($inputs['code']))
+        {
+            $this->db->where('sale_id >=', $inputs['code']);
+        }
+
+        if($this->bLoggedIn_type == 2)
+        {
+            $this->db->where('ctv_id', $this->iLoggedIn_Id);
+        }
+
+        $result = $this->db->get()->row_array();
+
+        return [
+            'total_orders' => $result['total_orders'] ?? 0
+        ];
+    }
+
     public function delete_temp_table()
 	{
 		//Create our temp tables to work with the data in our report

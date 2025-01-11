@@ -77,6 +77,8 @@ class Home extends Secure_Controller
 				$thisMonth = $this_month_total['total'];
 			}
 		}
+		$_aTotalSales = $model->getTotalSales($input_this_month);
+		$model->delete_temp_table();
 		//var_dump($input_this_month);
 		$data['today'] = number_format($today,0,'.',',');
 		$data['thisWeek'] = number_format($thisWeek,0,'.',',');
@@ -158,6 +160,7 @@ class Home extends Secure_Controller
 		$data['summary_sales'] = $summary_data;
 		
 		$data['reports_accounting'] = $reports_accounting;
+		$data['TotalSales'] = $_aTotalSales['total_orders'];
 		
 		$this->load->view('home',$data);
 	}
