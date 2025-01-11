@@ -1343,7 +1343,18 @@ class Sale extends CI_Model
 		);
 
 		// drop the temporary table to contain memory consumption as it's no longer required
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
+		//$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
+		$this->delete_temp_table('sales_payments_temp');
+	}
+
+	/**
+	 * Xóa table đã tạo bởi hàm create_temp_table
+	 * @param $table_name
+	 * @return void
+	 */
+	public function delete_temp_table($table_name='sales_items_temp')
+	{
+		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix($table_name));
 	}
 
 	//public function

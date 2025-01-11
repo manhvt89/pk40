@@ -54,7 +54,12 @@ class Home extends Secure_Controller
 			}
 		}
 
+		$report_sales = $model->getSales($input_today);
+
+		$model->delete_temp_table();
+		$model->create($input_this_week);
 		$this_week_total = $model->getSummaryData($input_this_week);
+		//var_dump($input_this_week);die();
 		if(!empty($this_week_total))
 		{
 			if($this_week_total['total'] != null)
@@ -62,7 +67,8 @@ class Home extends Secure_Controller
 				$thisWeek = $this_week_total['total'];
 			}
 		}
-		
+		$model->delete_temp_table();
+		$model->create($input_this_month);
 		$this_month_total = $model->getSummaryData($input_this_month);
 		if(!empty($this_month_total))
 		{
@@ -77,7 +83,7 @@ class Home extends Secure_Controller
 		$data['thisMonth'] = number_format($thisMonth,0,'.',',');
 		//var_dump($data);die();
 
-		// Lấy số ngày của tháng hiện tại
+		// Lấy số ngày của tháng hiện tại - Dữ  liệu để vẽ biểu đồ
 		$year = date('Y'); // Năm hiện tại
 		$month = date('m'); // Tháng hiện tại
 		$days_in_month = (int) (new DateTime("$year-$month-01"))->format('t');//cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -104,8 +110,8 @@ class Home extends Secure_Controller
 		
 
 		
-		$report_sales = $model->getSales($input_today);
-
+		
+		// Dữ liệu để hiển thị bảng danh sách đơn hàng hôm nay
 		$summary_data = [];
         //$person_id = $this->session->userdata('person_id');
         $reports_accounting = 1;//$this->Employee->has_grant('reports_sales-accounting', $person_id);

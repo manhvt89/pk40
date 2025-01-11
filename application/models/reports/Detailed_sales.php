@@ -196,5 +196,12 @@ class Detailed_sales extends Report
 		$data['sales'] = $this->db->get()->result_array();
 		return $data;
 	}
+
+    public function delete_temp_table()
+	{
+		//Create our temp tables to work with the data in our report
+		$this->Sale->delete_temp_table();
+	}
+
 }
 ?>
