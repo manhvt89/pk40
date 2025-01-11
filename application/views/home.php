@@ -58,7 +58,7 @@
     </div>
     <div class="col-md-3">
       <div class="box">
-        <h4>Tổng số đơn hàng</h4>
+        <h4>Tổng số đơn hàng tháng</h4>
         <p><?=$TotalSales?></p>
       </div>
     </div>
