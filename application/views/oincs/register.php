@@ -102,8 +102,11 @@ if (isset($success))
 						<?php 
 						} else {
 
-			?>
+			?>				<?php if($item['line'] == 0): ?>
+							<tr class="lech1">
+							<?php else: ?>
 							<tr class="lech">
+							<?php endif; ?>	
 								<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 								<td><?php echo $item['item_number']; ?><?php echo form_hidden('edit_hidden_ctv', '0'); ?></td>
 								<td style="align: center;">
@@ -173,20 +176,20 @@ if (isset($success))
 	?>
 		<table class="sales_table_100">
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line("oinc_doc_entry"); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo $TheOinc['doc_entry']; ?></th>
+				<th style='width: 55%;'><?=$this->lang->line("oinc_doc_entry") ?></th>
+				<th style="width: 45%; text-align: right;"><?=$TheOinc['doc_entry'] ?></th>
 			</tr>
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line("oinc_doc_num"); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo $TheOinc['doc_num']; ?></th>
+				<th style='width: 55%;'><?=$this->lang->line("oinc_doc_num") ?></th>
+				<th style="width: 45%; text-align: right;"><?=$TheOinc['doc_num'] ?></th>
 			</tr>
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line("oinc_zone"); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo $TheOinc['zone']; ?></th>
+				<th style='width: 55%;'><?=$this->lang->line("oinc_zone") ?></th>
+				<th style="width: 45%; text-align: right;"><?=$TheOinc['zone'] ?></th>
 			</tr>
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line("oinc_created_at"); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo date('d/m/Y h:m',$TheOinc['created_at']); ?></th>
+				<th style='width: 55%;'><?=$this->lang->line("oinc_created_at"); ?></th>
+				<th style="width: 45%; text-align: right;"><?= !empty($TheOinc['created_at']) ? date('d/m/Y H:i', $TheOinc['created_at']) : '' ?></th>
 			</tr>
 			<tr>
 				<th style='width: 55%;'><?php echo $this->lang->line("oinc_creator_name"); ?></th>

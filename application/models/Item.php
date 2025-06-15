@@ -568,5 +568,63 @@ class Item extends CI_Model
 
 		return $this->save($data, $item_id);
 	}
+
+	/**
+	 * 
+	 */
+	public function get_items_by_category_without_ids($category, $ids,$stock_location_id =1)
+	{
+		if(($category == "") || empty($ids))
+		{
+			return [];
+		}
+
+		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+
+		if($stock_location_id > -1)
+		{
+			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->where('location_id', $stock_location_id);
+		}
+
+		$this->db->where('items.deleted', 0);
+		$this->db->where('items.category', $category);
+		$this->db->where('item_quantities.quantity <> 0');
+		$this->db->where_not_in('items.item_id',$ids);
+		// order by name of item
+		$this->db->order_by('items.name', 'asc');
+
+		if($rows > 0)
+		{
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+
+	}
+
+	public function get_items_for_inventory($category, $excluded_item_ids, $stock_location_id = 1)
+	{
+		// Nếu thiếu dữ liệu thì trả về mảng rỗng
+		if (empty($category) || empty($excluded_item_ids) || !is_array($excluded_item_ids)) {
+			return [];
+		}
+
+		$this->db->select('items.*, item_quantities.quantity, suppliers.company_name');
+		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'inner');
+
+		$this->db->where('items.deleted', 0);
+		$this->db->where('items.category', $category);
+		$this->db->where('item_quantities.location_id', $stock_location_id);
+		$this->db->where('item_quantities.quantity <>', 0);
+		$this->db->where_not_in('items.item_id', $excluded_item_ids);
+
+		$this->db->order_by('items.name', 'asc');
+
+		return $this->db->get()->result_array(); // có thể dùng result() nếu bạn muốn object
+	}
 }
 ?>

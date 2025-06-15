@@ -890,6 +890,7 @@ class Oincs extends Secure_Controller
 		$this->count_lib->set_oinc_uuid($uuid); // thiết lập UUID
 		if($_oTheOinc->oinc_id > 0)
 		{
+			/*
 			$_iOincID = $this->count_lib->get_oinc_id(); // Lấy trong session
 			
 			if($_iOincID != $_oTheOinc->oinc_id) // kiểm tra nếu session khác với hiện tại clear session
@@ -897,7 +898,10 @@ class Oincs extends Secure_Controller
 				
 				$this->count_lib->clearAll(); // Clean all session khi chuyển sang tài liệu mới
 				$this->update_memory($_oTheOinc); //load tài liệu hiện tại
-			}
+			} */
+
+			$this->count_lib->clearAll(); // Clean all session khi chuyển sang tài liệu mới
+			$this->update_memory($_oTheOinc); //load tài liệu hiện tại
 
 			// Update tài liệu mới vào session
 			$data['oinc_id'] = $this->count_lib->get_oinc_id();
@@ -1403,6 +1407,9 @@ class Oincs extends Secure_Controller
 						'status'=>'B' // Đã thực hiện kiểm kê, chưa update lên hệ thống KHO
 					];
 
+					$_aItemId = [];
+					$_sCategory = '';
+
 					//var_dump($data['cart']);die();
 					if(count($data['cart']) > 0)
 					{
@@ -1424,7 +1431,33 @@ class Oincs extends Secure_Controller
 
 							];
 							$_aaItem[] = $_aItem;
+							$_aItemId[] = $item['item_id'];
+							$_sCategory = $item['item_category'];
 						}
+						// Lây dữ liệu trong bản items rong danh mục mà có số lượng khác 0, không thuộc các item trong cart;
+						$_aItems = $this->Item->get_items_for_inventory($_sCategory,$_aItemId);
+						if(!empty($_aItems))
+						{
+							foreach($_aItems as $_item)
+							{
+								$_aItem = [
+									'oinc_id'=>$oinc_id,
+									'line_num'=>0,
+									'item_id'=>$_item['item_id'],
+									'item_name'=>$_item['name'],
+									'item_number'=> $_item['item_number'],
+									'item_category' =>$_item['category'],
+									'whs_code'=>1,
+									'counted_quantity'=>0,
+									'in_whs_quantity'=>$_item['quantity'],
+									'difference_quantity'=>$_item['quantity'],
+									'created_at'=>$_iTime
+
+								];
+								$_aaItem[] = $_aItem;
+							}
+						}
+						//var_dump($_aItems);die();
 						//var_dump($_aaItem);die();
 						// step 1: Lưu bản kiểm kê (lưu session to mysql)
 						$rs = $this->Oinc->save_doc($_aOinc,$_aaItem);
