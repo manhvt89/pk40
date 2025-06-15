@@ -223,6 +223,8 @@ class Oinc extends CI_Model
 	 */
 	public function save_doc(&$oinc_data,$items_data)
 	{
+		
+		//var_dump($oinc_data);die();
 		$this->db->trans_start();
 
 		$this->db->where('oinc_id', $oinc_data['oinc_id']);

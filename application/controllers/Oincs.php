@@ -1377,7 +1377,7 @@ class Oincs extends Secure_Controller
 			$this->_reload($data);
 		}
 	}
-
+	/*
 	public function do_check()
 	{
 		//echo '123';
@@ -1393,6 +1393,7 @@ class Oincs extends Secure_Controller
 		$this->count_lib->set_state_id(0);
 		$data['cart'] = $this->count_lib->get_cart();
 		$_sStatus =$this->count_lib->get_status();
+		$_sCategory = $this->count_lib->get_zone();
 		if($_sStatus == 'O' || $_sStatus == 'W' || $_sStatus == 'B')
 		{ 
 			if($this->input->post('hidden_form')) {
@@ -1408,21 +1409,22 @@ class Oincs extends Secure_Controller
 					];
 
 					$_aItemId = [];
-					$_sCategory = '';
-
+					
 					//var_dump($data['cart']);die();
 					if(count($data['cart']) > 0)
 					{
 						$_aaItem = [];
+						//var_dump($data['cart']);die();
 						foreach($data['cart'] as $item)
 						{
+							
 							$_aItem = [
 								'oinc_id'=>$oinc_id,
 								'line_num'=>$item['line'],
 								'item_id'=>$item['item_id'],
 								'item_name'=>$item['name'],
 								'item_number'=> $item['item_number'],
-								'item_category' =>$item['item_category'],
+								'item_category' =>$_sCategory,
 								'whs_code'=>1,
 								'counted_quantity'=>$item['quantity'],
 								'in_whs_quantity'=>$item['in_whs_quantity'],
@@ -1432,10 +1434,9 @@ class Oincs extends Secure_Controller
 							];
 							$_aaItem[] = $_aItem;
 							$_aItemId[] = $item['item_id'];
-							$_sCategory = $item['item_category'];
 						}
 						// Lây dữ liệu trong bản items rong danh mục mà có số lượng khác 0, không thuộc các item trong cart;
-						$_aItems = $this->Item->get_items_for_inventory($_sCategory,$_aItemId);
+						$_aItems = $this->Item->get_items_for_inventory($_sCategory,$_aItemId); // location = 1
 						if(!empty($_aItems))
 						{
 							foreach($_aItems as $_item)
@@ -1457,6 +1458,7 @@ class Oincs extends Secure_Controller
 								$_aaItem[] = $_aItem;
 							}
 						}
+						//var_dump($_sCategory);
 						//var_dump($_aItems);die();
 						//var_dump($_aaItem);die();
 						// step 1: Lưu bản kiểm kê (lưu session to mysql)
@@ -1502,37 +1504,7 @@ class Oincs extends Secure_Controller
 			$this->_reload($data);
 		}
 
-		
-
-		/*
-		
-		$_oTheOinc = $this->Oinc->get_info($uuid);
-	
-		if($_oTheOinc->oinc_id > 0)
-		{
-			
-				
-			$this->count_lib->clearAll(); // Clean all session khi chuyển sang tài liệu mới
-			$this->update_memory($_oTheOinc);
-			
-
-			// Update tài liệu mới vào session
-			$data['oinc_id'] = $this->count_lib->get_oinc_id();
-			$data['oinc_uuid'] = $this->count_lib->get_oinc_uuid();
-			$data['TheOinc'] = $this->get_memory();
-
-			$this->count_lib->load_doc_to_cart($_oTheOinc->oinc_id);
-
-			$data['cart'] = $this->count_lib->get_cart();
-
-			$data['quantity'] = $this->count_lib->get_quantity();
-
-
-			$this->load->view("oincs/check", $data);
-		} else {
-
-		}*/
-	}
+	} */
 	/**
 	 * BEGIN PHÂN QUYỀN *
 	 */
@@ -1584,6 +1556,125 @@ class Oincs extends Secure_Controller
 	/**
 	 * END PHÂN QUYỀN *
 	 */
+
+	public function do_check()
+	{
+		 $data = [];
+		 $employee = $this->Employee->get_logged_in_employee_info();
+		 $data['employee'] = get_fullname($employee->first_name, $employee->last_name);
+	 
+		 $oinc_id = $this->count_lib->get_oinc_id();
+		 $this->count_lib->set_state_code(0);
+		 $this->count_lib->set_state_id(0);
+		 $data['status'] = 0;
+		 $data['cart'] = $this->count_lib->get_cart();
+	 
+		 $_sStatus = $this->count_lib->get_status();
+		 $_sCategory = $this->count_lib->get_zone();
+	 
+		 if (!in_array($_sStatus, ['O', 'W', 'B'])) {
+			 return $this->_show_error($data, 'Tài liệu này đang được xem xét');
+		 }
+	 
+		 if (!$this->input->post('hidden_form')) {
+			 return $this->_show_error($data, 'Bạn không được Refresh lại web hoặc nhấn F51');
+		 }
+	 
+		 if ($oinc_id <= 0) {
+			 return $this->_show_error($data, 'Bạn không được Refresh lại web hoặc nhấn F52');
+		 }
+	 
+		 if (empty($data['cart'])) {
+			 return $this->_show_error($data, 'Bạn không được Refresh lại web hoặc nhấn F53');
+		 }
+	 
+		 $_iTime = time();
+		 $_aOinc = [
+			 'oinc_id' => $oinc_id,
+			 'count_at' => $_iTime,
+			 'countor_id' => $employee->person_id,
+			 'countor_name' => $data['employee'],
+			 'status' => 'B'
+		 ];
+	 
+		 $_aaItem = $this->_build_count_items($data['cart'], $_sCategory, $_iTime, $oinc_id);
+	 
+		 // Lấy các item còn lại trong danh mục chưa được kiểm kê (còn tồn kho)
+		 $_aItemId = array_column($data['cart'], 'item_id');
+		 $_aItems = $this->Item->get_items_for_inventory($_sCategory, $_aItemId);
+	 
+		$max_line = 0;
+
+		foreach ($data['cart'] as $item) {
+			if (isset($item['line']) && $item['line'] > $max_line) {
+				$max_line = $item['line'];
+			}
+		}
+
+		$next_line_num = $max_line + 1;
+
+		 foreach ($_aItems as $_item) {
+			 $_aaItem[] = [
+				 'oinc_id' => $oinc_id,
+				 'line_num' => $next_line_num,
+				 'item_id' => $_item['item_id'],
+				 'item_name' => $_item['name'],
+				 'item_number' => $_item['item_number'],
+				 'item_category' => $_item['category'],
+				 'whs_code' => 1,
+				 'counted_quantity' => 0,
+				 'in_whs_quantity' => $_item['quantity'],
+				 'difference_quantity' => $_item['quantity'],
+				 'created_at' => $_iTime,
+				 'type'=>1
+			 ];
+			 $next_line_num++;
+		 }
+		 //var_dump($_aaItem);die();
+		 if ($this->Oinc->save_doc($_aOinc, $_aaItem)) {
+			 $this->count_lib->set_status('B');
+			 $this->count_lib->set_state_code(1);
+			 $this->count_lib->set_state_id($oinc_id);
+			 $this->count_lib->load_doc_to_cart($oinc_id);
+	 
+			 $data['cart'] = $this->count_lib->get_cart();
+			 //var_dump($data['cart']);die();
+			 $data['TheOinc'] = $this->get_memory();
+	 
+			 redirect(site_url('oincs/count/' . $this->count_lib->get_oinc_uuid() . '/B'));
+		 } else {
+			 return $this->_show_error($data, 'Bạn không được Refresh lại web hoặc nhấn F54');
+		 }
+	 }
+	 
+
+	 private function _show_error($data, $message)
+	{
+		$data['error'] = $message;
+		return $this->_reload($data);
+	}
+
+	private function _build_count_items($cart, $category, $time, $oinc_id)
+	{
+		$items = [];
+		foreach ($cart as $item) {
+			$items[] = [
+				'oinc_id' => $oinc_id,
+				'line_num' => $item['line'],
+				'item_id' => $item['item_id'],
+				'item_name' => $item['name'],
+				'item_number' => $item['item_number'],
+				'item_category' => $category,
+				'whs_code' => 1,
+				'counted_quantity' => $item['quantity'],
+				'in_whs_quantity' => $item['in_whs_quantity'],
+				'difference_quantity' => $item['in_whs_quantity'] - $item['quantity'],
+				'created_at' => $time,
+				'type'=>0
+			];
+		}
+		return $items;
+	}
 
 }
 ?>

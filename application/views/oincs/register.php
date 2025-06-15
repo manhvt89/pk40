@@ -102,7 +102,7 @@ if (isset($success))
 						<?php 
 						} else {
 
-			?>				<?php if($item['line'] == 0): ?>
+			?>				<?php if($item['type'] == 1): ?>
 							<tr class="lech1">
 							<?php else: ?>
 							<tr class="lech">

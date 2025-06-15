@@ -634,7 +634,8 @@ class Count_lib
                     'quantity' => $quantity,
 					'in_whs_quantity'=>$this->cal_in_whs_quantity($item_id,$this->get_whs_code()),
 					'is_difference_quantity'=>false,
-					'difference_quantity'=>0
+					'difference_quantity'=>0,
+					'type' => 0
 			];
 		}
         else
@@ -832,7 +833,8 @@ class Count_lib
 				'quantity' => $row->counted_quantity,
 				'in_whs_quantity' => $row->in_whs_quantity,
 				'difference_quantity' => $row->difference_quantity,
-				'is_difference_quantity' => $row->counted_quantity == $row->in_whs_quantity
+				'is_difference_quantity' => $row->counted_quantity == $row->in_whs_quantity,
+				'type'=>$row->type
 			];
 		}
 
