@@ -578,6 +578,12 @@ class Count_lib
 			$item_id = -1;
             return FALSE;			
 		}
+
+		if($this->get_zone() != $item_info->category)
+		{
+			$item_id = -2;
+            return FALSE;
+		}
 		
 		$item_id = $item_info->item_id;
 

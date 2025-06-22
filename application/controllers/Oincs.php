@@ -997,7 +997,12 @@ class Oincs extends Secure_Controller
 		$item_id_or_number = $this->input->post('item');
 		if(!$this->count_lib->add_item($item_id_or_number, $quantity))
 		{
-			$data['error'] = $this->lang->line('oincs_unable_to_add_item');
+			if($item_id_or_number == -2)
+			{
+				$data['error'] = 'Sản phẩm này không thuộc khu vực này, hãy kiểm tra lại vị trí trên sản phẩm';
+			} else {
+				$data['error'] = $this->lang->line('oincs_unable_to_add_item');
+			}
 		}
 		else
 		{
