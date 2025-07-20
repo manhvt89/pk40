@@ -1573,6 +1573,7 @@ class Oincs extends Secure_Controller
 		 $this->count_lib->set_state_id(0);
 		 $data['status'] = 0;
 		 $data['cart'] = $this->count_lib->get_cart();
+		 //var_dump($data['cart']);die();
 	 
 		 $_sStatus = $this->count_lib->get_status();
 		 $_sCategory = $this->count_lib->get_zone();
@@ -1663,6 +1664,7 @@ class Oincs extends Secure_Controller
 	{
 		$items = [];
 		foreach ($cart as $item) {
+			//var_dump($item);die();
 			$items[] = [
 				'oinc_id' => $oinc_id,
 				'line_num' => $item['line'],
@@ -1675,7 +1677,7 @@ class Oincs extends Secure_Controller
 				'in_whs_quantity' => $item['in_whs_quantity'],
 				'difference_quantity' => $item['in_whs_quantity'] - $item['quantity'],
 				'created_at' => $time,
-				'type'=>0
+				'type'=>$item['type']
 			];
 		}
 		return $items;

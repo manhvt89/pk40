@@ -1128,11 +1128,11 @@ width: 148.5mm;*/
     }
 
     #count .lech1 {
-        background-color: rgb(241, 222, 159);
+        background-color: #F7E292;
         padding: 3px;
         text-align: center;
         border: 1px solid#000;
-        color: #FFF;
+        color: #000;
     }
     /*
 ** OINC CSS
