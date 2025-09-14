@@ -19,6 +19,18 @@ if (isset($success))
 ?>
 <div id="register_wrapper_oinc" class="col-12 col-md-8">
 
+	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group">
+			<ul>
+				<?php if($is_lens): ?>
+					<li class="pull-right">
+						<div class='btn btn-sm btn-success pull-right' id='lens_receiving_button'><span class="glyphicon">&nbsp</span><?php echo 'Nhập mắt từ bảng'; ?></div>
+					</li>
+				<?php endif; ?>
+				
+			</ul>
+		</div>
+	<?php echo form_close(); ?>
 	<?php $tabindex = 0; //var_dump($edit); ?>
 	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
@@ -357,6 +369,12 @@ $(document).ready(function()
 			}
 		}
 	}
+
+	$("#lens_receiving_button").click(function()
+    {
+		var url = '<?php echo site_url("/oincs/lens"); ?>';
+		window.location.replace(url);
+    });
 });
 
 </script>
