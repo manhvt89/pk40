@@ -5073,6 +5073,73 @@ class Reports extends Secure_Controller
         $json = array('result'=>$result,'data'=>$data);
         echo json_encode($json);
     }
+
+    // Added báo cáo khám bệnh
+
+    public function medical()
+	{
+		$data = array();
+		$data['specific_input_name'] = 'Báo cáo xuất khám bệnh';
+		$this->load->model('reports/Specific_medical');
+		$model = $this->Specific_medical;
+
+        $headers = $this->xss_clean($model->getDataColumns());
+
+        $data['headers'] = transform_headers_html($headers['summary'],true,false);
+		$this->load->view('reports/medical_input', $data);
+	}
+
+	public function ajax_medical()
+	{
+        $this->load->model('reports/Specific_medical');
+		$model = $this->Specific_medical;
+
+        $_yearInput = $this->input->post('yearInput');
+        $year = (int) $_yearInput;
+        $result = 1;
+
+        $inputs = [
+                'year'=>$year
+            ];
+        $headers = $this->xss_clean($model->getDataColumns());
+        
+            $report_data = $model->getData($inputs);
+
+            $summary_data = array();
+            $details_data = array();
+
+            $data = null;
+            if(!$report_data)
+            {
+                $result = 0;
+            }else{
+                $summary_data = [];
+                $details_data = [];
+                $i = 1;
+                foreach($report_data['summary'] as $key => $row)
+                {
+                    //var_dump($row);
+                    //$total_quantity = $total_quantity + $row['quantity'];
+                    //$total_amount = $total_amount + $row['total_amount'];
+                    //$begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
+                    $row['id'] = $i;
+                    $summary_data[] = $this->xss_clean($row);
+                    $i++;
+                }
+                
+                $data = array(
+                    'headers_summary' => transform_headers_raw($headers['summary'],TRUE,false),
+                    'headers_details' => [],
+                    'summary_data' => $summary_data,
+                    'details_data' => $details_data,
+                    'report_data' =>$report_data
+                );
+
+            }
+      
+        $json = array('result'=>$result,'data'=>$data);
+        echo json_encode($json);
+	}
     
 }
 ?>
