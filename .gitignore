@@ -27,3 +27,6 @@ bower_components/
 application/cert/
 components/
 application/config/config.php
+docs/
+.ai_rules
+*.sql
