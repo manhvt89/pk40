@@ -38,25 +38,25 @@ class Migrate_care extends CI_Controller {
 
         // 3. Insert Permission
         $perm_data = [
-            'permission_key' => 'customer_care',
+            'permission_key' => 'customer_care_index',
             'module_id' => 'customer_care',
             'name' => 'Chăm sóc KH'
         ];
-        if ($this->db->where('permission_key', 'customer_care')->count_all_results('permissions') == 0) {
+        if ($this->db->where('permission_key', 'customer_care_index')->count_all_results('permissions') == 0) {
             $this->db->insert('permissions', $perm_data);
             echo "Inserted permission.\n";
         }
 
         // 4. Insert Grant
         $grant_data = [
-            'permission_id' => 'customer_care',
+            'permission_id' => 'customer_care_index',
             'role_id' => 1
         ];
-        if ($this->db->where('permission_id', 'customer_care')->where('role_id', 1)->count_all_results('grants') == 0) {
+        if ($this->db->where('permission_id', 'customer_care_index')->where('role_id', 1)->count_all_results('grants') == 0) {
             $this->db->insert('grants', $grant_data);
             echo "Inserted grant.\n";
         }
         
-        echo "Migration completed.\n";
+        echo "Migration completed. Vui lòng ĐĂNG XUẤT và ĐĂNG NHẬP LẠI để menu xuất hiện.\n";
     }
 }
