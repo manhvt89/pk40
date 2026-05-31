@@ -75,6 +75,7 @@ class Inventory_lens extends Report
 				array('begin_quantity' => 'Đầu kỳ','align'=>'right'),
 				array('receive_quantity'=>'Nhập','align'=>'right'),
 				array('sale_quantity'=>'Xuất','align'=>'right'),
+				array('adjustment_quantity' => 'Điều chỉnh','align'=>'right'),
 				array('end_quantity' => 'Cuối kỳ','align'=>'right'),
 				
 			),

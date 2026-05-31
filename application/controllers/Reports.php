@@ -3665,17 +3665,14 @@ class Reports extends Secure_Controller
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);die();
-                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
-                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
-                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
-                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
-                    'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($_end_quantity),
-                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
-                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                    'begin_quantity' => number_format($row['begin_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'adjustment_quantity' => number_format($row['adjustment_quantity'])==0?'-':number_format($row['adjustment_quantity']),
+                    'end_quantity' => number_format($row['end_quantity']),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
@@ -3794,17 +3791,14 @@ class Reports extends Secure_Controller
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);die();
-                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
-                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
-                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
-                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
-                    'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($_end_quantity),
-                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
-                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                    'begin_quantity' => number_format($row['begin_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'adjustment_quantity' => number_format($row['adjustment_quantity'])==0?'-':number_format($row['adjustment_quantity']),
+                    'end_quantity' => number_format($row['end_quantity']),
                 ));
                 /*
                 foreach($report_data['details'][$key] as $drow)
@@ -3980,17 +3974,14 @@ class Reports extends Secure_Controller
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);die();
-                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
-                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
-                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
-                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
-                    'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($_end_quantity),
-                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
-                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                    'begin_quantity' => number_format($row['begin_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'adjustment_quantity' => number_format($row['adjustment_quantity'])==0?'-':number_format($row['adjustment_quantity']),
+                    'end_quantity' => number_format($row['end_quantity']),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
@@ -4092,17 +4083,14 @@ class Reports extends Secure_Controller
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);die();
-                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
-                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
-                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
-                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
-                    'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($_end_quantity),
-                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
-                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                    'begin_quantity' => number_format($row['begin_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'adjustment_quantity' => number_format($row['adjustment_quantity'])==0?'-':number_format($row['adjustment_quantity']),
+                    'end_quantity' => number_format($row['end_quantity']),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)
@@ -4209,17 +4197,14 @@ class Reports extends Secure_Controller
             foreach($report_data['summary'] as $key => $row)
             {
                 //var_dump($row);die();
-                $begin_quantity = $row['end_quantity'] + $row['sale_quantity'] - $row['receive_quantity'];
-                $_end_quantity = $row['end_quantity'] + $row['b_sale_quantity'] - $row['b_receive_quantity'];
-                $_sale_quantity = $row['sale_quantity'] - $row['b_sale_quantity'];
-                $_receive_quantity = $row['receive_quantity'] - $row['b_receive_quantity'];
                 $summary_data[] = $this->xss_clean(array(
                     'id' => $i,
                     'cat' => $row['category'],
-                    'begin_quantity' => number_format($begin_quantity),
-                    'end_quantity' => number_format($_end_quantity),
-                    'sale_quantity' => number_format($_sale_quantity)==0?'-':number_format($_sale_quantity),
-                    'receive_quantity' => number_format($_receive_quantity)==0?'-':number_format($_receive_quantity),
+                    'begin_quantity' => number_format($row['begin_quantity']),
+                    'receive_quantity' => number_format($row['receive_quantity'])==0?'-':number_format($row['receive_quantity']),
+                    'sale_quantity' => number_format($row['sale_quantity'])==0?'-':number_format($row['sale_quantity']),
+                    'adjustment_quantity' => number_format($row['adjustment_quantity'])==0?'-':number_format($row['adjustment_quantity']),
+                    'end_quantity' => number_format($row['end_quantity']),
                 ));
 
                 foreach($report_data['details'][$key] as $drow)

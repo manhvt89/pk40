@@ -1,0 +1,178 @@
+[
+  {
+    "feature": "Dashboard",
+    "path": "/home",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_home.png",
+    "error": ""
+  },
+  {
+    "feature": "Khách hàng",
+    "path": "/customers",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_customers.png",
+    "error": ""
+  },
+  {
+    "feature": "Hàng hóa",
+    "path": "/items",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_items.png",
+    "error": ""
+  },
+  {
+    "feature": "Gói hàng hóa",
+    "path": "/item_kits",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_item_kits.png",
+    "error": ""
+  },
+  {
+    "feature": "Nhà cung cấp",
+    "path": "/suppliers",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_suppliers.png",
+    "error": ""
+  },
+  {
+    "feature": "Bán hàng",
+    "path": "/sales",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_sales.png",
+    "error": ""
+  },
+  {
+    "feature": "Nhập hàng",
+    "path": "/receivings",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_receivings.png",
+    "error": ""
+  },
+  {
+    "feature": "Đặt hàng",
+    "path": "/purchases",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_purchases.png",
+    "error": ""
+  },
+  {
+    "feature": "Nhân viên",
+    "path": "/employees",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_employees.png",
+    "error": ""
+  },
+  {
+    "feature": "Phân quyền",
+    "path": "/roles",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_roles.png",
+    "error": ""
+  },
+  {
+    "feature": "Chấm công",
+    "path": "/attendances",
+    "status": "PASS",
+    "title": "",
+    "screenshot": "./docs/screenshots/_attendances.png",
+    "error": ""
+  },
+  {
+    "feature": "Kiểm kê",
+    "path": "/oincs",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_oincs.png",
+    "error": ""
+  },
+  {
+    "feature": "Cấu hình",
+    "path": "/config",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_config.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo tổng quan",
+    "path": "/reports",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Tóm tắt doanh thu",
+    "path": "/reports/date_input_sales",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_date_input_sales.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Nhập hàng",
+    "path": "/reports/date_input_recv",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_date_input_recv.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Tồn kho",
+    "path": "/reports/inventory_summary_input",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_inventory_summary_input.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Hàng sắp hết",
+    "path": "/reports/inventory_low",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_inventory_low.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - KH cụ thể",
+    "path": "/reports/specific_customer_input",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_specific_customer_input.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - NV cụ thể",
+    "path": "/reports/specific_employee_input",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_specific_employee_input.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Chiết khấu",
+    "path": "/reports/specific_discount_input",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_specific_discount_input.png",
+    "error": ""
+  },
+  {
+    "feature": "Báo cáo - Cộng tác viên",
+    "path": "/reports/specific_ctvs_input",
+    "status": "PASS",
+    "title": "PHÒNG KHÁM MẮT<br>BS CÔNG | Powered by PK40 version 2.0.1",
+    "screenshot": "./docs/screenshots/_reports_specific_ctvs_input.png",
+    "error": ""
+  }
+]

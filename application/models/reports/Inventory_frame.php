@@ -62,7 +62,10 @@ class Inventory_frame extends Report
             $this->db->where('items.deleted', 0);
             $this->db->where('stock_locations.deleted', 0);
             $this->db->where('items.category', $value['category']);
-            $this->db->where('stock_locations.location_id', $value['location_id']);
+            if($inputs['location_id'] != 'all')
+            {
+                $this->db->where('stock_locations.location_id', $inputs['location_id']);
+            }
             $this->db->order_by('items.name');
             $data['details'][$key] = $this->db->get()->result_array();
         }
@@ -111,6 +114,7 @@ class Inventory_frame extends Report
 				array('begin_quantity' => 'Đầu kỳ'),
 				array('receive_quantity'=>'Nhập'),
 				array('sale_quantity'=>'Xuất'),
+				array('adjustment_quantity' => 'Điều chỉnh'),
 				array('end_quantity' => 'Cuối kỳ'),
 				
 			),
