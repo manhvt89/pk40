@@ -59,6 +59,24 @@
         $('#table').bootstrapTable('refresh', {
             url: '<?php echo site_url("customer_care/search"); ?>?status=' + status
         });
+    }
+
+    function viewCustomerDetails(person_id) {
+        var url = '<?php echo site_url("customers/view_detail"); ?>/' + person_id;
+        
+        if (typeof BootstrapDialog !== 'undefined') {
+            BootstrapDialog.show({
+                title: 'Lịch sử mua hàng & Chi tiết',
+                message: $('<iframe src="' + url + '" width="100%" height="600" frameborder="0"></iframe>'),
+                cssClass: 'modal-dlg',
+                size: BootstrapDialog.SIZE_WIDE || 'size-wide'
+            });
+        } else {
+            // Fallback nếu không có BootstrapDialog
+            window.open(url, '_blank', 'width=1000,height=700');
+        }
+    }
+
     function markContacted(person_id) {
         if (confirm("Xác nhận đã liên hệ với khách hàng này?")) {
             $.ajax({

@@ -32,7 +32,7 @@ class Customer_care extends Secure_Controller
             $data_rows = [];
             foreach ($customers->result() as $person) {
                 // Các nút hành động
-                $action_buttons = '<a href="'.site_url('customers/view/'.$person->person_id).'" class="modal-dlg btn btn-info btn-sm" title="Chi tiết khách hàng"><span class="glyphicon glyphicon-eye-open"></span> Chi tiết</a> ';
+                $action_buttons = '<button onclick="viewCustomerDetails(\''.$person->person_id.'\')" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-eye-open"></span> Chi tiết</button> ';
                 
                 if ($status == 'new') {
                     $action_buttons .= '<button onclick="markContacted(\''.$person->person_id.'\')" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> Đã liên hệ</button>';
