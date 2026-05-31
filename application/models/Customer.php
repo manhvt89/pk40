@@ -500,7 +500,6 @@ class Customer extends Person
 		$this->db->where('os.sale_uuid', $inputs['sale_uuid']);
 		$this->db->where('DATE(os.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		
-		$this->db->group_by('os.sale_id');
 		$this->db->order_by('os.sale_time', 'DESC');
 
 		$data = array();
