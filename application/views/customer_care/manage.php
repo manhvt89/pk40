@@ -59,17 +59,6 @@
         $('#table').bootstrapTable('refresh', {
             url: '<?php echo site_url("customer_care/search"); ?>?status=' + status
         });
-    }
-
-    function viewCustomerDetails(person_id) {
-        // Tái sử dụng màn hình popup chi tiết của Customers
-        dialog_support.html('<iframe src="<?php echo site_url("customers/view_detail"); ?>/' + person_id + '" width="100%" height="600" frameborder="0"></iframe>', "Chi tiết khách hàng");
-        // Dialog support logic tuỳ thuộc framework (nếu không có dialog_support, mở tab mới)
-        if (typeof dialog_support === 'undefined') {
-            window.open('<?php echo site_url("customers/view_detail"); ?>/' + person_id, '_blank');
-        }
-    }
-
     function markContacted(person_id) {
         if (confirm("Xác nhận đã liên hệ với khách hàng này?")) {
             $.ajax({
