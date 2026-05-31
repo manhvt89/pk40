@@ -47,14 +47,25 @@ class Migrate_care extends CI_Controller {
             echo "Inserted permission.\n";
         }
 
-        // 4. Insert Grant
-        $grant_data = [
-            'permission_id' => 'customer_care_index',
-            'role_id' => 1
-        ];
-        if ($this->db->where('permission_id', 'customer_care_index')->where('role_id', 1)->count_all_results('grants') == 0) {
-            $this->db->insert('grants', $grant_data);
-            echo "Inserted grant.\n";
+        // Fetch the permission ID
+        $perm_query = $this->db->get_where('permissions', ['permission_key' => 'customer_care_index']);
+        if ($perm_query->num_rows() > 0) {
+            $perm_id = $perm_query->row()->id;
+            
+            // Get all roles
+            $roles = $this->db->get('roles')->result();
+            foreach ($roles as $role) {
+                // 4. Insert Grant using the integer ID, but table might expect varchar. We cast to string.
+                $grant_data = [
+                    'permission_id' => (string)$perm_id,
+                    'role_id' => $role->id
+                ];
+                
+                if ($this->db->where('permission_id', (string)$perm_id)->where('role_id', $role->id)->count_all_results('grants') == 0) {
+                    $this->db->insert('grants', $grant_data);
+                    echo "Inserted grant for role ".$role->id."\n";
+                }
+            }
         }
         
         echo "Migration completed. Vui lòng ĐĂNG XUẤT và ĐĂNG NHẬP LẠI để menu xuất hiện.\n";
