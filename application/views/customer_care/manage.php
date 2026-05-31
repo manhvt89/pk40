@@ -62,18 +62,21 @@
     }
 
     function viewCustomerDetails(person_id) {
-        var url = '<?php echo site_url("customers/view_detail"); ?>/' + person_id;
+        var url = '<?php echo site_url("customers/view_detail"); ?>/' + person_id + '?popup=1';
         
         if (typeof BootstrapDialog !== 'undefined') {
             BootstrapDialog.show({
-                title: 'Lịch sử mua hàng & Chi tiết',
-                message: $('<iframe src="' + url + '" width="100%" height="600" frameborder="0"></iframe>'),
+                title: 'Lịch sử mua hàng',
+                message: $('<iframe src="' + url + '" width="100%" height="650" frameborder="0"></iframe>'),
                 cssClass: 'modal-dlg',
-                size: BootstrapDialog.SIZE_WIDE || 'size-wide'
+                size: BootstrapDialog.SIZE_WIDE || 'size-wide',
+                onshow: function(dialog) {
+                    dialog.getModalDialog().css('width', '95%');
+                }
             });
         } else {
             // Fallback nếu không có BootstrapDialog
-            window.open(url, '_blank', 'width=1000,height=700');
+            window.open(url, '_blank', 'width=1200,height=800');
         }
     }
 

@@ -7,6 +7,15 @@
  */
 ?>
 <?php $this->load->view("partial/header"); ?>
+<?php if ($this->input->get('popup') == 1): ?>
+<style>
+    #header1, .topbar, .navbar, .sidebar { display: none !important; }
+    #customer_form, .panel-info:first-of-type, br { display: none !important; }
+    .wrapper { padding-top: 0 !important; margin: 0 !important; }
+    body { padding-top: 0 !important; background: #fff !important; }
+    .content-wrapper { padding: 10px !important; }
+</style>
+<?php endif; ?>
 <div class="panel-info">
     Thông tin khách hàng
 </div>
