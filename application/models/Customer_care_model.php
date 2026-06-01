@@ -1,7 +1,7 @@
 <?php
 class Customer_care_model extends CI_Model {
     
-    public function search_customers($status = 'new', $limit = 10, $offset = 0, $sort = 'total_amount', $order = 'desc', $search = '') {
+    public function search_customers($status = 'new', $limit = 10, $offset = 0, $sort = 'total_amount', $order = 'desc', $search = '', $amount_from = '', $amount_to = '') {
         $ninety_days_ago = time() - (90 * 24 * 60 * 60);
         
         $this->db->select('c.person_id, p.first_name, p.last_name, p.phone_number, p.address_1, 
@@ -26,6 +26,13 @@ class Customer_care_model extends CI_Model {
             $this->db->having('last_contact_time >= '.$ninety_days_ago);
         }
         
+        if ($amount_from !== '') {
+            $this->db->having('total_amount >=', intval($amount_from));
+        }
+        if ($amount_to !== '') {
+            $this->db->having('total_amount <=', intval($amount_to));
+        }
+        
         // Xử lý logic sắp xếp
         if ($sort == 'name') {
             $this->db->order_by('p.last_name', $order);
@@ -41,10 +48,11 @@ class Customer_care_model extends CI_Model {
         return $this->db->get();
     }
     
-    public function count_customers($status = 'new', $search = '') {
+    public function count_customers($status = 'new', $search = '', $amount_from = '', $amount_to = '') {
         $ninety_days_ago = time() - (90 * 24 * 60 * 60);
         
         $this->db->select('c.person_id,
+            COALESCE((SELECT SUM(sp.payment_amount) FROM '.$this->db->dbprefix('sales').' s JOIN '.$this->db->dbprefix('sales_payments').' sp ON s.sale_id = sp.sale_id WHERE s.customer_id = c.person_id), 0) AS total_amount, 
             (SELECT MAX(contact_time) FROM '.$this->db->dbprefix('customer_care').' WHERE customer_id = c.person_id) AS last_contact_time');
         $this->db->from('customers AS c');
         $this->db->join('people AS p', 'c.person_id = p.person_id');
@@ -63,6 +71,13 @@ class Customer_care_model extends CI_Model {
             $this->db->having('(last_contact_time IS NULL OR last_contact_time < '.$ninety_days_ago.')');
         } else {
             $this->db->having('last_contact_time >= '.$ninety_days_ago);
+        }
+        
+        if ($amount_from !== '') {
+            $this->db->having('total_amount >=', intval($amount_from));
+        }
+        if ($amount_to !== '') {
+            $this->db->having('total_amount <=', intval($amount_to));
         }
         
         // Trả về số dòng bằng cách gói lại thành subquery hoặc dùng count_all_results không chuẩn với having

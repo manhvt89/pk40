@@ -20,14 +20,16 @@ class Customer_care extends Secure_Controller
     {
         $status = $this->input->get('status', TRUE) ?: 'new'; // 'new' hoặc 'contacted'
         $search = $this->input->get('search', TRUE) ?: '';
-        $limit  = $this->input->get('limit', TRUE) ?: 10;
+        $limit  = $this->input->get('limit', TRUE) ?: 200;
         $offset = $this->input->get('offset', TRUE) ?: 0;
         $sort   = $this->input->get('sort', TRUE) ?: 'total_amount';
         $order  = $this->input->get('order', TRUE) ?: 'desc';
+        $amount_from = $this->input->get('amount_from', TRUE) ?: '';
+        $amount_to = $this->input->get('amount_to', TRUE) ?: '';
 
         try {
-            $customers = $this->Customer_care_model->search_customers($status, $limit, $offset, $sort, $order, $search);
-            $total_rows = $this->Customer_care_model->count_customers($status, $search);
+            $customers = $this->Customer_care_model->search_customers($status, $limit, $offset, $sort, $order, $search, $amount_from, $amount_to);
+            $total_rows = $this->Customer_care_model->count_customers($status, $search, $amount_from, $amount_to);
 
             $data_rows = [];
             foreach ($customers->result() as $person) {

@@ -25,16 +25,43 @@
 
         <div class="tab-content" style="padding-top: 15px; background: #fff; padding: 15px; border: 1px solid #ddd; border-top: none;">
             
+            <div id="toolbar" class="form-inline" style="margin-bottom: 15px;">
+                <label>Số tiền từ:</label>
+                <select id="amount_from" class="form-control input-sm" onchange="refreshTable(currentStatus)">
+                    <option value="">0</option>
+                    <?php 
+                    for ($i = 500000; $i <= 10000000; $i += 500000) {
+                        echo '<option value="'.$i.'">'.number_format($i).'</option>';
+                    }
+                    ?>
+                </select>
+                
+                <label>đến:</label>
+                <select id="amount_to" class="form-control input-sm" onchange="refreshTable(currentStatus)">
+                    <option value="">Không giới hạn</option>
+                    <?php 
+                    for ($i = 500000; $i <= 10000000; $i += 500000) {
+                        echo '<option value="'.$i.'">'.number_format($i).'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+
             <table id="table"
+                   data-toolbar="#toolbar"
                    data-toggle="table"
-                   data-url="<?php echo site_url('customer_care/search?status=new'); ?>"
+                   data-url="<?php echo site_url('customer_care/search'); ?>"
+                   data-query-params="queryParams"
                    data-pagination="true"
                    data-side-pagination="server"
                    data-sort-name="total_amount"
                    data-sort-order="desc"
                    data-search="true"
                    data-show-refresh="true"
-                   data-page-list="[10, 25, 50, 100]">
+                   data-show-export="true"
+                   data-export-types="['excel']"
+                   data-page-size="200"
+                   data-page-list="[200, 500, 1000]">
                 <thead>
                     <tr>
                         <th data-field="name" data-sortable="true">Tên khách hàng</th>
@@ -54,11 +81,16 @@
 <script type="text/javascript">
     var currentStatus = 'new';
 
+    function queryParams(params) {
+        params.status = currentStatus;
+        params.amount_from = $('#amount_from').val();
+        params.amount_to = $('#amount_to').val();
+        return params;
+    }
+
     function refreshTable(status) {
         currentStatus = status;
-        $('#table').bootstrapTable('refresh', {
-            url: '<?php echo site_url("customer_care/search"); ?>?status=' + status
-        });
+        $('#table').bootstrapTable('refresh');
     }
 
     function viewCustomerDetails(person_id) {
