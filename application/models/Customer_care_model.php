@@ -6,7 +6,8 @@ class Customer_care_model extends CI_Model {
         
         $this->db->select('c.person_id, p.first_name, p.last_name, p.phone_number, p.address_1, 
             COALESCE((SELECT SUM(sp.payment_amount) FROM '.$this->db->dbprefix('sales').' s JOIN '.$this->db->dbprefix('sales_payments').' sp ON s.sale_id = sp.sale_id WHERE s.customer_id = c.person_id), 0) AS total_amount, 
-            (SELECT MAX(contact_time) FROM '.$this->db->dbprefix('customer_care').' WHERE customer_id = c.person_id) AS last_contact_time');
+            (SELECT MAX(contact_time) FROM '.$this->db->dbprefix('customer_care').' WHERE customer_id = c.person_id) AS last_contact_time,
+            (SELECT MAX(sale_time) FROM '.$this->db->dbprefix('sales').' WHERE customer_id = c.person_id) AS last_purchase_date');
         $this->db->from('customers AS c');
         $this->db->join('people AS p', 'c.person_id = p.person_id');
         $this->db->where('c.deleted', 0);

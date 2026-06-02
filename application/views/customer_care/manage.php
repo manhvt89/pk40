@@ -67,6 +67,7 @@
                         <th data-field="name" data-sortable="true">Tên khách hàng</th>
                         <th data-field="phone_number" data-sortable="true">Số điện thoại</th>
                         <th data-field="address" data-sortable="false">Địa chỉ</th>
+                        <th data-field="last_purchase_date" data-sortable="true">Ngày mua gần nhất</th>
                         <th data-field="total_amount" data-sortable="true">Tổng tiền đã mua</th>
                         <th data-field="last_contact_time" data-sortable="true">Lần liên hệ gần nhất</th>
                         <th data-field="action" data-align="center" data-sortable="false">Thao tác</th>

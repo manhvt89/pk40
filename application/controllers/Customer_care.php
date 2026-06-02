@@ -45,6 +45,7 @@ class Customer_care extends Secure_Controller
                     'name' => get_fullname($person->first_name, $person->last_name),
                     'phone_number' => $person->phone_number,
                     'address' => $person->address_1,
+                    'last_purchase_date' => $person->last_purchase_date ? date('d/m/Y H:i', strtotime($person->last_purchase_date)) : '<span class="label label-default">Chưa có</span>',
                     'total_amount' => number_format($person->total_amount, 0, ',', '.') . ' ₫',
                     'last_contact_time' => $person->last_contact_time ? date('d/m/Y H:i', $person->last_contact_time) : '<span class="label label-warning">Chưa liên hệ</span>',
                     'action' => $action_buttons
